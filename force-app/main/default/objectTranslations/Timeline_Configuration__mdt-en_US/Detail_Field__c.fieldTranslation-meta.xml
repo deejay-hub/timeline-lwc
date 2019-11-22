@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- The field to use to show against each record on the timeline lwc as a short description (30 chars shown) --></help>
+    <label><!-- Detail Field --></label>
+    <name>Detail_Field__c</name>
+</CustomFieldTranslation>

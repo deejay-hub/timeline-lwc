@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- The date fields API name used to determine where on the timeline to plot the record --></help>
+    <label><!-- Position Date Field --></label>
+    <name>Position_Date_Field__c</name>
+</CustomFieldTranslation>

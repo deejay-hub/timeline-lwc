@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="timeline">
+    <apiVersion>46.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Timeline</masterLabel>
+    <targets>
+    	<target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Contact</object>
+                <object>Lead</object>
+                <object>Account</object>
+                <object>Case</object>
+                <object>Opportunity</object>
+            </objects>
+
+            <property name="title" label="Title" default="Timeline" required="true" type="String" />
+            <property name="preferredHeight" label="Height" default="3 - Default" required="true" type="String" datasource="1 - Smallest, 2 - Small, 3 - Default, 4 - Big, 5 - Biggest" />
+            <property name="earliestRange" label="Historical Time Range (Years)" default="3" required="true" type="String" datasource="0.25, 0.5, 1, 2, 3, 5" description="Specify the start range for the timeline. As n minus current date."/>
+            <property name="latestRange" label="Future Time Range (Years)" default="1" required="true" type="String" datasource="0.25, 0.5, 1" description="Specify the end range for the timeline. As n plus current date."/>
+            <property name="zoomTo" label="Zoom Based On" default="Current Date" required="true" type="String" datasource="Current Date, Last Activity" description="Zoom to the last record found (even if it's in the past or future) OR zoom to the current date (even if there are no records)."/>
+            <property name="daysToShow" label="Zoom Range (Days)" default="60" required="true" type="Integer" min="15" max="120" description="Specify how many days to zoom to by default. e.g. 60 days would show 30 days prior to and 30 days after the specified 'zoom based on' setting."/>
+
+            <supportedFormFactors>
+                <supportedFormFactor type="Large" />
+            </supportedFormFactors>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- The field used for Task sObject type only --></help>
+    <label><!-- Type Field --></label>
+    <name>Type_Field__c</name>
+</CustomFieldTranslation>

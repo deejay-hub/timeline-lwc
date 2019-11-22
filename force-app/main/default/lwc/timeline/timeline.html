@@ -1,0 +1,95 @@
+<template>
+    <!--main timeline component-->
+    <div class={timelineVisibility}>
+
+        <!--header-->
+        <div class="slds-grid slds-grid--align-spread">
+            <div class="slds-col slds-shrink slds-align-middle">   
+                <template if:true={isLoaded}>
+                    <h1 class="slds-text-heading--medium">{title}</h1>
+                </template>
+                <template if:false={isLoaded}>
+                    <div class="stencil-value" style="margin-left: 10px"></div>
+                </template>
+            </div>
+            <div class="slds-col slds-shrink-none slds-align-middle">
+                <div class="slds-form--inline">  
+                    <div class="slds-form-element">
+                        <template if:true={isLoaded}>
+                            <div class="timeline-summary">Showing: {zoomStartDate} - {zoomEndDate} • {daysToShow} day(s)</div>
+                        </template>
+                        <template if:false={isLoaded}>
+                            <div class="stencil-label"></div>
+                        </template>
+                    </div>
+                    <div class="slds-form-element">
+                        <lightning-button-icon class="forceRefreshButton rotate" icon-name="utility:refresh"  alternative-text="Refresh" onclick={processTimeline}></lightning-button-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end header-->
+
+        <!--timeline body-->
+        <div id="timeline-wrapper" class="timeline-wrapper">
+            <div class="slds-col slds-size--1-of-1">
+                <div class="timeline-canvas" id="timeline-canvas" lwc:dom="manual"></div>
+                <div class="timeline-canvas-axis" id="timeline-canvas-axis" lwc:dom="manual"></div>
+                <div class="timeline-map-wrapper">
+                    <div class="timeline-map" id="timeline-map" lwc:dom="manual"></div>
+                    <div class="timeline-map-axis" id="timeline-map-axis"  lwc:dom="manual"></div>
+                </div>
+            </div>
+        </div>
+        <!--end timeline body-->
+
+        <!--spinner when component is loading-->
+        <div class="stencil-timeline-spinner">
+            <template if:false={isLoaded}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+        </div>
+        <!--end spinner-->
+
+    </div>
+
+    <!--illustration component when there is an error-->
+    <template if:true={showIllustration}>
+        <div class="illustration-container">
+            <div class="slds-grid slds-grid--align-spread">
+                <div class="slds-col slds-shrink slds-align-middle">
+                    <h1 class="slds-text-heading--medium">{title}</h1>
+                </div>
+                <div class="slds-col slds-shrink-none slds-align-middle">
+                    <div class="slds-form--inline">  
+                        <div class="slds-form-element">
+                            <lightning-button-icon class="forceRefreshButton rotate" icon-name="utility:refresh"  alternative-text="Refresh" onclick={processTimeline}></lightning-button-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stencil-timeline"  >
+                <c-illustration header={illustrationHeader} sub-header={illustrationSubHeader} type={illustrationType}></c-illustration>
+            </div>
+        </div>
+    </template>
+    <!--end illustration component-->
+
+    <!--tooltips NEEDS TO BE A BASE COMPONENT TO FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
+    <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top" >
+        <div class="tooltip-content" >
+            <template if:true={isMouseOver}>
+                <lightning-record-form 
+                    record-id={mouseOverRecordId}
+                    object-api-name={mouseOverObjectAPIName} 
+                    layout-type='Compact' 
+                    columns='2' 
+                    mode='readonly'
+                    class="tooltip-content">
+                </lightning-record-form>
+        </template>
+        </div>
+    </div>
+    <!--end tooltips-->
+
+</template>
