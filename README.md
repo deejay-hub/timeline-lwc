@@ -6,7 +6,7 @@ A complete custom experience component. Created to allow users to view related r
 - Optimising server side resources with fewest db calls
 - Reducing DOM elements to a minimum
 
-> This sample application is designed to run on Salesforce Platform. If you want to experience Lightning Web Components on any platform, please visit https://lwc.dev, and try out our Lightning Web Components sample application [LWC Recipes OSS](https://github.com/trailheadapps/lwc-recipes-oss).
+> This sample application is designed to run on Salesforce Platform. If you want to experience Lightning Web Components on any platform, please visit https://lwc.dev, and try out the Lightning Web Components sample application [LWC Recipes OSS](https://github.com/trailheadapps/lwc-recipes-oss).
 
 ## Installation Instructions
 
@@ -54,13 +54,13 @@ sfdx force:data:tree:import --plan ./data/data-plan.json
 sfdx force:org:open
 ```
 
-8. Navigate to **Sales**, under **TApp Launcher**, select the **Sales** app.
+8. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
 
 9. Find the contact **Jane Lo** and drill into her detailed information.
 
 10. Navigate to **Setup**, and select Edit Page
 
-11. Drag the timeline component into the page.
+11. Drag the timeline component into the page - found under custom components
 
 ### Code formatting
 
