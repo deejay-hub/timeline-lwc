@@ -30,7 +30,7 @@ git clone https://github.com/deejay-hub/timeline-lwc
 cd timeline
 ```
 
-4. Create a scratch org and provide it with an alias (**lwc-recipes** in the command below):
+4. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
 
 ```
 sfdx force:org:create -s -f config/project-scratch-def.json -a timeline-lwc
