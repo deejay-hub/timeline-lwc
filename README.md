@@ -27,7 +27,7 @@ sfdx force:auth:web:login -d -a myhuborg
 
 ```
 git clone https://github.com/deejay-hub/timeline-lwc
-cd timeline
+cd timeline-lwc
 ```
 
 4. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
