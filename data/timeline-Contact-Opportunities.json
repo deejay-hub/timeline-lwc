@@ -1,0 +1,15 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Opportunity",
+                "referenceId": "OpportunityRef1"
+            },
+            "Name": "This is an Opportunity Name",
+            "Amount": 2000,
+            "CloseDate": "2019-09-19",
+            "StageName": "Value Proposition",
+            "ContactId": "@ContactRef1"
+        }
+    ]
+}

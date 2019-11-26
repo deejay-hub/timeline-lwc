@@ -1,0 +1,15 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Case",
+                "referenceId": "CaseRef1"
+            },
+            "Subject": "This is a case subject line",
+            "Description": "This is the case description",
+            "Origin": "Phone",
+            "Status": "New",
+            "ContactId": "@ContactRef1"
+        }
+    ]
+}

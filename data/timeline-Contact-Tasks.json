@@ -1,0 +1,67 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Task",
+                "referenceId": "TaskRef1"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "This was 5 years ago",
+            "Status": "Not Started"
+        },
+        {
+            "attributes": {
+                "type": "Task",
+                "referenceId": "TaskRef2"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "This was 3 years ago",
+            "Status": "Not Started"
+        },
+        {
+            "attributes": {
+                "type": "Task",
+                "referenceId": "TaskRef3"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "This was 2 years ago",
+            "Status": "Not Started"
+        },
+        {
+            "attributes": {
+                "type": "Task",
+                "referenceId": "TaskRef4"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "This was a year ago",
+            "Status": "Not Started"
+        },
+        {
+            "attributes": {
+                "type": "Task",
+                "referenceId": "TaskRef5"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "Task 0001 with a subject",
+            "Status": "Not Started"
+        },
+        {
+            "attributes": {
+                "type": "Task",
+                "referenceId": "TaskRef6"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "Call logged about something",
+            "Status": "Completed"
+        },
+        {
+            "attributes": {
+                "type": "Task",
+                "referenceId": "TaskRef7"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "Email: This was an email subject line",
+            "Status": "Completed"
+        }
+    ]
+}
