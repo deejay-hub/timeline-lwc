@@ -45,7 +45,7 @@ sfdx force:source:push
 6. Load sample data:
 
 ```
-sfdx force:data:tree:import --plan ./data/data-plan.json
+sfdx force:data:tree:import --plan data/timeline-plan.json
 ```
 
 7. Open the scratch org:
