@@ -28,6 +28,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
     
     @track zoomStartDate;                                           //Start date of the current zoom
     @track zoomEndDate;                                             //End date of the current zoom
+
+    @track localisedZoomStartDate;                                  //Start date of the current zoom
+    @track localisedZoomEndDate;                                    //End date of the current zoom
     
     @track totalTimelineRecords;                                    //Total number of records returned
    
@@ -661,8 +664,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .on('brush', brushed)
                 .on('start', brushStart)
   
-            let startBrush = me.zoomStartDate;
-            let endBrush = me.zoomEndDate;
+            //let startBrush = me.zoomStartDate;
+            //let endBrush = me.zoomEndDate;
+
+            let startBrush = moment(me.zoomStartDate).format("DD MMM YYYY");
+            let endBrush = moment(me.zoomEndDate).format("DD MMM YYYY");
 
             xBrush
                 .call(brush)
@@ -694,8 +700,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 me.zoomStartDate = moment(timelineMap.x.invert(selection[0])).format("DD MMM YYYY");
                 me.zoomEndDate = moment(timelineMap.x.invert(selection[1])).format("DD MMM YYYY");
             
-                //me.zoomStartDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[0])));
-                //me.zoomEndDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[1])));
+                me.localisedZoomStartDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[0])));
+                me.localisedZoomEndDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[1])));
+               
             }
             else {
  
