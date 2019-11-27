@@ -1,6 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
+import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 
 import getTimelineData from '@salesforce/apex/timelineService.getTimelineRecords';
 
@@ -61,10 +62,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3timelineCanvasDIV = null;
     _d3timelineCanvasMapDIV = null;
 
+    _d3LocalisedShortDateFormat = null;
     _d3Rendered = false;
    
     connectedCallback() {
         this._timelineHeight = this.getPreferredHeight();
+        console.log( 'shorty ' + shortDateFormat );
+        this._d3LocalisedShortDateFormat = this.userDateFormat();
     }
 
     renderedCallback() { 
@@ -139,7 +143,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     me._d3timelineCanvasAxis = me.axis(axisDividerConfig, me._d3timelineCanvasSVG, me._d3timelineCanvas);
  
                     const axisLabelConfig = {
-                        tickFormat: '%d %b %Y',
+                        //tickFormat: '%d %b %Y',
+                        tickFormat: me._d3LocalisedShortDateFormat,
                         innerTickSize: 0,
                         tickPadding: 2,
                         translate: [0, 5],
@@ -154,7 +159,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     me._d3timelineMap.redraw();
 
                     let mapAxisConfig = {
-                        tickFormat: '%b %Y',
+                        //tickFormat: '%b %Y',
+                        tickFormat: me._d3LocalisedShortDateFormat,
                         innerTickSize: 4,
                         tickPadding: 4,
                         ticks: 12,
@@ -729,6 +735,24 @@ export default class timeline extends NavigationMixin(LightningElement) {
         return function(a, b) {
             return a[param] < b[param] ? -1 : a[param] > b[param] ? 1 : 0;
         };
+    }
+
+    userDateFormat() {
+        let userShortDate = shortDateFormat;
+
+        let d3DateFormat = userShortDate.replace(/dd/gi, "d");
+        d3DateFormat = d3DateFormat.replace(/d/gi, "d");
+        d3DateFormat = d3DateFormat.replace(/M/gi, "m");
+        d3DateFormat = d3DateFormat.replace(/MM/gi, "m");
+        d3DateFormat = d3DateFormat.replace(/YYYY/gi, "y");
+        d3DateFormat = d3DateFormat.replace(/YY/gi, "y");
+
+        d3DateFormat = d3DateFormat.replace(/d/gi, "%d");
+        d3DateFormat = d3DateFormat.replace(/m/gi, "%m");
+        d3DateFormat = d3DateFormat.replace(/y/gi, "%Y");
+
+        return d3DateFormat;
+
     }
 
     get showIllustration() {
