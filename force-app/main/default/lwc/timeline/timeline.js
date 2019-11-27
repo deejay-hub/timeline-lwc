@@ -2,6 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
+import LOCALE from '@salesforce/i18n/locale';
 
 import getTimelineData from '@salesforce/apex/timelineService.getTimelineRecords';
 
@@ -67,7 +68,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
    
     connectedCallback() {
         this._timelineHeight = this.getPreferredHeight();
-        console.log( 'shorty ' + shortDateFormat );
         this._d3LocalisedShortDateFormat = this.userDateFormat();
     }
 
@@ -688,8 +688,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 });
 
                 me.daysToShow = moment(d3timeline.x.domain()[1]).diff(moment(d3timeline.x.domain()[0]), 'days');
-                me.zoomStartDate = moment(timelineMap.x.invert(selection[0])).format("DD MMM YYYY");
-                me.zoomEndDate = moment(timelineMap.x.invert(selection[1])).format("DD MMM YYYY");
+
+                const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
+  
+                me.zoomStartDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[0])));
+                me.zoomEndDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[1])));
             }
             else {
  
