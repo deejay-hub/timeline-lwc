@@ -691,8 +691,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                 const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
   
-                me.zoomStartDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[0])));
-                me.zoomEndDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[1])));
+                me.zoomStartDate = moment(timelineMap.x.invert(selection[0])).format("DD MMM YYYY");
+                me.zoomEndDate = moment(timelineMap.x.invert(selection[1])).format("DD MMM YYYY");
+            
+                //me.zoomStartDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[0])));
+                //me.zoomEndDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[1])));
             }
             else {
  
