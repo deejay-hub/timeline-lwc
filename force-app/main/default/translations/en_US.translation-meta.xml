@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label><!-- Timeline_Error_Apex --></label>
+        <name>Timeline_Error_Apex</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Timeline_Error_JavaScriptResources --></label>
+        <name>Timeline_Error_JavaScriptResources</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Timeline_Error_NoDataHeader --></label>
+        <name>Timeline_Error_NoDataHeader</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Timeline_Error_NoDataSubHeader --></label>
+        <name>Timeline_Error_NoDataSubHeader</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Timeline_Error_Unhandled --></label>
+        <name>Timeline_Error_Unhandled</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Timeline_Label_Days --></label>
+        <name>Timeline_Label_Days</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Timeline_Label_Showing --></label>
+        <name>Timeline_Label_Showing</name>
+    </customLabels>
+</Translations>

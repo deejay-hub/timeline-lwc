@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Timeline_Error_Apex</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_Apex</shortDescription>
+        <value>Apex error</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_JavaScriptResources</fullName>
+        <categories>TImeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_JavaScriptResources</shortDescription>
+        <value>Unable to load JavaScript resources</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_NoDataHeader</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_NoDataHeader</shortDescription>
+        <value>No data to display</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_NoDataSubHeader</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_NoDataSubHeader</shortDescription>
+        <value>Related records show up here on an interactive timeline. Check your filter or create a record.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_Unhandled</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_Unhandled</shortDescription>
+        <value>Houston..we&#39;ve had a problem</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Label_Days</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Days</shortDescription>
+        <value>day(s)</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Label_Showing</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Showing</shortDescription>
+        <value>Showing:</value>
+    </labels>
+</CustomLabels>

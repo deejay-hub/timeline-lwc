@@ -1,9 +1,12 @@
 # Timeline
 
 A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js. Demonstrates a working example of
-- Loading third party js libraries
+- Loading third party js libraries (D3.js and moment.js)
 - Imperative Apex callout
-- Optimising server side resources with fewest db calls
+- Optimising server side resources with fewest db calls and one response
+- Use of the UI API via LDS to display tooltips - with fallback for unsupported objects
+- Use of locale to display dates in the format specified under a users settings
+- Use of custom labels to support multiple languages
 - Reducing DOM elements to a minimum
 
 > This sample application is designed to run on Salesforce Platform. If you want to experience Lightning Web Components on any platform, please visit https://lwc.dev, and try out the Lightning Web Components sample application [LWC Recipes OSS](https://github.com/trailheadapps/lwc-recipes-oss).

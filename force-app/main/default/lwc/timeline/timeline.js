@@ -7,7 +7,17 @@ import LOCALE from '@salesforce/i18n/locale';
 import getTimelineData from '@salesforce/apex/timelineService.getTimelineRecords';
 
 import d3JS from '@salesforce/resourceUrl/d3minified';
-import momentJS from '@salesforce/resourceUrl/momentminified';    
+import momentJS from '@salesforce/resourceUrl/momentminified';  
+
+import APEX from '@salesforce/label/c.Timeline_Error_Apex';
+import NO_DATA_HEADER from '@salesforce/label/c.Timeline_Error_NoDataHeader';
+import NO_DATA_SUBHEADER from '@salesforce/label/c.Timeline_Error_NoDataSubHeader';
+import JAVASCRIPT_LOAD from '@salesforce/label/c.Timeline_Error_JavaScriptResources';
+import UNHANDLED from '@salesforce/label/c.Timeline_Error_Unhandled';
+
+import DAYS from '@salesforce/label/c.Timeline_Label_Days';
+import SHOWING from '@salesforce/label/c.Timeline_Label_Showing';
+
 
 export default class timeline extends NavigationMixin(LightningElement) {
     //Adminstrator accessible attributes in app builder
@@ -47,6 +57,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @track illustrationHeader;                                      //Header to display when an information box displays
     @track illustrationSubHeader;                                   //Sub Header to display when an info box appears
     @track illustrationType;                                        //Type of illustration to display, 'error' or 'no data'
+
+    label = {
+        DAYS,
+        SHOWING,
+    };
+
+    error = {
+        APEX,
+        NO_DATA_HEADER, 
+        NO_DATA_SUBHEADER, 
+        JAVASCRIPT_LOAD, 
+        UNHANDLED,
+    };
 
     _timelineData = null;
     _timelineHeight = null;
@@ -98,7 +121,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 this.processTimeline();
             })
             .catch(error => {
-                this.processError('Error', 'Unable to load JavaScript resources', error);
+                this.processError('Error', this.error.JAVASCRIPT_LOAD, error);
             })
             
             this._d3Rendered = true;
@@ -197,15 +220,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     me.isLoaded = true;
                 }
                 else {
-                    me.processError('No-Data', 'No data to display', 'Related records show up here on an interactive timeline. Check the filter applied.');
+                    me.processError('No-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
                 }  
             }
             catch(error) {
-                me.processError('Error', 'Houston..we\'ve had a problem', error.message);
+                me.processError('Error', me.error.UNHANDLED, error.message);
             }
         })
         .catch(error => {
-            me.processError('Error', 'Apex error', error.body.message);
+            me.processError('Error', me.error.APEX, error.body.message);
         })
         
     }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label>Error de Apex</label>
+        <name>Timeline_Error_Apex</name>
+    </customLabels>
+    <customLabels>
+        <label>No se pueden cargar recursos de JavaScript</label>
+        <name>Timeline_Error_JavaScriptResources</name>
+    </customLabels>
+    <customLabels>
+        <label>No hay datos que mostrar</label>
+        <name>Timeline_Error_NoDataHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>Los registros relacionados se muestran aquí en una cronograma interactiva. Verifique el filtro aplicado.</label>
+        <name>Timeline_Error_NoDataSubHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>Houston...hemos tenido un problema</label>
+        <name>Timeline_Error_Unhandled</name>
+    </customLabels>
+    <customLabels>
+        <label>dia(s)</label>
+        <name>Timeline_Label_Days</name>
+    </customLabels>
+    <customLabels>
+        <label>Demostración:</label>
+        <name>Timeline_Label_Showing</name>
+    </customLabels>
+</Translations>

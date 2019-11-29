@@ -16,7 +16,7 @@
                 <div class="slds-form--inline">  
                     <div class="slds-form-element">
                         <template if:true={isLoaded}>
-                            <div class="timeline-summary">Showing: {localisedZoomStartDate} - {localisedZoomEndDate} • {daysToShow} day(s)</div>
+                            <div class="timeline-summary">{label.SHOWING} {localisedZoomStartDate} - {localisedZoomEndDate} • {daysToShow} {label.DAYS}</div>
                         </template>
                         <template if:false={isLoaded}>
                             <div class="stencil-label"></div>
