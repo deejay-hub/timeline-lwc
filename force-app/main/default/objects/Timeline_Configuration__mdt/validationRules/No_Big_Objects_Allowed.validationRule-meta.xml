@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Big_Objects_Allowed</fullName>
+    <active>true</active>
+    <description>Timeline is not a good option for BigObjects</description>
+    <errorConditionFormula>IF (  CONTAINS( Object_Name__c, &#39;__b&#39;), true, false)</errorConditionFormula>
+    <errorDisplayField>Object_Name__c</errorDisplayField>
+    <errorMessage>Big Objects cannot be used in the timeline. Timeline supports standard and custom objects only.</errorMessage>
+</ValidationRule>

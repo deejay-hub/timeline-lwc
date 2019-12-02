@@ -40,6 +40,9 @@
     padding: 10px 5px 5px 5px;
     background-color: #ffffff;
     border-radius: 5px 5px 5px 5px;
+    border: rgb(221, 219, 218);
+    border-width: 1px;
+    border-style: solid;
 }
 
 .timeline-container-hidden {
@@ -312,13 +315,13 @@
     column-count:2;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 900px) {
     .axis-label-LARGE .tick:nth-child(2n) text {
         visibility: hidden;
     }
 }
 
-@media only screen and (max-width: 1500px) {
+@media only screen and (max-width: 1200px) {
     .axis-label-MEDIUM .tick:nth-child(2n) text {
         visibility: hidden;
     }
