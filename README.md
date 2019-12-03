@@ -26,6 +26,11 @@
   	</a>
 </h3>
 
+<p align="center">
+  <img alt="timeline demo" src="images/Demo.gif">
+</p>
+
+
 ## Overview
 A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js.
 
