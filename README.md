@@ -1,4 +1,33 @@
-# Timeline
+
+  <h1 align="center">
+    <img
+      width="50"
+            src="/force-app/main/default/lwc/timeline/timeline.svg"></br>
+      Timeline
+  </h1>
+
+
+
+<p align="center">
+  <a>
+    <img alt="forks on github"
+		src="https://img.shields.io/github/forks/deejay-hub/timeline-lwc?style=flat-square&logoColor=blue">
+  </a>
+
+  <a>
+    <img alt="stars on github"
+		src="https://img.shields.io/github/stars/deejay-hub/timeline-lwc?style=flat-square">
+  </a>
+  <a>
+    <img alt="downloads on github"
+		src="https://img.shields.io/github/downloads/deejay-hub/timeline-lwc/total?style=flat-square">
+  </a>
+  <a>
+    <img alt="downloads on github"
+		src="https://img.shields.io/bitbucket/issues/deejay/timeline-lwc?label=open%20issues&style=flat-square">
+  </a>
+  
+ </p> 
 
 A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js. Demonstrates a working example of
 - Loading third party js libraries (D3.js and moment.js)
