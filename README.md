@@ -1,42 +1,39 @@
 
-  <h1 align="center">
-    <img
-      width="50"
-            src="/force-app/main/default/lwc/timeline/timeline.svg"></br>
-      Timeline
-  </h1>
+<h1 align="center">
+	<img
+	width="50"
+	src="/force-app/main/default/lwc/timeline/timeline.svg"></br>
+	Timeline<br>     
+</h1>
 
-
-
-<p align="center">
-  <a>
-    <img alt="forks on github"
+<h3 align="center">
+	An interactive Lightning Web Component for the Salesforce platform<br><br>
+	<a>
+    		<img alt="forks on github"
 		src="https://img.shields.io/github/forks/deejay-hub/timeline-lwc?style=flat-square&logoColor=blue">
-  </a>
-
-  <a>
-    <img alt="stars on github"
+  	</a>
+  	<a>
+    		<img alt="stars on github"
 		src="https://img.shields.io/github/stars/deejay-hub/timeline-lwc?style=flat-square">
-  </a>
-  <a>
-    <img alt="downloads on github"
+  	</a>
+  	<a>
+    		<img alt="downloads on github"
 		src="https://img.shields.io/github/downloads/deejay-hub/timeline-lwc/total?style=flat-square">
-  </a>
-  <a>
-    <img alt="downloads on github"
+  	</a>
+  	<a>
+    		<img alt="downloads on github"
 		src="https://img.shields.io/bitbucket/issues/deejay/timeline-lwc?label=open%20issues&style=flat-square">
-  </a>
-  
- </p> 
+  	</a>
+</h3>
 
-A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js. Demonstrates a working example of
-- Loading third party js libraries (D3.js and moment.js)
-- Imperative Apex callout
-- Optimising server side resources with fewest db calls and one response
-- Use of the UI API via LDS to display tooltips - with fallback for unsupported objects
-- Use of locale to display dates in the format specified under a users settings
-- Use of custom labels to support multiple languages
-- Reducing DOM elements to a minimum
+## Overview
+A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js.
+
+- **Multi Language Support.** All labels and error messages as translatable custom labels.
+- **Locale Support for Dates.** Date formats change based on your Salesforce locale setting.
+- **3rd Party JS.** Demonstrates 3rd Party JS and Apex imperative callouts to populate data in an interactive timeline.
+- **Responsive interface.** Uses flexiPageInfo to determine where in the page it is located.
+- **Minimises server roundtrips.** Uses Lightning Data Service for tooltips and falls back to queried data when needed.
 
 > This sample application is designed to run on Salesforce Platform. If you want to experience Lightning Web Components on any platform, please visit https://lwc.dev, and try out the Lightning Web Components sample application [LWC Recipes OSS](https://github.com/trailheadapps/lwc-recipes-oss).
 
