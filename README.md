@@ -1,4 +1,3 @@
-
 <h1 align="center">
 	<img
 	width="50"
@@ -96,6 +95,35 @@ sfdx force:org:open
 10. Navigate to **Setup**, and select Edit Page
 
 11. Drag the timeline component into the page - found under custom components
+
+## How it Works
+
+#### Object Support
+Timeline is installed as a custom component available in the App Builder component pallette. Currently the component is available on the following record home pages:
+Account
+Contact
+Lead
+Opportunity
+Case
+
+Just drag the component onto the page.
+
+<gif drag)
+
+#### Component Attributes
+The component has the following attributes that can be set at design time in App Builder
+
+Attribute                        | Description
+---------------------------------| -------------
+Title	                         | Controls the label that appears in the top left of the components
+Height                           | Controls the vertical height of the component
+Historical Time Range (Years)	 | How far back in time do you need to plot records?
+Future Time Range (Years)	 | How far into the future do you need to see records?
+Zoom Based On			 | Always zoom to the current date (even if there are no records) or zoom to the last activity
+Zoom Range (Days)		 | How many days to show by default
+
+#### Custom Labels
+
 
 ## Contributing
 
