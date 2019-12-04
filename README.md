@@ -100,11 +100,11 @@ sfdx force:org:open
 
 #### Object Support
 Timeline is installed as a custom component available in the App Builder component pallette. Currently the component is available on the following record home pages:
-Account
-Contact
-Lead
-Opportunity
-Case
+- Account
+- Contact
+- Lead
+- Opportunity
+- Case
 
 Just drag the component onto the page.
 
@@ -113,17 +113,27 @@ Just drag the component onto the page.
 #### Component Attributes
 The component has the following attributes that can be set at design time in App Builder
 
-Attribute                        | Description
----------------------------------| -------------
-Title	                         | Controls the label that appears in the top left of the components
-Height                           | Controls the vertical height of the component
-Historical Time Range (Years)	 | How far back in time do you need to plot records?
-Future Time Range (Years)	 | How far into the future do you need to see records?
-Zoom Based On			 | Always zoom to the current date (even if there are no records) or zoom to the last activity
-Zoom Range (Days)		 | How many days to show by default
+Attribute                        | Description                        | Validation       
+---------------------------------| -----------------------------------| ---------------------------
+Title	                         | Adjusts the label                  | String
+Height                           | Adjusts the vertical height        | Picklist (1 - 5)
+Historical Time Range (Years)	 | Adjusts the start date	      | Picklist (0.25 - 5)
+Future Time Range (Years)	 | Adjusts the end date		      | Picklist (0.25 - 1)
+Zoom Based On			 | Adjusts the position of the zoom   | Picklist
+Zoom Range (Days)		 | Adjusts the extent of the zoom     | Integer min 15 max 120
 
 #### Custom Labels
+Labels can be translated where appropriate. Navigate to Setup -> Custom Labels and add translations for your chosen languages. Note you will need the permission - Manage Transalations.
 
+Label Name                       	 | Default translation                     
+---------------------------------------	 | -----------------------------------
+Timeline_Error_Apex              	 | Apex error         
+Timeline_Error_JavaScriptResources	 | Unable to load JavaScript resources
+Timeline_Error_NoDataHeader	 	 | No data to display 
+Timeline_Error_NoDataSubHeader   	 | Related records show up here on an interactive timeline. Check your filter or create a record. 
+Timeline_Error_Unhandled	 	 | Houston...we've had a problem 
+Timeline_Label_Days		 	 | day(s) 
+Timeline_Label_Showing		  	 | Showing:
 
 ## Contributing
 
@@ -135,10 +145,16 @@ Contributions are what make the trailblazer community such an amazing place. I r
 4. Push to the Branch (`git push origin feature/NewFeature`)
 5. Open a Pull Request
 
-### Code formatting
+## Utilities and Dependencies
+
+#### Dependencies
+- D3.js v 5.7.0
+- moment.js v2.2.4
+
+#### Code formatting
 
 [Prettier](https://prettier.io/) is a code formatter used to ensure consistent formatting across your code base. To use Prettier with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) from the Visual Studio Code Marketplace. The [.prettierignore](/.prettierignore) and [.prettierrc](/.prettierrc) files are provided as part of this repository to control the behavior of the Prettier formatter.
 
-### Code linting
+#### Code linting
 
 [ESLint](https://eslint.org/) is a popular JavaScript linting tool used to identify stylistic errors and erroneous constructs. To use ESLint with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode-lwc) from the Visual Studio Code Marketplace. The [.eslintignore](/.eslintignore) file is provided as part of this repository to exclude specific files from the linting process in the context of Lightning Web Components development.
