@@ -16,6 +16,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Timeline_Configuration__mdt.Fallback_Tooltip_Field__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Timeline_Configuration__mdt.Type_Field__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -478,10 +483,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageSynonyms</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageTranslation</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

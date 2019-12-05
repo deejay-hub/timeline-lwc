@@ -75,18 +75,48 @@
     </template>
     <!--end illustration component-->
 
-    <!--tooltips NEEDS TO BE A BASE COMPONENT TO FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
+    <!--tooltips FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
     <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top" >
         <div class="tooltip-content" >
             <template if:true={isMouseOver}>
-                <lightning-record-form 
-                    record-id={mouseOverRecordId}
-                    object-api-name={mouseOverObjectAPIName} 
-                    layout-type='Compact' 
-                    columns='2' 
-                    mode='readonly'
-                    class="tooltip-content">
-                </lightning-record-form>
+
+                <template if:false={showFallbackTooltip}>
+                    <lightning-record-form 
+                        record-id={mouseOverRecordId}
+                        object-api-name={mouseOverObjectAPIName} 
+                        layout-type='Compact' 
+                        columns='2' 
+                        mode='readonly'
+                        class="tooltip-content">
+                    </lightning-record-form>
+                </template>
+
+                <template if:true={showFallbackTooltip}>
+                    <div class="slds-form" role="list">
+                        <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                        <span class="slds-form-element__label">{mouseOverDetailLabel} </span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{mouseOverDetailValue}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                    <span class="slds-form-element__label">{mouseOverFallbackField} </span>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-form-element__static">{mouseOverFallbackValue}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+    
+
         </template>
         </div>
     </div>
