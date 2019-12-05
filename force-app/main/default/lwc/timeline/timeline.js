@@ -51,6 +51,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @track isMouseOver = false;                                     //Boolean when mouse over is detected                          
     @track mouseOverRecordId;                                       //Current Id of the record being hovered over
     @track mouseOverObjectAPIName;                                  //API Name for the object being hovered over
+    @track mouseOverDetailLabel; 
+    @track mouseOverDetailValue
+    @track mouseOverFallbackField;
+    @track mouseOverFallbackValue;
 
     @track timelineVisibility = 'timeline-container'                //Toggles the class to show and hide the timeline
 
@@ -189,7 +193,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         tickFormat: me._d3LocalisedShortDateFormat,
                         innerTickSize: 4,
                         tickPadding: 4,
-                        ticks: 12,
+                        ticks: 6,
                         class: 'axis-label'
                     };
                     
@@ -247,8 +251,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.time = moment(record.positionDateValue, 'YYYY-MM-DD HH:mm:ss').toDate(); 
             recordCopy.week =  moment(record.positionDateValue, 'YYYY-MM-DD').startOf('week');
             recordCopy.objectName = record.objectName;
+            recordCopy.objectLabel = record.objectLabel;
             recordCopy.positionDateField = record.positionDateField;
             recordCopy.detailField = record.detailField;
+            recordCopy.detailFieldLabel = record.detailFieldLabel;
+
+            recordCopy.fallbackTooltipField = record.fallbackTooltipField;
+            recordCopy.fallbackTooltipValue = record.fallbackTooltipValue;
+
             recordCopy.type = record.type;
             recordCopy.icon = record.icon;
             recordCopy.iconBackground = record.iconBackground;
@@ -443,6 +453,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .on('mouseover', function(d) {
                         me.mouseOverObjectAPIName = d.objectName;
                         me.mouseOverRecordId = d.recordId;
+                        me.mouseOverFallbackField = d.fallbackTooltipField;
+                        me.mouseOverFallbackValue = d.fallbackTooltipValue;
+
+                        me.mouseOverDetailLabel = d.detailFieldLabel;
+                        me.mouseOverDetailValue = d.detailField;
+
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector("div.tooltip-panel");
                         tooltipDIV.setAttribute('style', 'top:' + (this.getBoundingClientRect().top - 30) + 'px ;left:' + (this.getBoundingClientRect().right + 15) + 'px ;visibility:visible');
@@ -796,6 +812,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
         if ( this.isError || this.noData ) {
             return true;
         }
+        return false;        
+    }
+
+    get showFallbackTooltip() {
+
+        if ( this.mouseOverFallbackField != null && this.mouseOverFallbackField !== '' ) {
+            return true;
+        }
+
         return false;        
     }
 }
