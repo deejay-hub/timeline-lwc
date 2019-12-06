@@ -96,6 +96,10 @@ sfdx force:org:open
 
 11. Drag the timeline component into the page - found under custom components
 
+<p align="center">
+  <img alt="timeline app builder" src="images/appBuilderDemo.gif">
+</p>
+
 ## How it Works
 
 #### Object Support
