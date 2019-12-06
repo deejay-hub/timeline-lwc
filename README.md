@@ -146,6 +146,8 @@ Specifying which child records to plot is done using the Timeline_Configuration 
 
 ## FAQs
 
+#### Does it support multiple languages other than English?
+
 #### Does it support Communities?
 
 #### Does it support Person Accounts?
