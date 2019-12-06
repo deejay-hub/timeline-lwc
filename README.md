@@ -139,6 +139,11 @@ Timeline_Error_Unhandled	 	 | Houston...we've had a problem
 Timeline_Label_Days		 	 | day(s) 
 Timeline_Label_Showing		  	 | Showing:
 
+#### Configuring Child Records to Plot
+Specifying which child records to plot is done using the Timeline_Configuration metadata type. I have included examples for Contact, Account and Case. Let's take an example - to plot Case Comments on the timeline for Cases I need a row as below:
+
+<insert metadataImageDemo>
+
 ## Contributing
 
 Contributions are what make the trailblazer community such an amazing place. I regard this component as a way to inspire and learn from others. Any contributions you make are **greatly appreciated**.
