@@ -114,8 +114,8 @@ Just drag the component onto the page.
 
 <gif drag)
 
-#### Component Attributes
-The component has the following attributes that can be set at design time in App Builder
+#### Component Properties
+The component has the following properties that can be set at design time in App Builder by an administrator
 
 Attribute                        | Description                        | Validation       
 ---------------------------------| -----------------------------------| ---------------------------
@@ -143,6 +143,16 @@ Timeline_Label_Showing		  	 | Showing:
 Specifying which child records to plot is done using the Timeline_Configuration metadata type. I have included examples for Contact, Account and Case. Let's take an example - to plot Case Comments on the timeline for Cases I need a row as below:
 
 <insert metadataImageDemo>
+
+## FAQs
+
+#### Does it support Communities?
+
+#### Does it support Person Accounts?
+
+#### Does it support Files (Notes & Attachments)?
+
+#### Does it support Custom Objects?
 
 ## Contributing
 
