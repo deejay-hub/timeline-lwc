@@ -1,0 +1,59 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Event",
+                "referenceId": "EventRef1"
+            },
+            "WhoId": "@ContactRef1",
+            "Subject": "Xmas Dinner",
+            "ActivityDateTime": "2019-12-25",
+            "DurationInMinutes": "60",
+            "Description": "Xmas dinner celebrations with all my friends and family."
+        },
+        {
+            "attributes": {
+                "type": "Event",
+                "referenceId": "EventRef2"
+            },
+            "WhoId": "@ContactRef1",
+            "ActivityDateTime": "2019-11-14",
+            "DurationInMinutes": "60",
+            "Subject": "Diwali",
+            "Description": "Diwali celebrations in Mumbai. This is a basic description."
+        },
+        {
+            "attributes": {
+                "type": "Event",
+                "referenceId": "EventRef3"
+            },
+            "WhoId": "@ContactRef1",
+            "ActivityDateTime": "2019-06-01",
+            "DurationInMinutes": "60",
+            "Subject": "Meeting to discuss opportunity",
+            "Description": "This is a really important meeting. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        },
+        {
+            "attributes": {
+                "type": "Event",
+                "referenceId": "EventRef4"
+            },
+            "WhoId": "@ContactRef1",
+            "ActivityDateTime": "2019-06-04",
+            "DurationInMinutes": "60",
+            "Subject": "Another Meeting to discuss opportunity",
+            "Description": "This is another really important meeting. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        },
+        {
+            "attributes": {
+                "type": "Event",
+                "referenceId": "EventRef5"
+            },
+            "WhoId": "@ContactRef1",
+            "ActivityDateTime": "2019-06-07",
+            "DurationInMinutes": "60",
+            "Subject": "Final Meeting to discuss opportunity",
+            "Description": "This is the final really important meeting. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        }
+    ]
+}

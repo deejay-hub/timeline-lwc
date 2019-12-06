@@ -24,6 +24,14 @@
         ]
     },
     {
+        "sobject": "Event",
+        "saveRefs": false,
+        "resolveRefs": true,
+        "files": [
+            "timeline-Contact-Events.json"
+        ]
+    },
+    {
         "sobject": "Case",
         "saveRefs": false,
         "resolveRefs": true,

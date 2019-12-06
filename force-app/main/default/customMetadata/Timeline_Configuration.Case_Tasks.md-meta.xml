@@ -11,6 +11,10 @@
         <value xsi:type="xsd:string">Subject</value>
     </values>
     <values>
+        <field>Fallback_Tooltip_Field__c</field>
+        <value xsi:type="xsd:string">Description</value>
+    </values>
+    <values>
         <field>Icon_Background_Colour__c</field>
         <value xsi:type="xsd:string">#4ac076</value>
     </values>
