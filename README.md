@@ -26,7 +26,7 @@
 </h3>
 
 <p align="center">
-  <img alt="timeline demo" src="images/Demo.gif">
+  <img alt="timeline demo" src="images/heroDemo.gif">
 </p>
 
 
