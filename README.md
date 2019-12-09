@@ -5,6 +5,13 @@
 	Timeline<br>     
 </h1>
 
+<h4 align="center">
+	<a href="#installation-instructions">Install</a> |
+	<a href="#how-it-works">How it Works</a> |
+	<a href="#faqs">FAQs</a> |
+	<a href="#contributing">Contribute</a>
+</h4>
+	
 <h3 align="center">
 	An interactive Lightning Web Component for the Salesforce platform<br><br>
 	<a>
