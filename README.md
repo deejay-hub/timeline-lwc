@@ -112,6 +112,7 @@ Timeline is installed as a custom component available in the App Builder compone
 
 This is a configuration limit specified in timeline.js-meta.xml. Since the timeline is designed to be driven from data it should be possible to extend the usage to other objects.
 
+```
 <targetConfig targets="lightning__RecordPage">
      <objects>
         <object>Contact</object>
@@ -121,6 +122,7 @@ This is a configuration limit specified in timeline.js-meta.xml. Since the timel
         <object>Opportunity</object>
      </objects>
 </targetConfig>
+```
 
 #### Component Properties
 The component has the following properties that can be set at design time in App Builder by an administrator
