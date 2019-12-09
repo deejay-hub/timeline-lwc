@@ -172,10 +172,12 @@ All fields have their translated labels returned. Any custom labels can be trans
 #### Does it support Communities?
 
 #### Does it support Mobile?
+No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
 
 #### Does it support Person Accounts?
 
-#### Does it support Files (Notes & Attachments)?
+#### Does it support Files / Notes / Attachments)?
+The goal is to support ContentDocumentLink. This will assume that you are using enhanced Notes and Files. The component does not support classic Attachments or Notes at this stage.
 
 #### Does it support Custom Objects?
 
