@@ -165,9 +165,11 @@ Specifying which child records to plot is done using the Timeline_Configuration 
 ## FAQs
 
 #### Does it support multiple languages other than English?
-Yes. The users locale setting in Salesforce determines the date formats used. For a list of supported locales see - https://help.salesforce.com/articleView?id=admin_supported_date_time_format.htm&type=5
+Yes for left-to-right languages. The users locale setting in Salesforce determines the date formats used. For a list of supported locales see - https://help.salesforce.com/articleView?id=admin_supported_date_time_format.htm&type=5
 
-All fields have their translated labels returned. Any custom labels can be translated (see Custom Labels)
+All fields have their translated labels returned. Any custom labels can be translated (see Custom Labels).
+
+Right-to-left languages can be supported but there are formatting issues currently that need to be fixed.
 
 #### Does it support Communities?
 
