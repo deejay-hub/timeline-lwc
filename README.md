@@ -171,6 +171,8 @@ All fields have their translated labels returned. Any custom labels can be trans
 
 #### Does it support Communities?
 
+#### Does it support Mobile?
+
 #### Does it support Person Accounts?
 
 #### Does it support Files (Notes & Attachments)?
