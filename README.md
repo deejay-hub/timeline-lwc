@@ -193,6 +193,9 @@ Not yet. The goal is to support ContentDocumentLink. This will assume that you a
 #### Does it support External Objects / Big Objects?
 No. Currently the SOQL is limited to those obejcts that can be included in a parent join. We would have to consider scale and performance too so for now the component only supports standard and custom objects.
 
+#### Does it support History Objects?
+No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates typically seen. 
+
 ## Contributing
 
 Contributions are what make the trailblazer community such an amazing place. I regard this component as a way to inspire and learn from others. Any contributions you make are **greatly appreciated**.
