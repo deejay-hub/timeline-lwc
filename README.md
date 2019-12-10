@@ -187,7 +187,7 @@ No. The timeline component is really best suited to the desktop. Long term it is
 
 #### Does it support Person Accounts?
 
-#### Does it support Files / Notes / Attachments)?
+#### Does it support Files / Notes / Attachments?
 Not yet. The goal is to support ContentDocumentLink. This will assume that you are using enhanced Notes and Files. The component does not support classic Attachments or Notes at this stage.
 
 #### Does it support Custom Objects?
