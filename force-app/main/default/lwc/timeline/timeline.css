@@ -15,17 +15,6 @@
 
 .stencil-timeline-spinner {
     text-align: center;
-    --height: 70%;
-    --padding: 10px;
-}
-
-.stencil-timeline {
-    text-align: center;
-    height: 70%;
-    --padding: 10px;
-    position: relative;
-    top: 5%;
-    --transform: translateY(-55%);
 }
 
 .illustration-container {
@@ -100,7 +89,6 @@
     width:100%;
 }
 
-
 .timeline-map-axis {
     height: 20px;
 }
@@ -108,16 +96,6 @@
 .timeline-map-axis svg {
     overflow: visible;
 }
-
-/*.zoom-summary {
-    font-size: .8125rem;
-    color: rgb(62, 62, 60);
-    max-width: 400px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}*/
-
 
 /* axis labels */
 .axis-ticks {
@@ -128,11 +106,6 @@
 .axis-ticks text {
     display: none;
 }
-
-/*.axis-label text {
-    color: rgb(62, 62, 60);
-    font-size: .7rem;
-}*/
 
 .axis-label-LARGE text {
     color: rgb(62, 62, 60);
@@ -190,16 +163,10 @@
     font-size: .7rem;
 }
 
-
-
 /* axis line */
 .axis-ticks path {
     stroke: none;
 }
-
-/*.axis-label path {
-    stroke: none;
-}*/
 
 .axis-label-LARGE path {
     stroke: none;
@@ -213,8 +180,6 @@
     stroke: none;
 }
 
-
-
 /* brush */
 .brush .selection {
     stroke: #61ADFC;
@@ -222,10 +187,7 @@
     fill-opacity: .3;
 }
 
-
-
 .timeline-canvas-record {
-    /*fill: #AAFFFF;*/
     stroke-width: 6;
     cursor: default;
     pointer-events: true;
@@ -238,11 +200,6 @@
     color: #080707;
     font-size: .8125rem;
     cursor: pointer; 
-}
-
-.item {
-    cursor: default;
-    pointer-events: auto;
 }
 
 .timeline-wrapper {
@@ -276,13 +233,6 @@
 
 }
 
-.tooltip {
-    position: absolute;			
-    background: lightsteelblue;	
-    border: 0px;				
-    pointer-events: none;
-}
-
 .slds-is-relative.record-form-spinner-holder {
     min-height: 120px;
 }
@@ -306,15 +256,6 @@
     transition-delay: 0s;
 }
 
-.slds-form-element__legend {
-    font-weight: 700;
-    float: none !important;
-}
-
-.slds-form--inline .slds-form-element__control {
-    column-count:2;
-}
-
 @media only screen and (max-width: 900px) {
     .axis-label-LARGE .tick:nth-child(2n) text {
         visibility: hidden;
@@ -330,10 +271,3 @@
 .axis-label-SMALL .tick:nth-child(2n) text {
     visibility: hidden;
 }
-
-/*@media only screen and (max-width: 1200px) {
-    .tick:nth-child(2n) text {
-        visibility: hidden;
-    }
-}*/
-
