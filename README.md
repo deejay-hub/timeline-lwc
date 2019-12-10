@@ -158,9 +158,18 @@ Timeline_Label_Days		 	 | day(s)
 Timeline_Label_Showing		  	 | Showing:
 
 #### Configuring Child Records to Plot
-Specifying which child records to plot is done using the Timeline_Configuration metadata type. I have included examples for Contact, Account and Case. Let's take an example - to plot Case Comments on the timeline for Cases I need a row as below:
+Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose 
 
-<insert metadataImageDemo>
+Field Name                       	 | Description                  
+---------------------------------------	 | -----------------------------------
+Parent_Object__c	             	 | The API Name of the **parent object** that the child record relates to
+Object_Name__c		             	 | The API Name of the object that is the **child** to plot
+Position_Date_Field__c	             	 | The API Name of the field on the child (Object_Name__c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)
+Detail_Field__c		             	 | The API Name of the field on the child (Object_Name__c) to use as the description for the record to plot on the timeline
+Icon__c		             		 | A relative url to the image to use for this record
+Icon_Background_Colour__c		 | The background colour to use for the above image (rgb and hex supported)
+Type_Field__c		 		 | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name__c is Task
+Fallback_Tooltip_Field__c		 | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip.
 
 ## FAQs
 
