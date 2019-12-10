@@ -190,7 +190,8 @@ No. The timeline component is really best suited to the desktop. Long term it is
 #### Does it support Files / Notes / Attachments?
 Not yet. The goal is to support ContentDocumentLink. This will assume that you are using enhanced Notes and Files. The component does not support classic Attachments or Notes at this stage.
 
-#### Does it support Custom Objects?
+#### Does it support External Objects / Big Objects?
+No. Currently the SOQL is limited to those obejcts that can be included in a parent join. We would have to consider scale and performance too so for now the component only supports standard and custom objects.
 
 ## Contributing
 
