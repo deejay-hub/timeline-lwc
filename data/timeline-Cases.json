@@ -1,0 +1,26 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Case",
+                "referenceId": "CaseRef1"
+            },
+            "Subject": "Unable to reset password",
+            "Description": "The quick brown fox jumps over the lazy dog.",
+            "Origin": "Web",
+            "ContactId": "@ContactRef1",
+            "AccountId": "@AccountRef1"
+        },
+        {
+            "attributes": {
+                "type": "Case",
+                "referenceId": "CaseRef2"
+            },
+            "Subject": "This is a case subject line",
+            "Description": "This is the case description",
+            "Origin": "Phone",
+            "Status": "New",
+            "ContactId": "@ContactRef1"
+        }
+    ]
+}

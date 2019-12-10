@@ -1,0 +1,11 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Campaign",
+                "referenceId": "CampaignRef1"
+            },
+            "Name": "Event Email Drip Campaign"
+        }
+    ]
+}

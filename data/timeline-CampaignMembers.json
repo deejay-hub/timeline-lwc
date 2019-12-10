@@ -1,0 +1,13 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "CampaignMember",
+                "referenceId": "CampaignMemberRef1"
+            },
+            "Status": "Sent",
+            "ContactId": "@ContactRef1",
+            "CampaignId": "@CampaignRef1"
+        }
+    ]
+}

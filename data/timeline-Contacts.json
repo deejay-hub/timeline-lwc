@@ -8,6 +8,15 @@
             "FirstName": "Jane",
             "LastName": "Lo",
             "AccountId": "@AccountRef1"
+        },
+        {
+            "attributes": {
+                "type": "Contact",
+                "referenceId": "ContactRef2"
+            },
+            "FirstName": "Rod",
+            "LastName": "Lo",
+            "AccountId": "@AccountRef1"
         }
     ]
 }

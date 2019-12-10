@@ -1,0 +1,12 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "CaseComment",
+                "referenceId": "CaseCommentRef1"
+            },
+            "CommentBody": "Comment 1. This is a case comment",
+            "ParentId": "@CaseRef1"
+        }
+    ]
+}
