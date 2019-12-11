@@ -12,6 +12,9 @@ package.xml
 **/__tests__/**
 
 # Transalations
-**transalations
+**translations
 force-app/main/default/translations/en_US.translation-meta.xml
 force-app/main/default/translations/es.translation-meta.xml
+
+# Flexi Pages
+**/flexipages/**
