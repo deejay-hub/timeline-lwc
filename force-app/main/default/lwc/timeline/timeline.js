@@ -96,6 +96,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3LocalisedShortDateFormat = null;
     _d3Rendered = false;
    
+    disconnectedCallback() {
+        window.removeEventListener('resize', this.debounce);
+    }
+
     connectedCallback() {
         this._timelineHeight = this.getPreferredHeight();
         this._d3LocalisedShortDateFormat = this.userDateFormat();
