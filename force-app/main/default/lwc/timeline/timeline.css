@@ -13,6 +13,13 @@
     width: 15rem;
 }
 
+.stencil-timeline {
+    text-align: center;	
+    height: 70%;	
+    position: relative;	
+    top: 5%;	
+}
+
 .stencil-timeline-spinner {
     text-align: center;
 }
