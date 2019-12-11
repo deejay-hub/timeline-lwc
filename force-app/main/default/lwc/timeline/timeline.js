@@ -188,7 +188,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     me._d3timelineMap = me.timelineMap();
                     me._d3timelineMap.redraw();
 
-                    let mapAxisConfig = {
+                    const mapAxisConfig = {
                         //tickFormat: '%b %Y',
                         tickFormat: me._d3LocalisedShortDateFormat,
                         innerTickSize: 4,
@@ -201,7 +201,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                     me._d3brush = me.brush();
 
-                    //me.resizeObserver();
                     window.addEventListener('resize', me.debounce(() => {
                         try {
                             if ( me.template.querySelector("div.timeline-canvas").offsetWidth !== 0 ) {
@@ -338,7 +337,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
 
             let swimlanes = [];
-            let unitInterval = (timelineCanvas.x.domain()[1] - timelineCanvas.x.domain()[0]) / timelineCanvas.width;
+            const unitInterval = (timelineCanvas.x.domain()[1] - timelineCanvas.x.domain()[0]) / timelineCanvas.width;
 
             let data = timelineData.data.filter(function(d) {
                             d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 5 + 70));
@@ -358,7 +357,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             timelineCanvas.width = timelineCanvas.x.range()[1];
             timelineCanvas.attr('width', timelineCanvas.width);
 
-            let svgHeight = Math.max(timelineCanvas.y(swimlanes.length), timelineHeight);
+            const svgHeight = Math.max(timelineCanvas.y(swimlanes.length), timelineHeight);
             timelineCanvas.height = timelineHeight;
 
             timelineCanvas.attr('height', svgHeight);
@@ -478,8 +477,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     axis(axisConfig, targetSVG, target) {
-        let me = this;
-        let timelineCanvas = me._d3timelineCanvas;
+        const me = this;
+        const timelineCanvas = me._d3timelineCanvas;
        
         targetSVG.attr('width', target.width);
 
@@ -489,7 +488,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         .tickFormat(d3.timeFormat(axisConfig.tickFormat))
                         .tickPadding(axisConfig.tickPadding);
 
-        let axis = targetSVG.insert('g', ':first-child')
+        const axis = targetSVG.insert('g', ':first-child')
                         .attr('class', axisConfig.class + '-' + me.flexipageRegionWidth)
                         .call(x_axis);
 
@@ -567,12 +566,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     timelineMap() {
-        let me = this;
+        const me = this;
         
-        let timelineData = me._timelineData;
-        let timelineMapSVG = me._d3timelineMapSVG;
-        let timelineMap = timelineMapSVG;
-        let timelineMapDIV = me.template.querySelector('div.timeline-map');
+        const timelineData = me._timelineData;
+        const timelineMapSVG = me._d3timelineMapSVG;
+        const timelineMap = timelineMapSVG;
+        const timelineMapDIV = me.template.querySelector('div.timeline-map');
 
         timelineMap.x = d3.scaleTime()
                         .domain(timelineData.requestRange)
@@ -596,7 +595,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             var i = 0;
             var swimlane = 0;
             let swimlanes = [];
-            let unitInterval = ( timelineMap.x.domain()[1] - timelineMap.x.domain()[0] ) / timelineMap.width;
+            const unitInterval = ( timelineMap.x.domain()[1] - timelineMap.x.domain()[0] ) / timelineMap.width;
 
             let data = timelineData.data.filter(function(d) {
                           d.endTime = new Date(d.time.getTime() + unitInterval * 10);
@@ -647,14 +646,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     brush() {
         const me = this;
-        let d3timeline = me._d3timelineCanvas;
-        let timelineData = me._timelineData;
-        let timelineAxis = me._d3timelineCanvasAxis;
-        let timelineAxisLabel = me._d3timelineCanvasAxisLabel;
-        let timelineMap = me._d3timelineMap;
-        let timelineMapSVG = me._d3timelineMapSVG;
-        let timelineMapLayoutA = timelineMapSVG.append("g");
-        let timelineMapLayoutB = timelineMapLayoutA.append("g");
+        const d3timeline = me._d3timelineCanvas;
+        const timelineData = me._timelineData;
+        const timelineAxis = me._d3timelineCanvasAxis;
+        const timelineAxisLabel = me._d3timelineCanvasAxisLabel;
+        const timelineMap = me._d3timelineMap;
+        const timelineMapSVG = me._d3timelineMapSVG;
+        const timelineMapLayoutA = timelineMapSVG.append("g");
+        const timelineMapLayoutB = timelineMapLayoutA.append("g");
         let defaultZoomDate;
 
         switch (this.zoomTo) {
@@ -673,14 +672,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .attr("class", "brush")
             .attr("transform", 'translate(0, -1)');
 
-        let xBrush = d3.select(this.template.querySelector("div.timeline-map")).select("g.brush");
+        const xBrush = d3.select(this.template.querySelector("div.timeline-map")).select("g.brush");
 
         let brush = d3.brushX()
             .extent([[0, 0], [timelineMap.width, timelineMap.height]])
             .on('brush', brushed)
             .on('start', brushStart)
 
-        let handle = xBrush.selectAll(".handle--custom")
+        const handle = xBrush.selectAll(".handle--custom")
             .data([{type: "w"}, {type: "e"}])
             .enter().append("path")
               .attr("class", "handle--custom")
@@ -690,8 +689,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
               .attr('height', 40)
               .attr("stroke-width", 1)
               .attr("cursor", "ew-resize")
-              //.attr("d", 'M71,1.1L71,1.1C32.2,1.1,0.5,32.8,0.5,71.6v117.8c0,38.8,31.7,70.5,70.5,70.5h0c38.8,0,70.5-31.7,70.5-70.5V71.6C141.5,32.8,109.8,1.1,71,1.1z M51,188.9c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S59.8,188.9,51,188.9z M51,147.9c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S59.8,147.9,51,147.9z M51,106.9c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S59.8,106.9,51,106.9z M92,188.9c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S100.8,188.9,92,188.9z M92,147.9c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S100.8,147.9,92,147.9z M92,106.9c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S100.8,106.9,92,106.9z'); 
-              //.attr("d", 'M61.0922613,0.1 C27.745031,0.1 0.5,3.66374511 0.5,48.34026 L0.5,254.609859 C0.5,299.286374 27.745031,298.09696 61.0922613,298.09696 C94.4394917,298.09696 120.5,299.286374 120.5,254.609859 L120.5,48.34026 C120.5,3.66374511 94.4394917,0.1 61.0922613,0.1 Z M31,250.9 C22.2,250.9 15,243.7 15,234.9 C15,226.1 22.2,218.9 31,218.9 C39.8,218.9 47,226.1 47,234.9 C47,243.7 39.8,250.9 31,250.9 Z M30,165.9 C21.2,165.9 14,158.7 14,149.9 C14,141.1 21.2,133.9 30,133.9 C38.8,133.9 46,141.1 46,149.9 C46,158.7 38.8,165.9 30,165.9 Z M91,165.9 C82.2,165.9 75,158.7 75,149.9 C75,141.1 82.2,133.9 91,133.9 C99.8,133.9 107,141.1 107,149.9 C107,158.7 99.8,165.9 91,165.9 Z M30,80.9 C21.2,80.9 14,73.7 14,64.9 C14,56.1 21.2,48.9 30,48.9 C38.8,48.9 46,56.1 46,64.9 C46,73.7 38.8,80.9 30,80.9 Z M91,250.9 C82.2,250.9 75,243.7 75,234.9 C75,226.1 82.2,218.9 91,218.9 C99.8,218.9 107,226.1 107,234.9 C107,243.7 99.8,250.9 91,250.9 Z M91,80.9 C82.2,80.9 75,73.7 75,64.9 C75,56.1 82.2,48.9 91,48.9 C99.8,48.9 107,56.1 107,64.9 C107,73.7 99.8,80.9 91,80.9 Z');
               .attr("d", 'M0,0 L75,0 L75,176 C75,184.284271 68.2842712,191 60,191 L15,191 C6.71572875,191 1.01453063e-15,184.284271 0,176 L0,0 L0,0 Z');
         xBrush
             .call(brush)
@@ -703,12 +700,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .extent([[0, 0], [timelineMap.width, timelineMap.height]])
                 .on('brush', brushed)
                 .on('start', brushStart)
-  
-            //let startBrush = me.zoomStartDate;
-            //let endBrush = me.zoomEndDate;
 
-            let startBrush = moment(me.zoomStartDate).format("DD MMM YYYY");
-            let endBrush = moment(me.zoomEndDate).format("DD MMM YYYY");
+            const startBrush = moment(me.zoomStartDate).format("DD MMM YYYY");
+            const endBrush = moment(me.zoomEndDate).format("DD MMM YYYY");
 
             xBrush
                 .call(brush)
@@ -717,7 +711,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         
         function brushed() {
 
-            let selection = d3.event.selection;
+            const selection = d3.event.selection;
             const dommy = [];
 
             if(selection){
@@ -761,7 +755,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         function brushStart() {
-            let selection = d3.event.selection;
+            const selection = d3.event.selection;
 
             if(selection){
                 handle.attr("transform", function(d, i) { 
@@ -791,7 +785,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     userDateFormat() {
-        let userShortDate = shortDateFormat;
+        const userShortDate = shortDateFormat;
 
         let d3DateFormat = userShortDate.replace(/dd/gi, "d");
         d3DateFormat = d3DateFormat.replace(/d/gi, "d");
