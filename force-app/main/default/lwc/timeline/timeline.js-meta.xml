@@ -16,7 +16,7 @@
                 <object>Opportunity</object>
             </objects>
 
-            <property name="title" label="Title" default="Timeline" required="true" type="String" />
+            <property name="timelineTitle" label="Title" default="Timeline" required="true" type="String" />
             <property name="preferredHeight" label="Height" default="3 - Default" required="true" type="String" datasource="1 - Smallest, 2 - Small, 3 - Default, 4 - Big, 5 - Biggest" />
             <property name="earliestRange" label="Historical Time Range (Years)" default="3" required="true" type="String" datasource="0.25, 0.5, 1, 2, 3, 5" description="Specify the start range for the timeline. As n minus current date."/>
             <property name="latestRange" label="Future Time Range (Years)" default="1" required="true" type="String" datasource="0.25, 0.5, 1" description="Specify the end range for the timeline. As n plus current date."/>
