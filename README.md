@@ -84,25 +84,31 @@ sfdx force:org:create -s -f config/project-scratch-def.json -a timeline-lwc
 sfdx force:source:push
 ```
 
-6. Load sample data:
+6. Assign the Timeline_User permission set to the default user:
+
+```
+sfdx force:user:permset:assign -n Timeline_User
+```
+
+7. Load sample data:
 
 ```
 sfdx force:data:tree:import --plan data/timeline-plan.json
 ```
 
-7. Open the scratch org:
+8. Open the scratch org:
 
 ```
 sfdx force:org:open
 ```
 
-8. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
+9. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
 
-9. Find the contact **Jane Lo** and drill into her detailed information.
+10. Find the contact **Jane Lo** and drill into her detailed information.
 
-10. Navigate to **Setup**, and select Edit Page
+11. Navigate to **Setup**, and select Edit Page
 
-11. Drag the timeline component into the page - found under custom components
+12. Drag the timeline component into the page - found under custom components
 
 <p align="center">
   <img alt="timeline app builder" src="images/appBuilderDemo.gif">
