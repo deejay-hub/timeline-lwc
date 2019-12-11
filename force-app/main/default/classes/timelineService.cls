@@ -53,7 +53,7 @@ public with sharing class timelineService {
 
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
-                    System.debug('@@fallback field ' + tooltipField);
+        
                     String selectStatement = '(SELECT Id, ' 
                                     + tcr.detailField + ', ' 
                                     + tcr.positionDateField + '';
@@ -68,11 +68,6 @@ public with sharing class timelineService {
                                     + tcr.fallbackTooltipField + '';
                     }
 
-                    //if ( tcr.detailField <> 'Name' && tcr.fallbackTooltipField <> 'Name') {
-                    //    selectStatement = selectStatement + ', '
-                    //                + 'Name' + '';
-                    //}
-                  
                     innerQuery = innerQuery + 
                                 selectStatement +
                                 + ' FROM ' + childObjects.get(eachObject) 
@@ -119,7 +114,6 @@ public with sharing class timelineService {
                     String detailField = String.valueOf(records.get(tr.detailField));
                     String detailFieldLabel = String.valueOf( describeSobjects[0].fields.getMap().get(tr.detailField).getDescribe().getLabel() );
                     String positionDate = String.valueOf(records.get(tr.positionDateField));
-                    //String nameLabel = String.valueOf( describeSobjects[0].fields.getMap().get(tr.nameLabel).getDescribe().getLabel() );
                     String type = '';
                     String fallbackTooltipValue = '';
                     String fallbackTooltipLabel = '';
@@ -135,7 +129,6 @@ public with sharing class timelineService {
                             fallbackTooltipValue = fallbackTooltipValue.substring(0,251) + '...';
                         }
                         fallbackTooltipLabel = String.valueOf( describeSobjects[0].fields.getMap().get(tr.fallbackTooltipField).getDescribe().getLabel() );
-                        System.debug('@@fallback label ' + fallbackTooltipLabel);
                     }
                 
                     String positionFieldLabel = '';
@@ -150,8 +143,6 @@ public with sharing class timelineService {
                     mapData.put('objectLabel', describeSobjects[0].getLabel());
                     mapData.put('fallbackTooltipField', fallbackTooltipLabel);
                     mapData.put('fallbackTooltipValue', fallbackTooltipValue);
-                    //mapData.put('nameLabel', nameLabel);
-                    //mapData.put('nameValue', fallbackTooltipValue);
                     mapData.put('type', type);
                     mapData.put('icon', tr.icon);
                     mapData.put('iconBackground', tr.iconBackground);
@@ -162,7 +153,6 @@ public with sharing class timelineService {
             return listOfTimelineData;
         }
         catch(Exception e) {
-            System.debug('@@timeline - Error - ' + e.getMessage());
             throw new AuraHandledException(e.getMessage());
         }
     }
