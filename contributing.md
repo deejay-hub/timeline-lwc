@@ -12,8 +12,8 @@ The best thing about the trailblazer community is contributions. Timeline needs 
 4.  Timeline can be used in any language and locale. If you can't translate/localise it, don't add it.
 
 #### Flow
-Fork the Project
-Create your Feature Branch (git checkout -b feature/NewFeature)
-Commit your Changes (git commit -m 'Add some NewFeature')
-Push to the Branch (git push origin feature/NewFeature)
-Open a Pull Request
+- Fork the Project
+- Create your Feature Branch (git checkout -b feature/NewFeature)
+- Commit your Changes (git commit -m 'Add some NewFeature')
+- Push to the Branch (git push origin feature/NewFeature)
+- Open a Pull Request
