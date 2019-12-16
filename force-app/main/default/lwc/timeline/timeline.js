@@ -269,24 +269,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
             timelineTimes.push(recordCopy.time);
         });   
 
-        //{week:1,hour:15,value:0,timestamp:"16-07-2014"}
-        //{week: 12/01/2018, count:7}
-        //LOGIC FOR ALL WEEKS BETWEEN 2 DATES
-        /*let weeks = [];
-        let startDate = moment(new Date(d3.min(timelineTimes))).isoWeekday(8);
-
-        if(startDate.date() === 8) {
-            startDate = startDate.isoWeekday(-6)
-        }
-
-        let endDate = moment().isoWeekday('Monday');
-
-        while(startDate.isBefore(endDate)) {
-            let startDateWeek = startDate.isoWeekday('Monday').format('DD-MM-YYYY');
-            startDate.add(7,'days');
-            weeks.push([startDateWeek]);
-        }*/
-
         timelineRecords.data = timelineResult;
         timelineRecords.minTime = d3.min(timelineTimes);
         timelineRecords.maxTime = d3.max(timelineTimes);
