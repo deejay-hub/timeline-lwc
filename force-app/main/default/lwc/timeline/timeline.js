@@ -221,8 +221,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         catch(error) {
                             //console.log('error ' + error);
                         }
-                      }, 250));
-
+                      }, 200));
 
                     me.isLoaded = true;
                 }
