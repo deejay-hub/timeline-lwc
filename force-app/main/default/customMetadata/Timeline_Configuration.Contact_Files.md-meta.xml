@@ -4,11 +4,15 @@
     <protected>true</protected>
     <values>
         <field>Active__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">Title</value>
+        <value xsi:type="xsd:string">ContentDocument.Title</value>
+    </values>
+    <values>
+        <field>Fallback_Tooltip_Field__c</field>
+        <value xsi:type="xsd:string">ContentDocument.FileExtension</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
@@ -20,7 +24,7 @@
     </values>
     <values>
         <field>Object_Name__c</field>
-        <value xsi:type="xsd:string">ContentDocument</value>
+        <value xsi:type="xsd:string">ContentDocumentLink</value>
     </values>
     <values>
         <field>Parent_Object__c</field>
@@ -28,10 +32,10 @@
     </values>
     <values>
         <field>Position_Date_Field__c</field>
-        <value xsi:type="xsd:string">CreatedDate</value>
+        <value xsi:type="xsd:string">SystemModstamp</value>
     </values>
     <values>
         <field>Type_Field__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">ContentDocument.FileType</value>
     </values>
 </CustomMetadata>
