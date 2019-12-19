@@ -219,7 +219,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                         }
                         catch(error) {
-                            //console.log('error ' + error);
+                            //stay silent
                         }
                       }, 200));
 
