@@ -375,6 +375,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             case 'Task-Email':
                                 iconColour = '#95AEC5';
                                 break;
+                            case 'ContentDocumentLink-SNOTE':
+                                iconColour = '#E6D478';
+                                break;
                             default:
                                 iconColour = d.iconBackground;
                                 break;
@@ -397,13 +400,16 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         let iconImage = '';
                         switch (d.objectName + '-' + d.type) {
                             case 'Task-Call':
-                                    iconImage = '/img/icon/t4v35/standard/log_a_call.svg';
+                                iconImage = '/img/icon/t4v35/standard/log_a_call.svg';
                                 break;
                             case 'Task-Email':
-                                    iconImage = '/img/icon/t4v35/standard/email.svg';
+                                iconImage = '/img/icon/t4v35/standard/email.svg';
+                                break;
+                            case 'ContentDocumentLink-SNOTE':
+                                iconImage = '/img/icon/t4v35/standard/note.svg';
                                 break;
                             default:
-                                    iconImage = d.icon;
+                                iconImage = d.icon;
                                 break;
                         }
                         return iconImage;
@@ -426,13 +432,39 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('y', 16)
                     .attr('font-size', 12)
                     .on('click', function(d) {
-                            me[NavigationMixin.Navigate]({
-                                type: 'standard__recordPage',
+
+                        switch (d.objectName) {
+                            case 'ContentDocumentLink':
+                                me[NavigationMixin.Navigate]({
+                                    type: 'standard__namedPage',
+                                    attributes: {
+                                        pageName: 'filePreview'
+                                    },
+                                    state : {
+                                        selectedRecordId:d.recordId
+                                    }
+                                });
+                                break
+                            default:
+                                me[NavigationMixin.Navigate]({
+                                    type: 'standard__recordPage',
+                                    attributes: {
+                                        recordId: d.recordId,
+                                        actionName: 'view'
+                                    }
+                                }); 
+                                break;
+                        }
+                            /*this[NavigationMixin.Navigate]({
+                                type: 'standard__namedPage',
                                 attributes: {
-                                    recordId: d.recordId,
-                                    actionName: 'view'
+                                    pageName: 'filePreview'
+                                },
+                                state : {
+                                    // assigning ContentDocumentId to show the preview of file
+                                    selectedRecordId:event.currentTarget.dataset.id
                                 }
-                            }); 
+                              })*/
                     })
                     .on('mouseover', function(d) {
                         me.mouseOverObjectAPIName = d.objectName;
