@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">Name</value>
+        <value xsi:type="xsd:string">Campaign.Name</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
