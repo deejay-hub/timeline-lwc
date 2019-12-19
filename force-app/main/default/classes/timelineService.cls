@@ -53,14 +53,20 @@ public with sharing class timelineService {
 
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
+                    String typeField = String.valueOf(tcr.type);
         
                     String selectStatement = '(SELECT Id, ' 
                                     + tcr.detailField + ', ' 
                                     + tcr.positionDateField + '';
 
-                    if ( objName == 'Task' ) {
+                    if ( (typeField != null && typeField != '') && (objName == 'Task' || objName == 'ContentDocumentLink')) {
                         selectStatement = selectStatement + ', '
                                     + tcr.type + '';
+                    }
+
+                    if ( objName == 'ContentDocumentLink' ) {
+                        selectStatement = selectStatement + ', '
+                                    + 'ContentDocumentId' + '';
                     }
 
                     if ( tooltipField != null && tooltipField != '' && tcr.detailField <> tcr.fallbackTooltipField) {
@@ -110,40 +116,28 @@ public with sharing class timelineService {
                 List<Schema.DescribeSObjectResult> describeSobjects = Schema.describeSObjects(new List<String>{String.valueOf(records.getSobjectType())});
 
                 if ( tr != null ) {
-                    String displayName = tr.objectName;
-                    String detailField = String.valueOf(records.get(tr.detailField));
-                    String detailFieldLabel = String.valueOf( describeSobjects[0].fields.getMap().get(tr.detailField).getDescribe().getLabel() );
-                    String positionDate = String.valueOf(records.get(tr.positionDateField));
-                    String type = '';
-                    String fallbackTooltipValue = '';
-                    String fallbackTooltipLabel = '';
+                    String myId = records.Id;
+                    //String positionDate = String.valueOf(records.get(tr.positionDateField));
+                    Map<String, String> detailValues = getFieldValues(tr.detailField, records);
+                    Map<String, String> positionValues = getFieldValues(tr.positionDateField, records);
+                    Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, records);
+                    Map<String, String> typeValues = getFieldValues(tr.type, records);
 
-                    if ( String.valueOf(tr.objectName) == 'Task' ) {
-                        type = String.valueOf(records.get(tr.type));
+                    if ( tr.objectName == 'ContentDocumentLink') {
+                        myId = String.valueOf(records.get('ContentDocumentId'));
                     }
 
-                    if ( String.valueOf(tr.fallbackTooltipField) != '' &&  String.valueOf(tr.fallbackTooltipField) != null  ) {
-                        
-                        fallbackTooltipValue = String.valueOf( records.get(tr.fallbackTooltipField) ) ;
-                        if (fallbackTooltipValue != null && fallbackTooltipValue.length() > 255) {
-                            fallbackTooltipValue = fallbackTooltipValue.substring(0,251) + '...';
-                        }
-                        fallbackTooltipLabel = String.valueOf( describeSobjects[0].fields.getMap().get(tr.fallbackTooltipField).getDescribe().getLabel() );
-                    }
-                
-                    String positionFieldLabel = '';
-
-                    mapData.put('objectId', records.Id);
+                    mapData.put('objectId', myId);
                     mapData.put('parentObject', parentObjectType);
-                    mapData.put('detailField', detailField);
-                    mapData.put('detailFieldLabel', detailFieldLabel);
+                    mapData.put('detailField', detailValues.get('value'));
+                    mapData.put('detailFieldLabel', detailValues.get('label'));
                     mapData.put('positionDateField', tr.positionDateField);
-                    mapData.put('positionDateValue', positionDate);
+                    mapData.put('positionDateValue', positionValues.get('value'));
                     mapData.put('objectName', tr.objectName);
                     mapData.put('objectLabel', describeSobjects[0].getLabel());
-                    mapData.put('fallbackTooltipField', fallbackTooltipLabel);
-                    mapData.put('fallbackTooltipValue', fallbackTooltipValue);
-                    mapData.put('type', type);
+                    mapData.put('fallbackTooltipField', fallbackValues.get('label'));
+                    mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
+                    mapData.put('type', typeValues.get('value'));
                     mapData.put('icon', tr.icon);
                     mapData.put('iconBackground', tr.iconBackground);
 
@@ -157,7 +151,7 @@ public with sharing class timelineService {
         }
     }
 
-    public static Map<String, String> getChildObjects(String Obj, Map<String, Schema.SObjectType> schemaMap) {
+    private static Map<String, String> getChildObjects(String Obj, Map<String, Schema.SObjectType> schemaMap) {
 		Map<String, String> childRelatedObjects = new Map<String, String>();
 		List<Schema.ChildRelationship> objectRelationships = schemaMap.get(Obj).getDescribe().getChildRelationships();
 		for (Schema.Childrelationship eachRelationship : objectRelationships) {
@@ -169,6 +163,49 @@ public with sharing class timelineService {
 		}
 		return childRelatedObjects;
 	}
+
+    private static Map<String, String> getFieldValues(String field, Sobject records) {
+
+        Map<String, String> fieldDetails = new Map<String, String>();
+
+        String fieldValue = '';
+        String fieldLabel = '';
+
+        List<Schema.DescribeSObjectResult> describeSobjects = Schema.describeSObjects(new List<String>{String.valueOf(records.getSobjectType())});
+
+        if ( field == null || field == '' ) {
+            fieldDetails.put('value' ,'');
+            fieldDetails.put('label', '');
+            return fieldDetails;
+        }
+
+        Boolean isDotNotationUsed = field.contains('.');
+
+        if ( isDotNotationUsed == true ) {
+            System.Debug('@@@ dot notation found ');
+            String splitObject = field.SubStringBefore('.');
+            String splitField = field.SubStringAfter('.');
+
+            fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
+
+            List<Schema.DescribeSObjectResult> describeParentSobjects = Schema.describeSObjects(new List<String>{String.valueOf(splitObject)});
+
+            fieldLabel = String.valueOf( describeParentSobjects[0].fields.getMap().get(splitField).getDescribe().getLabel() );
+        }
+        else {
+            fieldValue = String.valueOf(records.get(field));
+            fieldLabel = String.valueOf( describeSobjects[0].fields.getMap().get(field).getDescribe().getLabel() );
+        }
+
+        if (fieldValue != null && fieldValue.length() > 255) {
+            fieldValue = fieldValue.substring(0,251) + '...';
+        }
+
+        fieldDetails.put('value', fieldValue);
+        fieldDetails.put('label', fieldLabel);
+
+        return fieldDetails;
+    }
 
     private class TimelineRecord {
         @AuraEnabled public Boolean active;
