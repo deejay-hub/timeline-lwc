@@ -182,7 +182,6 @@ public with sharing class timelineService {
         Boolean isDotNotationUsed = field.contains('.');
 
         if ( isDotNotationUsed == true ) {
-            System.Debug('@@@ dot notation found ');
             String splitObject = field.SubStringBefore('.');
             String splitField = field.SubStringAfter('.');
 
