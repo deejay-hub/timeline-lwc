@@ -16,11 +16,11 @@
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
-        <value xsi:type="xsd:string">#e6d478</value>
+        <value xsi:type="xsd:string">#b19f7e</value>
     </values>
     <values>
         <field>Icon__c</field>
-        <value xsi:type="xsd:string">/img/icon/t4v35/standard/note.svg</value>
+        <value xsi:type="xsd:string">/img/icon/t4v35/standard/document.svg</value>
     </values>
     <values>
         <field>Object_Name__c</field>
