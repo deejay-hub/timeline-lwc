@@ -17,6 +17,9 @@ import UNHANDLED from '@salesforce/label/c.Timeline_Error_Unhandled';
 
 import DAYS from '@salesforce/label/c.Timeline_Label_Days';
 import SHOWING from '@salesforce/label/c.Timeline_Label_Showing';
+import ITEMS from '@salesforce/label/c.Timeline_Label_Items';
+import FILTERS from '@salesforce/label/c.Timeline_Label_Filters';
+import TYPE_LEGEND from '@salesforce/label/c.Timeline_Label_Filter_Type_Legend';
 
 
 export default class timeline extends NavigationMixin(LightningElement) {
@@ -43,6 +46,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @track localisedZoomEndDate;                                    //End date of the current zoom
     
     @track totalTimelineRecords;                                    //Total number of records returned
+    @track totalZoomedRecords;                                      //Total records in zoom
    
     @track noData = false;                                          //Boolean when no data is returned
     @track isLoaded = false;                                        //Boolean when timeline data is loaded
@@ -56,6 +60,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @track mouseOverFallbackField;
     @track mouseOverFallbackValue;
 
+    @track filterValues = [];
+    @track isFilter;
+
     @track timelineVisibility = 'timeline-container'                //Toggles the class to show and hide the timeline
 
     @track illustrationHeader;                                      //Header to display when an information box displays
@@ -65,6 +72,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
     label = {
         DAYS,
         SHOWING,
+        ITEMS,
+        FILTERS,
+        TYPE_LEGEND,
     };
 
     error = {
@@ -272,6 +282,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineRecords.data = timelineResult;
         timelineRecords.minTime = d3.min(timelineTimes);
         timelineRecords.maxTime = d3.max(timelineTimes);
+        timelineRecords.objectFilters = [...new Set(timelineRecords.data.map(item => item.objectLabel))];
        
         this.timelineStart = moment().subtract(this.earliestRange, 'years').format('DD MMM YYYY');
         this.timelineEnd = moment().add(this.latestRange, 'years').format('DD MMM YYYY');
@@ -328,6 +339,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 5 + 70));
                             return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
                           }).filter(timelineCanvas.filter);
+
+            me.totalZoomedRecords = data.length;
 
             data.sort(me.sortByValue('time'));
 
@@ -455,16 +468,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 }); 
                                 break;
                         }
-                            /*this[NavigationMixin.Navigate]({
-                                type: 'standard__namedPage',
-                                attributes: {
-                                    pageName: 'filePreview'
-                                },
-                                state : {
-                                    // assigning ContentDocumentId to show the preview of file
-                                    selectedRecordId:event.currentTarget.dataset.id
-                                }
-                              })*/
                     })
                     .on('mouseover', function(d) {
                         me.mouseOverObjectAPIName = d.objectName;
@@ -834,4 +837,53 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         return false;        
     }
+
+    toggleFilter() {
+
+        const filterPopover = this.template.querySelector("div.timeline-filter");
+        const filterClasses = String(filterPopover.classList);
+
+        if ( filterClasses.includes('slds-is-open') ) {
+            filterPopover.classList.remove('slds-is-open');
+            this.isFilter = false;
+        }
+        else {
+            filterPopover.classList.add('slds-is-open');
+            this.isFilter = true;
+        }
+    }
+
+    get filterOptions() {
+        const timelineData = this._timelineData;
+        let objectFilter = [];
+       
+        /*return [
+            { label: 'All types', value: 'All types' },
+            { label: 'Case', value: 'Cases' },
+            { label: 'Opportunity', value: 'Opportunity' },
+            { label: 'Task', value: 'Task' },
+            { label: 'Event', value: 'Event' },
+            { label: 'Campaign', value: 'Campaign' },
+        ];*/
+       
+        for (const item of timelineData.objectFilters){
+            let tempFilter = [];
+            console.log(item);
+            tempFilter.label = item;
+            tempFilter.value = item;
+            objectFilter.push(tempFilter);
+        }
+
+        return objectFilter;
+    }
+
+    get selectedFilterValues() {
+        return this.filterValues.join(', ');
+    }
+
+    handleFilterChange(e) {
+
+        this.filterValues = e.detail.value;
+    }
+
 }

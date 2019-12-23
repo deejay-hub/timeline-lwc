@@ -48,6 +48,12 @@
     display: none;
 }
 
+.timeline-filter {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
 .timeline-canvas-icon-wrap {
     fill: #FFFFFF;
     stroke: #D5DBE4;

@@ -16,7 +16,7 @@
                 <div class="slds-form--inline">  
                     <div class="slds-form-element">
                         <template if:true={isLoaded}>
-                            <div class="timeline-summary">{label.SHOWING} {localisedZoomStartDate} - {localisedZoomEndDate} • {daysToShow} {label.DAYS}</div>
+                            <div class="timeline-summary">{label.SHOWING} {localisedZoomStartDate} - {localisedZoomEndDate} • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}</div>
                         </template>
                         <template if:false={isLoaded}>
                             <div class="stencil-label"></div>
@@ -24,6 +24,7 @@
                     </div>
                     <div class="slds-form-element">
                         <lightning-button-icon class="forceRefreshButton rotate" icon-name="utility:refresh"  alternative-text="Refresh" onclick={processTimeline}></lightning-button-icon>
+                        <lightning-button-icon-stateful icon-name="utility:filterList" selected={isFilter} onclick={toggleFilter} alternative-text="Refresh"></lightning-button-icon-stateful>
                     </div>
                 </div>
             </div>
@@ -40,6 +41,32 @@
                     <div class="timeline-map-axis" id="timeline-map-axis"  lwc:dom="manual"></div>
                 </div>
             </div>
+
+            <div class="timeline-filter slds-float_right slds-panel slds-size_small slds-panel_docked slds-panel_docked-right" aria-hidden="false">
+                <div class="slds-panel__header">
+                  <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{label.FILTERS}</h2>
+                    <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-small slds-float_right slds-panel__close" title="Close dialog">
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="xx-small" onclick={toggleFilter}></lightning-icon>
+                    </button>
+                 
+                </div>
+                <div class="slds-panel__body">
+                    
+                    <legend class="slds-form-element__label slds-text-title--caps">{label.TYPE_LEGEND}</legend>
+                    
+                    <template if:true={isFilter}>
+                        <lightning-checkbox-group name="Types Shown"
+                                                    label=""
+                                                    options={filterOptions}
+                                                    value={filterValues}
+                                                    onchange={handleFilterChange}
+                                                    >
+                        </lightning-checkbox-group>
+                    </template>
+
+                </div>
+            </div>
+            
         </div>
         <!--end timeline body-->
 
@@ -50,6 +77,8 @@
             </template>
         </div>
         <!--end spinner-->
+
+        
 
     </div>
 
@@ -122,4 +151,6 @@
     </div>
     <!--end tooltips-->
 
+    
+      
 </template>

@@ -7,8 +7,20 @@
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
+        <field>Allow_Drilldown__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
         <field>Detail_Field__c</field>
         <value xsi:type="xsd:string">Subject</value>
+    </values>
+    <values>
+        <field>Fallback_Tooltip_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Filter_Display_Name__c</field>
+        <value xsi:type="xsd:string">Cases</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>

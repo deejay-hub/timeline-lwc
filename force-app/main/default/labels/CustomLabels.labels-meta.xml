@@ -49,6 +49,30 @@
         <value>day(s)</value>
     </labels>
     <labels>
+        <fullName>Timeline_Label_Filter_Type_Legend</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Filter_Type_Legend</shortDescription>
+        <value>Types to Show</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Label_Filters</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Filters</shortDescription>
+        <value>Filters</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Label_Items</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Items</shortDescription>
+        <value>item(s)</value>
+    </labels>
+    <labels>
         <fullName>Timeline_Label_Showing</fullName>
         <categories>Timeline</categories>
         <language>en_US</language>
