@@ -1,10 +1,11 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
 
 import getTimelineData from '@salesforce/apex/timelineService.getTimelineRecords';
+import getTimelineTypes from '@salesforce/apex/timelineService.getTimelineTypes';
 
 import d3JS from '@salesforce/resourceUrl/d3minified';
 import momentJS from '@salesforce/resourceUrl/momentminified';  
@@ -61,7 +62,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @track mouseOverFallbackValue;
 
     @track filterValues = [];
+    @track startingFilterValues = [];
+    @track objectFilter = [];
     @track isFilter;
+    @track isFilterUpdated;
 
     @track timelineVisibility = 'timeline-container'                //Toggles the class to show and hide the timeline
 
@@ -106,6 +110,29 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3LocalisedShortDateFormat = null;
     _d3Rendered = false;
    
+    @wire(getTimelineTypes, { parentObjectId: '$recordId' } )
+    wiredResult(result) {
+        if (result.data) {
+            const timelineTs = result.data;
+            
+            for(let key in timelineTs) {
+
+                if (timelineTs.hasOwnProperty(key)) {
+                    this.filterValues.push(key);
+
+                    let tempFilter = [];
+                    tempFilter.label = timelineTs[key];
+                    tempFilter.value = key;
+                    this.objectFilter.push(tempFilter);
+
+                    this.startingFilterValues.push(key);
+                }
+            }
+            
+
+        }
+    }
+
     disconnectedCallback() {
         window.removeEventListener('resize', this.debounce);
     }
@@ -282,10 +309,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineRecords.data = timelineResult;
         timelineRecords.minTime = d3.min(timelineTimes);
         timelineRecords.maxTime = d3.max(timelineTimes);
-        timelineRecords.objectFilters = [...new Set(timelineRecords.data.map(item => item.objectLabel))];
        
-        this.timelineStart = moment().subtract(this.earliestRange, 'years').format('DD MMM YYYY');
-        this.timelineEnd = moment().add(this.latestRange, 'years').format('DD MMM YYYY');
+        const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
+  
+        this.timelineStart = dateTimeFormat.format(moment().subtract(this.earliestRange, 'years'));
+        this.timelineEnd = dateTimeFormat.format(moment().add(this.latestRange, 'years'));
 
         timelineRecords.requestRange = [moment().subtract(this.earliestRange, 'years').toDate(), moment().add(this.latestRange, 'years').toDate()];
         
@@ -318,10 +346,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineCanvas.height = timelineHeight;
        
         timelineCanvas.filter = function(d) {
-            //TODO - Filter options go here - we just need the list of objects to filter out
-            if (d.objectName === 'TODO_FILTER') { return false; }
-              
-            return true;
+
+            //console.log('@ ' + me.filterValues.includes(d.objectName));
+           // if ( me.selectedFilterValues.includes(d.objectName)) {
+            if ( me.filterValues.includes(d.objectName)) {
+                return true;
+            }
+        
+            return false;
         };
 
         timelineCanvas.redraw = function(domain) {
@@ -602,10 +634,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
         };
 
         timelineMap.filter = function(d) {
-           //TODO - Filter options go here - we just need the list of objects to filter out
-           if (d.objectName === 'TODO_FILTER') { return false; }
-              
-           return true;
+            if ( me.filterValues.includes(d.objectName)) {
+                return true;
+            }
+    
+            return false;
         };
 
         timelineMap.width = timelineMapDIV.offsetWidth;
@@ -819,7 +852,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
         d3DateFormat = d3DateFormat.replace(/y/gi, "%Y");
 
         return d3DateFormat;
-
     }
 
     get showIllustration() {
@@ -854,27 +886,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     get filterOptions() {
-        const timelineData = this._timelineData;
-        let objectFilter = [];
-       
-        /*return [
-            { label: 'All types', value: 'All types' },
-            { label: 'Case', value: 'Cases' },
-            { label: 'Opportunity', value: 'Opportunity' },
-            { label: 'Task', value: 'Task' },
-            { label: 'Event', value: 'Event' },
-            { label: 'Campaign', value: 'Campaign' },
-        ];*/
-       
-        for (const item of timelineData.objectFilters){
-            let tempFilter = [];
-            console.log(item);
-            tempFilter.label = item;
-            tempFilter.value = item;
-            objectFilter.push(tempFilter);
-        }
-
-        return objectFilter;
+        return this.objectFilter;
     }
 
     get selectedFilterValues() {
@@ -884,6 +896,34 @@ export default class timeline extends NavigationMixin(LightningElement) {
     handleFilterChange(e) {
 
         this.filterValues = e.detail.value;
+        this.isFilterUpdated = false;
+        if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
+            this.isFilterUpdated = true;
+        }
+
+    }
+
+    applyFilter() {
+        this.refreshTimeline();
+        this.isFilterUpdated = false;
+        this.startingFilterValues = this.filterValues;
+        this.toggleFilter();
+    }
+
+    cancelFilter() {
+
+        this.filterValues = this.startingFilterValues;
+        this.isFilterUpdated = false;
+        this.toggleFilter();
+
+    }
+
+    refreshTimeline() {
+
+        this._d3timelineMapSVG.selectAll('[class~=timeline-map-record]').remove();
+        this._d3timelineMap.redraw();
+        this._d3brush.redraw();
+
     }
 
 }

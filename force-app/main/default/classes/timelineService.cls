@@ -1,5 +1,35 @@
 public with sharing class timelineService {
    
+    @AuraEnabled(cacheable=true)
+    public static Map<String, String> getTimelineTypes( String parentObjectId ) {
+
+        try {
+            String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
+
+            String queryTimelineConfiguration = 'SELECT Detail_Field__c, '
+                                            + 'Active__c, '
+                                            + 'Object_Name__c, '
+                                            + 'Filter_Display_Name__c '
+                                        + 'FROM Timeline_Configuration__mdt '
+                                        + 'WHERE Active__c = true AND '
+                                        + 'Parent_Object__c =:parentObjectType';
+
+            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration );
+
+            Map<String, String> mapOfTimelineTypes = new Map<String, String>();
+
+            for ( Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations ) {
+                mapOfTimelineTypes.put(timelineType.Object_Name__c, timelineType.Filter_Display_Name__c);
+            }
+
+            return mapOfTimelineTypes;
+
+        }
+        catch(Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
     @AuraEnabled
     public static List<Map<String, String>> getTimelineRecords( String parentObjectId, String earliestRange, String latestRange ) {
         
