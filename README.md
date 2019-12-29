@@ -190,6 +190,8 @@ All fields have their translated labels returned. Any custom labels can be trans
 
 Right-to-left languages can be supported but there are formatting issues currently that need to be fixed.
 
+Please note that translated values are not currently included - you need to enable transalation workbench and add them yourself. If you would like to provide translated values for a language I would happily incorporate them for everyones benefit.
+
 #### Does it support Communities?
 Probably. We haven't added support for communities yet. We expect it to work though.
 
