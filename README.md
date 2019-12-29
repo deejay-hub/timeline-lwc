@@ -161,7 +161,9 @@ Timeline_Error_NoDataHeader	 	 | No data to display
 Timeline_Error_NoDataSubHeader   	 | Related records show up here on an interactive timeline. Check your filter or create a record. 
 Timeline_Error_Unhandled	 	 | Houston...we've had a problem 
 Timeline_Label_Days		 	 | day(s) 
+Timeline_Label_Items			 | item(s)
 Timeline_Label_Showing		  	 | Showing:
+Timeline_Label_Filter			 | Filters
 
 #### Configuring Child Records to Plot
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose 
@@ -176,6 +178,8 @@ Icon__c		             		 | A relative url to the image to use for this record
 Icon_Background_Colour__c		 | The background colour to use for the above image (rgb and hex supported)
 Type_Field__c		 		 | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name__c is Task
 Fallback_Tooltip_Field__c		 | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip.
+Filter_Display_Name__c		 	 | The label to use in the filter panel for this object.
+Allow_Drilldown__c		 	 | Should the object support drilling into the individual record. If N then a toast error will appear when a user clicks on that record type
 
 ## FAQs
 
@@ -187,11 +191,13 @@ All fields have their translated labels returned. Any custom labels can be trans
 Right-to-left languages can be supported but there are formatting issues currently that need to be fixed.
 
 #### Does it support Communities?
+Probably. We haven't added support for communities yet. We expect it to work though.
 
 #### Does it support Mobile?
 No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
 
 #### Does it support Person Accounts?
+Untested.
 
 #### Does it support Files / Notes / Attachments?
 Files and Notes (sometimes referred to as enhanced Notes) are supported. Classic Notes and Attachments are not supported.
@@ -203,7 +209,6 @@ No. Currently the SOQL is limited to those objects that can be included in a par
 No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates typically seen. 
 
 ## Contributing
-
 Contributions are what make the trailblazer community such an amazing place. I regard this component as a way to inspire and learn from others. Any contributions you make are **greatly appreciated**.
 
 See [contributing.md](/contributing.md) for timeline principles.
