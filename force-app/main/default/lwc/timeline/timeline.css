@@ -273,6 +273,21 @@
     .axis-label-LARGE .tick:nth-child(2n) text {
         visibility: hidden;
     }
+
+    .stencil-label {
+        background-color: #e4e0e0;
+        height: 0.4rem;
+        border-radius: 2rem;
+        width: 10rem;
+    }
+    
+    .stencil-value {
+        background-color: #c5c2c2;
+        height: 0.4rem;
+        border-radius: 2rem;
+        margin-top: 0.5rem;
+        width: 10rem;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
