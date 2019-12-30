@@ -16,8 +16,10 @@
                 <div class="slds-form--inline">  
                     <div class="slds-form-element">
                         <template if:true={isLoaded}>
-                            <div class="timeline-summary">{label.SHOWING} {localisedZoomStartDate} - {localisedZoomEndDate} • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}
-                               
+                            <div class="timeline-summary"> 
+                                <span class="timeline-summary-verbose">{label.SHOWING} </span>
+                                <span>{localisedZoomStartDate} - {localisedZoomEndDate}</span>
+                                <span class="timeline-summary-verbose"> • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}</span>
                             </div>
                         </template>
                         <template if:false={isLoaded}>
@@ -49,11 +51,8 @@
             <div class="timeline-filter slds-float_right slds-panel slds-size_small slds-panel_docked slds-panel_docked-right" aria-hidden="false">
 
                 <div class="slds-panel__header" style="height: 50px;">
-                
-                    <template if:false={isFilterUpdated}>
-                    
+                    <template if:false={isFilterUpdated}>                  
                         <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{label.FILTERS}</h2>
-                    
                         <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-small slds-float_right slds-panel__close" title="Close dialog" onclick={toggleFilter}>
                             <lightning-icon icon-name="utility:close" alternative-text="Close" size="xx-small" ></lightning-icon>
                         </button>
@@ -68,9 +67,7 @@
                                 <lightning-button variant="brand" label="Apply" title="Apply" onclick={applyFilter} ></lightning-button>
                             </div>
                         </div>
-
                     </template>
-
                 </div>
 
                 <div class="slds-panel__body">
@@ -106,9 +103,6 @@
             </template>
         </div>
         <!--end spinner-->
-
-        
-
     </div>
 
     <!--illustration component when there is an error-->
@@ -173,13 +167,10 @@
                         </div>
                     </div>
                 </template>
-    
 
         </template>
         </div>
     </div>
     <!--end tooltips-->
 
-    
-      
 </template>

@@ -288,6 +288,10 @@
         margin-top: 0.5rem;
         width: 10rem;
     }
+
+    .timeline-summary-verbose {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
