@@ -128,8 +128,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     this.startingFilterValues.push(key);
                 }
             }
-            
-
         }
     }
 
@@ -177,6 +175,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
         //The timeline container for errors is hidden by default so might not always be valid. But if it's been shown change the height
         if ( timelineIllustrationContainer !== undefined &&  timelineIllustrationContainer !== null ) {
             timelineIllustrationContainer.setAttribute('style', 'height:' + (this._timelineHeight + 175) + 'px')
+        }
+
+        let timelineSummary = this.template.querySelectorAll("span.timeline-summary-verbose");
+
+        if ( timelineSummary !== undefined &&  timelineSummary !== null ) {
+            for(let i = 0; i < timelineSummary.length; i++){
+                timelineSummary[i].classList.add("timeline-summary-verbose-" + this.flexipageRegionWidth);
+            }
         }
     }
 
@@ -347,8 +353,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
        
         timelineCanvas.filter = function(d) {
 
-            //console.log('@ ' + me.filterValues.includes(d.objectName));
-           // if ( me.selectedFilterValues.includes(d.objectName)) {
             if ( me.filterValues.includes(d.objectName)) {
                 return true;
             }
@@ -900,7 +904,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
         if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
             this.isFilterUpdated = true;
         }
-
     }
 
     applyFilter() {
@@ -925,5 +928,4 @@ export default class timeline extends NavigationMixin(LightningElement) {
         this._d3brush.redraw();
 
     }
-
 }
