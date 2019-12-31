@@ -45,7 +45,7 @@ A complete custom experience component. Created to allow users to view related r
 - **Multi Language Support.** All labels and error messages as translatable custom labels.
 - **Locale Support for Dates.** Date formats change based on your Salesforce locale setting.
 - **3rd Party JS.** Demonstrates 3rd Party JS and Apex imperative callouts to populate data in an interactive timeline.
-- **Responsive interface.** Uses flexiPageInfo to determine where in the page it is located.
+- **Responsive interface.** Uses flexipageRegionWidth to determine where in the page it is located.
 - **Minimises server roundtrips.** Uses Lightning Data Service for tooltips and falls back to queried data when needed.
 
 > This sample application is designed to run on Salesforce Platform. If you want to experience Lightning Web Components on any platform, please visit https://lwc.dev, and try out the Lightning Web Components sample application [LWC Recipes OSS](https://github.com/trailheadapps/lwc-recipes-oss).
