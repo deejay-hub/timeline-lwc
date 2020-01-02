@@ -19,10 +19,6 @@
         <value xsi:type="xsd:string">Description</value>
     </values>
     <values>
-        <field>Filter_Display_Name__c</field>
-        <value xsi:type="xsd:string">Tasks</value>
-    </values>
-    <values>
         <field>Icon_Background_Colour__c</field>
         <value xsi:type="xsd:string">#4ac076</value>
     </values>
