@@ -21,6 +21,8 @@ import SHOWING from '@salesforce/label/c.Timeline_Label_Showing';
 import ITEMS from '@salesforce/label/c.Timeline_Label_Items';
 import FILTERS from '@salesforce/label/c.Timeline_Label_Filters';
 import TYPE_LEGEND from '@salesforce/label/c.Timeline_Label_Filter_Type_Legend';
+import DATE_RANGE_LEGEND from '@salesforce/label/c.Timeline_Label_Date_Range_Legend';
+import FILE_TYPE from '@salesforce/label/c.Timeline_Label_Files';
 
 
 export default class timeline extends NavigationMixin(LightningElement) {
@@ -79,6 +81,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
         ITEMS,
         FILTERS,
         TYPE_LEGEND,
+        DATE_RANGE_LEGEND,
+        FILE_TYPE,
     };
 
     error = {
@@ -121,10 +125,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     this.filterValues.push(key);
 
                     let tempFilter = [];
-                    tempFilter.label = timelineTs[key];
-                    tempFilter.value = key;
-                    this.objectFilter.push(tempFilter);
 
+                    if ( key === 'ContentDocumentLink' ) {
+                        tempFilter.label = this.label.FILE_TYPE;
+                    }
+                    else {
+                        tempFilter.label = timelineTs[key];
+                    }
+
+                    tempFilter.value = key;
+
+                    this.objectFilter.push(tempFilter);
                     this.startingFilterValues.push(key);
                 }
             }

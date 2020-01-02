@@ -6,10 +6,8 @@ public with sharing class timelineService {
         try {
             String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
 
-            String queryTimelineConfiguration = 'SELECT Detail_Field__c, '
-                                            + 'Active__c, '
-                                            + 'Object_Name__c, '
-                                            + 'Filter_Display_Name__c '
+            String queryTimelineConfiguration = 'SELECT Active__c, '
+                                            + 'Object_Name__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
                                         + 'Parent_Object__c =:parentObjectType';
@@ -26,7 +24,6 @@ public with sharing class timelineService {
             }
 
             return mapOfTimelineTypes;
-
         }
         catch(Exception e) {
             throw new AuraHandledException(e.getMessage());

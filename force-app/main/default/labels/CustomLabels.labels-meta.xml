@@ -41,6 +41,14 @@
         <value>Houston..we&#39;ve had a problem</value>
     </labels>
     <labels>
+        <fullName>Timeline_Label_Date_Range_Legend</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Date_Range_Legend</shortDescription>
+        <value>Date Range</value>
+    </labels>
+    <labels>
         <fullName>Timeline_Label_Days</fullName>
         <categories>Timeline</categories>
         <language>en_US</language>
