@@ -19,10 +19,6 @@
         <value xsi:type="xsd:string">Description</value>
     </values>
     <values>
-        <field>Filter_Display_Name__c</field>
-        <value xsi:type="xsd:string">Meetings &amp; Events</value>
-    </values>
-    <values>
         <field>Icon_Background_Colour__c</field>
         <value xsi:type="xsd:string">#eb7092</value>
     </values>
