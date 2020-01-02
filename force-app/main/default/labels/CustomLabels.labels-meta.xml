@@ -88,4 +88,12 @@
         <shortDescription>Timeline_Label_Showing</shortDescription>
         <value>Showing:</value>
     </labels>
+    <labels>
+        <fullName>Timeline_Label_Files</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Files</shortDescription>
+        <value>Files & Notes</value>
+    </labels>
 </CustomLabels>
