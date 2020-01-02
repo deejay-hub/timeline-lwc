@@ -163,7 +163,11 @@ Timeline_Error_Unhandled	 	 | Houston...we've had a problem
 Timeline_Label_Days		 	 | day(s) 
 Timeline_Label_Items			 | item(s)
 Timeline_Label_Showing		  	 | Showing:
-Timeline_Label_Filter			 | Filters
+Timeline_Label_Filters			 | Filters (Used in filter panel)
+Timeline_Label_Filter_Type_Legend	 | Types to Show (Used in Filter panel)
+Timeline_Label_Files			 | Files & Notes (used in Filter when sObject is ContentDocumentLink)
+Timeline_Label_Date_Range_Legend	 | Date Range (Used in Filter panel)
+
 
 #### Configuring Child Records to Plot
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose 
@@ -178,8 +182,7 @@ Icon__c		             		 | A relative url to the image to use for this record
 Icon_Background_Colour__c		 | The background colour to use for the above image (rgb and hex supported)
 Type_Field__c		 		 | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name__c is Task
 Fallback_Tooltip_Field__c		 | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip.
-Filter_Display_Name__c		 	 | The label to use in the filter panel for this object.
-Allow_Drilldown__c		 	 | Should the object support drilling into the individual record. If N then a toast error will appear when a user clicks on that record type
+Allow_Drilldown__c		 	 | Should the object support drilling into the individual record. If false then a toast error will appear when a user clicks on that record type
 
 ## FAQs
 
