@@ -19,10 +19,6 @@
         <value xsi:type="xsd:string">ContentDocument.FileExtension</value>
     </values>
     <values>
-        <field>Filter_Display_Name__c</field>
-        <value xsi:type="xsd:string">Files &amp; Notes</value>
-    </values>
-    <values>
         <field>Icon_Background_Colour__c</field>
         <value xsi:type="xsd:string">#b19f7e</value>
     </values>
