@@ -19,7 +19,10 @@ public with sharing class timelineService {
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
             for ( Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations ) {
-                mapOfTimelineTypes.put(timelineType.Object_Name__c, timelineType.Filter_Display_Name__c);
+                
+                List<Schema.DescribeSObjectResult> describeSobjects = Schema.describeSObjects(new List<String>{String.valueOf(timelineType.Object_Name__c)});
+                String objectLabel = describeSobjects[0].getLabelPlural();
+                mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
             }
 
             return mapOfTimelineTypes;
