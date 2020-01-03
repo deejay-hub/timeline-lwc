@@ -717,17 +717,28 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const timelineMapLayoutA = timelineMapSVG.append("g");
         const timelineMapLayoutB = timelineMapLayoutA.append("g");
         let defaultZoomDate;
+        let startBrush;
+        let endBrush;
 
         switch (this.zoomTo) {
-            case 'Current Date':
-                defaultZoomDate = new Date().getTime();
-                break;
+            //case 'Current Date':
+             //   defaultZoomDate = new Date().getTime();
+             //   break;
             case 'Last Activity':
                 defaultZoomDate = moment(timelineData.maxTime).toDate();
                 break;
             default:
                 defaultZoomDate = new Date().getTime();
                 break;
+        }
+
+        if ( me.zoomStartDate !== undefined) {
+            startBrush = moment(me.zoomStartDate, "DD MMM YYYY").format("DD MMM YYYY");
+            endBrush = moment(me.zoomEndDate, "DD MMM YYYY").format("DD MMM YYYY");
+        }
+        else {
+            startBrush = moment(defaultZoomDate).subtract( (me.daysToShow/2), 'days' ).toDate();
+            endBrush = moment(defaultZoomDate).add( (me.daysToShow/2), 'days' ).toDate();
         }
   
         timelineMapLayoutB.append("g")
@@ -754,7 +765,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
               .attr("d", 'M0,0 L75,0 L75,176 C75,184.284271 68.2842712,191 60,191 L15,191 C6.71572875,191 1.01453063e-15,184.284271 0,176 L0,0 L0,0 Z');
         xBrush
             .call(brush)
-            .call(brush.move, [moment(defaultZoomDate).subtract( (me.daysToShow/2), 'days' ).toDate(), moment(defaultZoomDate).add( (me.daysToShow/2), 'days' ).toDate()].map(timelineMap.x))
+            .call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x))
+            //.call(brush.move, [moment(defaultZoomDate).subtract( (me.daysToShow/2), 'days' ).toDate(), moment(defaultZoomDate).add( (me.daysToShow/2), 'days' ).toDate()].map(timelineMap.x))
  
         brush.redraw = function() {
 
@@ -763,8 +775,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .on('brush', brushed)
                 .on('start', brushStart)
 
-            const startBrush = moment(me.zoomStartDate, "DD MMM YYYY").format("DD MMM YYYY");
-            const endBrush = moment(me.zoomEndDate, "DD MMM YYYY").format("DD MMM YYYY");
+            startBrush = moment(me.zoomStartDate, "DD MMM YYYY").format("DD MMM YYYY");
+            endBrush = moment(me.zoomEndDate, "DD MMM YYYY").format("DD MMM YYYY");
 
             xBrush
                 .call(brush)
