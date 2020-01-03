@@ -126,13 +126,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                     let tempFilter = [];
 
-                    if ( key === 'ContentDocumentLink' ) {
-                        tempFilter.label = this.label.FILE_TYPE;
-                    }
-                    else {
-                        tempFilter.label = timelineTs[key];
-                    }
-
+                    tempFilter.label = timelineTs[key];
                     tempFilter.value = key;
 
                     this.objectFilter.push(tempFilter);
