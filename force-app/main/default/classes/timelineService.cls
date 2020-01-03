@@ -7,10 +7,12 @@ public with sharing class timelineService {
             String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
 
             String queryTimelineConfiguration = 'SELECT Active__c, '
-                                            + 'Object_Name__c '
+                                            + 'Object_Name__c, '
+                                            + 'Sequence__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
-                                        + 'Parent_Object__c =:parentObjectType';
+                                        + 'Parent_Object__c =:parentObjectType '
+                                        + 'ORDER BY Sequence__c ASC ';
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration );
 
@@ -20,6 +22,11 @@ public with sharing class timelineService {
                 
                 List<Schema.DescribeSObjectResult> describeSobjects = Schema.describeSObjects(new List<String>{String.valueOf(timelineType.Object_Name__c)});
                 String objectLabel = describeSobjects[0].getLabelPlural();
+
+                if ( timelineType.Object_Name__c == 'ContentDocumentLink') {
+                    objectLabel = System.Label.Timeline_Label_Files;
+                }
+
                 mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
             }
 
