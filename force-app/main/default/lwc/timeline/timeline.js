@@ -763,8 +763,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .on('brush', brushed)
                 .on('start', brushStart)
 
-            const startBrush = moment(me.zoomStartDate).format("DD MMM YYYY");
-            const endBrush = moment(me.zoomEndDate).format("DD MMM YYYY");
+            const startBrush = moment(me.zoomStartDate, "DD MMM YYYY").format("DD MMM YYYY");
+            const endBrush = moment(me.zoomEndDate, "DD MMM YYYY").format("DD MMM YYYY");
 
             xBrush
                 .call(brush)
