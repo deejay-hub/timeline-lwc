@@ -39,6 +39,10 @@
         <value xsi:type="xsd:string">CreatedDate</value>
     </values>
     <values>
+        <field>Sequence__c</field>
+        <value xsi:type="xsd:double">50.0</value>
+    </values>
+    <values>
         <field>Type_Field__c</field>
         <value xsi:nil="true"/>
     </values>
