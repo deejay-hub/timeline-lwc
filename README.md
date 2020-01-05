@@ -28,8 +28,8 @@
 		src="https://img.shields.io/github/downloads/deejay-hub/timeline-lwc/total?style=flat-square">
   	</a>
   	<a>
-    		<img alt="downloads on github"
-		src="https://img.shields.io/bitbucket/issues/deejay/timeline-lwc?label=open%20issues&style=flat-square">
+    		<img alt="issues"
+		src="https://img.shields.io/github/issues-raw/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
 </h3>
 
