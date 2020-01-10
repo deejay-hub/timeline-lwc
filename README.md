@@ -24,8 +24,8 @@
 		src="https://img.shields.io/github/stars/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
   	<a>
-    		<img alt="downloads on github"
-		src="https://img.shields.io/github/downloads/deejay-hub/timeline-lwc/total?style=flat-square">
+    		<img alt="watchers"
+		src="https://img.shields.io/github/watchers/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
   	<a>
     		<img alt="issues"
