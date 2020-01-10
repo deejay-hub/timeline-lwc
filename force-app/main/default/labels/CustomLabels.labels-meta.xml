@@ -41,6 +41,22 @@
         <value>Houston..we&#39;ve had a problem</value>
     </labels>
     <labels>
+        <fullName>Timeline_Label_Apply</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Apply</shortDescription>
+        <value>Apply</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Label_Cancel</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
         <fullName>Timeline_Label_Date_Range_Legend</fullName>
         <categories>Timeline</categories>
         <language>en_US</language>
@@ -55,6 +71,14 @@
         <protected>true</protected>
         <shortDescription>Timeline_Label_Days</shortDescription>
         <value>day(s)</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Label_Files</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Files</shortDescription>
+        <value>Files | Notes</value>
     </labels>
     <labels>
         <fullName>Timeline_Label_Filter_Type_Legend</fullName>
@@ -87,13 +111,5 @@
         <protected>true</protected>
         <shortDescription>Timeline_Label_Showing</shortDescription>
         <value>Showing:</value>
-    </labels>
-    <labels>
-        <fullName>Timeline_Label_Files</fullName>
-        <categories>Timeline</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Timeline_Label_Files</shortDescription>
-        <value>Files | Notes</value>
     </labels>
 </CustomLabels>

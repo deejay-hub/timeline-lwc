@@ -23,6 +23,8 @@ import FILTERS from '@salesforce/label/c.Timeline_Label_Filters';
 import TYPE_LEGEND from '@salesforce/label/c.Timeline_Label_Filter_Type_Legend';
 import DATE_RANGE_LEGEND from '@salesforce/label/c.Timeline_Label_Date_Range_Legend';
 import FILE_TYPE from '@salesforce/label/c.Timeline_Label_Files';
+import BUTTON_APPLY from '@salesforce/label/c.Timeline_Label_Apply';
+import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
 
 export default class timeline extends NavigationMixin(LightningElement) {
@@ -83,6 +85,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
         TYPE_LEGEND,
         DATE_RANGE_LEGEND,
         FILE_TYPE,
+        BUTTON_APPLY,
+        BUTTON_CANCEL
     };
 
     error = {
