@@ -167,7 +167,8 @@ Timeline_Label_Filters			 | Filters (Used in filter panel)
 Timeline_Label_Filter_Type_Legend	 | Types to Show (Used in Filter panel)
 Timeline_Label_Files			 | Files & Notes (used in Filter when sObject is ContentDocumentLink)
 Timeline_Label_Date_Range_Legend	 | Date Range (Used in Filter panel)
-
+Timeline_Label_Apply				| Label for apply button (Used in Filter panel)
+Timeline_Label_Cancel			 | Label for cancel button (Used in Filter panel)
 
 #### Configuring Child Records to Plot
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose 
