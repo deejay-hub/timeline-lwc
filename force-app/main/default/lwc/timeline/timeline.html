@@ -61,10 +61,10 @@
                     <template if:true={isFilterUpdated}>
                         <div class="slds-grid" style="width:100%">
                             <div>
-                                <lightning-button label="Cancel" title="Cancel" onclick={cancelFilter}></lightning-button>
+                                <lightning-button label={label.BUTTON_Cancel} title="Cancel" onclick={cancelFilter}></lightning-button>
                             </div>
                             <div class="slds-grid slds-col slds-grid_align-end">
-                                <lightning-button variant="brand" label="Apply" title="Apply" onclick={applyFilter} ></lightning-button>
+                                <lightning-button variant="brand" label={label.BUTTON_APPLY} title="Apply" onclick={applyFilter} ></lightning-button>
                             </div>
                         </div>
                     </template>
