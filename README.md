@@ -27,10 +27,14 @@
     		<img alt="watchers"
 		src="https://img.shields.io/github/watchers/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
-  	<a>
+  	<a href="https://github.com/deejay-hub/timeline-lwc/issues">
     		<img alt="issues"
 		src="https://img.shields.io/github/issues-raw/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
+	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade">
+    		<img alt="code quality"
+		src="https://api.codacy.com/project/badge/Grade/811e689b645e4161848acf6570ec6d50">
+  	</a>	
 </h3>
 
 <p align="center">
