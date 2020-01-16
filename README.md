@@ -15,15 +15,15 @@
 	
 <h3 align="center">
 	An interactive Lightning Web Component for the Salesforce platform<br><br>
-	<a>
+	<a href="https://github.com/deejay-hub/timeline-lwc/network/members">
     		<img alt="forks on github"
 		src="https://img.shields.io/github/forks/deejay-hub/timeline-lwc?style=flat-square&logoColor=blue">
   	</a>
-  	<a>
+  	<a href="https://github.com/deejay-hub/timeline-lwc/stargazers">
     		<img alt="stars on github"
 		src="https://img.shields.io/github/stars/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
-  	<a>
+  	<a href="https://github.com/deejay-hub/timeline-lwc/watchers">
     		<img alt="watchers"
 		src="https://img.shields.io/github/watchers/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
