@@ -236,3 +236,6 @@ See [contributing.md](/contributing.md) for timeline principles.
 #### Code linting
 
 [ESLint](https://eslint.org/) is a popular JavaScript linting tool used to identify stylistic errors and erroneous constructs. To use ESLint with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode-lwc) from the Visual Studio Code Marketplace. The [.eslintignore](/.eslintignore) file is provided as part of this repository to exclude specific files from the linting process in the context of Lightning Web Components development.
+
+#### Codacy
+Codacy automates code reviews and monitors code quality over time. Static analysis, code coverage and metrics for JavaScript and Apex. Tests for common styling and security issues.
