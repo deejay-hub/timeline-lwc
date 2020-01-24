@@ -191,6 +191,10 @@ Allow_Drilldown__c		 	 | Should the object support drilling into the individual 
 
 ## FAQs
 
+#### How to I specify the fields for the tooltip?
+For the most part the component uses the UI API powered by the Lightning Data Service (LDS). This means that the tooltip will use the compact layout of the object automatically in a 2 column format. So just update the compact layout for the object and it works like magic.
+The bad news is that not all objects have support yet. For a list of supported objects see https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_get_started_supported_objects.htm. If you want to plot an object that isn't included in the list (e.g. Case Comments, Tasks etc) then the timeline can show 2 fields in the tooltip specified by the Detail_Field__c field value and the Fallback_Field__c field value. So fill these fields in only for those objects not supported by the UI API.
+
 #### Does it support multiple languages other than English?
 Yes for left-to-right languages. The users locale setting in Salesforce determines the date formats used. For a list of supported locales see - https://help.salesforce.com/articleView?id=admin_supported_date_time_format.htm&type=5
 
