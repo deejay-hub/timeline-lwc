@@ -1,4 +1,4 @@
-public with sharing class timelineService {
+public with sharing class TimelineService {
    
     @AuraEnabled(cacheable=true)
     public static Map<String, String> getTimelineTypes( String parentObjectId ) {
