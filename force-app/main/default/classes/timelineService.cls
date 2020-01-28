@@ -43,8 +43,8 @@ public with sharing class timelineService {
         try {
             String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
 
-            earliestRange = String.valueOf(Integer.valueOf(Decimal.valueOf(earliestRange)) * 12);
-            latestRange = String.valueOf(Integer.valueOf(Decimal.valueOf(latestRange)) * 12);
+            earliestRange = String.ValueOf((Decimal.ValueOf(earliestRange) * 12).intValue());
+            latestRange = String.ValueOf((Decimal.ValueOf(latestRange) * 12).intValue());
 
             String queryTimelineConfiguration = 'SELECT Detail_Field__c, '
                                             + 'Active__c, '
