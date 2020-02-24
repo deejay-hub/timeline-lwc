@@ -32,8 +32,8 @@ private with sharing class TimelineService_Test {
         }
         
         //Assert that one record was created successfully
-        Timeline_Configuration__mdt[] tinelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
-        system.assertEquals( 1, tinelineConfig.size() );
+        Timeline_Configuration__mdt[] timelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
+        system.assertEquals( 1, timelineConfig.size(), 'Timeline configuration metadata type record could not be created successfully' );
  
     }
 
@@ -62,8 +62,8 @@ private with sharing class TimelineService_Test {
         }
         
         //Assert that no record was created successfully as external objects are not permitted (validation rule)
-        Timeline_Configuration__mdt[] tinelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
-        system.assertEquals( 0, tinelineConfig.size() );
+        Timeline_Configuration__mdt[] timelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
+        system.assertEquals( 0, timelineConfig.size(), 'Timeline configuration metadata type record could be created successfully when an error was expected' );
     }
 
     @isTest
