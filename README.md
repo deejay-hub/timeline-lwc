@@ -15,22 +15,26 @@
 	
 <h3 align="center">
 	An interactive Lightning Web Component for the Salesforce platform<br><br>
-	<a>
+	<a href="https://github.com/deejay-hub/timeline-lwc/network/members">
     		<img alt="forks on github"
 		src="https://img.shields.io/github/forks/deejay-hub/timeline-lwc?style=flat-square&logoColor=blue">
   	</a>
-  	<a>
+  	<a href="https://github.com/deejay-hub/timeline-lwc/stargazers">
     		<img alt="stars on github"
 		src="https://img.shields.io/github/stars/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
-  	<a>
-    		<img alt="downloads on github"
-		src="https://img.shields.io/github/downloads/deejay-hub/timeline-lwc/total?style=flat-square">
+  	<a href="https://github.com/deejay-hub/timeline-lwc/watchers">
+    		<img alt="watchers"
+		src="https://img.shields.io/github/watchers/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
-  	<a>
+  	<a href="https://github.com/deejay-hub/timeline-lwc/issues">
     		<img alt="issues"
 		src="https://img.shields.io/github/issues-raw/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
+	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade">
+    		<img alt="code quality"
+		src="https://api.codacy.com/project/badge/Grade/811e689b645e4161848acf6570ec6d50">
+  	</a>	
 </h3>
 
 <p align="center">
@@ -167,7 +171,8 @@ Timeline_Label_Filters			 | Filters (Used in filter panel)
 Timeline_Label_Filter_Type_Legend	 | Types to Show (Used in Filter panel)
 Timeline_Label_Files			 | Files & Notes (used in Filter when sObject is ContentDocumentLink)
 Timeline_Label_Date_Range_Legend	 | Date Range (Used in Filter panel)
-
+Timeline_Label_Apply			 | Label for apply button (Used in Filter panel)
+Timeline_Label_Cancel			 | Label for cancel button (Used in Filter panel)
 
 #### Configuring Child Records to Plot
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose 
@@ -185,6 +190,10 @@ Fallback_Tooltip_Field__c		 | The API Name of the field on the child object to u
 Allow_Drilldown__c		 	 | Should the object support drilling into the individual record. If false then a toast error will appear when a user clicks on that record type
 
 ## FAQs
+
+#### How to I specify the fields for the tooltip?
+For the most part the component uses the UI API powered by the Lightning Data Service (LDS). This means that the tooltip will use the compact layout of the object automatically in a 2 column format. So just update the compact layout for the object and it works like magic.
+The bad news is that not all objects have support yet. For a list of supported objects see https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_get_started_supported_objects.htm. If you want to plot an object that isn't included in the list (e.g. Case Comments, Tasks etc) then the timeline can show 2 fields in the tooltip specified by the Detail_Field__c field value and the Fallback_Field__c field value. So fill these fields in only for those objects not supported by the UI API.
 
 #### Does it support multiple languages other than English?
 Yes for left-to-right languages. The users locale setting in Salesforce determines the date formats used. For a list of supported locales see - https://help.salesforce.com/articleView?id=admin_supported_date_time_format.htm&type=5
@@ -231,3 +240,6 @@ See [contributing.md](/contributing.md) for timeline principles.
 #### Code linting
 
 [ESLint](https://eslint.org/) is a popular JavaScript linting tool used to identify stylistic errors and erroneous constructs. To use ESLint with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode-lwc) from the Visual Studio Code Marketplace. The [.eslintignore](/.eslintignore) file is provided as part of this repository to exclude specific files from the linting process in the context of Lightning Web Components development.
+
+#### Codacy
+Codacy automates code reviews and monitors code quality over time. Static analysis, code coverage and metrics for JavaScript and Apex. Tests for common styling and security issues.

@@ -1,4 +1,4 @@
-import { LightningElement, api, track, wire } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
@@ -23,6 +23,8 @@ import FILTERS from '@salesforce/label/c.Timeline_Label_Filters';
 import TYPE_LEGEND from '@salesforce/label/c.Timeline_Label_Filter_Type_Legend';
 import DATE_RANGE_LEGEND from '@salesforce/label/c.Timeline_Label_Date_Range_Legend';
 import FILE_TYPE from '@salesforce/label/c.Timeline_Label_Files';
+import BUTTON_APPLY from '@salesforce/label/c.Timeline_Label_Apply';
+import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
 
 export default class timeline extends NavigationMixin(LightningElement) {
@@ -39,41 +41,41 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     @api flexipageRegionWidth;                                      //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
     
-    @track timelineStart;                                           //Calculated based on the earliestRange 
-    @track timelineEnd;                                             //Calculated based on the latestRange 
+    timelineStart;                                           //Calculated based on the earliestRange 
+    timelineEnd;                                             //Calculated based on the latestRange 
     
-    @track zoomStartDate;                                           //Start date of the current zoom
-    @track zoomEndDate;                                             //End date of the current zoom
+    zoomStartDate;                                           //Start date of the current zoom
+    zoomEndDate;                                             //End date of the current zoom
 
-    @track localisedZoomStartDate;                                  //Start date of the current zoom
-    @track localisedZoomEndDate;                                    //End date of the current zoom
+    localisedZoomStartDate;                                  //Start date of the current zoom
+    localisedZoomEndDate;                                    //End date of the current zoom
     
-    @track totalTimelineRecords;                                    //Total number of records returned
-    @track totalZoomedRecords;                                      //Total records in zoom
+    totalTimelineRecords;                                    //Total number of records returned
+    totalZoomedRecords;                                      //Total records in zoom
    
-    @track noData = false;                                          //Boolean when no data is returned
-    @track isLoaded = false;                                        //Boolean when timeline data is loaded
-    @track isError = false;                                         //Boolean when there is an error
+    noData = false;                                          //Boolean when no data is returned
+    isLoaded = false;                                        //Boolean when timeline data is loaded
+    isError = false;                                         //Boolean when there is an error
 
-    @track isMouseOver = false;                                     //Boolean when mouse over is detected                          
-    @track mouseOverRecordId;                                       //Current Id of the record being hovered over
-    @track mouseOverObjectAPIName;                                  //API Name for the object being hovered over
-    @track mouseOverDetailLabel; 
-    @track mouseOverDetailValue
-    @track mouseOverFallbackField;
-    @track mouseOverFallbackValue;
+    isMouseOver = false;                                     //Boolean when mouse over is detected                          
+    mouseOverRecordId;                                       //Current Id of the record being hovered over
+    mouseOverObjectAPIName;                                  //API Name for the object being hovered over
+    mouseOverDetailLabel; 
+    mouseOverDetailValue
+    mouseOverFallbackField;
+    mouseOverFallbackValue;
 
-    @track filterValues = [];
-    @track startingFilterValues = [];
-    @track objectFilter = [];
-    @track isFilter;
-    @track isFilterUpdated;
+    filterValues = [];
+    startingFilterValues = [];
+    objectFilter = [];
+    isFilter;
+    isFilterUpdated;
 
-    @track timelineVisibility = 'timeline-container'                //Toggles the class to show and hide the timeline
+    timelineVisibility = 'timeline-container'                //Toggles the class to show and hide the timeline
 
-    @track illustrationHeader;                                      //Header to display when an information box displays
-    @track illustrationSubHeader;                                   //Sub Header to display when an info box appears
-    @track illustrationType;                                        //Type of illustration to display, 'error' or 'no data'
+    illustrationHeader;                                      //Header to display when an information box displays
+    illustrationSubHeader;                                   //Sub Header to display when an info box appears
+    illustrationType;                                        //Type of illustration to display, 'error' or 'no data'
 
     label = {
         DAYS,
@@ -83,6 +85,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
         TYPE_LEGEND,
         DATE_RANGE_LEGEND,
         FILE_TYPE,
+        BUTTON_APPLY,
+        BUTTON_CANCEL
     };
 
     error = {

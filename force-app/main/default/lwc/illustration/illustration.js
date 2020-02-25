@@ -1,12 +1,12 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import illustrations from '@salesforce/resourceUrl/images';
 
 export default class Illustration extends LightningElement {
     @api header;
     @api subHeader;
 
-    @track illustration;
-    @track illustrationType;
+    illustration;
+    illustrationType;
 
     @api
     get type() {
