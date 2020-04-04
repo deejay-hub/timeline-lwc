@@ -205,7 +205,7 @@ Right-to-left languages can be supported but there are formatting issues current
 Please note that translated values are not currently included - you need to enable transalation workbench and add them yourself. If you would like to provide translated values for a language I would happily incorporate them for everyones benefit.
 
 #### Does it support Communities?
-Probably. We haven't tested it.
+Yes.
 
 #### Does it support Mobile?
 No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
