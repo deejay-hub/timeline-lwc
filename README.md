@@ -211,7 +211,7 @@ Yes.
 No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
 
 #### Does it support Person Accounts?
-Untested.
+No. The component will not work on the Account page layout if you have Person Accounts active in the org.
 
 #### Does it support Files / Notes / Attachments?
 Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.
