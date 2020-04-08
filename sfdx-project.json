@@ -12,7 +12,7 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "47.0",
     "packageAliases": {
-        "Timeline": "0Ho7F000000k9fySAA",
-        "Timeline@0.1.0-1": "04t7F000003iqFFQAY"
+        "Timeline": "",
+        "Timeline@0.1.0-1": ""
     }
 }
