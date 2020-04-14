@@ -189,8 +189,6 @@ public with sharing class TimelineService {
 			if (eachRelationship.getChildSObject().getDescribe().isAccessible()
 			        && !eachRelationship.getChildSObject().getDescribe().getLabel().contains('History')
 			        && eachRelationship.getRelationshipName() != null) {
-
-                //Must match the actual relationship Name value not just the object
                 childRelatedObjects.put(String.valueOf(eachRelationship.getChildSObject() + String.valueOf(eachRelationship.getRelationshipName())), String.valueOf(eachRelationship.getRelationshipName()));
 			}
 		}
