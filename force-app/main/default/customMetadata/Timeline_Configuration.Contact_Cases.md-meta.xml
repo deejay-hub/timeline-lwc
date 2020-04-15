@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>Relationship_Name__c</field>
-        <value xsi:type="xsd:string">TBD</value>
+        <value xsi:type="xsd:string">Cases</value>
     </values>
     <values>
         <field>Sequence__c</field>

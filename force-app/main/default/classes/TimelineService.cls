@@ -5,6 +5,9 @@ public with sharing class TimelineService {
 
         try {
             String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
+            if (parentObjectType == 'Account' && isPersonAccount(parentObjectId)  ) {
+                parentObjectType = 'PersonAccount';
+            }
 
             String queryTimelineConfiguration = 'SELECT Active__c, '
                                             + 'Object_Name__c, '
@@ -41,7 +44,12 @@ public with sharing class TimelineService {
         
         try {
             String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
+            String parentConfigType = parentObjectType;
 
+            if (parentObjectType == 'Account' && isPersonAccount(parentObjectId)  ) {
+                parentConfigType = 'PersonAccount';
+            }
+            
             earliestRange = String.ValueOf((Decimal.ValueOf(earliestRange) * 12).intValue());
             latestRange = String.ValueOf((Decimal.ValueOf(latestRange) * 12).intValue());
 
@@ -56,7 +64,7 @@ public with sharing class TimelineService {
                                             + 'Fallback_Tooltip_Field__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
-                                        + 'Parent_Object__c =:parentObjectType';
+                                        + 'Parent_Object__c =:parentConfigType';
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration );
 
@@ -187,7 +195,7 @@ public with sharing class TimelineService {
         List<Schema.ChildRelationship> objectRelationships = ((SObject)(Type.forName('Schema.'+ Obj).newInstance())).getSObjectType().getDescribe().getChildRelationships();
 		for (Schema.Childrelationship eachRelationship : objectRelationships) {
 			if (eachRelationship.getChildSObject().getDescribe().isAccessible()
-			        && !eachRelationship.getChildSObject().getDescribe().getLabel().contains('History')
+			        && !eachRelationship.getChildSObject().getDescribe().getLabel().contains('Histories')
 			        && eachRelationship.getRelationshipName() != null) {
                 childRelatedObjects.put(String.valueOf(eachRelationship.getChildSObject() + String.valueOf(eachRelationship.getRelationshipName())), String.valueOf(eachRelationship.getRelationshipName()));
 			}
@@ -234,6 +242,26 @@ public with sharing class TimelineService {
         fieldDetails.put('label', fieldLabel);
 
         return fieldDetails;
+    }
+
+    private static Boolean isPersonAccount(String recordId)
+    {
+System.Debug('@@ startchecking');
+        if ( Account.SObjectType.getDescribe().hasSubtypes ) {
+            String queryPersonAccount = 'SELECT Id, IsPersonAccount FROM Account Where Id =:recordId';
+            SObject acc = Database.query( queryPersonAccount );
+
+            if ( acc.get('IsPersonAccount') == true ) {
+System.Debug('@@ think its a person account');
+                return true;
+            }
+            else {
+System.Debug('@@ not a person account');
+                return false;
+            }
+        }
+
+        return false;
     }
 
     private class TimelineRecord {
