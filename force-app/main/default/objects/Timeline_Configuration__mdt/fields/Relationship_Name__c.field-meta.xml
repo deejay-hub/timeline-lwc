@@ -3,7 +3,7 @@
     <fullName>Relationship_Name__c</fullName>
     <description>The API name corresponding to the relationship between the objects.</description>
     <externalId>false</externalId>
-    <fieldManageability>DeveloperControlled</fieldManageability>
+    <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The API name corresponding to the relationship between the objects.</inlineHelpText>
     <label>Relationship Name</label>
     <length>255</length>
