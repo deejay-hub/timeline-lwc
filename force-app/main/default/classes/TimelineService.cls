@@ -141,8 +141,8 @@ public with sharing class TimelineService {
             for (Sobject each : listOfTimelineRecords) {
 
                 for (String eachObj : mapOfTimelineConfigurationRecords.keyset()) {
-                    if (childObjects.containsKey(eachObj)) {
-                        if (each.getSObjects(childObjects.get(eachObj)) != null && each.getSObjects(childObjects.get(eachObj)).size() != 0)
+                    //if (childObjects.containsKey(eachObj)) {
+                        if (childObjects.containsKey(eachObj) && each.getSObjects(childObjects.get(eachObj)) != null && each.getSObjects(childObjects.get(eachObj)).size() != 0)
                             for (Sobject eachCh : (List<SObject>)each.getSObjects(childObjects.get(eachObj))) {
 
                                 Map<String, String> mapData = new Map<String, String>();
@@ -179,7 +179,7 @@ public with sharing class TimelineService {
                                     listOfTimelineData.add(mapData);
                                 }
                             }
-                    }
+                    //}
                 }
             }
             return listOfTimelineData;
@@ -246,17 +246,14 @@ public with sharing class TimelineService {
 
     private static Boolean isPersonAccount(String recordId)
     {
-System.Debug('@@ startchecking');
         if ( Account.SObjectType.getDescribe().hasSubtypes ) {
             String queryPersonAccount = 'SELECT Id, IsPersonAccount FROM Account Where Id =:recordId';
             SObject acc = Database.query( queryPersonAccount );
 
             if ( acc.get('IsPersonAccount') == true ) {
-System.Debug('@@ think its a person account');
                 return true;
             }
             else {
-System.Debug('@@ not a person account');
                 return false;
             }
         }
