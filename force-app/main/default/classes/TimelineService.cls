@@ -17,7 +17,7 @@ public with sharing class TimelineService {
                                         + 'Parent_Object__c =:parentObjectType '
                                         + 'ORDER BY Sequence__c ASC ';
 
-            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration );
+            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
 
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
@@ -134,52 +134,49 @@ public with sharing class TimelineService {
                                 + ' FROM ' + parentObjectType 
                                 + ' WHERE Id =:parentObjectId';
 
-            List<SObject> listOfTimelineRecords = Database.query( queryRecords );
+            List<SObject> listOfTimelineRecords = Database.query( queryRecords ); //NOPMD
 
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
 
             for (Sobject each : listOfTimelineRecords) {
-
                 for (String eachObj : mapOfTimelineConfigurationRecords.keyset()) {
-                    //if (childObjects.containsKey(eachObj)) {
-                        if (childObjects.containsKey(eachObj) && each.getSObjects(childObjects.get(eachObj)) != null && each.getSObjects(childObjects.get(eachObj)).size() != 0)
-                            for (Sobject eachCh : (List<SObject>)each.getSObjects(childObjects.get(eachObj))) {
+                    if (childObjects.containsKey(eachObj) && each.getSObjects(childObjects.get(eachObj)) != null && each.getSObjects(childObjects.get(eachObj)).size() != 0)
+                        for (Sobject eachCh : (List<SObject>)each.getSObjects(childObjects.get(eachObj))) {
 
-                                Map<String, String> mapData = new Map<String, String>();
+                            Map<String, String> mapData = new Map<String, String>();
 
-                                TimelineRecord tr = mapOfTimelineConfigurationRecords.get(eachObj );
+                            TimelineRecord tr = mapOfTimelineConfigurationRecords.get(eachObj );
 
-                                String objectLabel  = ((SObject)(Type.forName('Schema.'+ String.valueOf(eachCh.getSobjectType())).newInstance())).getSObjectType().getDescribe().getLabel();
+                            String objectLabel  = ((SObject)(Type.forName('Schema.'+ String.valueOf(eachCh.getSobjectType())).newInstance())).getSObjectType().getDescribe().getLabel();
 
-                                if ( tr != null ) {
-                                    String myId = eachCh.Id;
-                                    Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh);
-                                    Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh);
-                                    Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh);
-                                    Map<String, String> typeValues = getFieldValues(tr.type, eachCh);
+                            if ( tr != null ) {
+                                String myId = eachCh.Id;
+                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh);
+                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh);
+                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh);
+                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh);
 
-                                    if ( tr.objectName == 'ContentDocumentLink') {
-                                        myId = String.valueOf(eachCh.get('ContentDocumentId'));
-                                    }
-
-                                    mapData.put('objectId', myId);
-                                    mapData.put('parentObject', parentObjectType);
-                                    mapData.put('detailField', detailValues.get('value'));
-                                    mapData.put('detailFieldLabel', detailValues.get('label'));
-                                    mapData.put('positionDateField', tr.positionDateField);
-                                    mapData.put('positionDateValue', positionValues.get('value'));
-                                    mapData.put('objectName', tr.objectName);
-                                    mapData.put('objectLabel', objectLabel);
-                                    mapData.put('fallbackTooltipField', fallbackValues.get('label'));
-                                    mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
-                                    mapData.put('type', typeValues.get('value'));
-                                    mapData.put('icon', tr.icon);
-                                    mapData.put('iconBackground', tr.iconBackground);
-
-                                    listOfTimelineData.add(mapData);
+                                if ( tr.objectName == 'ContentDocumentLink') { //NOPMD
+                                    myId = String.valueOf(eachCh.get('ContentDocumentId'));
                                 }
+
+                                mapData.put('objectId', myId);
+                                mapData.put('parentObject', parentObjectType);
+                                mapData.put('detailField', detailValues.get('value'));
+                                mapData.put('detailFieldLabel', detailValues.get('label'));
+                                mapData.put('positionDateField', tr.positionDateField);
+                                mapData.put('positionDateValue', positionValues.get('value'));
+                                mapData.put('objectName', tr.objectName);
+                                mapData.put('objectLabel', objectLabel);
+                                mapData.put('fallbackTooltipField', fallbackValues.get('label'));
+                                mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
+                                mapData.put('type', typeValues.get('value'));
+                                mapData.put('icon', tr.icon);
+                                mapData.put('iconBackground', tr.iconBackground);
+
+                                listOfTimelineData.add(mapData);
                             }
-                    //}
+                        }
                 }
             }
             return listOfTimelineData;
