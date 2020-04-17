@@ -360,7 +360,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
        
         timelineCanvas.filter = function(d) {
 
-            if ( me.filterValues.includes(d.objectName)) {
+            if (me.filterValues == undefined || me.filterValues == '' || me.filterValues.includes(d.objectName)) {
                 return true;
             }
         
@@ -645,10 +645,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
         };
 
         timelineMap.filter = function(d) {
-            if ( me.filterValues.includes(d.objectName)) {
+            if (me.filterValues == undefined || me.filterValues == '' || me.filterValues.includes(d.objectName)) {
                 return true;
             }
-    
             return false;
         };
 
@@ -811,19 +810,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 me.localisedZoomStartDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[0])));
                 me.localisedZoomEndDate = dateTimeFormat.format(moment(timelineMap.x.invert(selection[1])));
                
-            }
-            else {
- 
-                dommy.push(timelineMap.x.invert(me.zoomStartDate));
-                dommy.push(timelineMap.x.invert(me.zoomEndDate));
-
-                d3timeline.redraw(dommy);
-                timelineAxis.redraw();
-                timelineAxisLabel.redraw();
-
-                handle.attr("transform", function() { 
-                    return "translate(" + (timelineMap.x.invert(me.zoomStartDate) - 2) + ", " + 0  + ") scale(0.05)"; 
-                });
             }
         }
 
