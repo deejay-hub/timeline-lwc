@@ -17,7 +17,7 @@ public with sharing class TimelineService {
                                         + 'Parent_Object__c =:parentObjectType '
                                         + 'ORDER BY Sequence__c ASC '; //NOPMD
 
-            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); 
+            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
 
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
@@ -66,7 +66,7 @@ public with sharing class TimelineService {
                                         + 'WHERE Active__c = true AND '
                                         + 'Parent_Object__c =:parentConfigType'; //NOPMD
 
-            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration );
+            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
 
             Map<String, TimelineRecord> mapOfTimelineConfigurationRecords = new Map<String, TimelineRecord>();
 
@@ -134,7 +134,7 @@ public with sharing class TimelineService {
                                 + ' FROM ' + parentObjectType 
                                 + ' WHERE Id =:parentObjectId'; //NOPMD
 
-            List<SObject> listOfTimelineRecords = Database.query( queryRecords ); 
+            List<SObject> listOfTimelineRecords = Database.query( queryRecords ); //NOPMD
 
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
 
