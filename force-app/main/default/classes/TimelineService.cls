@@ -15,9 +15,9 @@ public with sharing class TimelineService {
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
                                         + 'Parent_Object__c =:parentObjectType '
-                                        + 'ORDER BY Sequence__c ASC ';
+                                        + 'ORDER BY Sequence__c ASC '; //NOPMD
 
-            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
+            List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); 
 
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
@@ -64,7 +64,7 @@ public with sharing class TimelineService {
                                             + 'Fallback_Tooltip_Field__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
-                                        + 'Parent_Object__c =:parentConfigType';
+                                        + 'Parent_Object__c =:parentConfigType'; //NOPMD
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration );
 
@@ -132,9 +132,9 @@ public with sharing class TimelineService {
             String queryRecords = 'SELECT Id, ' 
                                     + innerQuery 
                                 + ' FROM ' + parentObjectType 
-                                + ' WHERE Id =:parentObjectId';
+                                + ' WHERE Id =:parentObjectId'; //NOPMD
 
-            List<SObject> listOfTimelineRecords = Database.query( queryRecords ); //NOPMD
+            List<SObject> listOfTimelineRecords = Database.query( queryRecords ); 
 
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
 
@@ -258,7 +258,7 @@ public with sharing class TimelineService {
         return false;
     }
 
-    private class TimelineRecord {
+    private class TimelineRecord { //NOPMD
         @AuraEnabled public Boolean active;
         @AuraEnabled public String relationshipName;
         @AuraEnabled public String parentObject;
