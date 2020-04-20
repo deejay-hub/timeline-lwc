@@ -181,6 +181,7 @@ Field Name                       	 | Description
 ---------------------------------------	 | -----------------------------------
 Parent_Object__c	             	 | The API Name of the **parent object** that the child record relates to
 Object_Name__c		             	 | The API Name of the object that is the **child** to plot
+Relationship_Name__c		         | The API Name of the **relationship** between Parent and Child
 Position_Date_Field__c	             	 | The API Name of the field on the child (Object_Name__c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)
 Detail_Field__c		             	 | The API Name of the field on the child (Object_Name__c) to use as the description for the record to plot on the timeline
 Icon__c		             		 | A relative url to the image to use for this record
@@ -211,7 +212,7 @@ Yes.
 No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
 
 #### Does it support Person Accounts?
-No. The component will not work on the Account page layout if you have Person Accounts active in the org.
+No. The component will not work on the Account page layout for Person Accounts. Only Business Accounts are supported.
 
 #### Does it support Files / Notes / Attachments?
 Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.
