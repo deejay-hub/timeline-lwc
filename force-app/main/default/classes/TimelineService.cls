@@ -119,9 +119,14 @@ public with sharing class TimelineService {
                                     + tcr.fallbackTooltipField + '';
                     }
 
+                    String relationship = tcr.relationshipName;
+                    if ( tcr.relationshipName.contains('Person') && !tcr.relationshipName.contains('__pr') ) {
+                        relationship = tcr.relationshipName.substringAfter('Person');                       
+                    }
+
                     innerQuery = innerQuery + 
                                 selectStatement +
-                                + ' FROM ' + tcr.relationshipName 
+                                + ' FROM ' + relationship 
                                 + ' WHERE ' + tcr.positionDateField + '>= LAST_N_MONTHS:' + earliestRange
                                 + ' AND ' + tcr.positionDateField + ' <= NEXT_N_MONTHS:' + latestRange + '),';
                 }
