@@ -401,7 +401,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             const svgHeight = Math.max(timelineCanvas.y(swimlanes.length), timelineHeight);
             timelineCanvas.height = timelineHeight;
 
-            timelineCanvas.attr('height', svgHeight);
+            timelineCanvas.attr('height', svgHeight - 1);
             timelineCanvas.SVGHeight = svgHeight;
 
             timelineCanvas.data = timelineCanvas.selectAll('[class~=timeline-canvas-record]')
