@@ -168,6 +168,7 @@ Timeline_Label_Days		 	 | day(s)
 Timeline_Label_Items			 | item(s)
 Timeline_Label_Showing		  	 | Showing:
 Timeline_Label_Filters			 | Filters (Used in filter panel)
+Timeline_Label_Filter_All_Types		 | All Types (Used in filter panel as select/deselect all checkbox)
 Timeline_Label_Filter_Type_Legend	 | Types to Show (Used in Filter panel)
 Timeline_Label_Files			 | Files & Notes (used in Filter when sObject is ContentDocumentLink)
 Timeline_Label_Date_Range_Legend	 | Date Range (Used in Filter panel)
