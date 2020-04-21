@@ -940,7 +940,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     handleAllTypes() {
-        const allTypesCheckbox = this.template.querySelector("input.checky");
+        const allTypesCheckbox = this.template.querySelector("input.all-types-checkbox");
         const countAllValues = this.allFilterValues.length;
         const countSelectedValues = this.filterValues.length;
 
