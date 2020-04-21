@@ -81,6 +81,14 @@
         <value>Files | Notes</value>
     </labels>
     <labels>
+        <fullName>Timeline_Label_Filter_All_Types</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Label_Filter_All_Types</shortDescription>
+        <value>All Types</value>
+    </labels>
+    <labels>
         <fullName>Timeline_Label_Filter_Type_Legend</fullName>
         <categories>Timeline</categories>
         <language>en_US</language>
