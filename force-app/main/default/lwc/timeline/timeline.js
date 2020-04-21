@@ -23,6 +23,7 @@ import FILTERS from '@salesforce/label/c.Timeline_Label_Filters';
 import TYPE_LEGEND from '@salesforce/label/c.Timeline_Label_Filter_Type_Legend';
 import DATE_RANGE_LEGEND from '@salesforce/label/c.Timeline_Label_Date_Range_Legend';
 import FILE_TYPE from '@salesforce/label/c.Timeline_Label_Files';
+import ALL_TYPES from '@salesforce/label/c.Timeline_Label_Filter_All_Types';
 import BUTTON_APPLY from '@salesforce/label/c.Timeline_Label_Apply';
 import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
@@ -67,9 +68,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     filterValues = [];
     startingFilterValues = [];
+    allFilterValues = [];
     objectFilter = [];
     isFilter;
     isFilterUpdated;
+    isFilterLoaded = false;
 
     timelineVisibility = 'timeline-container'                //Toggles the class to show and hide the timeline
 
@@ -85,6 +88,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         TYPE_LEGEND,
         DATE_RANGE_LEGEND,
         FILE_TYPE,
+        ALL_TYPES,
         BUTTON_APPLY,
         BUTTON_CANCEL
     };
@@ -135,8 +139,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                     this.objectFilter.push(tempFilter);
                     this.startingFilterValues.push(key);
+                    this.allFilterValues.push(key);
                 }
             }
+            this.isFilterLoaded = true;
         }
     }
 
@@ -360,7 +366,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
        
         timelineCanvas.filter = function(d) {
 
-            if (me.filterValues == undefined || me.filterValues == '' || me.filterValues.includes(d.objectName)) {
+            if (me.isFilterLoaded == false || me.filterValues.includes(d.objectName)) {
                 return true;
             }
         
@@ -645,7 +651,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         };
 
         timelineMap.filter = function(d) {
-            if (me.filterValues == undefined || me.filterValues == '' || me.filterValues.includes(d.objectName)) {
+            if (me.isFilterLoaded == false ||  me.filterValues.includes(d.objectName)) {
                 return true;
             }
             return false;
@@ -902,6 +908,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     get filterOptions() {
+        this.handleAllTypes();
         return this.objectFilter;
     }
 
@@ -911,9 +918,45 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     handleFilterChange(e) {
         this.filterValues = e.detail.value;
+        this.handleAllTypes();
         this.isFilterUpdated = false;
         if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
             this.isFilterUpdated = true;
+        }
+    }
+
+    handleAllTypesChange(e) {
+        if ( e.target.checked == true ) {
+            this.filterValues = this.allFilterValues;
+        }
+        else if ( e.target.checked == false) {
+            this.filterValues = [];
+        }
+
+        this.isFilterUpdated = false;
+        if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
+            this.isFilterUpdated = true;
+        }
+    }
+
+    handleAllTypes() {
+        const allTypesCheckbox = this.template.querySelector("input.checky");
+        const countAllValues = this.allFilterValues.length;
+        const countSelectedValues = this.filterValues.length;
+
+        if ( (countSelectedValues != countAllValues) && countSelectedValues > 0) {
+            allTypesCheckbox.checked = false;
+            allTypesCheckbox.indeterminate = true;
+        }
+
+        if ( countSelectedValues == countAllValues ) {
+            allTypesCheckbox.indeterminate = false;
+            allTypesCheckbox.checked = true;
+        }
+
+        if (countSelectedValues < 1) {
+            allTypesCheckbox.indeterminate = false;
+            allTypesCheckbox.checked = false;
         }
     }
 
