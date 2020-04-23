@@ -287,9 +287,6 @@ public with sharing class TimelineService {
             if ( acc.get('IsPersonAccount') == true ) {
                 return true;
             }
-            else {
-                return false;
-            }
         }
 
         return false;
