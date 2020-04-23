@@ -11,6 +11,7 @@ public with sharing class TimelineService {
 
             String queryTimelineConfiguration = 'SELECT Active__c, '
                                             + 'Object_Name__c, '
+                                            + 'Tooltip_Object_Name__c, '
                                             + 'Sequence__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
@@ -27,6 +28,10 @@ public with sharing class TimelineService {
 
                 if ( timelineType.Object_Name__c == 'ContentDocumentLink') {
                     objectLabel = System.Label.Timeline_Label_Files;
+                }
+
+                if ( timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
+                    objectLabel = ((SObject)(Type.forName('Schema.'+ String.valueOf(timelineType.Tooltip_Object_Name__c)).newInstance())).getSObjectType().getDescribe().getLabelPlural();
                 }
 
                 mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
@@ -61,6 +66,8 @@ public with sharing class TimelineService {
                                             + 'Position_Date_Field__c, '
                                             + 'Object_Name__c, '
                                             + 'Type_Field__c, '
+                                            + 'Drilldown_Id_Field__c, '
+                                            + 'Tooltip_Id_Field__c, '
                                             + 'Fallback_Tooltip_Field__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
@@ -82,7 +89,10 @@ public with sharing class TimelineService {
                 timelineRecord.type = timelineConfigurationRecord.Type_Field__c;
                 timelineRecord.positionDateField = timelineConfigurationRecord.Position_Date_Field__c;
                 timelineRecord.fallbackTooltipField = timelineConfigurationRecord.Fallback_Tooltip_Field__c;
-
+                timelineRecord.tooltipIdField = timelineConfigurationRecord.Tooltip_Id_Field__c;
+                //timelineRecord.tooltipObject = '';
+                timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
+ 
                 mapOfTimelineConfigurationRecords.put(timelineRecord.objectName + timelineRecord.relationshipName, timelineRecord);
             }
 
@@ -98,13 +108,15 @@ public with sharing class TimelineService {
 
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
+                    String tooltipIdField = String.valueOf(tcr.tooltipIdField);
+                    String drilldownIdField = String.valueOf(tcr.tooltipIdField);
                     String typeField = String.valueOf(tcr.type);
         
                     String selectStatement = '(SELECT Id, ' 
                                     + tcr.detailField + ', ' 
                                     + tcr.positionDateField + '';
 
-                    if ( (typeField != null && typeField != '') && (objName == 'Task' || objName == 'ContentDocumentLink')) {
+                    if ( (typeField != null && typeField != '') && (objName == 'Task' || objName == 'TaskRelation' || objName == 'ContentDocumentLink')) {
                         selectStatement = selectStatement + ', '
                                     + tcr.type + '';
                     }
@@ -117,6 +129,16 @@ public with sharing class TimelineService {
                     if ( tooltipField != null && tooltipField != '' && tcr.detailField <> tcr.fallbackTooltipField) {
                         selectStatement = selectStatement + ', '
                                     + tcr.fallbackTooltipField + '';
+                    }
+
+                    if ( drilldownIdField != null && drilldownIdField != '' ) {
+                        selectStatement = selectStatement + ', '
+                                    + tcr.drilldownIdField + '';
+                    }
+
+                    if ( tooltipIdField != null && tooltipIdField != '' && tcr.drilldownIdField <> tcr.tooltipIdField) {
+                        selectStatement = selectStatement + ', '
+                                    + tcr.tooltipIdField + '';
                     }
 
                     String relationship = tcr.relationshipName;
@@ -159,6 +181,8 @@ public with sharing class TimelineService {
                                 Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh);
                                 Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh);
                                 Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh);
+                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh);
+                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh);
                                 Map<String, String> typeValues = getFieldValues(tr.type, eachCh);
 
                                 if ( tr.objectName == 'ContentDocumentLink') { //NOPMD
@@ -174,6 +198,14 @@ public with sharing class TimelineService {
                                 mapData.put('objectName', tr.objectName);
                                 mapData.put('objectLabel', objectLabel);
                                 mapData.put('fallbackTooltipField', fallbackValues.get('label'));
+                                mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
+                                mapData.put('drilldownId', drilldownIdValues.get('value'));
+                                mapData.put('tooltipId', tooltipIdValues.get('value'));
+                               
+                                if ( tooltipIdValues.get('value') != '') {
+                                    mapData.put('tooltipObject', String.valueOf(Id.valueOf(tooltipIdValues.get('value')).getSobjectType()));
+                                }
+
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
                                 mapData.put('type', typeValues.get('value'));
                                 mapData.put('icon', tr.icon);
@@ -276,6 +308,9 @@ public with sharing class TimelineService {
         @AuraEnabled public String objectName;
         @AuraEnabled public String objectLabel;
         @AuraEnabled public String type;
+        @AuraEnabled public String tooltipIdField;
+        @AuraEnabled public String tooltipObject;
+        @AuraEnabled public String drilldownIdField;
         @AuraEnabled public String fallbackTooltipField;
         @AuraEnabled public String fallbackTooltipValue;
         @AuraEnabled public String fallbackNameField;
