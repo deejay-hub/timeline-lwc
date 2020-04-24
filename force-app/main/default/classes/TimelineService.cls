@@ -257,8 +257,10 @@ public with sharing class TimelineService {
             String splitField = field.SubStringAfter('.');
 
             fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
+            String recordId = String.valueOf(records.getSobject(splitObject).get('Id'));
+            String objectType = String.valueOf(Id.valueOf(recordId).getSobjectType());
 
-            Schema.DescribeSObjectResult describeParentSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(splitObject)).newInstance())).getSObjectType().getDescribe();
+            Schema.DescribeSObjectResult describeParentSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(objectType)).newInstance())).getSObjectType().getDescribe();
             fieldLabel = String.valueOf( describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel() );
         }
         else {
