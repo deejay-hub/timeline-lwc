@@ -4,8 +4,8 @@ import { NavigationMixin } from 'lightning/navigation';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
 
-import getTimelineData from '@salesforce/apex/timelineService.getTimelineRecords';
-import getTimelineTypes from '@salesforce/apex/timelineService.getTimelineTypes';
+import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
+import getTimelineTypes from '@salesforce/apex/TimelineService.getTimelineTypes';
 
 import d3JS from '@salesforce/resourceUrl/d3minified';
 import momentJS from '@salesforce/resourceUrl/momentminified';  
