@@ -227,6 +227,9 @@ No. Currently the SOQL is limited to those objects that can be included in a par
 #### Does it support History Objects?
 No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates typically seen. 
 
+#### Does it support Junction Objects?
+Yes. We have tested support for Multiple Contacts to Tasks/Events || Multiple Contacts to Accounts and Contact Roles for Opportunities. We have also tested custom junction objects. We have added simple dot notation to be able to plot the fields from the destination object.
+
 ## Contributing
 Contributions are what make the trailblazer community such an amazing place. I regard this component as a way to inspire and learn from others. Any contributions you make are **greatly appreciated**.
 
