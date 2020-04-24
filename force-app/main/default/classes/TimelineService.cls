@@ -68,6 +68,7 @@ public with sharing class TimelineService {
                                             + 'Type_Field__c, '
                                             + 'Drilldown_Id_Field__c, '
                                             + 'Tooltip_Id_Field__c, '
+                                            + 'Tooltip_Object_Name__c, '
                                             + 'Fallback_Tooltip_Field__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
@@ -90,7 +91,7 @@ public with sharing class TimelineService {
                 timelineRecord.positionDateField = timelineConfigurationRecord.Position_Date_Field__c;
                 timelineRecord.fallbackTooltipField = timelineConfigurationRecord.Fallback_Tooltip_Field__c;
                 timelineRecord.tooltipIdField = timelineConfigurationRecord.Tooltip_Id_Field__c;
-                //timelineRecord.tooltipObject = '';
+                timelineRecord.tooltipObject = timelineConfigurationRecord.Tooltip_Object_Name__c;
                 timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
  
                 mapOfTimelineConfigurationRecords.put(timelineRecord.objectName + timelineRecord.relationshipName, timelineRecord);
@@ -201,11 +202,7 @@ public with sharing class TimelineService {
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
                                 mapData.put('drilldownId', drilldownIdValues.get('value'));
                                 mapData.put('tooltipId', tooltipIdValues.get('value'));
-                               
-                                if ( tooltipIdValues.get('value') != '') {
-                                    mapData.put('tooltipObject', String.valueOf(Id.valueOf(tooltipIdValues.get('value')).getSobjectType()));
-                                }
-
+                                mapData.put('tooltipObject', tr.tooltipObject);
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
                                 mapData.put('type', typeValues.get('value'));
                                 mapData.put('icon', tr.icon);
