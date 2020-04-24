@@ -317,6 +317,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.fallbackTooltipField = record.fallbackTooltipField;
             recordCopy.fallbackTooltipValue = record.fallbackTooltipValue;
 
+            recordCopy.tooltipId = record.tooltipId;
+            recordCopy.tooltipObject = record.tooltipObject;
+            recordCopy.drilldownId = record.drilldownId;
+
             recordCopy.type = record.type;
             recordCopy.icon = record.icon;
             recordCopy.iconBackground = record.iconBackground;
@@ -430,14 +434,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('class', 'timeline-canvas-icon-wrap')
                     .attr('style', function(d) {
                         let iconColour = '';
-                        switch (d.objectName + '-' + d.type) {
-                            case 'Task-Call':
+                        switch (d.type) {
+                            case 'Call':
                                 iconColour = '#48C3CC';
                                 break;
-                            case 'Task-Email':
+                            case 'Email':
                                 iconColour = '#95AEC5';
                                 break;
-                            case 'ContentDocumentLink-SNOTE':
+                            case 'SNOTE':
                                 iconColour = '#E6D478';
                                 break;
                             default:
@@ -460,14 +464,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('width', 22)
                     .attr('xlink:href', function(d) {
                         let iconImage = '';
-                        switch (d.objectName + '-' + d.type) {
-                            case 'Task-Call':
+            
+                        switch (d.type) {
+                            case 'Call':
                                 iconImage = '/img/icon/t4v35/standard/log_a_call.svg';
                                 break;
-                            case 'Task-Email':
+                            case 'Email':
                                 iconImage = '/img/icon/t4v35/standard/email.svg';
                                 break;
-                            case 'ContentDocumentLink-SNOTE':
+                            case 'SNOTE':
                                 iconImage = '/img/icon/t4v35/standard/note.svg';
                                 break;
                             default:
@@ -494,6 +499,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('y', 16)
                     .attr('font-size', 12)
                     .on('click', function(d) {
+                        let drilldownId = d.recordId;
+                        if ( d.drilldownId != '') {
+                            drilldownId = d.drilldownId;
+                        }
 
                         switch (d.objectName) {
                             case 'ContentDocumentLink':
@@ -511,7 +520,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 me[NavigationMixin.Navigate]({
                                     type: 'standard__recordPage',
                                     attributes: {
-                                        recordId: d.recordId,
+                                        recordId: drilldownId,
                                         actionName: 'view'
                                     }
                                 }); 
@@ -519,8 +528,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         }
                     })
                     .on('mouseover', function(d) {
-                        me.mouseOverObjectAPIName = d.objectName;
-                        me.mouseOverRecordId = d.recordId;
+                        let tooltipId = d.recordId;
+                        let tooltipObject = d.objectName;
+
+                        if ( d.tooltipId != '') {
+                            tooltipId = d.tooltipId;
+                            tooltipObject = d.tooltipObject;
+                        }
+
+                        me.mouseOverObjectAPIName = tooltipObject;
+                        me.mouseOverRecordId = tooltipId;
+
                         me.mouseOverFallbackField = d.fallbackTooltipField;
                         me.mouseOverFallbackValue = d.fallbackTooltipValue;
 
