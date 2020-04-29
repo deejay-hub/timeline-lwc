@@ -51,10 +51,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
     localisedZoomStartDate;                                  //Start date of the current zoom
     localisedZoomEndDate;                                    //End date of the current zoom
     
-    totalTimelineRecords;                                    //Total number of records returned
-    totalZoomedRecords;                                      //Total records in zoom
+    totalTimelineRecords = 0;                                //Total number of records returned
+    totalZoomedRecords = 0;                                  //Total records in zoom
    
     noData = false;                                          //Boolean when no data is returned
+    noFilterData = false;                                    //Boolean when no data is returned after filtering
     isLoaded = false;                                        //Boolean when timeline data is loaded
     isError = false;                                         //Boolean when there is an error
 
@@ -74,7 +75,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     isFilterUpdated;
     isFilterLoaded = false;
 
-    timelineVisibility = 'timeline-container'                //Toggles the class to show and hide the timeline
+    illustrationVisibility = 'illustration-hidden'           //Toggles the class to show and hide the illustration component
 
     illustrationHeader;                                      //Header to display when an information box displays
     illustrationSubHeader;                                   //Sub Header to display when an info box appears
@@ -185,13 +186,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this._d3Rendered = true;
         }
 
-        let timelineIllustrationContainer = this.template.querySelector("div.illustration-container");
-
-        //The timeline container for errors is hidden by default so might not always be valid. But if it's been shown change the height
-        if ( timelineIllustrationContainer !== undefined &&  timelineIllustrationContainer !== null ) {
-            timelineIllustrationContainer.setAttribute('style', 'height:' + (this._timelineHeight + 175) + 'px')
-        }
-
         let timelineSummary = this.template.querySelectorAll("span.timeline-summary-verbose");
 
         if ( timelineSummary !== undefined &&  timelineSummary !== null ) {
@@ -204,6 +198,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
     processTimeline() {
         const me = this;
 
+        me.illustrationVisibility = 'illustration-hidden'
+        me.isError = false;
+        me.noData = false;
         me.isLoaded = false;
 
         const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
@@ -291,10 +288,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
             catch(error) {
                 me.processError('Error', me.error.UNHANDLED, error.message);
+                throw(error);
             }
         })
         .catch(error => {
             me.processError('Error', me.error.APEX, error.body.message);
+            throw(error);
         })
         
     }
@@ -363,15 +362,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
         };
 
         timelineCanvas.width = width;
-
         timelineCanvas.height = timelineHeight;
        
         timelineCanvas.filter = function(d) {
-
             if (me.isFilterLoaded == false || me.filterValues.includes(d.objectName)) {
                 return true;
             }
-        
             return false;
         };
 
@@ -608,14 +604,20 @@ export default class timeline extends NavigationMixin(LightningElement) {
     processError(type, header, message) {
 
         this.isLoaded = true;
-        this.timelineVisibility = 'timeline-container-hidden';
+        this.illustrationVisibility = 'illustration';
 
-        if ( type === 'Error' ) {
-            this.isError = true;
-        }
-        else {
-            this.isError = false;
-            this.noData = true;
+        switch (type) {
+            case 'No-Data':
+                this.isError = false;
+                this.noData = true;
+                break;
+            case 'No-Filter-Data':
+                this.isError = false;
+                this.noFilterData = true;
+                break;
+            default:
+                this.isError = true;
+                break;
         }
 
         this.illustrationType = type;
@@ -724,6 +726,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('height', 2)
                     .attr('rx', 0.2)
                     .attr('ry', 0.2);
+
+            if (data.length <=0 ) {
+                me.processError('No-Filter-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
+            }
         };
         return timelineMap;
     }
@@ -895,11 +901,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
         return d3DateFormat;
     }
 
-    get showIllustration() {
-        if ( this.isError || this.noData ) {
-            return true;
+    get showSummary() {
+        if ( (this.isError || this.noData || this.noFilterData || !this.isLoaded) ) {
+            return false;
         }
-        return false;        
+        return true;        
     }
 
     get showFallbackTooltip() {
@@ -993,8 +999,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     refreshTimeline() {
-        this._d3timelineMapSVG.selectAll('[class~=timeline-map-record]').remove();
-        this._d3timelineMap.redraw();
-        this._d3brush.redraw();
+        this.isError = false;
+        this.noFilterData = false;
+
+        if ( this.totalTimelineRecords > 0 ) {
+            this.illustrationVisibility = 'illustration-hidden'
+            this._d3timelineMapSVG.selectAll('[class~=timeline-map-record]').remove();
+            this._d3timelineMap.redraw();
+            this._d3brush.redraw();
+        }
     }
 }

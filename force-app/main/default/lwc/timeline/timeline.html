@@ -1,6 +1,6 @@
 <template>
     <!--main timeline component-->
-    <div class={timelineVisibility}>
+    <div class="timeline-container">
 
         <!--header-->
         <div class="slds-grid slds-grid--align-spread">
@@ -15,7 +15,7 @@
             <div class="slds-col slds-shrink-none slds-align-middle">
                 <div class="slds-form--inline">  
                     <div class="slds-form-element">
-                        <template if:true={isLoaded}>
+                        <template if:true={showSummary}>
                             <div class="timeline-summary"> 
                                 <span class="timeline-summary-verbose">{label.SHOWING} </span>
                                 <span>{localisedZoomStartDate} - {localisedZoomEndDate}</span>
@@ -48,6 +48,14 @@
                 </div>
             </div>
 
+            <!--illustration component when there is an error-->
+            <div class={illustrationVisibility}>
+                <div class="stencil-timeline"  >
+                    <c-illustration header={illustrationHeader} sub-header={illustrationSubHeader} type={illustrationType}></c-illustration>
+                </div>
+            </div>
+            <!--end illustration component-->
+
             <div class="timeline-filter slds-float_right slds-panel slds-size_small slds-panel_docked slds-panel_docked-right" aria-hidden="false">
 
                 <div class="slds-panel__header" style="height: 50px;">
@@ -71,9 +79,7 @@
                 </div>
 
                 <div class="slds-panel__body">
-                    
-                    <legend class="slds-form-element__label slds-text-title--caps">{label.TYPE_LEGEND}</legend>
-                    
+                    <legend class="slds-form-element__label slds-text-title--caps">{label.TYPE_LEGEND}</legend>                   
                     <div class="slds-form-element">
                         <div class="slds-form-element__control">
                             <div class="slds-checkbox">
@@ -101,10 +107,8 @@
                     <div class="slds-form-element__label" style='padding-top: 5px'>
                         {timelineStart} - {timelineEnd}
                     </div>
-
                 </div>
             </div>
-            
         </div>
         <!--end timeline body-->
 
@@ -116,28 +120,6 @@
         </div>
         <!--end spinner-->
     </div>
-
-    <!--illustration component when there is an error-->
-    <template if:true={showIllustration}>
-        <div class="illustration-container">
-            <div class="slds-grid slds-grid--align-spread">
-                <div class="slds-col slds-shrink slds-align-middle">
-                    <h1 class="slds-text-heading--medium">{title}</h1>
-                </div>
-                <div class="slds-col slds-shrink-none slds-align-middle">
-                    <div class="slds-form--inline">  
-                        <div class="slds-form-element">
-                            <lightning-button-icon class="forceRefreshButton rotate" icon-name="utility:refresh"  alternative-text="Refresh" onclick={processTimeline}></lightning-button-icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="stencil-timeline"  >
-                <c-illustration header={illustrationHeader} sub-header={illustrationSubHeader} type={illustrationType}></c-illustration>
-            </div>
-        </div>
-    </template>
-    <!--end illustration component-->
 
     <!--tooltips FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
     <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top" >
@@ -179,10 +161,8 @@
                         </div>
                     </div>
                 </template>
-
         </template>
         </div>
     </div>
     <!--end tooltips-->
-
 </template>
