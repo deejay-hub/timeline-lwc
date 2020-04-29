@@ -914,12 +914,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
     toggleFilter() {
         const filterPopover = this.template.querySelector("div.timeline-filter");
         const filterClasses = String(filterPopover.classList);
+        const refreshButton = this.template.querySelector("lightning-button-icon.timeline-refresh");
 
         if ( filterClasses.includes('slds-is-open') ) {
+            refreshButton.disabled = false;
             filterPopover.classList.remove('slds-is-open');
             this.isFilter = false;
         }
         else {
+            refreshButton.disabled = true;
             filterPopover.classList.add('slds-is-open');
             this.isFilter = true;
         }
