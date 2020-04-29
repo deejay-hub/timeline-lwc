@@ -206,6 +206,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         me.isLoaded = false;
 
+        const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
+        me.timelineStart = dateTimeFormat.format(moment().subtract(me.earliestRange, 'years'));
+        me.timelineEnd = dateTimeFormat.format(moment().add(me.latestRange, 'years'));
+
         me._d3timelineCanvasSVG.selectAll("*").remove();
         me._d3timelineCanvasAxisSVG.selectAll("*").remove();
         me._d3timelineMapSVG.selectAll("*").remove();
@@ -332,12 +336,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineRecords.data = timelineResult;
         timelineRecords.minTime = d3.min(timelineTimes);
         timelineRecords.maxTime = d3.max(timelineTimes);
-       
-        const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
-  
-        this.timelineStart = dateTimeFormat.format(moment().subtract(this.earliestRange, 'years'));
-        this.timelineEnd = dateTimeFormat.format(moment().add(this.latestRange, 'years'));
-
         timelineRecords.requestRange = [moment().subtract(this.earliestRange, 'years').toDate(), moment().add(this.latestRange, 'years').toDate()];
         
         return timelineRecords;
