@@ -700,6 +700,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 swimlanes[swimlane] = entry.endTime;
             });
 
+            data = data.filter(function(d) {
+                if ( d.swimlane < 8 ) {
+                    return true;
+                }
+                return false;
+            });
+
             timelineMap.width = timelineMap.x.range()[1];
             timelineMapSVG.attr('width', timelineMap.width);
 
