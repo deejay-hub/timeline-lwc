@@ -192,7 +192,14 @@ public with sharing class TimelineService {
 
                                 mapData.put('objectId', myId);
                                 mapData.put('parentObject', parentObjectType);
-                                mapData.put('detailField', detailValues.get('value'));
+
+                                if ( detailValues.get('value') == '' || detailValues.get('value') == null ) { //NOPMD
+                                    mapData.put('detailField', '[' + detailValues.get('label') +']');
+                                }
+                                else {
+                                    mapData.put('detailField', detailValues.get('value'));
+                                }
+                                
                                 mapData.put('detailFieldLabel', detailValues.get('label'));
                                 mapData.put('positionDateField', tr.positionDateField);
                                 mapData.put('positionDateValue', positionValues.get('value'));
