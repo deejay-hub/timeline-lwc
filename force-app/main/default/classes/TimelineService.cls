@@ -260,18 +260,25 @@ public with sharing class TimelineService {
             String splitObject = field.SubStringBefore('.');
             String splitField = field.SubStringAfter('.');
 
-            fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
             String recordId = String.valueOf(records.getSobject(splitObject).get('Id'));
             String objectType = String.valueOf(Id.valueOf(recordId).getSobjectType());
 
             Schema.DescribeSObjectResult describeParentSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(objectType)).newInstance())).getSObjectType().getDescribe();
+
             fieldLabel = String.valueOf( describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel() );
+
+            if (  describeParentSobjects.fields.getMap().get(splitField).getDescribe().isAccessible()  == true ) {
+                fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
+            }
         }
         else {
             Schema.DescribeSObjectResult describeSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(records.getSobjectType())).newInstance())).getSObjectType().getDescribe();
 
-            fieldValue = String.valueOf(records.get(field));
             fieldLabel = String.valueOf( describeSobjects.fields.getMap().get(field).getDescribe().getLabel() );
+
+            if (  describeSobjects.fields.getMap().get(field).getDescribe().isAccessible()  == true ) {
+                fieldValue = String.valueOf(records.get(field));
+            }
         }
 
         if (fieldValue != null && fieldValue.length() > 255) {
