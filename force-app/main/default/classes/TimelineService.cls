@@ -77,6 +77,7 @@ public with sharing class TimelineService {
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
 
             Map<String, TimelineRecord> mapOfTimelineConfigurationRecords = new Map<String, TimelineRecord>();
+            Map<String, String> mapOfFields = new Map<String, String>();
 
             for ( Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations ) {
 
@@ -95,9 +96,16 @@ public with sharing class TimelineService {
                 timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
  
                 mapOfTimelineConfigurationRecords.put(timelineRecord.objectName + timelineRecord.relationshipName, timelineRecord);
+                mapOfFields.put(timelineRecord.detailField, timelineRecord.objectName);
+                mapOfFields.put(timelineRecord.positionDateField, timelineRecord.objectName);
+                mapOfFields.put(timelineRecord.fallbackTooltipField, timelineRecord.objectName);
+                mapOfFields.put(timelineRecord.tooltipIdField, timelineRecord.objectName);
+                mapOfFields.put(timelineRecord.drilldownIdField, timelineRecord.objectName);
+                mapOfFields.put(timelineRecord.type, timelineRecord.objectName);
             }
 
             Map<String, String> childObjects = getChildObjects(parentObjectType);
+            Map<String, FieldMetadata> fieldAttributes = getFieldMetadata(mapOfFields, parentObjectType);
 
             String innerQuery = '';
 
@@ -168,7 +176,7 @@ public with sharing class TimelineService {
 
             for (Sobject each : listOfTimelineRecords) {
                 for (String eachObj : mapOfTimelineConfigurationRecords.keyset()) {
-                    if (childObjects.containsKey(eachObj) && each.getSObjects(childObjects.get(eachObj)) != null && each.getSObjects(childObjects.get(eachObj)).size() != 0)
+                    if (each.getSObjects(childObjects.get(eachObj)) != null) {
                         for (Sobject eachCh : (List<SObject>)each.getSObjects(childObjects.get(eachObj))) {
 
                             Map<String, String> mapData = new Map<String, String>();
@@ -179,12 +187,12 @@ public with sharing class TimelineService {
 
                             if ( tr != null ) {
                                 String myId = eachCh.Id;
-                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh);
-                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh);
-                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh);
-                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh);
-                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh);
-                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh);
+                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh, fieldAttributes);
+                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh, fieldAttributes);
+                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh, fieldAttributes);
+                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh, fieldAttributes);
+                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh, fieldAttributes);
+                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh, fieldAttributes);
 
                                 if ( tr.objectName == 'ContentDocumentLink') { //NOPMD
                                     myId = String.valueOf(eachCh.get('ContentDocumentId'));
@@ -218,6 +226,7 @@ public with sharing class TimelineService {
                                 listOfTimelineData.add(mapData);
                             }
                         }
+                    }
                 }
             }
             return listOfTimelineData;
@@ -239,9 +248,43 @@ public with sharing class TimelineService {
 			}
 		}
 		return childRelatedObjects;
-	}
+    }
+    
+    private static Map<String, FieldMetadata> getFieldMetadata(Map<String, String> fields, String baseObject) {
+        
+        String fieldLabel;
+        Boolean fieldAccess;
+        Map<String, FieldMetadata> mapOfFieldMetadata = new Map<String, FieldMetadata>();
 
-    private static Map<String, String> getFieldValues(String field, Sobject records) {
+        for (String field : fields.keySet() ) {
+
+            if ( field != null && field != '' ) {
+                String fieldObject = fields.get( field );
+                Boolean isDotNotationUsed = field.contains('.');
+                FieldMetadata fieldMetadata = new fieldMetadata();
+
+                if ( isDotNotationUsed == true ) {
+                    String splitObject = field.SubStringBefore('.');
+                    String splitField = field.SubStringAfter('.');
+
+                    Schema.DescribeSObjectResult describeParentSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(splitObject)).newInstance())).getSObjectType().getDescribe();
+                    fieldMetadata.label = String.valueOf( describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel() );
+                    fieldMetadata.canAccess = Boolean.valueOf(describeParentSobjects.fields.getMap().get(splitField).getDescribe().isAccessible() );
+                }
+                else {
+                    Schema.DescribeSObjectResult describeSobjects = ((SObject)(Type.forName('Schema.'+ fieldObject).newInstance())).getSObjectType().getDescribe();
+
+                    fieldMetadata.label = String.valueOf( describeSobjects.fields.getMap().get(field).getDescribe().getLabel() );
+                    fieldMetadata.canAccess = Boolean.valueOf(describeSobjects.fields.getMap().get(field).getDescribe().isAccessible() );
+                }
+            
+                mapOfFieldMetadata.put(field, fieldMetadata);
+            }
+        }
+        return mapOfFieldMetadata;
+    }
+
+    private static Map<String, String> getFieldValues(String field, Sobject records, Map<String, FieldMetadata> fieldAttributes) {
 
         Map<String, String> fieldDetails = new Map<String, String>();
 
@@ -254,29 +297,23 @@ public with sharing class TimelineService {
             return fieldDetails;
         }
 
+        FieldMetadata fm = fieldAttributes.get(field );
         Boolean isDotNotationUsed = field.contains('.');
 
         if ( isDotNotationUsed == true ) {
             String splitObject = field.SubStringBefore('.');
             String splitField = field.SubStringAfter('.');
 
-            String recordId = String.valueOf(records.getSobject(splitObject).get('Id'));
-            String objectType = String.valueOf(Id.valueOf(recordId).getSobjectType());
+            fieldLabel = fm.label ;
 
-            Schema.DescribeSObjectResult describeParentSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(objectType)).newInstance())).getSObjectType().getDescribe();
-
-            fieldLabel = String.valueOf( describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel() );
-
-            if (  describeParentSobjects.fields.getMap().get(splitField).getDescribe().isAccessible()  == true ) {
+            if (  fm.canAccess  == true ) {
                 fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
             }
         }
         else {
-            Schema.DescribeSObjectResult describeSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(records.getSobjectType())).newInstance())).getSObjectType().getDescribe();
+            fieldLabel = fm.label ;
 
-            fieldLabel = String.valueOf( describeSobjects.fields.getMap().get(field).getDescribe().getLabel() );
-
-            if (  describeSobjects.fields.getMap().get(field).getDescribe().isAccessible()  == true ) {
+            if (  fm.canAccess  == true ) {
                 fieldValue = String.valueOf(records.get(field));
             }
         }
@@ -301,30 +338,34 @@ public with sharing class TimelineService {
                 return true;
             }
         }
-
         return false;
     }
 
     private class TimelineRecord { //NOPMD
-        @AuraEnabled public Boolean active;
-        @AuraEnabled public String relationshipName;
-        @AuraEnabled public String parentObject;
-        @AuraEnabled public String detailField;
-        @AuraEnabled public String detailFieldLabel;
-        @AuraEnabled public String icon;
-        @AuraEnabled public String iconBackground;
-        @AuraEnabled public String positionDateField;
-        @AuraEnabled public String positionDateValue;
-        @AuraEnabled public String objectName;
-        @AuraEnabled public String objectLabel;
-        @AuraEnabled public String type;
-        @AuraEnabled public String tooltipIdField;
-        @AuraEnabled public String tooltipObject;
-        @AuraEnabled public String drilldownIdField;
-        @AuraEnabled public String fallbackTooltipField;
-        @AuraEnabled public String fallbackTooltipValue;
-        @AuraEnabled public String fallbackNameField;
-        @AuraEnabled public String fallbackNameValue;
-        @AuraEnabled public Id recordId;
+        private Boolean active;
+        private String relationshipName;
+        private String parentObject;
+        private String detailField;
+        private String detailFieldLabel;
+        private String icon;
+        private String iconBackground;
+        private String positionDateField;
+        private String positionDateValue;
+        private String objectName;
+        private String objectLabel;
+        private String type;
+        private String tooltipIdField;
+        private String tooltipObject;
+        private String drilldownIdField;
+        private String fallbackTooltipField;
+        private String fallbackTooltipValue;
+        private String fallbackNameField;
+        private String fallbackNameValue;
+        private Id recordId;
+    }
+
+    private class FieldMetadata { //NOPMD
+        private Boolean canAccess;
+        private String label;
     }
 }
