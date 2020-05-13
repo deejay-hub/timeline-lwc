@@ -383,7 +383,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             const unitInterval = (timelineCanvas.x.domain()[1] - timelineCanvas.x.domain()[0]) / timelineCanvas.width;
 
             let data = timelineData.data.filter(function(d) {
-                            d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 5 + 70));
+                            d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 6 + 80));
                             return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
                           }).filter(timelineCanvas.filter);
 
