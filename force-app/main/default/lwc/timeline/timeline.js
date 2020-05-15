@@ -197,12 +197,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     processTimeline() {
         const me = this;
-
-        me.illustrationVisibility = 'illustration-hidden'
         me.isError = false;
-        me.noData = false;
         me.isLoaded = false;
 
+        me.illustrationVisibility = 'illustration-hidden'
+        me.noData = false;
+        
         const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
         me.timelineStart = dateTimeFormat.format(moment().subtract(me.earliestRange, 'years'));
         me.timelineEnd = dateTimeFormat.format(moment().add(me.latestRange, 'years'));
@@ -312,7 +312,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.time = moment(record.positionDateValue, 'YYYY-MM-DD HH:mm:ss').toDate(); 
             recordCopy.week =  moment(record.positionDateValue, 'YYYY-MM-DD').startOf('week');
             recordCopy.objectName = record.objectName;
-            recordCopy.objectLabel = record.objectLabel;
             recordCopy.positionDateField = record.positionDateField;
             recordCopy.detailField = record.detailField;
             recordCopy.detailFieldLabel = record.detailFieldLabel;
@@ -602,27 +601,34 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     processError(type, header, message) {
-
         this.isLoaded = true;
         this.illustrationVisibility = 'illustration';
 
+        this.illustrationHeader = header;
+        this.illustrationSubHeader = message;
+
         switch (type) {
             case 'No-Data':
+                this.illustrationType = 'Desert';
                 this.isError = false;
                 this.noData = true;
                 break;
             case 'No-Filter-Data':
+                this.illustrationType = 'Desert';
                 this.isError = false;
                 this.noFilterData = true;
                 break;
+            case 'Setup-Error':
+                this.illustrationType = 'Setup';
+                this.isError = true;
+                this.noFilterData = false;
+                this.noData = false;
+                break;
             default:
+                this.illustrationType = 'PageNotAvailable';
                 this.isError = true;
                 break;
         }
-
-        this.illustrationType = type;
-        this.illustrationHeader = header;
-        this.illustrationSubHeader = message; 
     }
 
     getPreferredHeight() {
