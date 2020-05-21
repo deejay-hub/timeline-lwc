@@ -82,7 +82,6 @@ public with sharing class TimelineService {
             for ( Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations ) {
 
                 TimelineRecord timelineRecord = new timelineRecord();
-                timelineRecord.active = timelineConfigurationRecord.Active__c;
                 timelineRecord.relationshipName = timelineConfigurationRecord.Relationship_Name__c;
                 timelineRecord.icon = timelineConfigurationRecord.Icon__c;
                 timelineRecord.iconBackground = timelineConfigurationRecord.Icon_Background_Colour__c;
@@ -183,10 +182,9 @@ public with sharing class TimelineService {
 
                             TimelineRecord tr = mapOfTimelineConfigurationRecords.get(eachObj );
 
-                            String objectLabel  = ((SObject)(Type.forName('Schema.'+ String.valueOf(eachCh.getSobjectType())).newInstance())).getSObjectType().getDescribe().getLabel();
-
                             if ( tr != null ) {
                                 String myId = eachCh.Id;
+
                                 Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh, fieldAttributes);
                                 Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh, fieldAttributes);
                                 Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh, fieldAttributes);
@@ -212,7 +210,6 @@ public with sharing class TimelineService {
                                 mapData.put('positionDateField', tr.positionDateField);
                                 mapData.put('positionDateValue', positionValues.get('value'));
                                 mapData.put('objectName', tr.objectName);
-                                mapData.put('objectLabel', objectLabel);
                                 mapData.put('fallbackTooltipField', fallbackValues.get('label'));
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
                                 mapData.put('drilldownId', drilldownIdValues.get('value'));
@@ -300,20 +297,16 @@ public with sharing class TimelineService {
         FieldMetadata fm = fieldAttributes.get(field );
         Boolean isDotNotationUsed = field.contains('.');
 
-        if ( isDotNotationUsed == true ) {
-            String splitObject = field.SubStringBefore('.');
-            String splitField = field.SubStringAfter('.');
+        fieldLabel = fm.label ;
 
-            fieldLabel = fm.label ;
+        if (fm.canAccess) { 
 
-            if (  fm.canAccess  == true ) {
+            if ( isDotNotationUsed == true ) {
+                String splitObject = field.SubStringBefore('.');
+                String splitField = field.SubStringAfter('.');
                 fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
             }
-        }
-        else {
-            fieldLabel = fm.label ;
-
-            if (  fm.canAccess  == true ) {
+            else {
                 fieldValue = String.valueOf(records.get(field));
             }
         }
@@ -342,7 +335,6 @@ public with sharing class TimelineService {
     }
 
     private class TimelineRecord { //NOPMD
-        private Boolean active;
         private String relationshipName;
         private String parentObject;
         private String detailField;
@@ -352,7 +344,6 @@ public with sharing class TimelineService {
         private String positionDateField;
         private String positionDateValue;
         private String objectName;
-        private String objectLabel;
         private String type;
         private String tooltipIdField;
         private String tooltipObject;
