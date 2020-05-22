@@ -9,6 +9,14 @@
         <value>Apex error</value>
     </labels>
     <labels>
+        <fullName>Timeline_Error_Setup</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_Setup</shortDescription>
+        <value>Setup error</value>
+    </labels>
+    <labels>
         <fullName>Timeline_Error_JavaScriptResources</fullName>
         <categories>TImeline</categories>
         <language>en_US</language>

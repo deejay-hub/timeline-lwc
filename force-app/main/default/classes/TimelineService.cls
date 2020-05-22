@@ -40,7 +40,7 @@ public with sharing class TimelineService {
             return mapOfTimelineTypes;
         }
         catch(Exception e) {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
         }
     }
 
@@ -75,6 +75,11 @@ public with sharing class TimelineService {
                                         + 'Parent_Object__c =:parentConfigType'; //NOPMD
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
+
+            if ( listofTimelineConfigurations.size() < 1 ) {
+                String errorMsg = 'No active records for parent entity  \'' + parentObjectType + '\' have been found in \'Timeline_Configuration_mdt\'. Ask an administrator for help.';
+                throw new TimelineSetupException( '{"type": "Setup-Error", "message": "' + errorMsg + '"}' );
+            }
 
             Map<String, TimelineRecord> mapOfTimelineConfigurationRecords = new Map<String, TimelineRecord>();
             Map<String, String> mapOfFields = new Map<String, String>();
@@ -253,31 +258,41 @@ public with sharing class TimelineService {
         Boolean fieldAccess;
         Map<String, FieldMetadata> mapOfFieldMetadata = new Map<String, FieldMetadata>();
 
+        
         for (String field : fields.keySet() ) {
+            
 
             if ( field != null && field != '' ) {
                 String fieldObject = fields.get( field );
                 Boolean isDotNotationUsed = field.contains('.');
                 FieldMetadata fieldMetadata = new fieldMetadata();
 
-                if ( isDotNotationUsed == true ) {
-                    String splitObject = field.SubStringBefore('.');
-                    String splitField = field.SubStringAfter('.');
+                try {
 
-                    Schema.DescribeSObjectResult describeParentSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(splitObject)).newInstance())).getSObjectType().getDescribe();
-                    fieldMetadata.label = String.valueOf( describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel() );
-                    fieldMetadata.canAccess = Boolean.valueOf(describeParentSobjects.fields.getMap().get(splitField).getDescribe().isAccessible() );
+                    if ( isDotNotationUsed == true ) {
+                        String splitObject = field.SubStringBefore('.');
+                        String splitField = field.SubStringAfter('.');
+    
+                        Schema.DescribeSObjectResult describeParentSobjects = ((SObject)(Type.forName('Schema.'+ String.valueOf(splitObject)).newInstance())).getSObjectType().getDescribe();
+                        fieldMetadata.label = String.valueOf( describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel() );
+                        fieldMetadata.canAccess = Boolean.valueOf(describeParentSobjects.fields.getMap().get(splitField).getDescribe().isAccessible() );
+                    }
+                    else {
+                        Schema.DescribeSObjectResult describeSobjects = ((SObject)(Type.forName('Schema.'+ fieldObject).newInstance())).getSObjectType().getDescribe();
+    
+                        fieldMetadata.label = String.valueOf( describeSobjects.fields.getMap().get(field).getDescribe().getLabel() );
+                        fieldMetadata.canAccess = Boolean.valueOf(describeSobjects.fields.getMap().get(field).getDescribe().isAccessible() );
+                    }
+                }    
+                catch(Exception e) {
+                    String errorMsg = 'No such column \'' + field + '\' on entity \'' + fieldObject + '\'. If you are attempting to use a custom field, be sure to append the \'__c\' after the custom field name. ' + e.getMessage();
+                    throw new TimelineSetupException( '{"type": "Setup-Error", "message": "' + errorMsg + '"}' );
                 }
-                else {
-                    Schema.DescribeSObjectResult describeSobjects = ((SObject)(Type.forName('Schema.'+ fieldObject).newInstance())).getSObjectType().getDescribe();
 
-                    fieldMetadata.label = String.valueOf( describeSobjects.fields.getMap().get(field).getDescribe().getLabel() );
-                    fieldMetadata.canAccess = Boolean.valueOf(describeSobjects.fields.getMap().get(field).getDescribe().isAccessible() );
-                }
-            
                 mapOfFieldMetadata.put(field, fieldMetadata);
             }
         }
+        
         return mapOfFieldMetadata;
     }
 
@@ -359,4 +374,7 @@ public with sharing class TimelineService {
         private Boolean canAccess;
         private String label;
     }
+
+    private class TimelineSetupException extends Exception {}
+    
 }

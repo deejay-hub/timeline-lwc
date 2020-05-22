@@ -11,6 +11,7 @@ import d3JS from '@salesforce/resourceUrl/d3minified';
 import momentJS from '@salesforce/resourceUrl/momentminified';  
 
 import APEX from '@salesforce/label/c.Timeline_Error_Apex';
+import SETUP from '@salesforce/label/c.Timeline_Error_Setup';
 import NO_DATA_HEADER from '@salesforce/label/c.Timeline_Error_NoDataHeader';
 import NO_DATA_SUBHEADER from '@salesforce/label/c.Timeline_Error_NoDataSubHeader';
 import JAVASCRIPT_LOAD from '@salesforce/label/c.Timeline_Error_JavaScriptResources';
@@ -96,6 +97,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     error = {
         APEX,
+        SETUP,
         NO_DATA_HEADER, 
         NO_DATA_SUBHEADER, 
         JAVASCRIPT_LOAD, 
@@ -126,25 +128,27 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @wire(getTimelineTypes, { parentObjectId: '$recordId' } )
     wiredResult(result) {
         if (result.data) {
-            const timelineTs = result.data;
-            
-            for(let key in timelineTs) {
-
-                if (timelineTs.hasOwnProperty(key)) {
-                    this.filterValues.push(key);
-
-                    let tempFilter = [];
-
-                    tempFilter.label = timelineTs[key];
-                    tempFilter.value = key;
-
-                    this.objectFilter.push(tempFilter);
-                    this.startingFilterValues.push(key);
-                    this.allFilterValues.push(key);
+                const timelineTs = result.data;
+                
+                for(let key in timelineTs) {
+                    if (timelineTs.hasOwnProperty(key)) {
+                        this.filterValues.push(key);
+                        let tempFilter = [];
+    
+                        tempFilter.label = timelineTs[key];
+                        tempFilter.value = key;
+    
+                        this.objectFilter.push(tempFilter);
+                        this.startingFilterValues.push(key);
+                        this.allFilterValues.push(key);
+                    }
                 }
+                this.isFilterLoaded = true;
             }
-            this.isFilterLoaded = true;
-        }
+        else if ( result.error ) {
+            let errorMessage = result.error.body.message;
+            this.processError('Error', this.error.APEX, errorMessage);
+        }   
     }
 
     disconnectedCallback() {
@@ -287,15 +291,30 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 }  
             }
             catch(error) {
+
                 me.processError('Error', me.error.UNHANDLED, error.message);
-                throw(error);
             }
         })
         .catch(error => {
-            me.processError('Error', me.error.APEX, error.body.message);
-            throw(error);
+
+            let errorType = 'Error';
+            let errorHeading = '--';
+            let errorMessage = '--';
+
+            try {
+                errorMessage = error.body.message;
+                let customError = JSON.parse(errorMessage);
+                errorType = customError.type;
+                errorMessage = customError.message;
+                errorHeading = me.error.SETUP;
+            }
+            catch (error2) {
+                //fails to parse message so is a generic apex error
+                errorHeading = me.error.APEX;
+            }
+            
+            me.processError(errorType, errorHeading, errorMessage);
         })
-        
     }
 
     getTimelineRecords ( result ) {
@@ -601,33 +620,35 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     processError(type, header, message) {
-        this.isLoaded = true;
-        this.illustrationVisibility = 'illustration';
 
-        this.illustrationHeader = header;
-        this.illustrationSubHeader = message;
+        if ( this.illustrationVisibility != 'illustration') {
+            this.isLoaded = true;
+            this.illustrationVisibility = 'illustration';
+            this.illustrationHeader = header;
+            this.illustrationSubHeader = message;
 
-        switch (type) {
-            case 'No-Data':
-                this.illustrationType = 'Desert';
-                this.isError = false;
-                this.noData = true;
-                break;
-            case 'No-Filter-Data':
-                this.illustrationType = 'Desert';
-                this.isError = false;
-                this.noFilterData = true;
-                break;
-            case 'Setup-Error':
-                this.illustrationType = 'Setup';
-                this.isError = true;
-                this.noFilterData = false;
-                this.noData = false;
-                break;
-            default:
-                this.illustrationType = 'PageNotAvailable';
-                this.isError = true;
-                break;
+            switch (type) {
+                case 'No-Data':
+                    this.illustrationType = 'Desert';
+                    this.isError = false;
+                    this.noData = true;
+                    break;
+                case 'No-Filter-Data':
+                    this.illustrationType = 'Desert';
+                    this.isError = false;
+                    this.noFilterData = true;
+                    break;
+                case 'Setup-Error':
+                    this.illustrationType = 'Setup';
+                    this.isError = true;
+                    this.noFilterData = false;
+                    this.noData = false;
+                    break;
+                default:
+                    this.illustrationType = 'PageNotAvailable';
+                    this.isError = true;
+                    break;
+            }
         }
     }
 
