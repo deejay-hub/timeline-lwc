@@ -1,9 +1,7 @@
 /*
-1 - Can create a valid record in Timeline_Config__mdt
-2 - Cannot create an invalid record in Timeline_Config__mdt
-3 - Does the filter get the correct types for display
-4 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
-5 - Is an exception thrown when an unexpected things happen 
+1 - Does the filter get the correct types for display
+2 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
+3 - Is an exception thrown when an unexpected things happen 
 */
 @isTest(seeAllData = false)
 private with sharing class TimelineService_Test {
@@ -11,137 +9,55 @@ private with sharing class TimelineService_Test {
     private static User currentUser;
 
     @isTest
-    static void testValidTimelineConfiguration() {
-
-        //System.runAs(currentUser) {
-            Timeline_Configuration__mdt timelineConfiguration  = new Timeline_Configuration__mdt(
-                DeveloperName = 'Contact_Cases',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/case.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Case',
-                Parent_Object__c  =  'Contact',
-                Position_Date_Field__c = 'CreatedDate',
-                Sequence__c = 10
-            );
-            
-            Test.startTest();
-            //insert timelineConfiguration;
-            Test.stopTest();
-
-                
-            //Assert that one record was created successfully
-            //Timeline_Configuration__mdt[] timelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
-            System.assertEquals( 1, 1, 'Timeline configuration metadata type record could not be created successfully' );
-        //}
-    }
-
-    @isTest
-    static void testInvalidTimelineConfiguration() {
-
-        //System.runAs(currentUser) {
-            Timeline_Configuration__mdt timelineConfiguration  = new Timeline_Configuration__mdt(
-                DeveloperName = 'SAP_Cases',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/case.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Case',
-                Parent_Object__c  =  'SAP__e',
-                Position_Date_Field__c = 'CreatedDate',
-                Sequence__c = 10
-
-                
-            );
-
-            Test.startTest();
-            //insert timelineConfiguration;
-            Test.stopTest();
-      
-            //Assert that no record was created successfully as external objects are not permitted (validation rule)
-            //Timeline_Configuration__mdt[] timelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
-            System.assertEquals( 0, 0, 'Timeline configuration metadata type record could be created successfully when an error was expected' );
-        //}
-    }
-
-    @isTest
     static void testTimelineTypesForFilter() {
 
-        List<Timeline_Configuration__mdt> timelineConfigurations = new List<Timeline_Configuration__mdt>();
+        Contact janeLo = new Contact();
 
-         //System.runAs(currentUser) {
-            Timeline_Configuration__mdt contactCasesConfig  = new Timeline_Configuration__mdt(
-                DeveloperName = 'Contact_Cases',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/case.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Case',
-                Parent_Object__c  =  'Contact',
-                Position_Date_Field__c = 'CreatedDate',
-                Sequence__c = 10
-            );
+        janeLo.FirstName = 'Jane';
+        janeLo.LastName = 'Lo';
 
-            timelineConfigurations.add(contactCasesConfig);
+        insert(janeLo);
 
-            Timeline_Configuration__mdt contactTasksConfig  = new Timeline_Configuration__mdt(
-                DeveloperName = 'Contact_Tasks',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/task.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Task',
-                Parent_Object__c  =  'Contact',
-                Position_Date_Field__c = 'ActivityDate',
-                Sequence__c = 20
-            );
-           
-            timelineConfigurations.add(contactTasksConfig);
+        Test.startTest();
+        Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id);
+        //Boolean moreThanOneTimelineType = ( (timelineTypes.size() > 0) ? true : false );
+        Test.stopTest();
 
-            //insert timelineConfigurations;
-
-            //timelineService = new TimelineService();
-
-            Test.startTest();
-            //timelineService.getTimelineTypes(parentObjectId);
-            Test.stopTest();
-
-        //}
-
-        System.assertEquals('1','1', 'false');
+        System.assert( timelineTypes.size() > 0, 'At least 1 timeline type in \'Timeline_Configuration_Type__mdt\' is expected for entity \'Contact\'' );
     }
 
     @isTest
-    static void testActiveTimelineRecords() {
+    static void testTimelineRecordsInRange() {
+
+        Contact joeLo = new Contact();
+
+        joeLo.FirstName = 'Joe';
+        joeLo.LastName = 'Lo';
+
+        insert(joeLo);
+
+        Task joeTaskInRange = new Task();
+
+        joeTaskInRange.ActivityDate = Date.today();
+        joeTaskInRange.Description = 'New activity description for Joe';
+        joeTaskInRange.Subject = 'New activity for Joe';
+        joeTaskInRange.WhoId = joeLo.Id;
+
+        insert(joeTaskInRange);
+
+        Task joeTaskOutOfRange = new Task();
+
+        joeTaskOutOfRange.ActivityDate = Date.newInstance(1990, 2, 2);
+        joeTaskOutOfRange.Description = 'Old activity description for Joe';
+        joeTaskOutOfRange.Subject = 'Old activity for Joe';
+        joeTaskOutOfRange.WhoId = joeLo.Id;
+
+        insert(joeTaskOutOfRange);
 
         Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(joeLo.Id, '1', '1');
         Test.stopTest();
 
-        System.assertEquals('1','1', 'false');
-    }
-
-    private static void createTimelineConfiguration() {
-
-       
-
-    }
-
-    private static void createContactTimelineData() {
-
-        //System.runAs(currentUser) {
-            Contact janeLo = new Contact();
-
-            janeLo.FirstName = 'Jane';
-            janeLo.LastName = 'Lo';
-
-            //Save Contact
-
-            //Create Task
-
-            //Create Case
-
-        //}
-
+        System.assertEquals( 1, timelineRecords.size(), 'Incorrect number of Tasks found' );
     }
 }
