@@ -7,7 +7,7 @@
           "ignoreAtRules": ["extends", "ignores"]
         }
       ],
-      "indentation": "tab",
+      "indentation": 2,
       "color-hex-case": "upper",
       "number-leading-zero": null,
       "unit-whitelist": ["em", "rem", "s", "px", "%"]

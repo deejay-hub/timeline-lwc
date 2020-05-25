@@ -9,7 +9,7 @@
                     <h1 class="slds-text-heading--medium">{timelineTitle}</h1>
                 </template>
                 <template if:false={isLoaded}>
-                    <div class="stencil-value" style="margin-left: 10px"></div>
+                    <div class="stencil-value" style="margin-left: 10px;"></div>
                 </template>
             </div>
             <div class="slds-col slds-shrink-none slds-align-middle">
@@ -67,7 +67,7 @@
                     </template>
 
                     <template if:true={isFilterUpdated}>
-                        <div class="slds-grid" style="width:100%">
+                        <div class="slds-grid" style="width: 100%;">
                             <div>
                                 <lightning-button label={label.BUTTON_CANCEL} title="Cancel" onclick={cancelFilter}></lightning-button>
                             </div>
@@ -101,10 +101,10 @@
                         </lightning-checkbox-group>
                     </template>
 
-                    <div style='padding-top: 10px'></div>
+                    <div style='padding-top: 10px;'></div>
                     <legend class="slds-form-element__label slds-text-title--caps">{label.DATE_RANGE_LEGEND}</legend>
 
-                    <div class="slds-form-element__label" style='padding-top: 5px'>
+                    <div class="slds-form-element__label" style='padding-top: 5px;'>
                         {timelineStart} - {timelineEnd}
                     </div>
                 </div>
