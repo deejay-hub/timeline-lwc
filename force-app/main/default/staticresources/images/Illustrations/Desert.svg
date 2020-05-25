@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="237px" height="100px" viewBox="0 0 237 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Desert</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desert" transform="translate(-32.000000, -7.000000)">
+            <rect id="Rectangle-" fill-opacity="0" fill="#D8D8D8" x="0" y="4" width="299" height="103"></rect>
+            <g id="Cloud2" transform="translate(123.000000, 52.748815)" stroke="#C2E8FF" stroke-linecap="round" stroke-width="3">
+                <g id="Cloud2LightBlue">
+                    <path d="M22,8.79146919 L31.5,8.79146919 C31.1394857,6.06480614 32.0407715,3.78378292 34.2038574,1.94839955 C36.6877441,-0.0982417247 39.6367188,0.360587604 41.220459,1.06679965 C42.8041992,1.7730117 43.9803467,2.74328671 44.7956543,4.5741966 C45.1411133,5.34508018 45.3758952,5.99728321 45.5,6.53080569" id="Cloud2LightBlueLine4"></path>
+                    <path d="M41.5,10.2985782 C42.0279134,8.46301559 43.1113688,7.26289664 44.7503662,6.69822136 C47.2088623,5.85120844 49.5400391,6.97920986 50.4711914,8.11420227 C51.4023438,9.24919468 51.6975098,10.1609662 51.873291,11.1124759 C51.9904785,11.7468158 52.0327148,12.4802559 52,13.3127962 L54.081543,13.3127962 C56.0183919,13.8295019 56.9937985,14.9811653 57.0077626,16.7677864 C57.0322678,19.9575033 54.6954577,20.7511848 53.5,20.7511848 L14,20.7511848" id="Cloud2LightBlueLine3"></path>
+                    <line x1="9" y1="14.7511848" x2="41.5002493" y2="14.7511848" id="Cloud2LightBlueLine2"></line>
+                    <line x1="0" y1="14.7511848" x2="4" y2="14.7511848" id="Cloud2LightBlueLine1"></line>
+                </g>
+            </g>
+            <g id="Cloud1" transform="translate(74.000000, 25.748815)" stroke="#C2E8FF" stroke-linecap="round" stroke-width="3">
+                <g id="Cloud1LightBlue">
+                    <path d="M22,8.79146919 L31.5,8.79146919 C31.1394857,6.06480614 32.0407715,3.78378292 34.2038574,1.94839955 C36.6877441,-0.0982417247 39.6367188,0.360587604 41.220459,1.06679965 C42.8041992,1.7730117 43.9803467,2.74328671 44.7956543,4.5741966 C45.1411133,5.34508018 45.3758952,5.99728321 45.5,6.53080569" id="Cloud1LightBlueLine4"></path>
+                    <path d="M41.5,10.2985782 C42.0279134,8.46301559 43.1113688,7.26289664 44.7503662,6.69822136 C47.2088623,5.85120844 49.5400391,6.97920986 50.4711914,8.11420227 C51.4023438,9.24919468 51.6975098,10.1609662 51.873291,11.1124759 C51.9904785,11.7468158 52.0327148,12.4802559 52,13.3127962 L54.081543,13.3127962 C56.0183919,13.8295019 56.9937985,14.9811653 57.0077626,16.7677864 C57.0322678,19.9575033 54.6954577,20.7511848 53.5,20.7511848 L14,20.7511848" id="Cloud1LightBlueLine3"></path>
+                    <line x1="9" y1="14.7511848" x2="41.5002493" y2="14.7511848" id="Cloud1LightBlueLine2"></line>
+                    <line x1="0" y1="14.7511848" x2="4" y2="14.7511848" id="Cloud1LightBlueLine1"></line>
+                </g>
+            </g>
+            <g id="Mountain" transform="translate(34.000000, 80.881517)" stroke="#C2E8FF" stroke-linecap="round" stroke-width="3">
+                <g id="MountainLightBlue">
+                    <line x1="8" y1="18.6184834" x2="233" y2="18.6184834" id="HorizonLine4"></line>
+                    <line x1="0" y1="18.6184834" x2="3" y2="18.6184834" id="HorizonLine3"></line>
+                    <polyline id="MountainLightBlueLine4" stroke-linejoin="round" points="118.25 18.0853081 140.5 -7.11e-14 157.5 13.0616114"></polyline>
+                    <line x1="140.5" y1="0.502369668" x2="140.5" y2="17.5829384" id="MountainLightBlueLine3" stroke-linejoin="round"></line>
+                    <path d="M157.75,5.52606635 C157.75,10.4210503 157.75,12.9328986 157.75,13.0616114 C157.75,12.9328986 157.75,10.4210503 157.75,5.52606635 Z" id="MountainLightBlueLine2" stroke-linejoin="round"></path>
+                    <polyline id="MountainLightBlueLine1" stroke-linejoin="round" points="152.75 8.54028436 157.75 4.52132701 174.75 18.0853081"></polyline>
+                </g>
+            </g>
+            <g id="Plant1" transform="translate(57.000000, 40.000000)">
+                <g id="Plant1LightBlue" transform="translate(14.000000, 5.000000)" fill="#C2E8FF">
+                    <path d="M15.5,30.5 L15.5,6 C15.5,2.6862915 18.1862915,0 21.5,0 C24.8137085,0 27.5,2.6862915 27.5,6 L27.5,21.5 L35.5,21.5 L35.5,14.7630332 C35.5,12.5538942 37.290861,10.7630332 39.5,10.7630332 C41.709139,10.7630332 43.5,12.5538942 43.5,14.7630332 L43.5,26.5 C43.5,28.1568542 42.1568542,29.5 40.5,29.5 L27.5,29.5 L27.5,59.5 C27.5,60.0522847 27.0522847,60.5 26.5,60.5 L16.5,60.5 C15.9477153,60.5 15.5,60.0522847 15.5,59.5 L15.5,38.5 L3.5,38.5 C1.84314575,38.5 0.5,37.1568542 0.5,35.5 L0.5,20.7914692 C0.5,18.5823302 2.290861,16.7914692 4.5,16.7914692 C6.709139,16.7914692 8.5,18.5823302 8.5,20.7914692 L8.5,30.5 L15.5,30.5 Z" id="Plant1LightBlueBkgd2"></path>
+                    <path d="M24.5,41.5 L32.5,41.5 L32.5,37.3720379 C32.5,35.4390413 34.0670034,33.8720379 36,33.8720379 C37.9329966,33.8720379 39.5,35.4390413 39.5,37.3720379 L39.5,45.5 C39.5,47.1568542 38.1568542,48.5 36.5,48.5 L24.5,48.5 L24.5,48.5" id="Plant1LightBlueBkgd1"></path>
+                </g>
+                <g id="Plant1DarkBlue" stroke="#8CD3F8" stroke-width="3">
+                    <line x1="0" y1="65.5" x2="178" y2="65.5" id="HorizonLine2" stroke-linecap="round"></line>
+                    <line x1="183.25" y1="65.5" x2="188.026243" y2="65.5" id="HorizonLine1" stroke-linecap="round"></line>
+                    <line x1="39" y1="46.4960938" x2="44" y2="46.4960938" id="Plant1DarkBlueLine11" stroke-linecap="round"></line>
+                    <line x1="39" y1="53.4960938" x2="44" y2="53.4960938" id="Plant1DarkBlueLine10" stroke-linecap="round"></line>
+                    <path d="M41.5,46.5 L41.5,34.5 L54.5,34.5 C56.1568542,34.5 57.5,33.1568542 57.5,31.5 L57.5,19.7630332 C57.5,17.5538942 55.709139,15.7630332 53.5,15.7630332 C51.290861,15.7630332 49.5,17.5538942 49.5,19.7630332 L49.5,26.5 L41.5,26.5 L41.5,11 C41.5,7.6862915 38.8137085,5 35.5,5 C32.1862915,5 29.5,7.6862915 29.5,11 L29.5,35.5 L22.5,35.5 L22.5,25.7914692 C22.5,23.5823302 20.709139,21.7914692 18.5,21.7914692 C16.290861,21.7914692 14.5,23.5823302 14.5,25.7914692 L14.5,40.5 C14.5,42.1568542 15.8431458,43.5 17.5,43.5 L29.5,43.5 L29.5,64.5 C29.5,65.0522847 29.9477153,65.5 30.5,65.5 L40.5,65.5 C41.0522847,65.5 41.5,65.0522847 41.5,64.5 L41.5,53.5 L50.5,53.5 C52.1568542,53.5 53.5,52.1568542 53.5,50.5 L53.5,42.3720379 C53.5,40.4390413 51.9329966,38.8720379 50,38.8720379 C48.0670034,38.8720379 46.5,40.4390413 46.5,42.3720379 L46.5,46.5 L41.5,46.5 Z" id="Plant1DarkBlueLine9"></path>
+                    <line x1="39.5" y1="5.55273247" x2="42.3284271" y2="2.71090047" id="Plant1DarkBlueLine8" stroke-linecap="round"></line>
+                    <line x1="28.5" y1="5.55273247" x2="31.3284271" y2="2.71090047" id="Plant1DarkBlueLine7" stroke-linecap="round" transform="translate(29.914214, 4.131816) scale(-1, 1) translate(-29.914214, -4.131816) "></line>
+                    <line x1="35.5" y1="0.199052133" x2="35.5" y2="4.21800948" id="Plant1DarkBlueLine6" stroke-linecap="round"></line>
+                    <line x1="53.5" y1="11.7440758" x2="53.5" y2="15.7630332" id="Plant1DarkBlueLine5" stroke-linecap="round"></line>
+                    <line x1="56.5" y1="16.0977562" x2="59.3284271" y2="13.2559242" id="Plant1DarkBlueLine4" stroke-linecap="round"></line>
+                    <line x1="18.5" y1="17.7725118" x2="18.5" y2="21.7914692" id="Plant1DarkBlueLine3" stroke-linecap="round"></line>
+                    <line x1="22" y1="23.1261922" x2="24.8284271" y2="20.2843602" id="Plant1DarkBlueLine2" stroke-linecap="round"></line>
+                    <line x1="12.5" y1="23.1261922" x2="15.3284271" y2="20.2843602" id="Plant1DarkBlueLine1" stroke-linecap="round" transform="translate(13.914214, 21.705276) scale(-1, 1) translate(-13.914214, -21.705276) "></line>
+                </g>
+            </g>
+            <g id="Plant2" transform="translate(215.000000, 73.848341)" stroke="#C2E8FF" stroke-linecap="round" stroke-width="3">
+                <g id="Plant2LightBlue">
+                    <line x1="6.5" y1="2.00947867" x2="6.5" y2="25.1184834" id="Plant2LightBlueOutline4"></line>
+                    <polyline id="Plant2LightBlueOutline3" stroke-linejoin="round" points="5.5 9.65165877 0.5 9.65165877 0.5 0.151658768"></polyline>
+                    <polyline id="Plant2LightBlueOutline2" stroke-linejoin="round" points="7 12.6516588 12.5 12.6516588 12.5 4.15165877"></polyline>
+                    <polyline id="Plant2LightBlueOutline1" stroke-linejoin="round" points="1.5 15.6516588 1.5 19.6516588 5.5 19.6516588"></polyline>
+                </g>
+            </g>
+            <g id="Sun" transform="translate(164.000000, 0.000000)" stroke-width="3">
+                <g id="SunLightBlue" stroke="#C2E8FF" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M31.7804084,54.3739 C44.2068153,54.3739 54.2804084,44.2525647 54.2804084,31.7672649 C54.2804084,19.2819651 44.2068153,9.16062982 31.7804084,9.16062982 C19.3540015,9.16062982 9.28040839,19.2819651 9.28040839,31.7672649 C9.28040839,44.2525647 19.3540015,54.3739 31.7804084,54.3739 Z" id="SunLightBlueOutline2" stroke-dasharray="67.5,0.5,0.5,9" transform="translate(31.780408, 31.767265) rotate(230.000000) translate(-31.780408, -31.767265) "></path>
+                    <path d="M31.5785187,48.1853406 C40.6912171,48.1853406 48.0785187,40.763028 48.0785187,31.6071415 C48.0785187,22.451255 40.6912171,15.0289425 31.5785187,15.0289425 C22.4658203,15.0289425 15.0785187,22.451255 15.0785187,31.6071415 C15.0785187,40.763028 22.4658203,48.1853406 31.5785187,48.1853406 Z" id="SunLightBlueOutline1" stroke-dasharray="53.5,5" transform="translate(31.578519, 31.607142) rotate(150.000000) translate(-31.578519, -31.607142) "></path>
+                </g>
+                <g id="SunDarkBlue" transform="translate(19.000000, 19.000000)" fill="#C2E8FF" stroke="#8CD3F8">
+                    <ellipse id="SunDarkBlueOutline" cx="12.5" cy="12.5592417" rx="11" ry="11.0592417"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -16,16 +16,9 @@ export default class Illustration extends LightningElement {
     set type(value) {
         this.illustrationType = value;
 
-        switch (value) {
-            case 'No-Data':
-                this.illustration = illustrations + '/Illustrations/Cactus.svg';
-                break;
-            case 'Error':
-                this.illustration = illustrations + '/Illustrations/Balloon.svg';
-                break;
-            default:
-                this.illustration = illustrations + '/Illustrations/Cactus.svg';
-                break;
+        if ( value != null && value != '') {
+            this.illustration = illustrations + '/Illustrations/' + value + '.svg'
         }
+        
     }
 }
