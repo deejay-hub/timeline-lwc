@@ -3,5 +3,5 @@
     <description>Configures the related records to plot on the timeline lwc.</description>
     <label>Timeline Configuration</label>
     <pluralLabel>Timeline Configurations</pluralLabel>
-    <visibility>Protected</visibility>
+    <visibility>Public</visibility>
 </CustomObject>

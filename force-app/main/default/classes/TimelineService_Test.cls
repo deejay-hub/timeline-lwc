@@ -1,7 +1,7 @@
 /*
 1 - Does the filter get the correct types for display
 2 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
-3 - Is an exception thrown when an unexpected things happen 
+3 - Does the timelineService correctly return parent field values using dot notation
 */
 @isTest(seeAllData = false)
 private with sharing class TimelineService_Test {
@@ -20,44 +20,76 @@ private with sharing class TimelineService_Test {
 
         Test.startTest();
         Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id);
-        //Boolean moreThanOneTimelineType = ( (timelineTypes.size() > 0) ? true : false );
         Test.stopTest();
 
-        System.assert( timelineTypes.size() > 0, 'At least 1 timeline type in \'Timeline_Configuration_Type__mdt\' is expected for entity \'Contact\'' );
+        System.assertEquals( 2, timelineTypes.size(), 'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\'' );
     }
 
     @isTest
     static void testTimelineRecordsInRange() {
 
-        Contact joeLo = new Contact();
+        Account janesHousehold = new Account();
 
-        joeLo.FirstName = 'Joe';
-        joeLo.LastName = 'Lo';
+        janesHousehold.Name = 'Jane\'s Household';
 
-        insert(joeLo);
+        insert(janesHousehold);
 
-        Task joeTaskInRange = new Task();
+        Task householdTaskInRange = new Task();
 
-        joeTaskInRange.ActivityDate = Date.today();
-        joeTaskInRange.Description = 'New activity description for Joe';
-        joeTaskInRange.Subject = 'New activity for Joe';
-        joeTaskInRange.WhoId = joeLo.Id;
+        householdTaskInRange.ActivityDate = Date.today();
+        householdTaskInRange.Description = 'New activity description for Household. This is a really long description that will test the fact that when the value exceeds 255 characters that it will be truncated prior to being returned to the timeline. This is a really really really really really unnecessary sentence';
+        householdTaskInRange.Subject = 'New activity for Household';
+        householdTaskInRange.WhatId = janesHousehold.Id;
 
-        insert(joeTaskInRange);
+        insert(householdTaskInRange);
 
-        Task joeTaskOutOfRange = new Task();
+        Task householdTaskOutOfRange = new Task();
 
-        joeTaskOutOfRange.ActivityDate = Date.newInstance(1990, 2, 2);
-        joeTaskOutOfRange.Description = 'Old activity description for Joe';
-        joeTaskOutOfRange.Subject = 'Old activity for Joe';
-        joeTaskOutOfRange.WhoId = joeLo.Id;
+        householdTaskOutOfRange.ActivityDate = Date.newInstance(1990, 2, 2);
+        householdTaskOutOfRange.Description = 'Old activity description for Joe';
+        householdTaskOutOfRange.Subject = 'Old activity for Joe';
+        householdTaskOutOfRange.WhatId = janesHousehold.Id;
 
-        insert(joeTaskOutOfRange);
+        insert(householdTaskOutOfRange);
 
         Test.startTest();
-        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(joeLo.Id, '1', '1');
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(janesHousehold.Id, '1', '1');
         Test.stopTest();
 
         System.assertEquals( 1, timelineRecords.size(), 'Incorrect number of Tasks found' );
     }
+
+    @isTest
+    static void testDotNotationCheck() {
+
+        Campaign eventCampaign = new Campaign();
+
+        eventCampaign.Name = 'Australian of the Year Awards';
+        eventCampaign.StartDate = Date.today();
+        eventCampaign.IsActive = true;
+
+        insert(eventCampaign);
+
+        Contact juneLo = new Contact();
+
+        juneLo.FirstName = 'June';
+        juneLo.LastName = 'Lo';
+
+        insert(juneLo);
+
+        CampaignMember juneAttends = new CampaignMember();
+
+        juneAttends.CampaignId = eventCampaign.Id;
+        juneAttends.ContactId = juneLo.Id;
+
+        insert(juneAttends);
+
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(juneLo.Id, '1', '1');
+        Test.stopTest();
+
+        System.assertEquals( 1, timelineRecords.size(), 'Incorrect number of Campaign Members found' );
+        System.assertEquals( eventCampaign.Name, timelineRecords[0].get('detailField'), 'Campaign Name using dot notation not functioning' );
+    }
+
 }
