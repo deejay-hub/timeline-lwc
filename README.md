@@ -195,6 +195,7 @@ Field Name                       	 | Description
 `Drilldown_Id_Field__c`		 	 | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects.
 `Tooltip_Id_Field__c`		 	 | The field containing the Id value that should be used for the hover tooltip e.g. Which record should the user see when they hover over a record on the timeline. Important for junction objects.
 `Tooltip_Object_Name__c`		 	 | The object used by the tooltip. The label is also looked up to use in the filter panel.
+`Test__c`		 	 	| Protected records used for *Apex testing only*.
 
 ## FAQs
 
