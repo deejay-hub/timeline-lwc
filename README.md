@@ -160,7 +160,7 @@ Labels can be translated where appropriate. Navigate to Setup -> Custom Labels a
 
 Label Name                       	 | Default translation                     
 ---------------------------------------	 | -----------------------------------
-Timeline_Error_Apex              	 | Apex error         
+`Timeline_Error_Apex`          	 	 | Apex error         
 Timeline_Error_JavaScriptResources	 | Unable to load JavaScript resources
 Timeline_Error_NoDataHeader	 	 | No data to display 
 Timeline_Error_NoDataSubHeader   	 | Related records show up here on an interactive timeline. Check your filter or create a record. 
