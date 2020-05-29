@@ -2,6 +2,8 @@
 1 - Does the filter get the correct types for display
 2 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
 3 - Does the timelineService correctly return parent field values using dot notation
+4 - Does custom processing for the entity ContentDocumentLink function correctly
+5 - Setup error - do we get an exception when there are no timeline types
 */
 @isTest(seeAllData = false)
 private with sharing class TimelineService_Test {
@@ -22,7 +24,7 @@ private with sharing class TimelineService_Test {
         Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id);
         Test.stopTest();
 
-        System.assertEquals( 2, timelineTypes.size(), 'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\'' );
+        System.assertEquals( 3, timelineTypes.size(), 'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\'' );
     }
 
     @isTest
@@ -60,7 +62,7 @@ private with sharing class TimelineService_Test {
     }
 
     @isTest
-    static void testDotNotationCheck() {
+    static void testDotNotation() {
 
         Campaign eventCampaign = new Campaign();
 
@@ -92,4 +94,62 @@ private with sharing class TimelineService_Test {
         System.assertEquals( eventCampaign.Name, timelineRecords[0].get('detailField'), 'Campaign Name using dot notation not functioning' );
     }
 
+    @isTest
+    static void testContentDocumentLink() {
+
+        Contact rodLo = new Contact();
+
+        rodLo.FirstName = 'Rod';
+        rodLo.LastName = 'Lo';
+
+        insert(rodLo);
+
+        ContentVersion contentVersion = new ContentVersion(
+            Title = 'Puzzle',
+            PathOnClient = 'Puzzle.jpg',
+            VersionData = Blob.valueOf('Test Content'),
+            IsMajorVersion = true
+          );
+
+          insert contentVersion;    
+
+          List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument];
+          
+          ContentDocumentLink linkedContent = New ContentDocumentLink();
+          linkedContent.LinkedEntityId = rodLo.id;
+          linkedContent.ContentDocumentId = documents[0].Id;
+          linkedContent.ShareType = 'V';
+          insert linkedContent;
+
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(rodLo.Id, '1', '1');
+        Test.stopTest();
+
+        System.assertEquals( documents[0].Id, timelineRecords[0].get('objectId'), 'Document Id was not returned as attachment record value' );
+    }
+
+    @isTest
+    static void testSetupException() {
+
+        Boolean hasFailed = false;
+
+        Case forgotPassword = new Case();
+
+        forgotPassword.Origin = 'Email';
+        forgotPassword.Subject = 'Forgot my Password';
+
+        insert(forgotPassword);
+
+        try {
+            Test.startTest();
+            List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(forgotPassword.Id, '1', '1');
+        }
+        catch(Exception e) {
+            hasFailed = true;
+        }
+        finally {
+            System.assert( hasFailed = true, 'Expected an exception to occur when using entity Case and no Timeline_Configuration__mdt records. Actually got no exception.' );
+            Test.stopTest();
+        }        
+    }
 }
