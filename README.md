@@ -146,54 +146,55 @@ This is a configuration limit specified in timeline.js-meta.xml. Since the timel
 #### Component Properties
 The component has the following properties that can be set at design time in App Builder by an administrator
 
-Attribute                        | Description                        | Validation       
+Property                         | Description                        | Validation       
 ---------------------------------| -----------------------------------| ---------------------------
-Title	                         | Adjusts the label                  | String
-Height                           | Adjusts the vertical height        | Picklist (1 - 5)
-Historical Time Range (Years)	 | Adjusts the start date	      | Picklist (0.25 - 5)
-Future Time Range (Years)	 | Adjusts the end date		      | Picklist (0.25 - 1)
-Zoom Based On			 | Adjusts the position of the zoom   | Picklist (Current Date, Last Activity)
-Zoom Range (Days)		 | Adjusts the extent of the zoom     | Integer min 15 max 120
+`Title`                          | Adjusts the label                  | String
+`Height`                         | Adjusts the vertical height        | Picklist (1 - 5)
+`Historical Time Range (Years)`	 | Adjusts the start date	      | Picklist (0.25 - 5)
+`Future Time Range (Years)`	 | Adjusts the end date		      | Picklist (0.25 - 1)
+`Zoom Based On`			 | Adjusts the position of the zoom   | Picklist (Current Date, Last Activity)
+`Zoom Range (Days)`		 | Adjusts the extent of the zoom     | Integer min 15 max 120
 
 #### Custom Labels
 Labels can be translated where appropriate. Navigate to Setup -> Custom Labels and add translations for your chosen languages. Note you will need the permission - Manage Transalations.
 
 Label Name                       	 | Default translation                     
 ---------------------------------------	 | -----------------------------------
-`Timeline_Error_Apex`          	 	 | Apex error         
-Timeline_Error_JavaScriptResources	 | Unable to load JavaScript resources
-Timeline_Error_NoDataHeader	 	 | No data to display 
-Timeline_Error_NoDataSubHeader   	 | Related records show up here on an interactive timeline. Check your filter or create a record. 
-Timeline_Error_Unhandled	 	 | Houston...we've had a problem 
-Timeline_Label_Days		 	 | day(s) 
-Timeline_Label_Items			 | item(s)
-Timeline_Label_Showing		  	 | Showing:
-Timeline_Label_Filters			 | Filters (Used in filter panel)
-Timeline_Label_Filter_All_Types		 | All Types (Used in filter panel as select/deselect all checkbox)
-Timeline_Label_Filter_Type_Legend	 | Types to Show (Used in Filter panel)
-Timeline_Label_Files			 | Files & Notes (used in Filter when sObject is ContentDocumentLink)
-Timeline_Label_Date_Range_Legend	 | Date Range (Used in Filter panel)
-Timeline_Label_Apply			 | Label for apply button (Used in Filter panel)
-Timeline_Label_Cancel			 | Label for cancel button (Used in Filter panel)
+`Timeline_Error_Apex`          	 	 | Apex error 
+`Timeline_Error_Setup`			 | Setup error
+`Timeline_Error_JavaScriptResources`	 | Unable to load JavaScript resources
+`Timeline_Error_NoDataHeader`	 	 | No data to display 
+`Timeline_Error_NoDataSubHeader`   	 | Related records show up here on an interactive timeline. Check your filter or create a record. 
+`Timeline_Error_Unhandled`	 	 | Houston...we've had a problem 
+`Timeline_Label_Days`		 	 | day(s) 
+`Timeline_Label_Items`			 | item(s)
+`Timeline_Label_Showing`		  	 | Showing:
+`Timeline_Label_Filters`			 | Filters (Used in filter panel)
+`Timeline_Label_Filter_All_Types`		 | All Types (Used in filter panel as select/deselect all checkbox)
+`Timeline_Label_Filter_Type_Legend`	 | Types to Show (Used in Filter panel)
+`Timeline_Label_Files`			 | Files & Notes (used in Filter when sObject is ContentDocumentLink)
+`Timeline_Label_Date_Range_Legend`	 | Date Range (Used in Filter panel)
+`Timeline_Label_Apply`			 | Label for apply button (Used in Filter panel)
+`Timeline_Label_Cancel`			 | Label for cancel button (Used in Filter panel)
 
 #### Configuring Child Records to Plot
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose 
 
 Field Name                       	 | Description                  
 ---------------------------------------	 | -----------------------------------
-Parent_Object__c	             	 | The API Name of the **parent object** that the child record relates to
-Object_Name__c		             	 | The API Name of the object that is the **child** to plot
-Relationship_Name__c		         | The API Name of the **relationship** between Parent and Child
-Position_Date_Field__c	             	 | The API Name of the field on the child (Object_Name__c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)
-Detail_Field__c		             	 | The API Name of the field on the child (Object_Name__c) to use as the description for the record to plot on the timeline
-Icon__c		             		 | A relative url to the image to use for this record
-Icon_Background_Colour__c		 | The background colour to use for the above image (rgb and hex supported)
-Type_Field__c		 		 | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name__c is Task
-Fallback_Tooltip_Field__c		 | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip.
-Allow_Drilldown__c		 	 | Should the object support drilling into the individual record. If false then a toast error will appear when a user clicks on that record type
-Drilldown_Id_Field__c		 	 | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects.
-Tooltip_Id_Field__c		 	 | The field containing the Id value that should be used for the hover tooltip e.g. Which record should the user see when they hover over a record on the timeline. Important for junction objects.
-Tooltip_Object_Name__c		 	 | The object used by the tooltip. The label is also looked up to use in the filter panel.
+`Parent_Object__c`	             	 | The API Name of the **parent object** that the child record relates to
+`Object_Name__c`		             	 | The API Name of the object that is the **child** to plot
+`Relationship_Name__c`		         | The API Name of the **relationship** between Parent and Child
+`Position_Date_Field__c`	             	 | The API Name of the field on the child (Object_Name__c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)
+`Detail_Field__c`		             	 | The API Name of the field on the child (Object_Name__c) to use as the description for the record to plot on the timeline
+`Icon__c`		             		 | A relative url to the image to use for this record
+`Icon_Background_Colour__c`		 | The background colour to use for the above image (rgb and hex supported)
+`Type_Field__c`		 		 | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name__c is Task
+`Fallback_Tooltip_Field__c`		 | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip.
+`Allow_Drilldown__c`		 	 | Should the object support drilling into the individual record. If false then a toast error will appear when a user clicks on that record type
+`Drilldown_Id_Field__c`		 	 | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects.
+`Tooltip_Id_Field__c`		 	 | The field containing the Id value that should be used for the hover tooltip e.g. Which record should the user see when they hover over a record on the timeline. Important for junction objects.
+`Tooltip_Object_Name__c`		 	 | The object used by the tooltip. The label is also looked up to use in the filter panel.
 
 ## FAQs
 
