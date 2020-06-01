@@ -3,80 +3,60 @@
         "sobject": "Account",
         "saveRefs": true,
         "resolveRefs": false,
-        "files": [
-            "timeline-Accounts.json"
-        ]
+        "files": ["timeline-Accounts.json"]
     },
     {
         "sobject": "Campaign",
         "saveRefs": true,
         "resolveRefs": false,
-        "files": [
-            "timeline-Campaigns.json"
-        ]
+        "files": ["timeline-Campaigns.json"]
     },
     {
         "sobject": "Contact",
         "saveRefs": true,
         "resolveRefs": true,
-        "files": [
-            "timeline-Contacts.json"
-        ]
+        "files": ["timeline-Contacts.json"]
     },
     {
         "sobject": "Lead",
         "saveRefs": true,
         "resolveRefs": true,
-        "files": [
-            "timeline-Leads.json"
-        ]
+        "files": ["timeline-Leads.json"]
     },
     {
         "sobject": "Case",
         "saveRefs": true,
         "resolveRefs": true,
-        "files": [
-            "timeline-Cases.json"
-        ]
+        "files": ["timeline-Cases.json"]
     },
     {
         "sobject": "Task",
         "saveRefs": false,
         "resolveRefs": true,
-        "files": [
-            "timeline-Tasks.json"
-        ]
+        "files": ["timeline-Tasks.json"]
     },
     {
         "sobject": "Event",
         "saveRefs": false,
         "resolveRefs": true,
-        "files": [
-            "timeline-Events.json"
-        ]
+        "files": ["timeline-Events.json"]
     },
     {
         "sobject": "Opportunity",
         "saveRefs": true,
         "resolveRefs": true,
-        "files": [
-            "timeline-Opportunities.json"
-        ]
+        "files": ["timeline-Opportunities.json"]
     },
     {
         "sobject": "CampaignMember",
         "saveRefs": false,
         "resolveRefs": true,
-        "files": [
-            "timeline-CampaignMembers.json"
-        ]
+        "files": ["timeline-CampaignMembers.json"]
     },
     {
         "sobject": "CaseComment",
         "saveRefs": false,
         "resolveRefs": true,
-        "files": [
-            "timeline-CaseComments.json"
-        ]
+        "files": ["timeline-CaseComments.json"]
     }
 ]

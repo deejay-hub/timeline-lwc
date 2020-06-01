@@ -3,4 +3,10 @@
 #
 
 .sfdx
+.github
+.vscode
 .localdevserver
+
+*.cls
+
+staticresources

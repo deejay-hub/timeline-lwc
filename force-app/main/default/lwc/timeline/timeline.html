@@ -1,10 +1,9 @@
 <template>
     <!--main timeline component-->
     <div class="timeline-container">
-
         <!--header-->
         <div class="slds-grid slds-grid--align-spread">
-            <div class="slds-col slds-shrink slds-align-middle">   
+            <div class="slds-col slds-shrink slds-align-middle">
                 <template if:true={isLoaded}>
                     <h1 class="slds-text-heading--medium">{timelineTitle}</h1>
                 </template>
@@ -13,13 +12,15 @@
                 </template>
             </div>
             <div class="slds-col slds-shrink-none slds-align-middle">
-                <div class="slds-form--inline">  
+                <div class="slds-form--inline">
                     <div class="slds-form-element">
                         <template if:true={showSummary}>
-                            <div class="timeline-summary"> 
+                            <div class="timeline-summary">
                                 <span class="timeline-summary-verbose">{label.SHOWING} </span>
                                 <span>{localisedZoomStartDate} - {localisedZoomEndDate}</span>
-                                <span class="timeline-summary-verbose"> • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}</span>
+                                <span class="timeline-summary-verbose">
+                                    • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}</span
+                                >
                             </div>
                         </template>
                         <template if:false={isLoaded}>
@@ -28,8 +29,18 @@
                     </div>
                     <div class="slds-form-element">
                         <lightning-button-group>
-                            <lightning-button-icon class="timeline-refresh" icon-name="utility:refresh"  alternative-text="Refresh" onclick={processTimeline}></lightning-button-icon>
-                            <lightning-button-icon-stateful icon-name="utility:filterList" selected={isFilter} onclick={toggleFilter} alternative-text="Filter"></lightning-button-icon-stateful>
+                            <lightning-button-icon
+                                class="timeline-refresh"
+                                icon-name="utility:refresh"
+                                alternative-text="Refresh"
+                                onclick={processTimeline}
+                            ></lightning-button-icon>
+                            <lightning-button-icon-stateful
+                                icon-name="utility:filterList"
+                                selected={isFilter}
+                                onclick={toggleFilter}
+                                alternative-text="Filter"
+                            ></lightning-button-icon-stateful>
                         </lightning-button-group>
                     </div>
                 </div>
@@ -44,67 +55,101 @@
                 <div class="timeline-canvas-axis" id="timeline-canvas-axis" lwc:dom="manual"></div>
                 <div class="timeline-map-wrapper">
                     <div class="timeline-map" id="timeline-map" lwc:dom="manual"></div>
-                    <div class="timeline-map-axis" id="timeline-map-axis"  lwc:dom="manual"></div>
+                    <div class="timeline-map-axis" id="timeline-map-axis" lwc:dom="manual"></div>
                 </div>
             </div>
 
             <!--illustration component when there is an error-->
             <div class={illustrationVisibility}>
-                <div class="stencil-timeline"  >
-                    <c-illustration header={illustrationHeader} sub-header={illustrationSubHeader} type={illustrationType}></c-illustration>
+                <div class="stencil-timeline">
+                    <c-illustration
+                        header={illustrationHeader}
+                        sub-header={illustrationSubHeader}
+                        type={illustrationType}
+                    ></c-illustration>
                 </div>
             </div>
             <!--end illustration component-->
 
-            <div class="timeline-filter slds-float_right slds-panel slds-size_small slds-panel_docked slds-panel_docked-right" aria-hidden="false">
-
+            <div
+                class="timeline-filter slds-float_right slds-panel slds-size_small slds-panel_docked slds-panel_docked-right"
+                aria-hidden="false"
+            >
                 <div class="slds-panel__header" style="height: 50px;">
-                    <template if:false={isFilterUpdated}>                  
-                        <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{label.FILTERS}</h2>
-                        <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-small slds-float_right slds-panel__close" title="Close dialog" onclick={toggleFilter}>
-                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="xx-small" ></lightning-icon>
+                    <template if:false={isFilterUpdated}>
+                        <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">
+                            {label.FILTERS}
+                        </h2>
+                        <button
+                            class="slds-button slds-button_icon slds-button_icon slds-button_icon-small slds-float_right slds-panel__close"
+                            title="Close dialog"
+                            onclick={toggleFilter}
+                        >
+                            <lightning-icon
+                                icon-name="utility:close"
+                                alternative-text="Close"
+                                size="xx-small"
+                            ></lightning-icon>
                         </button>
                     </template>
 
                     <template if:true={isFilterUpdated}>
                         <div class="slds-grid" style="width: 100%;">
                             <div>
-                                <lightning-button label={label.BUTTON_CANCEL} title="Cancel" onclick={cancelFilter}></lightning-button>
+                                <lightning-button
+                                    label={label.BUTTON_CANCEL}
+                                    title="Cancel"
+                                    onclick={cancelFilter}
+                                ></lightning-button>
                             </div>
                             <div class="slds-grid slds-col slds-grid_align-end">
-                                <lightning-button variant="brand" label={label.BUTTON_APPLY} title="Apply" onclick={applyFilter} ></lightning-button>
+                                <lightning-button
+                                    variant="brand"
+                                    label={label.BUTTON_APPLY}
+                                    title="Apply"
+                                    onclick={applyFilter}
+                                ></lightning-button>
                             </div>
                         </div>
                     </template>
                 </div>
 
                 <div class="slds-panel__body">
-                    <legend class="slds-form-element__label slds-text-title--caps">{label.TYPE_LEGEND}</legend>                   
+                    <legend class="slds-form-element__label slds-text-title--caps">{label.TYPE_LEGEND}</legend>
                     <div class="slds-form-element">
                         <div class="slds-form-element__control">
                             <div class="slds-checkbox">
-                                <input type="checkbox" class="all-types-checkbox" name="options" id="all-filter" value={handleAllTypesLoad} onchange={handleAllTypesChange}/>
+                                <input
+                                    type="checkbox"
+                                    class="all-types-checkbox"
+                                    name="options"
+                                    id="all-filter"
+                                    value={handleAllTypesLoad}
+                                    onchange={handleAllTypesChange}
+                                />
                                 <label class="slds-checkbox__label" for="all-filter">
-                                <span class="slds-checkbox_faux"></span>
-                                <span class="slds-form-element__label">{label.ALL_TYPES}</span>
+                                    <span class="slds-checkbox_faux"></span>
+                                    <span class="slds-form-element__label">{label.ALL_TYPES}</span>
                                 </label>
                             </div>
                         </div>
                     </div>
 
                     <template if:true={isFilter}>
-                        <lightning-checkbox-group name="Types Shown"
-                                                    label=""
-                                                    options={filterOptions}
-                                                    value={filterValues}
-                                                    onchange={handleFilterChange}>
+                        <lightning-checkbox-group
+                            name="Types Shown"
+                            label=""
+                            options={filterOptions}
+                            value={filterValues}
+                            onchange={handleFilterChange}
+                        >
                         </lightning-checkbox-group>
                     </template>
 
-                    <div style='padding-top: 10px;'></div>
+                    <div style="padding-top: 10px;"></div>
                     <legend class="slds-form-element__label slds-text-title--caps">{label.DATE_RANGE_LEGEND}</legend>
 
-                    <div class="slds-form-element__label" style='padding-top: 5px;'>
+                    <div class="slds-form-element__label" style="padding-top: 5px;">
                         {timelineStart} - {timelineEnd}
                     </div>
                 </div>
@@ -122,33 +167,33 @@
     </div>
 
     <!--tooltips FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
-    <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top" >
-        <div class="tooltip-content" >
+    <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top">
+        <div class="tooltip-content">
             <template if:true={isMouseOver}>
-
                 <template if:false={showFallbackTooltip}>
-                    <lightning-record-form 
+                    <lightning-record-form
                         record-id={mouseOverRecordId}
-                        object-api-name={mouseOverObjectAPIName} 
-                        layout-type='Compact' 
-                        columns='2' 
-                        mode='readonly'
-                        class="tooltip-content">
+                        object-api-name={mouseOverObjectAPIName}
+                        layout-type="Compact"
+                        columns="2"
+                        mode="readonly"
+                        class="tooltip-content"
+                    >
                     </lightning-record-form>
                 </template>
 
                 <template if:true={showFallbackTooltip}>
                     <div class="slds-form" role="list">
                         <div class="slds-form__row">
-                                <div class="slds-form__item" role="listitem">
-                                    <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
-                                        <span class="slds-form-element__label">{mouseOverDetailLabel} </span>
-                                        <div class="slds-form-element__control">
-                                            <div class="slds-form-element__static">{mouseOverDetailValue}</div>
-                                        </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                    <span class="slds-form-element__label">{mouseOverDetailLabel} </span>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-form-element__static">{mouseOverDetailValue}</div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         <div class="slds-form__row">
                             <div class="slds-form__item" role="listitem">
                                 <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
@@ -161,7 +206,7 @@
                         </div>
                     </div>
                 </template>
-        </template>
+            </template>
         </div>
     </div>
     <!--end tooltips-->
