@@ -211,7 +211,7 @@ The bad news is that not all objects have support yet. For a list of supported o
 
 #### Does it support multiple languages other than English?
 
-Yes for left-to-right languages. The users locale setting in Salesforce determines the date formats used. For a list of supported locales see - https://help.salesforce.com/articleView?id=admin_supported_date_time_format.htm&type=5
+Yes - for left-to-right languages. The users locale setting in Salesforce determines the date formats used. For a list of supported locales see - https://help.salesforce.com/articleView?id=admin_supported_date_time_format.htm&type=5
 
 All fields have their translated labels returned. Any custom labels can be translated (see Custom Labels).
 
