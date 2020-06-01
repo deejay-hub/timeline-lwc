@@ -1,0 +1,36 @@
+{
+    "name": "timeline-lwc",
+    "author": "Dave Norris",
+    "description": "An interactive timeline for the Salesforce platform",
+    "private": true,
+    "version": "1.1.2",
+    "engines": {
+        "node": ">= 12.14.1",
+        "npm": ">= 6.13.6"
+    },
+    "scripts": {
+        "lint": "eslint **/lwc/**",
+        "test": "npm run lint && npm run test:unit",
+        "test:unit": "sfdx-lwc-jest",
+        "test:unit:watch": "sfdx-lwc-jest --watch",
+        "test:unit:debug": "sfdx-lwc-jest --debug",
+        "test:unit:coverage": "sfdx-lwc-jest --coverage",
+        "prettier": "prettier --write '**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,yaml,yml}'",
+        "prettier:verify": "prettier --list-different '**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,yaml,yml}'"
+    },
+    "devDependencies": {
+        "@salesforce/eslint-config-lwc": "^0.7.0",
+        "@salesforce/sfdx-lwc-jest": "^0.7.1",
+        "eslint": "^7.1.0",
+        "prettier": "^2.0.5",
+        "prettier-plugin-apex": "^1.5.0",
+        "semver": "^7.3.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/deejay-hub/timeline-lwc"
+    },
+    "dependencies": {
+        "check-node-version": "^4.0.3"
+    }
+}
