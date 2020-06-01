@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Account_Files</label>
-    <protected>false</protected>
+    <label>Account_Tasks_Test</label>
+    <protected>true</protected>
     <values>
         <field>Active__c</field>
         <value xsi:type="xsd:boolean">true</value>
@@ -12,23 +12,27 @@
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">ContentDocument.Title</value>
+        <value xsi:type="xsd:string">Subject</value>
+    </values>
+    <values>
+        <field>Drilldown_Id_Field__c</field>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:type="xsd:string">ContentDocument.FileExtension</value>
+        <value xsi:type="xsd:string">Description</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
-        <value xsi:type="xsd:string">#b19f7e</value>
+        <value xsi:type="xsd:string">#4ac076</value>
     </values>
     <values>
         <field>Icon__c</field>
-        <value xsi:type="xsd:string">/img/icon/t4v35/standard/document.svg</value>
+        <value xsi:type="xsd:string">/img/icon/t4v35/standard/task.svg</value>
     </values>
     <values>
         <field>Object_Name__c</field>
-        <value xsi:type="xsd:string">ContentDocumentLink</value>
+        <value xsi:type="xsd:string">Task</value>
     </values>
     <values>
         <field>Parent_Object__c</field>
@@ -36,18 +40,30 @@
     </values>
     <values>
         <field>Position_Date_Field__c</field>
-        <value xsi:type="xsd:string">SystemModstamp</value>
+        <value xsi:type="xsd:string">ActivityDate</value>
     </values>
     <values>
         <field>Relationship_Name__c</field>
-        <value xsi:type="xsd:string">ContentDocumentLinks</value>
+        <value xsi:type="xsd:string">Tasks</value>
     </values>
     <values>
         <field>Sequence__c</field>
-        <value xsi:type="xsd:double">30.0</value>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>Test__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Tooltip_Id_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Tooltip_Object_Name__c</field>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Type_Field__c</field>
-        <value xsi:type="xsd:string">ContentDocument.FileType</value>
+        <value xsi:type="xsd:string">TaskSubtype</value>
     </values>
 </CustomMetadata>

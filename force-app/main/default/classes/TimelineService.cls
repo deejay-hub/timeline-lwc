@@ -15,6 +15,7 @@ public with sharing class TimelineService {
                                             + 'Sequence__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
+                                        + 'Test__c = ' + Test.isRunningTest() + ' AND '
                                         + 'Parent_Object__c =:parentObjectType '
                                         + 'ORDER BY Sequence__c ASC '; //NOPMD
 
@@ -72,6 +73,7 @@ public with sharing class TimelineService {
                                             + 'Fallback_Tooltip_Field__c '
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
+                                        + 'Test__c = ' + Test.isRunningTest() + ' AND '
                                         + 'Parent_Object__c =:parentConfigType'; //NOPMD
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
@@ -178,10 +180,10 @@ public with sharing class TimelineService {
 
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
 
-            for (Sobject each : listOfTimelineRecords) {
+            for (SObject each : listOfTimelineRecords) {
                 for (String eachObj : mapOfTimelineConfigurationRecords.keyset()) {
                     if (each.getSObjects(childObjects.get(eachObj)) != null) {
-                        for (Sobject eachCh : (List<SObject>)each.getSObjects(childObjects.get(eachObj))) {
+                        for (SObject eachCh : (List<SObject>)each.getSObjects(childObjects.get(eachObj))) {
 
                             Map<String, String> mapData = new Map<String, String>();
 

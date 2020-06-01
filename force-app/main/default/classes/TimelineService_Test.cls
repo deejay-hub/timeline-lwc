@@ -1,9 +1,9 @@
 /*
-1 - Can create a valid record in Timeline_Config__mdt
-2 - Cannot create an invalid record in Timeline_Config__mdt
-3 - Does the filter get the correct types for display
-4 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
-5 - Is an exception thrown when an unexpected things happen 
+1 - Does the filter get the correct types for display
+2 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
+3 - Does the timelineService correctly return parent field values using dot notation
+4 - Does custom processing for the entity ContentDocumentLink function correctly
+5 - Setup error - do we get an exception when there are no timeline types
 */
 @isTest(seeAllData = false)
 private with sharing class TimelineService_Test {
@@ -11,137 +11,145 @@ private with sharing class TimelineService_Test {
     private static User currentUser;
 
     @isTest
-    static void testValidTimelineConfiguration() {
-
-        //System.runAs(currentUser) {
-            Timeline_Configuration__mdt timelineConfiguration  = new Timeline_Configuration__mdt(
-                DeveloperName = 'Contact_Cases',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/case.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Case',
-                Parent_Object__c  =  'Contact',
-                Position_Date_Field__c = 'CreatedDate',
-                Sequence__c = 10
-            );
-            
-            Test.startTest();
-            //insert timelineConfiguration;
-            Test.stopTest();
-
-                
-            //Assert that one record was created successfully
-            //Timeline_Configuration__mdt[] timelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
-            System.assertEquals( 1, 1, 'Timeline configuration metadata type record could not be created successfully' );
-        //}
-    }
-
-    @isTest
-    static void testInvalidTimelineConfiguration() {
-
-        //System.runAs(currentUser) {
-            Timeline_Configuration__mdt timelineConfiguration  = new Timeline_Configuration__mdt(
-                DeveloperName = 'SAP_Cases',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/case.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Case',
-                Parent_Object__c  =  'SAP__e',
-                Position_Date_Field__c = 'CreatedDate',
-                Sequence__c = 10
-
-                
-            );
-
-            Test.startTest();
-            //insert timelineConfiguration;
-            Test.stopTest();
-      
-            //Assert that no record was created successfully as external objects are not permitted (validation rule)
-            //Timeline_Configuration__mdt[] timelineConfig = [Select Id from Timeline_Configuration__mdt where id=:timelineConfiguration.id];
-            System.assertEquals( 0, 0, 'Timeline configuration metadata type record could be created successfully when an error was expected' );
-        //}
-    }
-
-    @isTest
     static void testTimelineTypesForFilter() {
 
-        List<Timeline_Configuration__mdt> timelineConfigurations = new List<Timeline_Configuration__mdt>();
+        Contact janeLo = new Contact();
 
-         //System.runAs(currentUser) {
-            Timeline_Configuration__mdt contactCasesConfig  = new Timeline_Configuration__mdt(
-                DeveloperName = 'Contact_Cases',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/case.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Case',
-                Parent_Object__c  =  'Contact',
-                Position_Date_Field__c = 'CreatedDate',
-                Sequence__c = 10
-            );
+        janeLo.FirstName = 'Jane';
+        janeLo.LastName = 'Lo';
 
-            timelineConfigurations.add(contactCasesConfig);
+        insert(janeLo);
 
-            Timeline_Configuration__mdt contactTasksConfig  = new Timeline_Configuration__mdt(
-                DeveloperName = 'Contact_Tasks',
-                Active__c = true,
-                Detail_Field__c = 'Subject',
-                Icon__c = '/img/icon/t4v35/standard/task.svg',
-                Icon_Background_Colour__c  = '#f2cf5b',
-                Object_Name__c  = 'Task',
-                Parent_Object__c  =  'Contact',
-                Position_Date_Field__c = 'ActivityDate',
-                Sequence__c = 20
-            );
-           
-            timelineConfigurations.add(contactTasksConfig);
+        Test.startTest();
+        Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id);
+        Test.stopTest();
 
-            //insert timelineConfigurations;
-
-            //timelineService = new TimelineService();
-
-            Test.startTest();
-            //timelineService.getTimelineTypes(parentObjectId);
-            Test.stopTest();
-
-        //}
-
-        System.assertEquals('1','1', 'false');
+        System.assertEquals( 3, timelineTypes.size(), 'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\'' );
     }
 
     @isTest
-    static void testActiveTimelineRecords() {
+    static void testTimelineRecordsInRange() {
+
+        Account janesHousehold = new Account();
+
+        janesHousehold.Name = 'Jane\'s Household';
+
+        insert(janesHousehold);
+
+        Task householdTaskInRange = new Task();
+
+        householdTaskInRange.ActivityDate = Date.today();
+        householdTaskInRange.Description = 'New activity description for Household. This is a really long description that will test the fact that when the value exceeds 255 characters that it will be truncated prior to being returned to the timeline. This is a really really really really really unnecessary sentence';
+        householdTaskInRange.Subject = 'New activity for Household';
+        householdTaskInRange.WhatId = janesHousehold.Id;
+
+        insert(householdTaskInRange);
+
+        Task householdTaskOutOfRange = new Task();
+
+        householdTaskOutOfRange.ActivityDate = Date.newInstance(1990, 2, 2);
+        householdTaskOutOfRange.Description = 'Old activity description for Joe';
+        householdTaskOutOfRange.Subject = 'Old activity for Joe';
+        householdTaskOutOfRange.WhatId = janesHousehold.Id;
+
+        insert(householdTaskOutOfRange);
 
         Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(janesHousehold.Id, '1', '1');
         Test.stopTest();
 
-        System.assertEquals('1','1', 'false');
+        System.assertEquals( 1, timelineRecords.size(), 'Incorrect number of Tasks found' );
     }
 
-    private static void createTimelineConfiguration() {
+    @isTest
+    static void testDotNotation() {
 
-       
+        Campaign eventCampaign = new Campaign();
 
+        eventCampaign.Name = 'Australian of the Year Awards';
+        eventCampaign.StartDate = Date.today();
+        eventCampaign.IsActive = true;
+
+        insert(eventCampaign);
+
+        Contact juneLo = new Contact();
+
+        juneLo.FirstName = 'June';
+        juneLo.LastName = 'Lo';
+
+        insert(juneLo);
+
+        CampaignMember juneAttends = new CampaignMember();
+
+        juneAttends.CampaignId = eventCampaign.Id;
+        juneAttends.ContactId = juneLo.Id;
+
+        insert(juneAttends);
+
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(juneLo.Id, '1', '1');
+        Test.stopTest();
+
+        System.assertEquals( 1, timelineRecords.size(), 'Incorrect number of Campaign Members found' );
+        System.assertEquals( eventCampaign.Name, timelineRecords[0].get('detailField'), 'Campaign Name using dot notation not functioning' );
     }
 
-    private static void createContactTimelineData() {
+    @isTest
+    static void testContentDocumentLink() {
 
-        //System.runAs(currentUser) {
-            Contact janeLo = new Contact();
+        Contact rodLo = new Contact();
 
-            janeLo.FirstName = 'Jane';
-            janeLo.LastName = 'Lo';
+        rodLo.FirstName = 'Rod';
+        rodLo.LastName = 'Lo';
 
-            //Save Contact
+        insert(rodLo);
 
-            //Create Task
+        ContentVersion contentVersion = new ContentVersion(
+            Title = 'Puzzle',
+            PathOnClient = 'Puzzle.jpg',
+            VersionData = Blob.valueOf('Test Content'),
+            IsMajorVersion = true
+          );
 
-            //Create Case
+          insert contentVersion;    
 
-        //}
+          List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument];
+          
+          ContentDocumentLink linkedContent = New ContentDocumentLink();
+          linkedContent.LinkedEntityId = rodLo.id;
+          linkedContent.ContentDocumentId = documents[0].Id;
+          linkedContent.ShareType = 'V';
+          insert linkedContent;
 
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(rodLo.Id, '1', '1');
+        Test.stopTest();
+
+        System.assertEquals( documents[0].Id, timelineRecords[0].get('objectId'), 'Document Id was not returned as attachment record value' );
+    }
+
+    @isTest
+    static void testSetupException() {
+
+        Boolean hasFailed = false;
+
+        Case forgotPassword = new Case();
+
+        forgotPassword.Origin = 'Email';
+        forgotPassword.Subject = 'Forgot my Password';
+
+        insert(forgotPassword);
+
+        try {
+            Test.startTest();
+            List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(forgotPassword.Id, '1', '1');
+        }
+        catch(Exception e) {
+            hasFailed = true;
+        }
+        finally {
+            System.assert( hasFailed = true, 'Expected an exception to occur when using entity Case and no Timeline_Configuration__mdt records. Actually got no exception.' );
+            Test.stopTest();
+        }        
     }
 }
