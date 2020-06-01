@@ -79,7 +79,7 @@ public with sharing class TimelineService {
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
 
             if ( listofTimelineConfigurations.size() < 1 ) {
-                String errorMsg = 'No active records for parent entity  \'' + parentObjectType + '\' have been found in \'Timeline_Configuration_mdt\'. Ask an administrator for help.';
+                String errorMsg = 'No active records for parent entity  \'' + parentObjectType + '\' have been found in \'Timeline_Configuration__mdt\'. Ask an administrator for help.';
                 throw new TimelineSetupException( '{"type": "Setup-Error", "message": "' + errorMsg + '"}' );
             }
 

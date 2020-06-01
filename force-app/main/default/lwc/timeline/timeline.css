@@ -1,296 +1,296 @@
 .stencil-label {
-  background-color: #E4E0E0;
-  height: 0.4rem;
-  border-radius: 2rem;
-  width: 10rem;
+    background-color: #e4e0e0;
+    height: 0.4rem;
+    border-radius: 2rem;
+    width: 10rem;
 }
 
 .stencil-value {
-  background-color: #C5C2C2;
-  height: 0.4rem;
-  border-radius: 2rem;
-  margin-top: 0.5rem;
-  width: 10rem;
+    background-color: #c5c2c2;
+    height: 0.4rem;
+    border-radius: 2rem;
+    margin-top: 0.5rem;
+    width: 10rem;
 }
 
 .stencil-timeline {
-  text-align: center;
-  height: 70%;
-  position: relative;
-  top: 5%;
+    text-align: center;
+    height: 70%;
+    position: relative;
+    top: 5%;
 }
 
 .stencil-timeline-spinner {
-  text-align: center;
+    text-align: center;
 }
 
 .illustration {
-  padding: 10px 5px 5px 5px;
-  background-color: #FFF;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+    padding: 10px 5px 5px 5px;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .illustration-hidden {
-  display: none;
+    display: none;
 }
 
 .timeline-container {
-  position: relative;
-  padding: 10px 5px 5px 5px;
-  background-color: #FFF;
-  border-radius: 5px 5px 5px 5px;
-  border: rgb(221, 219, 218);
-  border-width: 1px;
-  border-style: solid;
+    position: relative;
+    padding: 10px 5px 5px 5px;
+    background-color: #fff;
+    border-radius: 5px 5px 5px 5px;
+    border: rgb(221, 219, 218);
+    border-width: 1px;
+    border-style: solid;
 }
 
 .timeline-container-hidden {
-  padding: 10px 5px 5px 5px;
-  background-color: #FFF;
-  border-radius: 5px 5px 5px 5px;
-  display: none;
+    padding: 10px 5px 5px 5px;
+    background-color: #fff;
+    border-radius: 5px 5px 5px 5px;
+    display: none;
 }
 
 .timeline-filter {
-  position: absolute;
-  top: 0;
-  right: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .timeline-canvas-icon-wrap {
-  fill: #FFF;
-  stroke: #D5DBE4;
-  stroke-width: 1;
+    fill: #fff;
+    stroke: #d5dbe4;
+    stroke-width: 1;
 }
 
 .timeline-map-wrapper {
-  background-color: #F8FCFF;
-  padding: 10px;
-  overflow: hidden;
+    background-color: #f8fcff;
+    padding: 10px;
+    overflow: hidden;
 }
 
 .timeline-canvas-record-line {
-  stroke: #D5DBE4;
-  stroke-width: 1;
+    stroke: #d5dbe4;
+    stroke-width: 1;
 }
 
 .timeline-canvas {
-  overflow-y: auto;
-  border-bottom: 1px solid #D5DBE4;
-  overflow-x: hidden;
+    overflow-y: auto;
+    border-bottom: 1px solid #d5dbe4;
+    overflow-x: hidden;
 }
 
 .timeline-canvas-axis {
-  background-color: #FFF;
-  border-bottom: 1px solid #D5DBE4;
-  height: 25px;
+    background-color: #fff;
+    border-bottom: 1px solid #d5dbe4;
+    height: 25px;
 }
 
 .timeline-canvas-axis line {
-  stroke: #72A8E0;
+    stroke: #72a8e0;
 }
 
 .timeline-map {
-  background-color: #FFF;
-  border: 1px solid #4B97E6;
-  border-radius: 3px;
-  height: 40px;
+    background-color: #fff;
+    border: 1px solid #4b97e6;
+    border-radius: 3px;
+    height: 40px;
 }
 
 .timeline-map svg {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .timeline-map-axis {
-  height: 20px;
+    height: 20px;
 }
 
 .timeline-map-axis svg {
-  overflow: visible;
+    overflow: visible;
 }
 
 /* axis labels */
 .axis-ticks {
-  font-family: Salesforce Sans, sans-serif;
-  font-size: 10px;
+    font-family: Salesforce Sans, sans-serif;
+    font-size: 10px;
 }
 
 .axis-ticks text {
-  display: none;
+    display: none;
 }
 
 .axis-label-LARGE text {
-  color: rgb(62, 62, 60);
-  font-size: .7rem;
+    color: rgb(62, 62, 60);
+    font-size: 0.7rem;
 }
 
 .axis-label-MEDIUM text {
-  color: rgb(62, 62, 60);
-  font-size: .7rem;
+    color: rgb(62, 62, 60);
+    font-size: 0.7rem;
 }
 
 .axis-label-SMALL text {
-  color: rgb(62, 62, 60);
-  font-size: .7rem;
+    color: rgb(62, 62, 60);
+    font-size: 0.7rem;
 }
 
 /* axis tick marks */
 .axis-ticks line {
-  stroke-width: 1;
-  stroke: rgb(221, 224, 228);
-  stroke-dasharray: 9, 9;
-  shape-rendering: crispEdges;
+    stroke-width: 1;
+    stroke: rgb(221, 224, 228);
+    stroke-dasharray: 9, 9;
+    shape-rendering: crispEdges;
 }
 
 .axis-ticks-LARGE line {
-  stroke-width: 1;
-  stroke: rgb(221, 224, 228);
-  stroke-dasharray: 9, 9;
-  shape-rendering: crispEdges;
+    stroke-width: 1;
+    stroke: rgb(221, 224, 228);
+    stroke-dasharray: 9, 9;
+    shape-rendering: crispEdges;
 }
 
 .axis-ticks-MEDIUM line {
-  stroke-width: 1;
-  stroke: rgb(221, 224, 228);
-  stroke-dasharray: 9, 9;
-  shape-rendering: crispEdges;
+    stroke-width: 1;
+    stroke: rgb(221, 224, 228);
+    stroke-dasharray: 9, 9;
+    shape-rendering: crispEdges;
 }
 
 .axis-ticks-SMALL line {
-  stroke-width: 1;
-  stroke: rgb(221, 224, 228);
-  stroke-dasharray: 9, 9;
-  shape-rendering: crispEdges;
+    stroke-width: 1;
+    stroke: rgb(221, 224, 228);
+    stroke-dasharray: 9, 9;
+    shape-rendering: crispEdges;
 }
 
 .timeline-map-axis line {
-  stroke: #72A8E0;
+    stroke: #72a8e0;
 }
 
 .timeline-map-axis text {
-  fill: #72A8E0;
-  height: 10px;
-  color: #92BCE4;
-  font-size: .7rem;
+    fill: #72a8e0;
+    height: 10px;
+    color: #92bce4;
+    font-size: 0.7rem;
 }
 
 /* axis line */
 .axis-ticks path {
-  stroke: none;
+    stroke: none;
 }
 
 .axis-label-LARGE path {
-  stroke: none;
+    stroke: none;
 }
 
 .axis-label-MEDIUM path {
-  stroke: none;
+    stroke: none;
 }
 
 .axis-label-SMALL path {
-  stroke: none;
+    stroke: none;
 }
 
 /* brush */
 .brush .selection {
-  stroke: #61ADFC;
-  fill: #61ADFC;
-  fill-opacity: .3;
+    stroke: #61adfc;
+    fill: #61adfc;
+    fill-opacity: 0.3;
 }
 
 .timeline-canvas-record {
-  stroke-width: 6;
-  cursor: default;
-  pointer-events: true;
+    stroke-width: 6;
+    cursor: default;
+    pointer-events: true;
 }
 
 .timeline-canvas-record-label {
-  fill: rgb(63, 66, 71);
-  shape-rendering: crispEdges;
-  color: #080707;
-  font-size: .8125rem;
-  cursor: pointer;
+    fill: rgb(63, 66, 71);
+    shape-rendering: crispEdges;
+    color: #080707;
+    font-size: 0.8125rem;
+    cursor: pointer;
 }
 
 .timeline-wrapper {
-  margin: 10px 10px 10px 10px;
-  border: 1px solid #D5DBE4;
-  border-radius: 3px;
-  position: relative;
+    margin: 10px 10px 10px 10px;
+    border: 1px solid #d5dbe4;
+    border-radius: 3px;
+    position: relative;
 }
 
 .slds-text-heading_medium,
 .slds-text-heading--medium {
-  font-weight: 500;
-  font-size: 1rem;
-  padding-left: 10px;
-  line-height: 1.25;
+    font-weight: 500;
+    font-size: 1rem;
+    padding-left: 10px;
+    line-height: 1.25;
 }
 
 .slds-popover__header {
-  padding: 1rem 1rem .75rem;
+    padding: 1rem 1rem 0.75rem;
 }
 
 .slds-popover {
-  border-radius: .25rem;
-  width: 25rem;
-  min-height: 2rem;
-  z-index: 98;
-  text-align: left;
-  background-color: #FFF;
-  display: inline-block;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .16);
-  border: 1px solid #DDDBDA;
+    border-radius: 0.25rem;
+    width: 25rem;
+    min-height: 2rem;
+    z-index: 98;
+    text-align: left;
+    background-color: #fff;
+    display: inline-block;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+    border: 1px solid #dddbda;
 }
 
 .slds-is-relative.record-form-spinner-holder {
-  min-height: 120px;
+    min-height: 120px;
 }
 
 .tooltip-panel {
-  background: rgb(243, 242, 242);
-  color: #FFF;
-  position: fixed !important;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 12px;
-  z-index: 98;
-  min-width: 400px;
-  min-height: 150px;
-  visibility: hidden;
+    background: rgb(243, 242, 242);
+    color: #fff;
+    position: fixed !important;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 12px;
+    z-index: 98;
+    min-width: 400px;
+    min-height: 150px;
+    visibility: hidden;
 }
 
 .tooltip-content {
-  overflow: hidden;
-  transition: .25s all ease;
-  transition-delay: 0s;
+    overflow: hidden;
+    transition: 0.25s all ease;
+    transition-delay: 0s;
 }
 
 @media only screen and (max-width: 900px) {
-  .axis-label-LARGE .tick:nth-child(2n) text {
-    visibility: hidden;
-  }
+    .axis-label-LARGE .tick:nth-child(2n) text {
+        visibility: hidden;
+    }
 
-  .timeline-summary-verbose {
-    display: none;
-  }
+    .timeline-summary-verbose {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
-  .axis-label-MEDIUM .tick:nth-child(2n) text {
-    visibility: hidden;
-  }
+    .axis-label-MEDIUM .tick:nth-child(2n) text {
+        visibility: hidden;
+    }
 }
 
 .axis-label-SMALL .tick:nth-child(2n) text {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .timeline-summary-verbose-SMALL {
-  display: none;
+    display: none;
 }

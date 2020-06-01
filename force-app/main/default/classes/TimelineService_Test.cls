@@ -13,12 +13,12 @@ private with sharing class TimelineService_Test {
     @isTest
     static void testTimelineTypesForFilter() {
 
-        Contact janeLo = new Contact();
+        Contact janeLo = new Contact(
+            FirstName = 'Jane',
+            LastName = 'Lo'
+        );
 
-        janeLo.FirstName = 'Jane';
-        janeLo.LastName = 'Lo';
-
-        insert(janeLo);
+        insert janeLo;
 
         Test.startTest();
         Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id);
@@ -30,29 +30,29 @@ private with sharing class TimelineService_Test {
     @isTest
     static void testTimelineRecordsInRange() {
 
-        Account janesHousehold = new Account();
+        Account janesHousehold = new Account(
+            Name = 'Jane\'s Household'
+        );
 
-        janesHousehold.Name = 'Jane\'s Household';
+        insert janesHousehold;
 
-        insert(janesHousehold);
+        Task householdTaskInRange = new Task(
+            ActivityDate = Date.today(),
+            Description = 'New activity description for Household. This is a really long description that will test the fact that when the value exceeds 255 characters that it will be truncated prior to being returned to the timeline. This is a really really really really really unnecessary sentence',
+            Subject = 'New activity for Household',
+            WhatId = janesHousehold.Id
+        );
 
-        Task householdTaskInRange = new Task();
+        insert householdTaskInRange;
 
-        householdTaskInRange.ActivityDate = Date.today();
-        householdTaskInRange.Description = 'New activity description for Household. This is a really long description that will test the fact that when the value exceeds 255 characters that it will be truncated prior to being returned to the timeline. This is a really really really really really unnecessary sentence';
-        householdTaskInRange.Subject = 'New activity for Household';
-        householdTaskInRange.WhatId = janesHousehold.Id;
+        Task householdTaskOutOfRange = new Task(
+            ActivityDate = Date.newInstance(1990, 2, 2),
+            Description = 'Old activity description for Joe',
+            Subject = 'Old activity for Joe',
+            WhatId = janesHousehold.Id
+        );
 
-        insert(householdTaskInRange);
-
-        Task householdTaskOutOfRange = new Task();
-
-        householdTaskOutOfRange.ActivityDate = Date.newInstance(1990, 2, 2);
-        householdTaskOutOfRange.Description = 'Old activity description for Joe';
-        householdTaskOutOfRange.Subject = 'Old activity for Joe';
-        householdTaskOutOfRange.WhatId = janesHousehold.Id;
-
-        insert(householdTaskOutOfRange);
+        insert householdTaskOutOfRange;
 
         Test.startTest();
         List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(janesHousehold.Id, '1', '1');
@@ -64,27 +64,27 @@ private with sharing class TimelineService_Test {
     @isTest
     static void testDotNotation() {
 
-        Campaign eventCampaign = new Campaign();
+        Campaign eventCampaign = new Campaign(
+            Name = 'Australian of the Year Awards',
+            StartDate = Date.today(),
+            IsActive = true
+        );
 
-        eventCampaign.Name = 'Australian of the Year Awards';
-        eventCampaign.StartDate = Date.today();
-        eventCampaign.IsActive = true;
+        insert eventCampaign;
 
-        insert(eventCampaign);
+        Contact juneLo = new Contact(
+            FirstName = 'June',
+            LastName = 'Lo'
+        );
 
-        Contact juneLo = new Contact();
+        insert juneLo;
 
-        juneLo.FirstName = 'June';
-        juneLo.LastName = 'Lo';
+        CampaignMember juneAttends = new CampaignMember(
+            CampaignId = eventCampaign.Id,
+            ContactId = juneLo.Id
+        );
 
-        insert(juneLo);
-
-        CampaignMember juneAttends = new CampaignMember();
-
-        juneAttends.CampaignId = eventCampaign.Id;
-        juneAttends.ContactId = juneLo.Id;
-
-        insert(juneAttends);
+        insert juneAttends;
 
         Test.startTest();
         List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(juneLo.Id, '1', '1');
@@ -102,24 +102,26 @@ private with sharing class TimelineService_Test {
         rodLo.FirstName = 'Rod';
         rodLo.LastName = 'Lo';
 
-        insert(rodLo);
+        insert rodLo;
 
         ContentVersion contentVersion = new ContentVersion(
             Title = 'Puzzle',
             PathOnClient = 'Puzzle.jpg',
             VersionData = Blob.valueOf('Test Content'),
             IsMajorVersion = true
-          );
+        );
 
-          insert contentVersion;    
+        insert contentVersion;    
 
-          List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument];
+        List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument];
           
-          ContentDocumentLink linkedContent = New ContentDocumentLink();
-          linkedContent.LinkedEntityId = rodLo.id;
-          linkedContent.ContentDocumentId = documents[0].Id;
-          linkedContent.ShareType = 'V';
-          insert linkedContent;
+        ContentDocumentLink linkedContent = New ContentDocumentLink(
+            LinkedEntityId = rodLo.id,
+            ContentDocumentId = documents[0].Id,
+            ShareType = 'V'
+        );
+         
+        insert linkedContent;
 
         Test.startTest();
         List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(rodLo.Id, '1', '1');
@@ -133,12 +135,12 @@ private with sharing class TimelineService_Test {
 
         Boolean hasFailed = false;
 
-        Case forgotPassword = new Case();
+        Case forgotPassword = new Case(
+            Origin = 'Email',
+            Subject = 'Forgot my Password'
+        );
 
-        forgotPassword.Origin = 'Email';
-        forgotPassword.Subject = 'Forgot my Password';
-
-        insert(forgotPassword);
+        insert forgotPassword ;
 
         try {
             Test.startTest();
