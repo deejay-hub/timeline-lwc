@@ -1,3 +1,6 @@
+/**
+ * @description Hello World
+ */
 public with sharing class TimelineService {
    
     @AuraEnabled(cacheable=true)
@@ -17,7 +20,7 @@ public with sharing class TimelineService {
                                         + 'WHERE Active__c = true AND '
                                         + 'Test__c = ' + Test.isRunningTest() + ' AND '
                                         + 'Parent_Object__c =:parentObjectType '
-                                        + 'ORDER BY Sequence__c ASC '; //NOPMD
+                                        + 'ORDER BY Sequence__c ASC ';
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
 
@@ -74,7 +77,7 @@ public with sharing class TimelineService {
                                         + 'FROM Timeline_Configuration__mdt '
                                         + 'WHERE Active__c = true AND '
                                         + 'Test__c = ' + Test.isRunningTest() + ' AND '
-                                        + 'Parent_Object__c =:parentConfigType'; //NOPMD
+                                        + 'Parent_Object__c =:parentConfigType';
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query( queryTimelineConfiguration ); //NOPMD
 
@@ -174,7 +177,7 @@ public with sharing class TimelineService {
             String queryRecords = 'SELECT Id, ' 
                                     + innerQuery 
                                 + ' FROM ' + parentObjectType 
-                                + ' WHERE Id =:parentObjectId'; //NOPMD
+                                + ' WHERE Id =:parentObjectId'; 
 
             List<SObject> listOfTimelineRecords = Database.query( queryRecords ); //NOPMD
 
