@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset xmlns="http://pmd.sourceforge.net/ruleset/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Custom ruleset for Salesforce Apex" xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+   <description>Custom ruleset Salesforce Apex</description>
+
+   <rule ref="rulesets/apex/quickstart.xml/ExcessiveClassLength" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ExcessiveParameterList" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ExcessivePublicCount" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/NcssConstructorCount" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/NcssTypeCount" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/TooManyFields" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidDeeplyNestedIfStmts" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidSoqlInLoops" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidSoslInLoops" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidDmlStatementsInLoops" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidDirectAccessTriggerMap" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidLogicInTrigger" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidGlobalModifier" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidNonExistentAnnotations" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/AvoidHardcodingId" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ClassNamingConventions" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/MethodNamingConventions" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/MethodWithSameNameAsEnclosingClass" deprecated="true" />
+   <rule ref="category/apex/codestyle.xml/VariableNamingConventions" deprecated="true" message="{0} variable {1} should begin with {2}">
+      <priority>3</priority>
+      <properties>
+         <!-- relevant for Code Climate output only -->
+         <property name="cc_categories" value="Style" />
+         <property name="cc_remediation_points_multiplier" value="5" />
+         <property name="cc_block_highlighting" value="false" />
+      </properties>
+   </rule>
+   <rule ref="rulesets/apex/quickstart.xml/ApexUnitTestClassShouldHaveAsserts" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexUnitTestShouldNotUseSeeAllDataTrue" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexSharingViolations" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexInsecureEndpoint" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexCSRF" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexOpenRedirect" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexSOQLInjection" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexXSSFromURLParam" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexXSSFromEscapeFalse" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexBadCrypto" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexCRUDViolation" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexDangerousMethods" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexSuggestUsingNamedCred" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/IfStmtsMustUseBraces" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/WhileLoopsMustUseBraces" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/IfElseStmtsMustUseBraces" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ForLoopsMustUseBraces" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/EmptyCatchBlock" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/EmptyIfStmt" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/EmptyWhileStmt" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/EmptyTryOrFinallyBlock" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/EmptyStatementBlock" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/OneDeclarationPerLine" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ApexDoc" deprecated="true" />
+</ruleset>
