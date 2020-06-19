@@ -12,6 +12,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pmdCache
 
 # Dependency directories
 node_modules/
