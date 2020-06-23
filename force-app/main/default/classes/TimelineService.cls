@@ -254,10 +254,10 @@ public with sharing class TimelineService {
         }
     }
 
-    private static Map<String, String> getChildObjects(String object) {
+    private static Map<String, String> getChildObjects(String parentObject) {
 		Map<String, String> childRelatedObjects = new Map<String, String>();
        
-        List<Schema.ChildRelationship> objectRelationships = ((SObject)(Type.forName('Schema.'+ object).newInstance())).getSObjectType().getDescribe().getChildRelationships();
+        List<Schema.ChildRelationship> objectRelationships = ((SObject)(Type.forName('Schema.'+ parentObject).newInstance())).getSObjectType().getDescribe().getChildRelationships();
 		for (Schema.Childrelationship eachRelationship : objectRelationships) {
 			if (eachRelationship.getChildSObject().getDescribe().isAccessible()
 			        && !eachRelationship.getChildSObject().getDescribe().getLabel().contains('Histories')
