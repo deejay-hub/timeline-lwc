@@ -1,8 +1,16 @@
+/**
+ * @description Apex supporting methods for the timeline lightning web component
+ */
 public with sharing class TimelineService {
    
+    /**
+     * @description Return all child record types for the parent record in context
+     * @param parentObjectId Id of the parent object used as the basis for the query
+     * @return A map of the API name and label or each child record type to plot on the timeline
+     */
     @AuraEnabled(cacheable=true)
     public static Map<String, String> getTimelineTypes( String parentObjectId ) {
-
+        
         try {
             String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
             if (parentObjectType == 'Account' && isPersonAccount(parentObjectId)  ) {
@@ -46,8 +54,14 @@ public with sharing class TimelineService {
     }
 
     @AuraEnabled
+    /**
+     * @description Return all child records for the parent record in context based on those active in Timeline_Configuration__mdt
+     * @param parentObjectId The id of the parent record
+     * @param earliestRange The number of historical years to include in the query
+     * @param latestRange The number of years in the future to include in the query
+     * @return A map of API Object Names and their corresponding translated labels
+     */
     public static List<Map<String, String>> getTimelineRecords( String parentObjectId, String earliestRange, String latestRange ) {
-        
         try {
             String parentObjectType = String.valueOf(Id.valueOf(parentObjectId).getSobjectType());
             String parentConfigType = parentObjectType;
@@ -240,10 +254,10 @@ public with sharing class TimelineService {
         }
     }
 
-    private static Map<String, String> getChildObjects(String Obj) {
+    private static Map<String, String> getChildObjects(String object) {
 		Map<String, String> childRelatedObjects = new Map<String, String>();
        
-        List<Schema.ChildRelationship> objectRelationships = ((SObject)(Type.forName('Schema.'+ Obj).newInstance())).getSObjectType().getDescribe().getChildRelationships();
+        List<Schema.ChildRelationship> objectRelationships = ((SObject)(Type.forName('Schema.'+ object).newInstance())).getSObjectType().getDescribe().getChildRelationships();
 		for (Schema.Childrelationship eachRelationship : objectRelationships) {
 			if (eachRelationship.getChildSObject().getDescribe().isAccessible()
 			        && !eachRelationship.getChildSObject().getDescribe().getLabel().contains('Histories')
