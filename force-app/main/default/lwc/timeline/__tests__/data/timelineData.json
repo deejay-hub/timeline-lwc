@@ -1,0 +1,18 @@
+[
+    {
+        "objectId": "0031700000pJRRSAA4",
+        "positionDateValue": "10/06/2020",
+        "objectName": "Contact",
+        "positionDateField": "CreatedDate",
+        "detailField": "Detail",
+        "detailFieldLabel": "Subject",
+        "fallbackTooltipField": "",
+        "fallbackTooltipValue": "",
+        "tooltipId": "",
+        "tooltipObject": "",
+        "drilldownId": "",
+        "type": "",
+        "icon": "/img/test.svg",
+        "iconBackground": "000"
+    }
+]

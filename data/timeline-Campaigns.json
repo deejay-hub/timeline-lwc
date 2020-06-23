@@ -5,7 +5,8 @@
                 "type": "Campaign",
                 "referenceId": "CampaignRef1"
             },
-            "Name": "Event Email Drip Campaign"
+            "Name": "Event Email Drip Campaign",
+            "StartDate": "2020-06-06"
         }
     ]
 }
