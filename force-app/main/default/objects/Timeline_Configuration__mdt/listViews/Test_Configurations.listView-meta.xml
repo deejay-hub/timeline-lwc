@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Test_Configurations</fullName>
+    <columns>DeveloperName</columns>
+    <columns>Parent_Object__c</columns>
+    <columns>Object_Name__c</columns>
+    <columns>Relationship_Name__c</columns>
+    <columns>Position_Date_Field__c</columns>
+    <columns>Detail_Field__c</columns>
+    <columns>Icon__c</columns>
+    <columns>Icon_Background_Colour__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Active__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Test__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Test Configurations</label>
+</ListView>
