@@ -6,6 +6,9 @@
 .sfdx/
 .localdevserver/
 
+#PMD cache
+.pmdCache
+
 # Logs
 logs
 *.log
