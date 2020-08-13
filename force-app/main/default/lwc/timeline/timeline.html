@@ -2,10 +2,10 @@
     <!--main timeline component-->
     <div class="timeline-container">
         <!--header-->
-        <div class="slds-grid slds-grid--align-spread">
+        <div class="slds-grid slds-grid_align-spread">
             <div class="slds-col slds-shrink slds-align-middle">
                 <template if:true={isLoaded}>
-                    <h1 class="slds-text-heading--medium">{timelineTitle}</h1>
+                    <h1 class="slds-text-heading_medium">{timelineTitle}</h1>
                 </template>
                 <template if:false={isLoaded}>
                     <div class="stencil-value" style="margin-left: 10px;"></div>
@@ -50,7 +50,7 @@
 
         <!--timeline body-->
         <div id="timeline-wrapper" class="timeline-wrapper">
-            <div class="slds-col slds-size--1-of-1">
+            <div class="slds-col slds-size_1-of-1">
                 <div class="timeline-canvas" id="timeline-canvas" lwc:dom="manual"></div>
                 <div class="timeline-canvas-axis" id="timeline-canvas-axis" lwc:dom="manual"></div>
                 <div class="timeline-map-wrapper">
@@ -115,7 +115,7 @@
                 </div>
 
                 <div class="slds-panel__body">
-                    <legend class="slds-form-element__label slds-text-title--caps">{label.TYPE_LEGEND}</legend>
+                    <legend class="slds-form-element__label slds-text-title_caps">{label.TYPE_LEGEND}</legend>
                     <div class="slds-form-element">
                         <div class="slds-form-element__control">
                             <div class="slds-checkbox">
@@ -147,7 +147,7 @@
                     </template>
 
                     <div style="padding-top: 10px;"></div>
-                    <legend class="slds-form-element__label slds-text-title--caps">{label.DATE_RANGE_LEGEND}</legend>
+                    <legend class="slds-form-element__label slds-text-title_caps">{label.DATE_RANGE_LEGEND}</legend>
 
                     <div class="slds-form-element__label" style="padding-top: 5px;">
                         {timelineStart} - {timelineEnd}
