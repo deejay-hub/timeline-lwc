@@ -31,10 +31,8 @@
     		<img alt="issues"
 		src="https://img.shields.io/github/issues-raw/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
-	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade">
-    		<img alt="code quality"
-		src="https://api.codacy.com/project/badge/Grade/811e689b645e4161848acf6570ec6d50">
-  	</a>	
+	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/c03e8f3db45a46dc93a62d61a5a8108f"/>
+	</a>
 </h3>
 
 <p align="center">
