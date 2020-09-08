@@ -43,6 +43,8 @@
 
 ## Overview
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/895d81d75a374a4dbe52f1ce1673997c)](https://app.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&utm_medium=referral&utm_content=deejay-hub/timeline-lwc&utm_campaign=Badge_Grade_Dashboard)
+
 A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js.
 
 -   **Multi Object Support.** Plot related records to Lead, Account, Contact, Opportunity and Case.
