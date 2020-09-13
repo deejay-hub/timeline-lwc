@@ -268,7 +268,7 @@ See [contributing.md](/contributing.md) for timeline principles.
 
 #### Code quality
 
-[PMD](https://pmd.github.io/) is a cross-language static code analyser. To use PMD with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=chuckjonas.apex-pmd) from the Visual Studio Code Marketplace. The [.ruleset.xml](/.ruleset.xml) file is provided as part of this repository to exclude specific files from the code check process in the context of Lightning Web Components development.
+[PMD](https://pmd.github.io/) is a cross-language static code analyser. To use PMD with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=chuckjonas.apex-pmd) from the Visual Studio Code Marketplace. The [.pmdruleset.xml](/.pmdruleset.xml) file is provided as part of this repository to exclude specific files and/or types of code quality checks from the process in the context of Lightning Web Components development.
 
 #### Codacy
 
