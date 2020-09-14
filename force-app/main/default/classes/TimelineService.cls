@@ -223,15 +223,24 @@ public with sharing class TimelineService {
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
 
             for (SObject each : listOfTimelineRecords) {
-                for (String eachObj : mapOfTimelineConfigurationRecords.keyset()) {
-                    if (each.getSObjects(childObjects.get(eachObj)) != null) {
-                        for (SObject eachCh : (List<SObject>) each.getSObjects(childObjects.get(eachObj))) {
+                Map<String, Object> childRecordsAsMap = each.getPopulatedFieldsAsMap();
+
+                for (String fieldName : childRecordsAsMap.keySet()) {
+                    if (childRecordsAsMap.get(fieldName) instanceof List<sObject>) {
+                        List<sObject> childRecords = (List<sObject>) childRecordsAsMap.get(fieldName);
+
+                        for (Sobject eachCh : childRecords) {
                             Map<String, String> mapData = new Map<String, String>();
+                            Map<String, String> dupeDataCheck = new Map<String, String>();
 
-                            TimelineRecord tr = mapOfTimelineConfigurationRecords.get(eachObj);
+                            TimelineRecord tr = mapOfTimelineConfigurationRecords.get(
+                                eachCh.getSObjectType() + fieldName
+                            );
 
-                            if (tr != null) {
-                                String myId = eachCh.Id;
+                            String myId = eachCh.Id;
+
+                            if (!dupeDataCheck.containsKey(myId)) {
+                                dupeDataCheck.put(myId, myId);
 
                                 Map<String, String> detailValues = getFieldValues(
                                     tr.detailField,
@@ -258,6 +267,7 @@ public with sharing class TimelineService {
                                     eachCh,
                                     fieldAttributes
                                 );
+
                                 Map<String, String> typeValues = getFieldValues(tr.type, eachCh, fieldAttributes);
 
                                 if (tr.objectName == 'ContentDocumentLink') {
@@ -405,13 +415,13 @@ public with sharing class TimelineService {
 
         FieldMetadata fm = fieldAttributes.get(field);
         Boolean isDotNotationUsed = field.contains('.');
-
         fieldLabel = fm.label;
 
         if (fm.canAccess) {
             if (isDotNotationUsed == true) {
                 String splitObject = field.SubStringBefore('.');
                 String splitField = field.SubStringAfter('.');
+
                 fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
             } else {
                 fieldValue = String.valueOf(records.get(field));
