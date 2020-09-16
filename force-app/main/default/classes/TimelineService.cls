@@ -344,41 +344,34 @@ public with sharing class TimelineService {
         for (String field : fields.keySet()) {
             if (field != null && field != '') {
                 String fieldObject = fields.get(field);
-                Boolean isDotNotationUsed = field.contains('.');
+                String fieldStripped = field;
+                String[] objectFieldSplit = field.split('\\.');
                 FieldMetadata fieldMetadata = new fieldMetadata();
 
                 try {
-                    if (isDotNotationUsed == true) {
-                        String splitObject = field.SubStringBefore('.');
-                        String splitField = field.SubStringAfter('.');
-
-                        Schema.DescribeSObjectResult describeParentSobjects = ((SObject) (Type.forName(
-                                    'Schema.' + String.valueOf(splitObject)
-                                )
-                                .newInstance()))
-                            .getSObjectType()
-                            .getDescribe();
-                        fieldMetadata.label = String.valueOf(
-                            describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel()
-                        );
-                        fieldMetadata.canAccess = Boolean.valueOf(
-                            describeParentSobjects.fields.getMap().get(splitField).getDescribe().isAccessible()
-                        );
-                    } else {
-                        Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
-                                    'Schema.' + fieldObject
-                                )
-                                .newInstance()))
-                            .getSObjectType()
-                            .getDescribe();
-
-                        fieldMetadata.label = String.valueOf(
-                            describeSobjects.fields.getMap().get(field).getDescribe().getLabel()
-                        );
-                        fieldMetadata.canAccess = Boolean.valueOf(
-                            describeSobjects.fields.getMap().get(field).getDescribe().isAccessible()
-                        );
+                    if (objectFieldSplit.size() > 1) {
+                        fieldObject = objectFieldSplit[objectFieldSplit.size() - 2];
+                        fieldStripped = objectFieldSplit[objectFieldSplit.size() - 1];
                     }
+
+                    if (fieldObject == 'Owner' || fieldObject == 'CreatedBy' || fieldObject == 'LastModifiedBy') {
+                        fieldObject = 'User';
+                    }
+
+                    Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
+                                'Schema.' + String.valueOf(fieldObject)
+                            )
+                            .newInstance()))
+                        .getSObjectType()
+                        .getDescribe();
+
+                    fieldMetadata.label = String.valueOf(
+                        describeSobjects.fields.getMap().get(fieldStripped).getDescribe().getLabel()
+                    );
+
+                    fieldMetadata.canAccess = Boolean.valueOf(
+                        describeSobjects.fields.getMap().get(fieldStripped).getDescribe().isAccessible()
+                    );
                 } catch (Exception e) {
                     String errorMsg =
                         'No such column \'' +
@@ -414,18 +407,43 @@ public with sharing class TimelineService {
         }
 
         FieldMetadata fm = fieldAttributes.get(field);
-        Boolean isDotNotationUsed = field.contains('.');
         fieldLabel = fm.label;
 
-        if (fm.canAccess) {
-            if (isDotNotationUsed == true) {
-                String splitObject = field.SubStringBefore('.');
-                String splitField = field.SubStringAfter('.');
+        String[] objectFieldSplit = field.split('\\.');
 
-                fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
-            } else {
-                fieldValue = String.valueOf(records.get(field));
+        if (fm.canAccess) {
+            switch on objectFieldSplit.size() {
+                when 1 {
+                    fieldValue = String.valueOf(records.get(field));
+                }
+                when 2 {
+                    fieldValue = String.valueOf(records.getSobject(objectFieldSplit[0]).get(objectFieldSplit[1]));
+                }
+                when 3 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(objectFieldSplit[0]).getSobject(objectFieldSplit[1]).get(objectFieldSplit[2])
+                    );
+                }
+                when 4 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(objectFieldSplit[0])
+                            .getSobject(objectFieldSplit[1])
+                            .getSobject(objectFieldSplit[2])
+                            .get(objectFieldSplit[3])
+                    );
+                }
+                when 5 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(objectFieldSplit[0])
+                            .getSobject(objectFieldSplit[1])
+                            .getSobject(objectFieldSplit[2])
+                            .getSobject(objectFieldSplit[3])
+                            .get(objectFieldSplit[4])
+                    );
+                }
             }
+        } else {
+            fieldValue = '🔒 [' + fieldLabel + ']';
         }
 
         if (fieldValue != null && fieldValue.length() > 255) {
@@ -439,7 +457,7 @@ public with sharing class TimelineService {
     }
 
     private static Boolean isPersonAccount(String recordId) {
-        if (Account.SObjectType.getDescribe().hasSubtypes) {
+        if (Schema.sObjectType.Account.fields.getMap().containsKey('isPersonAccount')) {
             String queryPersonAccount = 'SELECT Id, IsPersonAccount FROM Account Where Id =:recordId';
             SObject acc = Database.query(queryPersonAccount);
 
