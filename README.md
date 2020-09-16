@@ -31,10 +31,8 @@
     		<img alt="issues"
 		src="https://img.shields.io/github/issues-raw/deejay-hub/timeline-lwc?style=flat-square">
   	</a>
-	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade">
-    		<img alt="code quality"
-		src="https://api.codacy.com/project/badge/Grade/811e689b645e4161848acf6570ec6d50">
-  	</a>	
+	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/c03e8f3db45a46dc93a62d61a5a8108f"/>
+	</a>
 </h3>
 
 <p align="center">
@@ -267,6 +265,10 @@ See [contributing.md](/contributing.md) for timeline principles.
 #### Code linting
 
 [ESLint](https://eslint.org/) is a popular JavaScript linting tool used to identify stylistic errors and erroneous constructs. To use ESLint with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode-lwc) from the Visual Studio Code Marketplace. The [.eslintignore](/.eslintignore) file is provided as part of this repository to exclude specific files from the linting process in the context of Lightning Web Components development.
+
+#### Code quality
+
+[PMD](https://pmd.github.io/) is a cross-language static code analyser. To use PMD with Visual Studio Code, install [this extension](https://marketplace.visualstudio.com/items?itemName=chuckjonas.apex-pmd) from the Visual Studio Code Marketplace. The [.pmdruleset.xml](/.pmdruleset.xml) file is provided as part of this repository to exclude specific files and/or types of code quality checks from the process in the context of Lightning Web Components development.
 
 #### Codacy
 
