@@ -30,6 +30,7 @@ import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
 export default class timeline extends NavigationMixin(LightningElement) {
     //Adminstrator accessible attributes in app builder
+    @api timelineParent; //parent field for the lwc set as design attribute
     @api timelineTitle; //title for the lwc set as design attribute
     @api preferredHeight; //height of the timeline set as design attribute
     @api earliestRange; //How far back in time to go
