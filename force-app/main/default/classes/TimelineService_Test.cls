@@ -1,10 +1,11 @@
-/*
-1 - Does the filter get the correct types for display
-2 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
-3 - Does the timelineService correctly return parent field values using dot notation
-4 - Does custom processing for the entity ContentDocumentLink function correctly
-5 - Setup error - do we get an exception when there are no timeline types
-*/
+/**
+ * @description Supporting test class to check the Timeline service modules
+ * 1 - Does the filter get the correct types for display
+ * 2 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
+ * 3 - Does the timelineService correctly return parent field values using dot notation
+ * 4 - Does custom processing for the entity ContentDocumentLink function correctly
+ * 5 - Setup error - do we get an exception when there are no timeline types
+ */
 @isTest(seeAllData=false)
 private with sharing class TimelineService_Test {
     private static User currentUser;
