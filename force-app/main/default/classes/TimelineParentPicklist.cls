@@ -20,7 +20,10 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
             .getSObjectType()
             .getDescribe()
             .getLabel();
-        VisualEditor.DataRow defaultValue = new VisualEditor.DataRow('Use This ' + objectLabel, 'Default_Picklist_Value');
+        VisualEditor.DataRow defaultValue = new VisualEditor.DataRow(
+            'Use This ' + objectLabel,
+            'Default_Picklist_Value'
+        );
         return defaultValue;
     }
 

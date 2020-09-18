@@ -57,11 +57,9 @@ public with sharing class TimelineService {
             }
 
             return mapOfTimelineTypes;
-        } 
-        catch(TimelineSetupException e) {
+        } catch (TimelineSetupException e) {
             throw new AuraHandledException(e.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
         }
     }
@@ -75,7 +73,7 @@ public with sharing class TimelineService {
      * @param parentFieldName maps API name to use if different from current record
      * @return A map of API Object Names and their corresponding translated labels
      */
-    public static List<Map<String, String>> getTimelineRecords( 
+    public static List<Map<String, String>> getTimelineRecords(
         String parentObjectId,
         String earliestRange,
         String latestRange,
@@ -308,10 +306,9 @@ public with sharing class TimelineService {
                 }
             }
             return listOfTimelineData;
-        } catch(TimelineSetupException e) {
+        } catch (TimelineSetupException e) {
             throw new AuraHandledException(e.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
         }
     }
@@ -474,27 +471,23 @@ public with sharing class TimelineService {
     }
 
     private static Map<String, String> getParentDetails(String recordId, String field) {
-
-        Map<String, String> parentDetails = new Map<String,String>();
+        Map<String, String> parentDetails = new Map<String, String>();
 
         String parentObjectType = String.valueOf(Id.valueOf(recordId).getSobjectType());
         String parentConfigType = parentObjectType;
         String fieldValue;
 
-        if ( field == 'Default_Picklist_Value') {
+        if (field == 'Default_Picklist_Value') {
             fieldValue = recordId;
-        }
-        else {
+        } else {
             String queryParentId = 'SELECT Id, ' + field + ' FROM ' + parentObjectType + ' Where Id =:recordId';
 
             List<SObject> newDefaultRecord = Database.query(queryParentId); //NOPMD
 
-            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
-                                'Schema.' + parentObjectType
-                            )
-                            .newInstance()))
-                        .getSObjectType()
-                        .getDescribe();
+            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName('Schema.' + parentObjectType)
+                    .newInstance()))
+                .getSObjectType()
+                .getDescribe();
 
             String fieldLabel = String.valueOf(describeSobjects.fields.getMap().get(field).getDescribe().getLabel());
 
@@ -502,37 +495,42 @@ public with sharing class TimelineService {
 
             Set<String> strippedFields = securityDecision.getRemovedFields().get(parentObjectType);
 
-            if ( strippedFields != null && strippedFields.contains(field) ) {
+            if (strippedFields != null && strippedFields.contains(field)) {
                 String errorMsg =
                     'We can\'t display the timeline. You do not have access to the related field. ' +
-                    'Ask your Administrator for help. ' + '(' + fieldLabel + ')';
+                    'Ask your Administrator for help. ' +
+                    '(' +
+                    fieldLabel +
+                    ')';
 
-                throw new TimelineSetupException('{"type": "No-Access", "message": "' + errorMsg + '"}'); 
+                throw new TimelineSetupException('{"type": "No-Access", "message": "' + errorMsg + '"}');
             }
 
             SObject secureObject = securityDecision.getRecords()[0];
 
             fieldValue = String.valueOf(secureObject.get(field));
 
-            if ( fieldValue == null || fieldValue == '') {
+            if (fieldValue == null || fieldValue == '') {
                 String errorMsg =
                     'We can\'t display the timeline. The field requested has no value. ' +
-                    'Populate a value and try again. ' + '(' + fieldLabel + ')';
+                    'Populate a value and try again. ' +
+                    '(' +
+                    fieldLabel +
+                    ')';
 
-                throw new TimelineSetupException('{"type": "No-Data", "message": "' + errorMsg + '"}'); 
+                throw new TimelineSetupException('{"type": "No-Data", "message": "' + errorMsg + '"}');
             }
-            
+
             parentObjectType = String.valueOf(Id.valueOf(fieldValue).getSobjectType());
         }
 
         if (parentObjectType == 'Account' && isPersonAccount(fieldValue)) {
             parentConfigType = 'PersonAccount';
-        }
-        else {
+        } else {
             parentConfigType = parentObjectType;
         }
 
-        parentDetails.put('Id', fieldValue );
+        parentDetails.put('Id', fieldValue);
         parentDetails.put('QueryObjectType', parentObjectType);
         parentDetails.put('ConfigObjectType', parentConfigType);
 

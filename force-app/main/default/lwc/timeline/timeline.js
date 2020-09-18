@@ -6,7 +6,7 @@ import LOCALE from '@salesforce/i18n/locale';
 
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
 import getTimelineTypes from '@salesforce/apex/TimelineService.getTimelineTypes';
-import {refreshApex} from '@salesforce/apex';
+import { refreshApex } from '@salesforce/apex';
 
 import d3JS from '@salesforce/resourceUrl/d3minified';
 import momentJS from '@salesforce/resourceUrl/momentminified';
@@ -239,9 +239,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
         me._d3timelineMapSVG.selectAll('*').remove();
         me._d3timelineMapAxisSVG.selectAll('*').remove();
 
-        refreshApex( me.timelineTypes );
+        refreshApex(me.timelineTypes);
 
-        getTimelineData({ parentObjectId: me.recordId, earliestRange: me.earliestRange, latestRange: me.latestRange, parentFieldName: me.timelineParent })
+        getTimelineData({
+            parentObjectId: me.recordId,
+            earliestRange: me.earliestRange,
+            latestRange: me.latestRange,
+            parentFieldName: me.timelineParent
+        })
             .then((result) => {
                 try {
                     if (result.length > 0) {
@@ -688,7 +693,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     this.isError = false;
                     this.noData = true;
                     break;
-                case 'No-Access'    :
+                case 'No-Access':
                     this.illustrationType = 'NoAccess';
                     this.isError = false;
                     this.noData = false;
