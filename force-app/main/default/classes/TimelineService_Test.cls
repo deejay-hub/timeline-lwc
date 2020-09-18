@@ -17,7 +17,7 @@ private with sharing class TimelineService_Test {
         insert janeLo;
 
         Test.startTest();
-        Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id);
+        Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id, 'Default_Picklist_Value');
         Test.stopTest();
 
         System.assertEquals(
@@ -52,7 +52,7 @@ private with sharing class TimelineService_Test {
         insert householdTaskOutOfRange;
 
         Test.startTest();
-        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(janesHousehold.Id, '1', '1');
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(janesHousehold.Id, '1', '1', 'Default_Picklist_Value');
         Test.stopTest();
 
         System.assertEquals(1, timelineRecords.size(), 'Incorrect number of Tasks found');
@@ -77,7 +77,7 @@ private with sharing class TimelineService_Test {
         insert juneAttends;
 
         Test.startTest();
-        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(juneLo.Id, '1', '1');
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(juneLo.Id, '1', '1', 'Default_Picklist_Value');
         Test.stopTest();
 
         System.assertEquals(1, timelineRecords.size(), 'Incorrect number of Campaign Members found');
@@ -117,7 +117,7 @@ private with sharing class TimelineService_Test {
         insert linkedContent;
 
         Test.startTest();
-        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(rodLo.Id, '1', '1');
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(rodLo.Id, '1', '1', 'Default_Picklist_Value');
         Test.stopTest();
 
         System.assertEquals(
@@ -137,7 +137,7 @@ private with sharing class TimelineService_Test {
 
         try {
             Test.startTest();
-            List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(forgotPassword.Id, '1', '1');
+            List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(forgotPassword.Id, '1', '1', 'Default_Picklist_Value');
         } catch (Exception e) {
             hasFailed = true;
         } finally {
