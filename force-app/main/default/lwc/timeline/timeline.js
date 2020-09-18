@@ -6,6 +6,7 @@ import LOCALE from '@salesforce/i18n/locale';
 
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
 import getTimelineTypes from '@salesforce/apex/TimelineService.getTimelineTypes';
+import {refreshApex} from '@salesforce/apex';
 
 import d3JS from '@salesforce/resourceUrl/d3minified';
 import momentJS from '@salesforce/resourceUrl/momentminified';
@@ -42,6 +43,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api recordId; //current record id of lead, case, opportunity, contact or account
 
     @api flexipageRegionWidth; //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
+
+    timelineTypes;
 
     timelineStart; //Calculated based on the earliestRange
     timelineEnd; //Calculated based on the latestRange
@@ -125,9 +128,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3LocalisedShortDateFormat = null;
     _d3Rendered = false;
 
-    @wire(getTimelineTypes, { parentObjectId: '$recordId' })
+    @wire(getTimelineTypes, { parentObjectId: '$recordId', parentFieldName: '$timelineParent' })
     wiredResult(result) {
         if (result.data) {
+            this.timelineTypes = result;
             const timelineTs = result.data;
 
             for (let key in timelineTs) {
@@ -146,8 +150,25 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
             this.isFilterLoaded = true;
         } else if (result.error) {
-            let errorMessage = result.error.body.message;
-            this.processError('Error', this.error.APEX, errorMessage);
+            //let errorMessage = result.error.body.message;
+            //this.processError('Error', this.error.APEX, errorMessage);
+            let errorType = 'Error';
+            let errorHeading,
+                errorMessage = '--';
+
+            try {
+                errorMessage = result.error.body.message;
+                console.log('@@' + errorMessage);
+                let customError = JSON.parse(errorMessage);
+                errorType = customError.type;
+                errorMessage = customError.message;
+                errorHeading = this.error.NO_DATA_HEADER;
+            } catch (error2) {
+                //fails to parse message so is a generic apex error
+                errorHeading = this.error.APEX;
+            }
+
+            this.processError(errorType, errorHeading, errorMessage);
         }
     }
 
@@ -218,7 +239,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
         me._d3timelineMapSVG.selectAll('*').remove();
         me._d3timelineMapAxisSVG.selectAll('*').remove();
 
-        getTimelineData({ parentObjectId: me.recordId, earliestRange: me.earliestRange, latestRange: me.latestRange })
+        refreshApex( me.timelineTypes );
+
+        getTimelineData({ parentObjectId: me.recordId, earliestRange: me.earliestRange, latestRange: me.latestRange, parentFieldName: me.timelineParent })
             .then((result) => {
                 try {
                     if (result.length > 0) {
@@ -664,6 +687,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     this.illustrationType = 'Desert';
                     this.isError = false;
                     this.noData = true;
+                    break;
+                case 'No-Access'    :
+                    this.illustrationType = 'NoAccess';
+                    this.isError = false;
+                    this.noData = false;
                     break;
                 case 'No-Filter-Data':
                     this.illustrationType = 'Desert';
