@@ -36,6 +36,12 @@
                                 onclick={processTimeline}
                             ></lightning-button-icon>
                             <lightning-button-icon-stateful
+                                icon-name="utility:shift_ui"
+                                selected={isMultiDay}
+                                onclick={toggleMultiDay}
+                                alternative-text="Toggle multi-day"
+                            ></lightning-button-icon-stateful>
+                            <lightning-button-icon-stateful
                                 icon-name="utility:filterList"
                                 selected={isFilter}
                                 onclick={toggleFilter}

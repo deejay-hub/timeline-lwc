@@ -43,12 +43,20 @@
         <value xsi:type="xsd:string">PurchaseDate</value>
     </values>
     <values>
+        <field>Position_End_Date_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>Relationship_Name__c</field>
         <value xsi:type="xsd:string">Assets</value>
     </values>
     <values>
         <field>Sequence__c</field>
         <value xsi:type="xsd:double">80.0</value>
+    </values>
+    <values>
+        <field>Test__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Tooltip_Id_Field__c</field>

@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">MaintenanceAssetNumber</value>
+        <value xsi:type="xsd:string">MaintenancePlan.MaintenancePlanTitle</value>
     </values>
     <values>
         <field>Drilldown_Id_Field__c</field>
@@ -40,7 +40,11 @@
     </values>
     <values>
         <field>Position_Date_Field__c</field>
-        <value xsi:type="xsd:string">CreatedDate</value>
+        <value xsi:type="xsd:string">MaintenancePlan.StartDate</value>
+    </values>
+    <values>
+        <field>Position_End_Date_Field__c</field>
+        <value xsi:type="xsd:string">MaintenancePlan.EndDate</value>
     </values>
     <values>
         <field>Relationship_Name__c</field>

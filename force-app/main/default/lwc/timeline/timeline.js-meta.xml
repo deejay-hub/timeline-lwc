@@ -16,6 +16,7 @@
                 <object>Account</object>
                 <object>Case</object>
                 <object>Opportunity</object>
+                <object>Asset</object>
             </objects>
 
             <property name="timelineTitle" label="Title" default="Timeline" required="true" type="String" />
@@ -24,6 +25,7 @@
             <property name="latestRange" label="Future Time Range (Years)" default="0.5" required="true" type="String" datasource="0.25, 0.5, 1" description="Specify the end range for the timeline. As n plus current date."/>
             <property name="zoomTo" label="Zoom Based On" default="Current Date" required="true" type="String" datasource="Current Date, Last Activity" description="Zoom to the last record found (even if it's in the past or future) OR zoom to the current date (even if there are no records)."/>
             <property name="daysToShow" label="Zoom Range (Days)" default="60" required="true" type="Integer" min="7" max="120" description="Specify how many days to zoom to by default. e.g. 60 days would show 30 days prior to and 30 days after the specified 'zoom based on' setting."/>
+            <property name="defaultMultiDay" label="Default to multi-day" default="true" required="true" type="Boolean" description="Displays multi-day records on the timeline and minimap by default when enabled (for records which have start and end date set), this option can be changed by the user using the toggle button."/>
 
             <supportedFormFactors>
                 <supportedFormFactor type="Large" />
@@ -37,6 +39,7 @@
             <property name="latestRange" label="Future Time Range (Years)" default="0.5" required="true" type="String" datasource="0.25, 0.5, 1" description="Specify the end range for the timeline. As n plus current date."/>
             <property name="zoomTo" label="Zoom Based On" default="Current Date" required="true" type="String" datasource="Current Date, Last Activity" description="Zoom to the last record found (even if it's in the past or future) OR zoom to the current date (even if there are no records)."/>
             <property name="daysToShow" label="Zoom Range (Days)" default="60" required="true" type="Integer" min="7" max="120" description="Specify how many days to zoom to by default. e.g. 60 days would show 30 days prior to and 30 days after the specified 'zoom based on' setting."/>
+            <property name="defaultMultiDay" label="Default to multi-day" default="true" required="true" type="Boolean" description="Displays multi-day records on the timeline and minimap by default when enabled (for records which have start and end date set), this option can be changed by the user using the toggle button."/>
             <property name="recordId" label="Record Id" default="{!recordId}" required="true" type="String" datasource="{!recordId}" description="Automatically binds the page's record id to the component variable" />
             
         </targetConfig>
