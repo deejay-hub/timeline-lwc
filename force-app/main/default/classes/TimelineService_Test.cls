@@ -5,18 +5,13 @@
 4 - Does custom processing for the entity ContentDocumentLink function correctly
 5 - Setup error - do we get an exception when there are no timeline types
 */
-@isTest(seeAllData = false)
+@isTest(seeAllData=false)
 private with sharing class TimelineService_Test {
-    
     private static User currentUser;
 
     @isTest
     static void testTimelineTypesForFilter() {
-
-        Contact janeLo = new Contact(
-            FirstName = 'Jane',
-            LastName = 'Lo'
-        );
+        Contact janeLo = new Contact(FirstName = 'Jane', LastName = 'Lo');
 
         insert janeLo;
 
@@ -24,15 +19,16 @@ private with sharing class TimelineService_Test {
         Map<String, String> timelineTypes = TimelineService.getTimelineTypes(janeLo.Id);
         Test.stopTest();
 
-        System.assertEquals( 3, timelineTypes.size(), 'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\'' );
+        System.assertEquals(
+            3,
+            timelineTypes.size(),
+            'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\''
+        );
     }
 
     @isTest
     static void testTimelineRecordsInRange() {
-
-        Account janesHousehold = new Account(
-            Name = 'Jane\'s Household'
-        );
+        Account janesHousehold = new Account(Name = 'Jane\'s Household');
 
         insert janesHousehold;
 
@@ -58,12 +54,11 @@ private with sharing class TimelineService_Test {
         List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(janesHousehold.Id, '1', '1');
         Test.stopTest();
 
-        System.assertEquals( 1, timelineRecords.size(), 'Incorrect number of Tasks found' );
+        System.assertEquals(1, timelineRecords.size(), 'Incorrect number of Tasks found');
     }
 
     @isTest
     static void testDotNotation() {
-
         Campaign eventCampaign = new Campaign(
             Name = 'Australian of the Year Awards',
             StartDate = Date.today(),
@@ -72,17 +67,11 @@ private with sharing class TimelineService_Test {
 
         insert eventCampaign;
 
-        Contact juneLo = new Contact(
-            FirstName = 'June',
-            LastName = 'Lo'
-        );
+        Contact juneLo = new Contact(FirstName = 'June', LastName = 'Lo');
 
         insert juneLo;
 
-        CampaignMember juneAttends = new CampaignMember(
-            CampaignId = eventCampaign.Id,
-            ContactId = juneLo.Id
-        );
+        CampaignMember juneAttends = new CampaignMember(CampaignId = eventCampaign.Id, ContactId = juneLo.Id);
 
         insert juneAttends;
 
@@ -90,13 +79,16 @@ private with sharing class TimelineService_Test {
         List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(juneLo.Id, '1', '1');
         Test.stopTest();
 
-        System.assertEquals( 1, timelineRecords.size(), 'Incorrect number of Campaign Members found' );
-        System.assertEquals( eventCampaign.Name, timelineRecords[0].get('detailField'), 'Campaign Name using dot notation not functioning' );
+        System.assertEquals(1, timelineRecords.size(), 'Incorrect number of Campaign Members found');
+        System.assertEquals(
+            eventCampaign.Name,
+            timelineRecords[0].get('detailField'),
+            'Campaign Name using dot notation not functioning'
+        );
     }
 
     @isTest
     static void testContentDocumentLink() {
-
         Contact rodLo = new Contact();
 
         rodLo.FirstName = 'Rod';
@@ -111,47 +103,48 @@ private with sharing class TimelineService_Test {
             IsMajorVersion = true
         );
 
-        insert contentVersion;    
+        insert contentVersion;
 
         List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument];
-          
-        ContentDocumentLink linkedContent = New ContentDocumentLink(
+
+        ContentDocumentLink linkedContent = new ContentDocumentLink(
             LinkedEntityId = rodLo.id,
             ContentDocumentId = documents[0].Id,
             ShareType = 'V'
         );
-         
+
         insert linkedContent;
 
         Test.startTest();
         List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(rodLo.Id, '1', '1');
         Test.stopTest();
 
-        System.assertEquals( documents[0].Id, timelineRecords[0].get('objectId'), 'Document Id was not returned as attachment record value' );
+        System.assertEquals(
+            documents[0].Id,
+            timelineRecords[0].get('objectId'),
+            'Document Id was not returned as attachment record value'
+        );
     }
 
     @isTest
     static void testSetupException() {
-
         Boolean hasFailed = false;
 
-        Case forgotPassword = new Case(
-            Origin = 'Email',
-            Subject = 'Forgot my Password'
-        );
+        Case forgotPassword = new Case(Origin = 'Email', Subject = 'Forgot my Password');
 
-        insert forgotPassword ;
+        insert forgotPassword;
 
         try {
             Test.startTest();
             List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(forgotPassword.Id, '1', '1');
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             hasFailed = true;
-        }
-        finally {
-            System.assert( hasFailed = true, 'Expected an exception to occur when using entity Case and no Timeline_Configuration__mdt records. Actually got no exception.' );
+        } finally {
+            System.assert(
+                hasFailed = true,
+                'Expected an exception to occur when using entity Case and no Timeline_Configuration__mdt records. Actually got no exception.'
+            );
             Test.stopTest();
-        }        
+        }
     }
 }

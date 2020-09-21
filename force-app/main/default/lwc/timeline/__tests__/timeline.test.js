@@ -53,7 +53,6 @@ describe('c-timeline', () => {
     }
 
     it('should render with data', () => {
-
         getTimelineData.mockResolvedValue(APEX_CONTACT_TIMELINE_SUCCESS);
 
         // Create element
@@ -69,7 +68,7 @@ describe('c-timeline', () => {
         element.daysToShow = '60';
 
         document.body.appendChild(element);
-      
+
         return flushPromises().then(() => {
             const toggleButton = element.shadowRoot.querySelector('lightning-button-icon.timeline-refresh');
             toggleButton.click();
@@ -80,7 +79,6 @@ describe('c-timeline', () => {
     });
 
     it('should show filter panel on button click', () => {
-
         getTimelineData.mockResolvedValue(APEX_CONTACT_TIMELINE_SUCCESS);
 
         const element = createElement('c-timeline', {
@@ -98,7 +96,7 @@ describe('c-timeline', () => {
 
         // Emit data from @wire
         getTimelineTypesAdapter.emit(APEX_TIMELINE_TYPES);
-      
+
         return flushPromises().then(() => {
             const toggleFilter = element.shadowRoot.querySelector('lightning-button-icon-stateful');
             toggleFilter.click();
