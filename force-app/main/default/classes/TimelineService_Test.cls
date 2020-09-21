@@ -5,6 +5,8 @@
  * 3 - Does the timelineService correctly return parent field values using dot notation
  * 4 - Does custom processing for the entity ContentDocumentLink function correctly
  * 5 - Setup error - do we get an exception when there are no timeline types
+ * 6 - Different parent - does it query for the correct records when Parent Field is populated
+ * 7 - Setup error - do we get an exception when someone chooses the Parent Field but it's value is blank
  */
 @isTest(seeAllData=false)
 private with sharing class TimelineService_Test {
@@ -168,4 +170,69 @@ private with sharing class TimelineService_Test {
             Test.stopTest();
         }
     }
+
+    @isTest
+    static void testDifferentParentProperty() {
+
+        Contact freddyLo = new Contact(FirstName = 'Freddy', LastName = 'Lo');
+
+        insert freddyLo;
+
+        Task freddyTaskInRange = new Task(
+            ActivityDate = Date.today(),
+            Description = 'New activity description for Freddy.',
+            Subject = 'New activity for Freddy',
+            WhoId = freddyLo.Id
+        );
+
+        insert freddyTaskInRange;
+
+        Case forgotPassword = new Case(Origin = 'Email', Subject = 'Forgot my Password', ContactId=freddyLo.Id);
+
+        insert forgotPassword;
+
+        Test.startTest();
+        Map<String, String> timelineTypes = TimelineService.getTimelineTypes(forgotPassword.Id, 'ContactId');
+
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+                forgotPassword.Id,
+                '1',
+                '1',
+                'ContactId'
+            );
+
+        Test.stopTest();
+
+        System.assertEquals(
+            3,
+            timelineTypes.size(),
+            'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\''
+        );
+
+        System.assertEquals(1, timelineRecords.size(), 'Incorrect number of timeline records found based on setting Parent Field');
+    }
+
+    @isTest
+    static void testNoParentFieldValue() {
+
+        Boolean hasFailed = false;
+
+        Case brokenLift = new Case(Origin = 'Email', Subject = 'My lift broke');
+
+        insert brokenLift;
+
+        try {
+            Test.startTest();
+            Map<String, String> timelineTypes = TimelineService.getTimelineTypes(brokenLift.Id, 'ContactId');
+        } catch (Exception e) {
+            hasFailed = true;
+        } finally {
+            System.assert(
+                hasFailed = true,
+                'Expected an exception to occur when using entity Case and asking to use the Parent Contact Id field with no value in it.'
+            );
+            Test.stopTest();
+        }
+    }
+
 }
