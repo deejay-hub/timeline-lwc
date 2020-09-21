@@ -16,11 +16,11 @@
     </values>
     <values>
         <field>Drilldown_Id_Field__c</field>
-        <value xsi:type="xsd:string">Campaign.Id</value>
+        <value xsi:type="xsd:string">Campaign.Owner.Profile.Id</value>
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:type="xsd:string">Campaign.Name</value>
+        <value xsi:type="xsd:string">Campaign.LastModifiedBy.Profile.LastModifiedBy.Name</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
