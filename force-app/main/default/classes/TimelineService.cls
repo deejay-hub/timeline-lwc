@@ -445,7 +445,7 @@ public with sharing class TimelineService {
                 }
             }
         } else {
-            fieldValue = '🔒 [' + fieldLabel + ']';
+            fieldValue = '![' + fieldLabel + ']!';
         }
 
         if (fieldValue != null && fieldValue.length() > 255) {
