@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Contact_Tasks</label>
+    <label>Asset_MaintenanceAssets</label>
     <protected>false</protected>
     <values>
         <field>Active__c</field>
@@ -12,47 +12,47 @@
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">Subject</value>
+        <value xsi:type="xsd:string">MaintenancePlan.MaintenancePlanTitle</value>
     </values>
     <values>
         <field>Drilldown_Id_Field__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">MaintenancePlanId</value>
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:type="xsd:string">Description</value>
-    </values>
-    <values>
-        <field>Icon_Background_Colour__c</field>
-        <value xsi:type="xsd:string">#4ac076</value>
-    </values>
-    <values>
-        <field>Icon__c</field>
-        <value xsi:type="xsd:string">/img/icon/t4v35/standard/task.svg</value>
-    </values>
-    <values>
-        <field>Object_Name__c</field>
-        <value xsi:type="xsd:string">Task</value>
-    </values>
-    <values>
-        <field>Parent_Object__c</field>
-        <value xsi:type="xsd:string">Contact</value>
-    </values>
-    <values>
-        <field>Position_Date_Field__c</field>
-        <value xsi:type="xsd:string">ActivityDate</value>
-    </values>
-    <values>
-        <field>Position_End_Date_Field__c</field>
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>Icon_Background_Colour__c</field>
+        <value xsi:type="xsd:string">#2A739E</value>
+    </values>
+    <values>
+        <field>Icon__c</field>
+        <value xsi:type="xsd:string">/img/icon/t4v35/standard/maintenance_asset.svg</value>
+    </values>
+    <values>
+        <field>Object_Name__c</field>
+        <value xsi:type="xsd:string">MaintenanceAsset</value>
+    </values>
+    <values>
+        <field>Parent_Object__c</field>
+        <value xsi:type="xsd:string">Asset</value>
+    </values>
+    <values>
+        <field>Position_Date_Field__c</field>
+        <value xsi:type="xsd:string">MaintenancePlan.StartDate</value>
+    </values>
+    <values>
+        <field>Position_End_Date_Field__c</field>
+        <value xsi:type="xsd:string">MaintenancePlan.EndDate</value>
+    </values>
+    <values>
         <field>Relationship_Name__c</field>
-        <value xsi:type="xsd:string">Tasks</value>
+        <value xsi:type="xsd:string">MaintenanceAssets</value>
     </values>
     <values>
         <field>Sequence__c</field>
-        <value xsi:type="xsd:double">10.0</value>
+        <value xsi:type="xsd:double">40.0</value>
     </values>
     <values>
         <field>Test__c</field>
@@ -60,14 +60,14 @@
     </values>
     <values>
         <field>Tooltip_Id_Field__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">MaintenancePlanId</value>
     </values>
     <values>
         <field>Tooltip_Object_Name__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">MaintenancePlan</value>
     </values>
     <values>
         <field>Type_Field__c</field>
-        <value xsi:type="xsd:string">TaskSubtype</value>
+        <value xsi:nil="true"/>
     </values>
 </CustomMetadata>
