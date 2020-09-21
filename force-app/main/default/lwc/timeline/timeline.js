@@ -45,7 +45,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api flexipageRegionWidth; //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
 
     timelineTypes;
-
     timelineStart; //Calculated based on the earliestRange
     timelineEnd; //Calculated based on the latestRange
 
@@ -71,6 +70,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     mouseOverFallbackField;
     mouseOverFallbackValue;
 
+    currentParentField;
     filterValues = [];
     startingFilterValues = [];
     allFilterValues = [];
@@ -150,15 +150,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
             this.isFilterLoaded = true;
         } else if (result.error) {
-            //let errorMessage = result.error.body.message;
-            //this.processError('Error', this.error.APEX, errorMessage);
             let errorType = 'Error';
             let errorHeading,
                 errorMessage = '--';
 
             try {
                 errorMessage = result.error.body.message;
-                console.log('@@' + errorMessage);
                 let customError = JSON.parse(errorMessage);
                 errorType = customError.type;
                 errorMessage = customError.message;
@@ -185,6 +182,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         if (!this._d3Rendered) {
             //set the height of the component as the height is dynamic based on the attributes
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
+            this.currentParentField = this.timelineParent;
 
             timelineDIV.setAttribute('style', 'height:' + this._timelineHeight + 'px');
 
@@ -239,7 +237,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
         me._d3timelineMapSVG.selectAll('*').remove();
         me._d3timelineMapAxisSVG.selectAll('*').remove();
 
-        refreshApex(me.timelineTypes);
+        if (me.currentParentField !== me.timelineParent) {
+            refreshApex(me.timelineTypes);
+            me.currentParentField = me.timelineParent;
+        }
 
         getTimelineData({
             parentObjectId: me.recordId,

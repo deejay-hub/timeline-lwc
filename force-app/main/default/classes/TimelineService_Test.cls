@@ -173,7 +173,6 @@ private with sharing class TimelineService_Test {
 
     @isTest
     static void testDifferentParentProperty() {
-
         Contact freddyLo = new Contact(FirstName = 'Freddy', LastName = 'Lo');
 
         insert freddyLo;
@@ -187,7 +186,7 @@ private with sharing class TimelineService_Test {
 
         insert freddyTaskInRange;
 
-        Case forgotPassword = new Case(Origin = 'Email', Subject = 'Forgot my Password', ContactId=freddyLo.Id);
+        Case forgotPassword = new Case(Origin = 'Email', Subject = 'Forgot my Password', ContactId = freddyLo.Id);
 
         insert forgotPassword;
 
@@ -195,11 +194,11 @@ private with sharing class TimelineService_Test {
         Map<String, String> timelineTypes = TimelineService.getTimelineTypes(forgotPassword.Id, 'ContactId');
 
         List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
-                forgotPassword.Id,
-                '1',
-                '1',
-                'ContactId'
-            );
+            forgotPassword.Id,
+            '1',
+            '1',
+            'ContactId'
+        );
 
         Test.stopTest();
 
@@ -209,12 +208,15 @@ private with sharing class TimelineService_Test {
             'Incorrect number of timeline types in \'Timeline_Configuration_Type__mdt\' for entity \'Contact\''
         );
 
-        System.assertEquals(1, timelineRecords.size(), 'Incorrect number of timeline records found based on setting Parent Field');
+        System.assertEquals(
+            1,
+            timelineRecords.size(),
+            'Incorrect number of timeline records found based on setting Parent Field'
+        );
     }
 
     @isTest
     static void testNoParentFieldValue() {
-
         Boolean hasFailed = false;
 
         Case brokenLift = new Case(Origin = 'Email', Subject = 'My lift broke');
@@ -234,5 +236,4 @@ private with sharing class TimelineService_Test {
             Test.stopTest();
         }
     }
-
 }
