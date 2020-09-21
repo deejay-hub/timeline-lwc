@@ -130,7 +130,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     @wire(getTimelineTypes, { parentObjectId: '$recordId' })
     wiredResult(result) {
-        console.log(localStorage.getItem('multiDay')+'-'+(localStorage.getItem('multiDay') == null)+' - '+this.defaultMultiDay);
         if (result.data) {
             const timelineTs = result.data;
 
