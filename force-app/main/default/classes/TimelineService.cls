@@ -223,15 +223,24 @@ public with sharing class TimelineService {
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
 
             for (SObject each : listOfTimelineRecords) {
-                for (String eachObj : mapOfTimelineConfigurationRecords.keyset()) {
-                    if (each.getSObjects(childObjects.get(eachObj)) != null) {
-                        for (SObject eachCh : (List<SObject>) each.getSObjects(childObjects.get(eachObj))) {
+                Map<String, Object> childRecordsAsMap = each.getPopulatedFieldsAsMap();
+
+                for (String fieldName : childRecordsAsMap.keySet()) {
+                    if (childRecordsAsMap.get(fieldName) instanceof List<sObject>) {
+                        List<sObject> childRecords = (List<sObject>) childRecordsAsMap.get(fieldName);
+
+                        for (Sobject eachCh : childRecords) {
                             Map<String, String> mapData = new Map<String, String>();
+                            Map<String, String> dupeDataCheck = new Map<String, String>();
 
-                            TimelineRecord tr = mapOfTimelineConfigurationRecords.get(eachObj);
+                            TimelineRecord tr = mapOfTimelineConfigurationRecords.get(
+                                eachCh.getSObjectType() + fieldName
+                            );
 
-                            if (tr != null) {
-                                String myId = eachCh.Id;
+                            String myId = eachCh.Id;
+
+                            if (!dupeDataCheck.containsKey(myId)) {
+                                dupeDataCheck.put(myId, myId);
 
                                 Map<String, String> detailValues = getFieldValues(
                                     tr.detailField,
@@ -258,6 +267,7 @@ public with sharing class TimelineService {
                                     eachCh,
                                     fieldAttributes
                                 );
+
                                 Map<String, String> typeValues = getFieldValues(tr.type, eachCh, fieldAttributes);
 
                                 if (tr.objectName == 'ContentDocumentLink') {
@@ -334,41 +344,34 @@ public with sharing class TimelineService {
         for (String field : fields.keySet()) {
             if (field != null && field != '') {
                 String fieldObject = fields.get(field);
-                Boolean isDotNotationUsed = field.contains('.');
+                String fieldStripped = field;
+                String[] objectFieldSplit = field.split('\\.');
                 FieldMetadata fieldMetadata = new fieldMetadata();
 
                 try {
-                    if (isDotNotationUsed == true) {
-                        String splitObject = field.SubStringBefore('.');
-                        String splitField = field.SubStringAfter('.');
-
-                        Schema.DescribeSObjectResult describeParentSobjects = ((SObject) (Type.forName(
-                                    'Schema.' + String.valueOf(splitObject)
-                                )
-                                .newInstance()))
-                            .getSObjectType()
-                            .getDescribe();
-                        fieldMetadata.label = String.valueOf(
-                            describeParentSobjects.fields.getMap().get(splitField).getDescribe().getLabel()
-                        );
-                        fieldMetadata.canAccess = Boolean.valueOf(
-                            describeParentSobjects.fields.getMap().get(splitField).getDescribe().isAccessible()
-                        );
-                    } else {
-                        Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
-                                    'Schema.' + fieldObject
-                                )
-                                .newInstance()))
-                            .getSObjectType()
-                            .getDescribe();
-
-                        fieldMetadata.label = String.valueOf(
-                            describeSobjects.fields.getMap().get(field).getDescribe().getLabel()
-                        );
-                        fieldMetadata.canAccess = Boolean.valueOf(
-                            describeSobjects.fields.getMap().get(field).getDescribe().isAccessible()
-                        );
+                    if (objectFieldSplit.size() > 1) {
+                        fieldObject = objectFieldSplit[objectFieldSplit.size() - 2];
+                        fieldStripped = objectFieldSplit[objectFieldSplit.size() - 1];
                     }
+
+                    if (fieldObject == 'Owner' || fieldObject == 'CreatedBy' || fieldObject == 'LastModifiedBy') {
+                        fieldObject = 'User';
+                    }
+
+                    Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
+                                'Schema.' + String.valueOf(fieldObject)
+                            )
+                            .newInstance()))
+                        .getSObjectType()
+                        .getDescribe();
+
+                    fieldMetadata.label = String.valueOf(
+                        describeSobjects.fields.getMap().get(fieldStripped).getDescribe().getLabel()
+                    );
+
+                    fieldMetadata.canAccess = Boolean.valueOf(
+                        describeSobjects.fields.getMap().get(fieldStripped).getDescribe().isAccessible()
+                    );
                 } catch (Exception e) {
                     String errorMsg =
                         'No such column \'' +
@@ -404,18 +407,43 @@ public with sharing class TimelineService {
         }
 
         FieldMetadata fm = fieldAttributes.get(field);
-        Boolean isDotNotationUsed = field.contains('.');
-
         fieldLabel = fm.label;
 
+        String[] objectFieldSplit = field.split('\\.');
+
         if (fm.canAccess) {
-            if (isDotNotationUsed == true) {
-                String splitObject = field.SubStringBefore('.');
-                String splitField = field.SubStringAfter('.');
-                fieldValue = String.valueOf(records.getSobject(splitObject).get(splitField));
-            } else {
-                fieldValue = String.valueOf(records.get(field));
+            switch on objectFieldSplit.size() {
+                when 1 {
+                    fieldValue = String.valueOf(records.get(field));
+                }
+                when 2 {
+                    fieldValue = String.valueOf(records.getSobject(objectFieldSplit[0]).get(objectFieldSplit[1]));
+                }
+                when 3 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(objectFieldSplit[0]).getSobject(objectFieldSplit[1]).get(objectFieldSplit[2])
+                    );
+                }
+                when 4 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(objectFieldSplit[0])
+                            .getSobject(objectFieldSplit[1])
+                            .getSobject(objectFieldSplit[2])
+                            .get(objectFieldSplit[3])
+                    );
+                }
+                when 5 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(objectFieldSplit[0])
+                            .getSobject(objectFieldSplit[1])
+                            .getSobject(objectFieldSplit[2])
+                            .getSobject(objectFieldSplit[3])
+                            .get(objectFieldSplit[4])
+                    );
+                }
             }
+        } else {
+            fieldValue = '🔒 [' + fieldLabel + ']';
         }
 
         if (fieldValue != null && fieldValue.length() > 255) {
@@ -429,7 +457,7 @@ public with sharing class TimelineService {
     }
 
     private static Boolean isPersonAccount(String recordId) {
-        if (Account.SObjectType.getDescribe().hasSubtypes) {
+        if (Schema.sObjectType.Account.fields.getMap().containsKey('isPersonAccount')) {
             String queryPersonAccount = 'SELECT Id, IsPersonAccount FROM Account Where Id =:recordId';
             SObject acc = Database.query(queryPersonAccount);
 
