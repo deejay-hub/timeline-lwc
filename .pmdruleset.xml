@@ -3,7 +3,16 @@
    <description>Default ruleset used by the Code Climate Engine for Salesforce.com Apex</description>
 
    <rule ref="rulesets/apex/quickstart.xml/ExcessiveClassLength" deprecated="true" />
-   <rule ref="rulesets/apex/quickstart.xml/ExcessiveParameterList" deprecated="true" />
+   <rule ref="rulesets/apex/quickstart.xml/ExcessiveParameterList" deprecated="true">
+      <priority>3</priority>
+      <properties>
+         <property name="minimum" value="5" />
+         <!-- relevant for Code Climate output only -->
+         <property name="cc_categories" value="Complexity" />
+         <property name="cc_remediation_points_multiplier" value="50" />
+         <property name="cc_block_highlighting" value="false" />
+      </properties>
+   </rule>
    <rule ref="rulesets/apex/quickstart.xml/ExcessivePublicCount" deprecated="true" />
    <rule ref="rulesets/apex/quickstart.xml/NcssConstructorCount" deprecated="true" />
    <!--<rule ref="rulesets/apex/quickstart.xml/NcssMethodCount" deprecated="true" />-->

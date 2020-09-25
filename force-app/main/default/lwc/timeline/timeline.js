@@ -6,6 +6,7 @@ import LOCALE from '@salesforce/i18n/locale';
 
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
 import getTimelineTypes from '@salesforce/apex/TimelineService.getTimelineTypes';
+import { refreshApex } from '@salesforce/apex';
 
 import d3JS from '@salesforce/resourceUrl/d3minified';
 import momentJS from '@salesforce/resourceUrl/momentminified';
@@ -30,6 +31,7 @@ import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
 export default class timeline extends NavigationMixin(LightningElement) {
     //Adminstrator accessible attributes in app builder
+    @api timelineParent; //parent field for the lwc set as design attribute
     @api timelineTitle; //title for the lwc set as design attribute
     @api preferredHeight; //height of the timeline set as design attribute
     @api earliestRange; //How far back in time to go
@@ -42,6 +44,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     @api flexipageRegionWidth; //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
 
+    timelineTypes;
     timelineStart; //Calculated based on the earliestRange
     timelineEnd; //Calculated based on the latestRange
 
@@ -67,6 +70,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     mouseOverFallbackField;
     mouseOverFallbackValue;
 
+    currentParentField;
     filterValues = [];
     startingFilterValues = [];
     allFilterValues = [];
@@ -124,9 +128,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3LocalisedShortDateFormat = null;
     _d3Rendered = false;
 
-    @wire(getTimelineTypes, { parentObjectId: '$recordId' })
+    @wire(getTimelineTypes, { parentObjectId: '$recordId', parentFieldName: '$timelineParent' })
     wiredResult(result) {
         if (result.data) {
+            this.timelineTypes = result;
             const timelineTs = result.data;
 
             for (let key in timelineTs) {
@@ -145,8 +150,22 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
             this.isFilterLoaded = true;
         } else if (result.error) {
-            let errorMessage = result.error.body.message;
-            this.processError('Error', this.error.APEX, errorMessage);
+            let errorType = 'Error';
+            let errorHeading,
+                errorMessage = '--';
+
+            try {
+                errorMessage = result.error.body.message;
+                let customError = JSON.parse(errorMessage);
+                errorType = customError.type;
+                errorMessage = customError.message;
+                errorHeading = this.error.NO_DATA_HEADER;
+            } catch (error2) {
+                //fails to parse message so is a generic apex error
+                errorHeading = this.error.APEX;
+            }
+
+            this.processError(errorType, errorHeading, errorMessage);
         }
     }
 
@@ -163,6 +182,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         if (!this._d3Rendered) {
             //set the height of the component as the height is dynamic based on the attributes
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
+            this.currentParentField = this.timelineParent;
 
             timelineDIV.setAttribute('style', 'height:' + this._timelineHeight + 'px');
 
@@ -217,7 +237,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
         me._d3timelineMapSVG.selectAll('*').remove();
         me._d3timelineMapAxisSVG.selectAll('*').remove();
 
-        getTimelineData({ parentObjectId: me.recordId, earliestRange: me.earliestRange, latestRange: me.latestRange })
+        if (me.currentParentField !== me.timelineParent) {
+            refreshApex(me.timelineTypes);
+            me.currentParentField = me.timelineParent;
+        }
+
+        getTimelineData({
+            parentObjectId: me.recordId,
+            earliestRange: me.earliestRange,
+            latestRange: me.latestRange,
+            parentFieldName: me.timelineParent
+        })
             .then((result) => {
                 try {
                     if (result.length > 0) {
@@ -663,6 +693,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     this.illustrationType = 'Desert';
                     this.isError = false;
                     this.noData = true;
+                    break;
+                case 'No-Access':
+                    this.illustrationType = 'NoAccess';
+                    this.isError = false;
+                    this.noData = false;
                     break;
                 case 'No-Filter-Data':
                     this.illustrationType = 'Desert';
