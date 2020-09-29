@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>PersonAccount_Tasks</label>
+    <label>Person_WorkOrders_Account</label>
     <protected>false</protected>
     <values>
         <field>Active__c</field>
@@ -16,19 +16,19 @@
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:type="xsd:string">Description</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
-        <value xsi:type="xsd:string">#4ac076</value>
+        <value xsi:type="xsd:string">#50e3c2</value>
     </values>
     <values>
         <field>Icon__c</field>
-        <value xsi:type="xsd:string">/img/icon/t4v35/standard/task.svg</value>
+        <value xsi:type="xsd:string">/img/icon/t4v35/standard/work_order.svg</value>
     </values>
     <values>
         <field>Object_Name__c</field>
-        <value xsi:type="xsd:string">Task</value>
+        <value xsi:type="xsd:string">WorkOrder</value>
     </values>
     <values>
         <field>Parent_Object__c</field>
@@ -36,18 +36,18 @@
     </values>
     <values>
         <field>Position_Date_Field__c</field>
-        <value xsi:type="xsd:string">ActivityDate</value>
+        <value xsi:type="xsd:string">StartDate</value>
     </values>
     <values>
         <field>Relationship_Name__c</field>
-        <value xsi:type="xsd:string">PersonTasks</value>
+        <value xsi:type="xsd:string">WorkOrders</value>
     </values>
     <values>
         <field>Sequence__c</field>
-        <value xsi:type="xsd:double">10.0</value>
+        <value xsi:type="xsd:double">40.0</value>
     </values>
     <values>
         <field>Type_Field__c</field>
-        <value xsi:type="xsd:string">TaskSubtype</value>
+        <value xsi:nil="true"/>
     </values>
 </CustomMetadata>
