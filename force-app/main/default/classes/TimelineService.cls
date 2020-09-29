@@ -221,6 +221,7 @@ public with sharing class TimelineService {
             List<SObject> listOfTimelineRecords = Database.query(queryRecords); //NOPMD
 
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
+            Map<String, String> dupeDataCheck = new Map<String, String>();
 
             for (SObject each : listOfTimelineRecords) {
                 Map<String, Object> childRecordsAsMap = each.getPopulatedFieldsAsMap();
@@ -231,7 +232,6 @@ public with sharing class TimelineService {
 
                         for (Sobject eachCh : childRecords) {
                             Map<String, String> mapData = new Map<String, String>();
-                            Map<String, String> dupeDataCheck = new Map<String, String>();
 
                             TimelineRecord tr = mapOfTimelineConfigurationRecords.get(
                                 eachCh.getSObjectType() + fieldName
