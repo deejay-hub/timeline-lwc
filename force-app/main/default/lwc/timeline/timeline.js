@@ -30,6 +30,9 @@ import ALL_TYPES from '@salesforce/label/c.Timeline_Label_Filter_All_Types';
 import BUTTON_APPLY from '@salesforce/label/c.Timeline_Label_Apply';
 import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
+import NAVIGATION_HEADER from '@salesforce/label/c.Timeline_Navigation_Toast_Header';
+import NAVIGATION_BODY from '@salesforce/label/c.Timeline_Navigation_Toast_Body';
+
 export default class timeline extends NavigationMixin(LightningElement) {
     //Adminstrator accessible attributes in app builder
     @api timelineParent; //parent field for the lwc set as design attribute
@@ -106,6 +109,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
         NO_DATA_SUBHEADER,
         JAVASCRIPT_LOAD,
         UNHANDLED
+    };
+
+    toast = {
+        NAVIGATION_HEADER,
+        NAVIGATION_BODY
     };
 
     _timelineData = null;
@@ -584,8 +592,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 break;
                             case 'CaseComment': 
                                 const event = new ShowToastEvent({
-                                    "title": "Navigation Not Permitted",
-                                    "message": "Records of type {0} are not supported.",
+                                    "title": me.toast.NAVIGATION_HEADER,
+                                    "message": me.toast.NAVIGATION_BODY,
                                     "messageData": [
                                         d.objectName
                                     ]

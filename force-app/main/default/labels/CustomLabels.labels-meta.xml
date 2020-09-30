@@ -128,4 +128,20 @@
         <shortDescription>Timeline_Label_Showing</shortDescription>
         <value>Showing:</value>
     </labels>
+    <labels>
+        <fullName>Timeline_Navigation_Toast_Body</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Navigation_Toast_Body</shortDescription>
+        <value>Records of type '{0}' are not supported.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Navigation_Toast_Header</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Navigation_Toast_Header</shortDescription>
+        <value>Navigation Not Permitted</value>
+    </labels>
 </CustomLabels>
