@@ -4,10 +4,6 @@
     <protected>false</protected>
     <values>
         <field>Active__c</field>
-        <value xsi:type="xsd:boolean">false</value>
-    </values>
-    <values>
-        <field>Allow_Drilldown__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
@@ -49,6 +45,10 @@
     <values>
         <field>Sequence__c</field>
         <value xsi:type="xsd:double">80.0</value>
+    </values>
+    <values>
+        <field>Test__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Tooltip_Id_Field__c</field>

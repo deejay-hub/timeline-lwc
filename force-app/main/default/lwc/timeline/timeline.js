@@ -1,6 +1,7 @@
 import { LightningElement, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
 
@@ -580,6 +581,16 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                         selectedRecordId: d.recordId
                                     }
                                 });
+                                break;
+                            case 'CaseComment': 
+                                const event = new ShowToastEvent({
+                                    "title": "Navigation Not Permitted",
+                                    "message": "Records of type {0} are not supported.",
+                                    "messageData": [
+                                        d.objectName
+                                    ]
+                                });
+                                this.dispatchEvent(event);
                                 break;
                             default:
                                 me[NavigationMixin.Navigate]({
