@@ -149,6 +149,7 @@ The component has the following properties that can be set at design time in App
 
 | Property                        | Description                      | Validation                             |
 | ------------------------------- | -------------------------------- | -------------------------------------- |
+| `Parent Field`                  | Adjusts the timeline parent id   | Dynamic Picklist (valid relationships) |
 | `Title`                         | Adjusts the label                | String                                 |
 | `Height`                        | Adjusts the vertical height      | Picklist (1 - 5)                       |
 | `Historical Time Range (Years)` | Adjusts the start date           | Picklist (0.25 - 5)                    |
@@ -178,6 +179,8 @@ Labels can be translated where appropriate. Navigate to Setup -> Custom Labels a
 | `Timeline_Label_Date_Range_Legend`   | Date Range (Used in Filter panel)                                                              |
 | `Timeline_Label_Apply`               | Label for apply button (Used in Filter panel)                                                  |
 | `Timeline_Label_Cancel`              | Label for cancel button (Used in Filter panel)                                                 |
+| `Timeline_Navigation_Toast_Header`   | Label used in Toast message header when drilling down on CaseComment                           |
+| `Timeline_Navigation_Toast_Body`     | Label used in Toast message body when drilling down on CaseComment                             |
 
 #### Configuring Child Records to Plot
 
@@ -227,11 +230,11 @@ No. The timeline component is really best suited to the desktop. Long term it is
 
 #### Does it support Person Accounts?
 
-No. The component will work on the Account page layout for Person Accounts but will not show Tasks that are related to the contact unless the What Id field is populated with the Person Account Id.
+Yes. We have included values for the parent object 'PersonAccount' this will automatically be applied to any Account where the IsPersonAccount field is true. Since PersonAccounts can have relationships through ContactId or AccountId to their corresponding related records we have included metadata types for both. So you can choose to plot related cases where the AccountId, ContactId or both are populated.
 
 #### Does it support Files / Notes / Attachments?
 
-Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.
+Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.
 
 #### Does it support External Objects / Big Objects?
 
