@@ -2,7 +2,7 @@
 	<img
 	width="50"
 	src="/force-app/main/default/lwc/timeline/timeline.svg"></br>
-	Timeline<br>     
+	Time Warp<br>     
 </h1>
 
 <h4 align="center">
