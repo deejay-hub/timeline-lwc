@@ -149,7 +149,7 @@ The component has the following properties that can be set at design time in App
 
 | Property                        | Description                      | Validation                             |
 | ------------------------------- | -------------------------------- | -------------------------------------- |
-| `Parent Field`                  | Adjusts the timeline parent id   | Dynamic Picklist (valid relationships) |
+| `Parent Record`                 | Adjusts the timeline parent id   | Dynamic Picklist (valid relationships) |
 | `Title`                         | Adjusts the label                | String                                 |
 | `Height`                        | Adjusts the vertical height      | Picklist (1 - 5)                       |
 | `Historical Time Range (Years)` | Adjusts the start date           | Picklist (0.25 - 5)                    |
