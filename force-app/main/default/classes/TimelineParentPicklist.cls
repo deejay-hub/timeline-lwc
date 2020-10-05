@@ -14,46 +14,55 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
     }
 
     global override VisualEditor.DataRow getDefaultValue() {
-        //objectLabel = System.Label.Timeline_Label_Files;
-        String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(this.context.entityName))
-                .newInstance()))
-            .getSObjectType()
-            .getDescribe()
-            .getLabel();
-        VisualEditor.DataRow defaultValue = new VisualEditor.DataRow(
-            'Use This ' + objectLabel,
-            'Default_Picklist_Value'
-        );
-        return defaultValue;
+        if ( this.context.entityName != null ) {
+            String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(this.context.entityName))
+                    .newInstance()))
+                .getSObjectType()
+                .getDescribe()
+                .getLabel();
+            VisualEditor.DataRow defaultValue = new VisualEditor.DataRow(
+                'Use This ' + objectLabel,
+                'Default_Picklist_Value'
+            );
+            return defaultValue;
+        }
+
+        VisualEditor.DataRow blankValue = new VisualEditor.DataRow('Use Current Record', 'Default_Picklist_Value');
+        return blankValue;
     }
 
     global override VisualEditor.DynamicPickListRows getValues() {
         VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
         myValues.addRow(getDefaultValue());
 
-        Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName('Schema.' + this.context.entityName)
-                .newInstance()))
-            .getSObjectType()
-            .getDescribe();
+        if ( this.context.entityName != null && this.context.pageType != 'CommRecordPage') {
+            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName('Schema.' + this.context.entityName)
+                    .newInstance()))
+                .getSObjectType()
+                .getDescribe();
 
-        Map<String, Schema.SObjectField> myFields = describeSobjects.fields.getMap();
+            Map<String, Schema.SObjectField> myFields = describeSobjects.fields.getMap();
 
-        for (String field : myFields.keySet()) {
-            Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
+            for (String field : myFields.keySet()) {
+                Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
 
-            if (
-                currentField.isAccessible() &&
-                currentField.isNamePointing() == false &&
-                currentField.getLabel() != 'Master Record ID' &&
-                (String.valueOf(currentField.getReferenceTo()) == '(Lead)' ||
-                String.valueOf(currentField.getReferenceTo()) == '(Contact)' ||
-                String.valueOf(currentField.getReferenceTo()) == '(Account)' ||
-                String.valueOf(currentField.getReferenceTo()) == '(Opportunity)' ||
-                String.valueOf(currentField.getReferenceTo()) == '(Case)')
-            ) {
-                myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));
+                if (
+                    currentField.isAccessible() &&
+                    currentField.isNamePointing() == false &&
+                    currentField.getLabel() != 'Master Record ID' &&
+                    (String.valueOf(currentField.getReferenceTo()) == '(Lead)' ||
+                    String.valueOf(currentField.getReferenceTo()) == '(Contact)' ||
+                    String.valueOf(currentField.getReferenceTo()) == '(Account)' ||
+                    String.valueOf(currentField.getReferenceTo()) == '(Opportunity)' ||
+                    String.valueOf(currentField.getReferenceTo()) == '(Case)')
+                ) {
+                    myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));
+                }
             }
+            return myValues;
         }
-        return myValues;
+        else {
+            return myValues;
+        }
     }
 }
