@@ -48,6 +48,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     @api flexipageRegionWidth; //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
 
+    timelineWidth;
     timelineTypes;
     timelineStart; //Calculated based on the earliestRange
     timelineEnd; //Calculated based on the latestRange
@@ -193,6 +194,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
             this.currentParentField = this.timelineParent;
 
+            if ( this.flexipageRegionWidth == undefined ) {
+                this.timelineWidth = 'LARGE';
+            }
+            else {
+                this.timelineWidth = this.flexipageRegionWidth;
+            }
+
             timelineDIV.setAttribute('style', 'height:' + this._timelineHeight + 'px');
 
             Promise.all([loadScript(this, d3JS), loadScript(this, momentJS)])
@@ -224,7 +232,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         if (timelineSummary !== undefined && timelineSummary !== null) {
             for (let i = 0; i < timelineSummary.length; i++) {
-                timelineSummary[i].classList.add('timeline-summary-verbose-' + this.flexipageRegionWidth);
+                timelineSummary[i].classList.add('timeline-summary-verbose-' + this.timelineWidth);
             }
         }
     }
@@ -669,7 +677,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         const axis = targetSVG
             .insert('g', ':first-child')
-            .attr('class', axisConfig.class + '-' + me.flexipageRegionWidth)
+            .attr('class', axisConfig.class + '-' + me.timelineWidth)
             .call(x_axis);
 
         if (typeof axisConfig.translate === 'object') {
