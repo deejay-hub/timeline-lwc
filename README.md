@@ -222,7 +222,7 @@ Please note that translated values are not currently included - you need to enab
 
 #### Does it support Communities?
 
-Yes.
+Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.
 
 #### Does it support Mobile?
 
