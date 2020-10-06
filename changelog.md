@@ -1,5 +1,11 @@
 # Change Log
 
+## 25 Sep 2020 v1.4.0
+
+-   Fixed bug causing test to fail when Contact had been relabelled
+-   Removed Work Order as a default record to plot
+-   Fixed community support
+
 ## 25 Sep 2020 v1.2.0
 
 -   Added support for Person Accounts
