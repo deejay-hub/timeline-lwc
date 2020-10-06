@@ -1,6 +1,6 @@
 # Change Log
 
-## 25 Sep 2020 v1.4.0
+## 06 Oct 2020 v1.4.0
 
 -   Fixed bug causing test to fail when Contact had been relabelled
 -   Removed Work Order as a default record to plot
