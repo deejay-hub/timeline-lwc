@@ -10,6 +10,12 @@ private with sharing class TimelineParentPicklist_Test {
         VisualEditor.DesignTimePageContext context = new VisualEditor.DesignTimePageContext();
         context.entityName = 'Contact';
 
+        String objectLabel = ((SObject) (Type.forName('Schema.Contact')
+                    .newInstance()))
+                .getSObjectType()
+                .getDescribe()
+                .getLabel();
+
         TimelineParentPicklist timeline = new TimelineParentPicklist(context);
 
         Test.startTest();
@@ -17,7 +23,7 @@ private with sharing class TimelineParentPicklist_Test {
         Test.stopTest();
 
         System.assertEquals(
-            'Use This Contact',
+            'Use This ' + objectLabel,
             defaultValue.getLabel(),
             'Timeline Parent Picklist default value incorrect'
         );
