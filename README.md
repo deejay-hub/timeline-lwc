@@ -33,6 +33,8 @@
   	</a>
 	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/c03e8f3db45a46dc93a62d61a5a8108f"/>
 	</a>
+	<a href="https://gitter.im/timeline-lwc/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img src="https://badges.gitter.im/timeline-lwc/community.svg"/>
+	</a>
 </h3>
 
 <p align="center">
