@@ -41,17 +41,21 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
                     )
                     .newInstance()))
                 .getSObjectType()
-                .getDescribe();
+                .getDescribe(SObjectDescribeOptions.DEFERRED);
 
             Map<String, Schema.SObjectField> myFields = describeSobjects.fields.getMap();
 
             for (String field : myFields.keySet()) {
                 Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
-
+                System.Debug('@@@ - ' + currentField.getReferenceTo());
                 if (
                     currentField.isAccessible() &&
                     currentField.isNamePointing() == false &&
-                    currentField.getLabel() != 'Master Record ID'
+                    currentField.getLabel() != 'Master Record ID' &&
+                    (String.valueOf(currentField.getReferenceTo()) != '' &&
+                    String.valueOf(currentField.getReferenceTo()) != null && 
+                    String.valueOf(currentField.getReferenceTo()) != '()' && 
+                    String.valueOf(currentField.getReferenceTo()) != '(User)')
                 ) {
                     myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));
                 }
