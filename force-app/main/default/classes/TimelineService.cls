@@ -400,6 +400,13 @@ public with sharing class TimelineService {
                         .getSobject(objectFieldSplit[3])
                         .get(objectFieldSplit[4])
                 );
+                recordId = String.valueOf(
+                    records.getSobject(objectFieldSplit[0])
+                        .getSobject(objectFieldSplit[1])
+                        .getSobject(objectFieldSplit[2])
+                        .getSobject(objectFieldSplit[3])
+                        .get('Id')
+                );
             }
         }
 
@@ -437,7 +444,7 @@ public with sharing class TimelineService {
 
             fieldDescribeCache.put(key, describeSobjects.fields.getMap().get(fieldName).getDescribe());
         }
-        
+
         return fieldDescribeCache.get(key);
     }
 

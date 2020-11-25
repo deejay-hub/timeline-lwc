@@ -600,9 +600,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                             case 'CaseComment': {
                                 const event = new ShowToastEvent({
-                                    "title": me.toast.NAVIGATION_HEADER,
-                                    "message": me.toast.NAVIGATION_BODY,
-                                    "messageData": [d.objectName]
+                                    title: me.toast.NAVIGATION_HEADER,
+                                    message: me.toast.NAVIGATION_BODY,
+                                    messageData: [d.objectName]
                                 });
                                 this.dispatchEvent(event);
                                 break;
