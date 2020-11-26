@@ -4,7 +4,7 @@
     <defaultValue>50</defaultValue>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>The order the object appears in the filter</inlineHelpText>
+    <inlineHelpText>The order the object appears in the filter panel on the right hand side of the timeline</inlineHelpText>
     <label>Sequence</label>
     <precision>3</precision>
     <required>true</required>

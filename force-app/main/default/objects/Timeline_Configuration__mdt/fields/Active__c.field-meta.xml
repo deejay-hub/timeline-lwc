@@ -4,7 +4,7 @@
     <defaultValue>true</defaultValue>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>Inactivate records to ignore them from the timeline lwc</inlineHelpText>
+    <inlineHelpText>Inactivate records to hide them from the timeline lwc</inlineHelpText>
     <label>Active</label>
     <type>Checkbox</type>
 </CustomField>
