@@ -4,9 +4,9 @@
     <description>The sObject API name for the tooltip.</description>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>The sObject API name for the tooltip.</inlineHelpText>
+    <inlineHelpText>If the UI API is supported but you want a related record shown specify the sObject API name to use when hovering here.</inlineHelpText>
     <label>Tooltip Object Name</label>
-    <length>100</length>
+    <length>150</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>
