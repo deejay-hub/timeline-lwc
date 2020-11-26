@@ -15,10 +15,15 @@ public with sharing class TimelineService {
         try {
             Map<String, String> parentDetails = getParentDetails(parentObjectId, parentFieldName);
 
-            String parentObjectType = parentDetails.get('ConfigObjectType');
+            String parentObjectType = parentDetails.get('QueryObjectType');
+            String parentConfigType = parentDetails.get('ConfigObjectType');
+            parentObjectId = parentDetails.get('Id');
+
+            Map<String, String> childObjects = getChildObjects(parentObjectType);
 
             String queryTimelineConfiguration =
-                'SELECT Active__c, ' +
+                'SELECT Active__c, ' + 
+                'Relationship_Name__c, ' +
                 'Object_Name__c, ' +
                 'Tooltip_Object_Name__c, ' +
                 'Sequence__c ' +
@@ -27,7 +32,7 @@ public with sharing class TimelineService {
                 'Test__c = ' +
                 Test.isRunningTest() +
                 ' AND ' +
-                'Parent_Object__c =:parentObjectType ' +
+                'Parent_Object__c =:parentConfigType ' +
                 'ORDER BY Sequence__c ASC '; //NOPMD
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query(queryTimelineConfiguration); //NOPMD
@@ -35,27 +40,37 @@ public with sharing class TimelineService {
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
             for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
-                String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(timelineType.Object_Name__c))
-                        .newInstance()))
-                    .getSObjectType()
-                    .getDescribe(SObjectDescribeOptions.DEFERRED)
-                    .getLabelPlural();
 
-                if (timelineType.Object_Name__c == 'ContentDocumentLink') {
-                    objectLabel = System.Label.Timeline_Label_Files;
-                }
-
-                if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
-                    objectLabel = ((SObject) (Type.forName(
-                                'Schema.' + String.valueOf(timelineType.Tooltip_Object_Name__c)
-                            )
+                if (childObjects.containsKey(timelineType.Object_Name__c + timelineType.Relationship_Name__c) ) {
+                    String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(timelineType.Object_Name__c))
                             .newInstance()))
                         .getSObjectType()
                         .getDescribe(SObjectDescribeOptions.DEFERRED)
                         .getLabelPlural();
-                }
 
-                mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
+                    if (timelineType.Object_Name__c == 'ContentDocumentLink') {
+                        objectLabel = System.Label.Timeline_Label_Files;
+                    }
+
+                    if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
+                        objectLabel = ((SObject) (Type.forName(
+                                    'Schema.' + String.valueOf(timelineType.Tooltip_Object_Name__c)
+                                )
+                                .newInstance()))
+                            .getSObjectType()
+                            .getDescribe(SObjectDescribeOptions.DEFERRED)
+                            .getLabelPlural();
+                    }
+
+                    mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
+                }
+                else {
+                    String errorMsg =
+                    'You have asked to plot records for  \'' +
+                    timelineType.Object_Name__c +
+                    '\' but this entity cannot be found. Ask an administrator for help.';
+                    throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
+                }
             }
 
             return mapOfTimelineTypes;
