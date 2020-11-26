@@ -169,7 +169,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 let customError = JSON.parse(errorMessage);
                 errorType = customError.type;
                 errorMessage = customError.message;
-                errorHeading = this.error.NO_DATA_HEADER;
+                errorHeading = this.error.SETUP;
             } catch (error2) {
                 //fails to parse message so is a generic apex error
                 errorHeading = this.error.APEX;
