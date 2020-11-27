@@ -191,6 +191,42 @@ Specifying which child records to plot is done using the **Timeline_Configuratio
 
 For FAQs and troubleshooting see the [Knowledge Base](https://salesforce.quip.com/6yvoAcBukqZB)
 
+#### How to I specify the fields for the tooltip?
+
+Use the Compact Layout of the object plotted (for the most part).	
+
+#### Does it support multiple languages other than English?	
+
+Yes - Supports a users locale, language and has custom labels for translation available.
+
+#### Does it support Communities?	
+
+Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.	
+
+#### Does it support Mobile?	
+
+No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.	
+
+#### Does it support Person Accounts?	
+
+Yes.
+
+#### Does it support Files / Notes / Attachments?	
+
+Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.	
+
+#### Does it support External Objects / Big Objects?	
+
+No. We would have to consider scale and performance too so for now the component only supports standard and custom objects.	
+
+#### Does it support History Objects?	
+
+No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates.
+
+#### Does it support Junction Objects?	
+
+Yes.
+
 ## Contributing
 
 Contributions are what make the trailblazer community such an amazing place. I regard this component as a way to inspire and learn from others. Any contributions you make are **greatly appreciated**.
