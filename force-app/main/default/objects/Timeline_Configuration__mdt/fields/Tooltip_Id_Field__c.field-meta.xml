@@ -5,9 +5,9 @@
     <description>The Id field to use when hovering over a record in the timeline. Used to support the ability to show a junction object record but show detail of the parent.</description>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>The Id field to use when hovering over a record in the timeline. If blank the Id of the record plotted will be used.</inlineHelpText>
+    <inlineHelpText>If the UI API is supported but you want a related record shown specify the Id field to use when hovering here.</inlineHelpText>
     <label>Tooltip Id Field</label>
-    <length>100</length>
+    <length>150</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>

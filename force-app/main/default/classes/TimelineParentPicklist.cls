@@ -14,7 +14,7 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
     }
 
     global override VisualEditor.DataRow getDefaultValue() {
-        if ( this.context.entityName != null ) {
+        if (this.context.entityName != null) {
             String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(this.context.entityName))
                     .newInstance()))
                 .getSObjectType()
@@ -35,33 +35,33 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
         VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
         myValues.addRow(getDefaultValue());
 
-        if ( this.context.entityName != null && this.context.pageType != 'CommRecordPage') {
-            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName('Schema.' + this.context.entityName)
+        if (this.context.entityName != null && this.context.pageType != 'CommRecordPage') {
+            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
+                        'Schema.' + this.context.entityName
+                    )
                     .newInstance()))
                 .getSObjectType()
-                .getDescribe();
+                .getDescribe(SObjectDescribeOptions.DEFERRED);
 
             Map<String, Schema.SObjectField> myFields = describeSobjects.fields.getMap();
 
             for (String field : myFields.keySet()) {
                 Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
-
+                System.Debug('@@@ - ' + currentField.getReferenceTo());
                 if (
                     currentField.isAccessible() &&
                     currentField.isNamePointing() == false &&
                     currentField.getLabel() != 'Master Record ID' &&
-                    (String.valueOf(currentField.getReferenceTo()) == '(Lead)' ||
-                    String.valueOf(currentField.getReferenceTo()) == '(Contact)' ||
-                    String.valueOf(currentField.getReferenceTo()) == '(Account)' ||
-                    String.valueOf(currentField.getReferenceTo()) == '(Opportunity)' ||
-                    String.valueOf(currentField.getReferenceTo()) == '(Case)')
+                    (String.valueOf(currentField.getReferenceTo()) != '' &&
+                    String.valueOf(currentField.getReferenceTo()) != null && 
+                    String.valueOf(currentField.getReferenceTo()) != '()' && 
+                    String.valueOf(currentField.getReferenceTo()) != '(User)')
                 ) {
                     myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));
                 }
             }
             return myValues;
-        }
-        else {
+        } else {
             return myValues;
         }
     }

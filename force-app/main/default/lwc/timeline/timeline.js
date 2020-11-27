@@ -169,7 +169,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 let customError = JSON.parse(errorMessage);
                 errorType = customError.type;
                 errorMessage = customError.message;
-                errorHeading = this.error.NO_DATA_HEADER;
+                errorHeading = this.error.SETUP;
             } catch (error2) {
                 //fails to parse message so is a generic apex error
                 errorHeading = this.error.APEX;
@@ -194,10 +194,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
             this.currentParentField = this.timelineParent;
 
-            if ( this.flexipageRegionWidth == undefined ) {
+            if (this.flexipageRegionWidth === undefined) {
                 this.timelineWidth = 'LARGE';
-            }
-            else {
+            } else {
                 this.timelineWidth = this.flexipageRegionWidth;
             }
 
@@ -587,7 +586,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         }
 
                         switch (d.objectName) {
-                            case 'ContentDocumentLink':
+                            case 'ContentDocumentLink': {
                                 me[NavigationMixin.Navigate]({
                                     type: 'standard__namedPage',
                                     attributes: {
@@ -598,17 +597,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                     }
                                 });
                                 break;
-                            case 'CaseComment': 
+                            }
+                            case 'CaseComment': {
                                 const event = new ShowToastEvent({
-                                    "title": me.toast.NAVIGATION_HEADER,
-                                    "message": me.toast.NAVIGATION_BODY,
-                                    "messageData": [
-                                        d.objectName
-                                    ]
+                                    title: me.toast.NAVIGATION_HEADER,
+                                    message: me.toast.NAVIGATION_BODY,
+                                    messageData: [d.objectName]
                                 });
                                 this.dispatchEvent(event);
                                 break;
-                            default:
+                            }
+                            default: {
                                 me[NavigationMixin.Navigate]({
                                     type: 'standard__recordPage',
                                     attributes: {
@@ -617,6 +616,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                     }
                                 });
                                 break;
+                            }
                         }
                     })
                     .on('mouseover', function (d) {

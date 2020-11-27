@@ -20,10 +20,10 @@
     },
     "devDependencies": {
         "@salesforce/eslint-config-lwc": "^0.7.0",
-        "@salesforce/sfdx-lwc-jest": "^0.7.1",
-        "eslint": "^7.1.0",
-        "prettier": "^2.0.5",
-        "prettier-plugin-apex": "^1.5.0",
+        "@salesforce/sfdx-lwc-jest": "^0.10.2",
+        "eslint": "^7.14.0",
+        "prettier": "^2.2.0",
+        "prettier-plugin-apex": "^1.7.0",
         "semver": "^7.3.2"
     },
     "repository": {

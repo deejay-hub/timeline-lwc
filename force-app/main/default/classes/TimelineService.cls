@@ -8,15 +8,22 @@ public with sharing class TimelineService {
      * @param parentFieldName maps API name to use if different from current record
      * @return A map of the API name and label or each child record type to plot on the timeline
      */
+    private static Map<String, Schema.DescribeFieldResult> fieldDescribeCache = new Map<String, Schema.DescribeFieldResult>();
+
     @AuraEnabled(cacheable=true)
     public static Map<String, String> getTimelineTypes(String parentObjectId, String parentFieldName) {
         try {
             Map<String, String> parentDetails = getParentDetails(parentObjectId, parentFieldName);
 
-            String parentObjectType = parentDetails.get('ConfigObjectType');
+            String parentObjectType = parentDetails.get('QueryObjectType');
+            String parentConfigType = parentDetails.get('ConfigObjectType');
+            parentObjectId = parentDetails.get('Id');
+
+            Map<String, String> childObjects = getChildObjects(parentObjectType);
 
             String queryTimelineConfiguration =
-                'SELECT Active__c, ' +
+                'SELECT Active__c, ' + 
+                'Relationship_Name__c, ' +
                 'Object_Name__c, ' +
                 'Tooltip_Object_Name__c, ' +
                 'Sequence__c ' +
@@ -25,7 +32,7 @@ public with sharing class TimelineService {
                 'Test__c = ' +
                 Test.isRunningTest() +
                 ' AND ' +
-                'Parent_Object__c =:parentObjectType ' +
+                'Parent_Object__c =:parentConfigType ' +
                 'ORDER BY Sequence__c ASC '; //NOPMD
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query(queryTimelineConfiguration); //NOPMD
@@ -33,30 +40,48 @@ public with sharing class TimelineService {
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
             for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
-                String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(timelineType.Object_Name__c))
-                        .newInstance()))
-                    .getSObjectType()
-                    .getDescribe()
-                    .getLabelPlural();
 
-                if (timelineType.Object_Name__c == 'ContentDocumentLink') {
-                    objectLabel = System.Label.Timeline_Label_Files;
-                }
-
-                if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
-                    objectLabel = ((SObject) (Type.forName(
-                                'Schema.' + String.valueOf(timelineType.Tooltip_Object_Name__c)
-                            )
+                if (childObjects.containsKey(timelineType.Object_Name__c + timelineType.Relationship_Name__c) ) {
+                    String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(timelineType.Object_Name__c))
                             .newInstance()))
                         .getSObjectType()
-                        .getDescribe()
+                        .getDescribe(SObjectDescribeOptions.DEFERRED)
                         .getLabelPlural();
-                }
 
-                mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
+                    if (timelineType.Object_Name__c == 'ContentDocumentLink') {
+                        objectLabel = System.Label.Timeline_Label_Files;
+                    }
+
+                    if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
+                        objectLabel = ((SObject) (Type.forName(
+                                    'Schema.' + String.valueOf(timelineType.Tooltip_Object_Name__c)
+                                )
+                                .newInstance()))
+                            .getSObjectType()
+                            .getDescribe(SObjectDescribeOptions.DEFERRED)
+                            .getLabelPlural();
+                    }
+
+                    mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
+                }
+                else {
+                    String errorMsg =
+                    'You have asked to plot records for  \'' +
+                    timelineType.Object_Name__c +
+                    '\' but this entity cannot be found. Ask an administrator for help.';
+                    throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
+                }
             }
 
             return mapOfTimelineTypes;
+        } catch (System.QueryException e) {
+            throw new AuraHandledException(
+                '{"type": "Setup-Error", "message": "' +
+                e.getMessage() +
+                ' : ' +
+                e.getStackTraceString() +
+                '"}'
+            );
         } catch (TimelineSetupException e) {
             throw new AuraHandledException(e.getMessage());
         } catch (Exception e) {
@@ -149,7 +174,6 @@ public with sharing class TimelineService {
             }
 
             Map<String, String> childObjects = getChildObjects(parentObjectType);
-            Map<String, FieldMetadata> fieldAttributes = getFieldMetadata(mapOfFields, parentObjectType);
 
             String innerQuery = '';
 
@@ -242,33 +266,13 @@ public with sharing class TimelineService {
                             if (!dupeDataCheck.containsKey(myId)) {
                                 dupeDataCheck.put(myId, myId);
 
-                                Map<String, String> detailValues = getFieldValues(
-                                    tr.detailField,
-                                    eachCh,
-                                    fieldAttributes
-                                );
-                                Map<String, String> positionValues = getFieldValues(
-                                    tr.positionDateField,
-                                    eachCh,
-                                    fieldAttributes
-                                );
-                                Map<String, String> fallbackValues = getFieldValues(
-                                    tr.fallbackTooltipField,
-                                    eachCh,
-                                    fieldAttributes
-                                );
-                                Map<String, String> tooltipIdValues = getFieldValues(
-                                    tr.tooltipIdField,
-                                    eachCh,
-                                    fieldAttributes
-                                );
-                                Map<String, String> drilldownIdValues = getFieldValues(
-                                    tr.drilldownIdField,
-                                    eachCh,
-                                    fieldAttributes
-                                );
+                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh);
+                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh);
+                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh);
+                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh);
+                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh);
 
-                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh, fieldAttributes);
+                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh);
 
                                 if (tr.objectName == 'ContentDocumentLink') {
                                     //NOPMD
@@ -308,6 +312,14 @@ public with sharing class TimelineService {
             return listOfTimelineData;
         } catch (TimelineSetupException e) {
             throw new AuraHandledException(e.getMessage());
+        } catch (System.QueryException e) {
+            throw new AuraHandledException(
+                '{"type": "Setup-Error", "message": "' +
+                e.getMessage() +
+                ' : ' +
+                e.getStackTraceString() +
+                '"}'
+            );
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
         }
@@ -338,69 +350,17 @@ public with sharing class TimelineService {
         return childRelatedObjects;
     }
 
-    private static Map<String, FieldMetadata> getFieldMetadata(Map<String, String> fields, String baseObject) {
-        String fieldLabel;
-        Boolean fieldAccess;
-        Map<String, FieldMetadata> mapOfFieldMetadata = new Map<String, FieldMetadata>();
-
-        for (String field : fields.keySet()) {
-            if (field != null && field != '') {
-                String fieldObject = fields.get(field);
-                String fieldStripped = field;
-                String[] objectFieldSplit = field.split('\\.');
-                FieldMetadata fieldMetadata = new fieldMetadata();
-
-                try {
-                    if (objectFieldSplit.size() > 1) {
-                        fieldObject = objectFieldSplit[objectFieldSplit.size() - 2];
-                        fieldStripped = objectFieldSplit[objectFieldSplit.size() - 1];
-                    }
-
-                    if (fieldObject == 'Owner' || fieldObject == 'CreatedBy' || fieldObject == 'LastModifiedBy') {
-                        fieldObject = 'User';
-                    }
-
-                    Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
-                                'Schema.' + String.valueOf(fieldObject)
-                            )
-                            .newInstance()))
-                        .getSObjectType()
-                        .getDescribe();
-
-                    fieldMetadata.label = String.valueOf(
-                        describeSobjects.fields.getMap().get(fieldStripped).getDescribe().getLabel()
-                    );
-
-                    fieldMetadata.canAccess = Boolean.valueOf(
-                        describeSobjects.fields.getMap().get(fieldStripped).getDescribe().isAccessible()
-                    );
-                } catch (Exception e) {
-                    String errorMsg =
-                        'No such column \'' +
-                        field +
-                        '\' on entity \'' +
-                        fieldObject +
-                        '\'. If you are attempting to use a custom field, be sure to append the \'__c\' after the custom field name. ' +
-                        e.getMessage();
-                    throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
-                }
-
-                mapOfFieldMetadata.put(field, fieldMetadata);
-            }
-        }
-
-        return mapOfFieldMetadata;
-    }
-
-    private static Map<String, String> getFieldValues(
-        String field,
-        Sobject records,
-        Map<String, FieldMetadata> fieldAttributes
-    ) {
+    private static Map<String, String> getFieldValues(String field, Sobject records) {
         Map<String, String> fieldDetails = new Map<String, String>();
 
         String fieldValue = '';
         String fieldLabel = '';
+        String objectCheck = '';
+        String fieldCheck = '';
+        String fieldStripped = '';
+        Boolean fieldCanAccess = true;
+
+        Id recordId;
 
         if (field == null || field == '') {
             fieldDetails.put('value', '');
@@ -408,43 +368,71 @@ public with sharing class TimelineService {
             return fieldDetails;
         }
 
-        FieldMetadata fm = fieldAttributes.get(field);
-        fieldLabel = fm.label;
-
         String[] objectFieldSplit = field.split('\\.');
 
-        if (fm.canAccess) {
-            switch on objectFieldSplit.size() {
-                when 1 {
-                    fieldValue = String.valueOf(records.get(field));
-                }
-                when 2 {
-                    fieldValue = String.valueOf(records.getSobject(objectFieldSplit[0]).get(objectFieldSplit[1]));
-                }
-                when 3 {
-                    fieldValue = String.valueOf(
-                        records.getSobject(objectFieldSplit[0]).getSobject(objectFieldSplit[1]).get(objectFieldSplit[2])
-                    );
-                }
-                when 4 {
-                    fieldValue = String.valueOf(
-                        records.getSobject(objectFieldSplit[0])
-                            .getSobject(objectFieldSplit[1])
-                            .getSobject(objectFieldSplit[2])
-                            .get(objectFieldSplit[3])
-                    );
-                }
-                when 5 {
-                    fieldValue = String.valueOf(
-                        records.getSobject(objectFieldSplit[0])
-                            .getSobject(objectFieldSplit[1])
-                            .getSobject(objectFieldSplit[2])
-                            .getSobject(objectFieldSplit[3])
-                            .get(objectFieldSplit[4])
-                    );
-                }
-            }
+        if (objectFieldSplit.size() > 1) {
+            fieldStripped = objectFieldSplit[objectFieldSplit.size() - 1];
         } else {
+            fieldStripped = field;
+        }
+
+        switch on objectFieldSplit.size() {
+            when 1 {
+                fieldValue = String.valueOf(records.get(field));
+                recordId = String.valueOf(records.get('Id'));
+            }
+            when 2 {
+                fieldValue = String.valueOf(records.getSobject(objectFieldSplit[0]).get(objectFieldSplit[1]));
+                recordId = String.valueOf(records.getSobject(objectFieldSplit[0]).get('Id'));
+            }
+            when 3 {
+                fieldValue = String.valueOf(
+                    records.getSobject(objectFieldSplit[0]).getSobject(objectFieldSplit[1]).get(objectFieldSplit[2])
+                );
+                recordId = String.valueOf(
+                    records.getSobject(objectFieldSplit[0]).getSobject(objectFieldSplit[1]).get('Id')
+                );
+            }
+            when 4 {
+                fieldValue = String.valueOf(
+                    records.getSobject(objectFieldSplit[0])
+                        .getSobject(objectFieldSplit[1])
+                        .getSobject(objectFieldSplit[2])
+                        .get(objectFieldSplit[3])
+                );
+                recordId = String.valueOf(
+                    records.getSobject(objectFieldSplit[0])
+                        .getSobject(objectFieldSplit[1])
+                        .getSobject(objectFieldSplit[2])
+                        .get('Id')
+                );
+            }
+            when 5 {
+                fieldValue = String.valueOf(
+                    records.getSobject(objectFieldSplit[0])
+                        .getSobject(objectFieldSplit[1])
+                        .getSobject(objectFieldSplit[2])
+                        .getSobject(objectFieldSplit[3])
+                        .get(objectFieldSplit[4])
+                );
+                recordId = String.valueOf(
+                    records.getSobject(objectFieldSplit[0])
+                        .getSobject(objectFieldSplit[1])
+                        .getSobject(objectFieldSplit[2])
+                        .getSobject(objectFieldSplit[3])
+                        .get('Id')
+                );
+            }
+        }
+
+        objectCheck = String.valueOf(recordId.getSobjectType());
+
+        Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, fieldStripped);
+
+        fieldLabel = fieldMetadata.getLabel();
+        fieldCanAccess = fieldMetadata.isAccessible();
+
+        if (fieldCanAccess == false) {
             fieldValue = '![' + fieldLabel + ']!';
         }
 
@@ -456,6 +444,23 @@ public with sharing class TimelineService {
         fieldDetails.put('label', fieldLabel);
 
         return fieldDetails;
+    }
+
+    private static Schema.DescribeFieldResult getDescribeInfo(String objectName, String fieldName) {
+        String key = objectName + fieldName;
+
+        if (!fieldDescribeCache.containsKey(key)) {
+            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
+                        'Schema.' + String.valueOf(objectName)
+                    )
+                    .newInstance()))
+                .getSObjectType()
+                .getDescribe(SObjectDescribeOptions.DEFERRED);
+
+            fieldDescribeCache.put(key, describeSobjects.fields.getMap().get(fieldName).getDescribe());
+        }
+
+        return fieldDescribeCache.get(key);
     }
 
     private static Boolean isPersonAccount(String recordId) {

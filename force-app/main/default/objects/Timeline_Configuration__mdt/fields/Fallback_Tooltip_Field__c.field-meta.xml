@@ -5,7 +5,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The API Name of the field to use in tooltips when the object is not supported by the UI API</inlineHelpText>
     <label>Fallback Tooltip Field</label>
-    <length>100</length>
+    <length>150</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>

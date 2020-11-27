@@ -5,7 +5,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The sObject API Name that defines the child record</inlineHelpText>
     <label>Object Name</label>
-    <length>100</length>
+    <length>150</length>
     <required>true</required>
     <type>Text</type>
     <unique>false</unique>

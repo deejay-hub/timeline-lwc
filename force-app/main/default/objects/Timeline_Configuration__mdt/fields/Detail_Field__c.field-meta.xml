@@ -5,7 +5,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The field to use to show against each record on the timeline lwc as a short description (30 chars shown)</inlineHelpText>
     <label>Detail Field</label>
-    <length>75</length>
+    <length>150</length>
     <required>true</required>
     <type>Text</type>
     <unique>false</unique>

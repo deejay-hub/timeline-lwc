@@ -9,7 +9,7 @@
     ],
     "namespace": "bmpyrckt",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "49.0",
+    "sourceApiVersion": "50.0",
     "packageAliases": {
         "TimeWarp": "0Ho2w000000TNVlCAO",
         "TimeWarp@1.2.0-1": "04t2w000008K1N2AAK",

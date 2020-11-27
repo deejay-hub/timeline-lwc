@@ -8,7 +8,7 @@
                     <h1 class="slds-text-heading_medium">{timelineTitle}</h1>
                 </template>
                 <template if:false={isLoaded}>
-                    <div class="stencil-value" style="margin-left: 10px;"></div>
+                    <div class="stencil-value" style="margin-left: 10px"></div>
                 </template>
             </div>
             <div class="slds-col slds-shrink-none slds-align-middle">
@@ -75,7 +75,7 @@
                 class="timeline-filter slds-float_right slds-panel slds-size_small slds-panel_docked slds-panel_docked-right"
                 aria-hidden="false"
             >
-                <div class="slds-panel__header" style="height: 50px;">
+                <div class="slds-panel__header" style="height: 50px">
                     <template if:false={isFilterUpdated}>
                         <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">
                             {label.FILTERS}
@@ -94,7 +94,7 @@
                     </template>
 
                     <template if:true={isFilterUpdated}>
-                        <div class="slds-grid" style="width: 100%;">
+                        <div class="slds-grid" style="width: 100%">
                             <div>
                                 <lightning-button
                                     label={label.BUTTON_CANCEL}
@@ -146,12 +146,10 @@
                         </lightning-checkbox-group>
                     </template>
 
-                    <div style="padding-top: 10px;"></div>
+                    <div style="padding-top: 10px"></div>
                     <legend class="slds-form-element__label slds-text-title_caps">{label.DATE_RANGE_LEGEND}</legend>
 
-                    <div class="slds-form-element__label" style="padding-top: 5px;">
-                        {timelineStart} - {timelineEnd}
-                    </div>
+                    <div class="slds-form-element__label" style="padding-top: 5px">{timelineStart} - {timelineEnd}</div>
                 </div>
             </div>
         </div>

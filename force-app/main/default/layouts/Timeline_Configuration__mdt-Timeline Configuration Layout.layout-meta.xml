@@ -67,7 +67,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Icon and background colour to use</label>
+        <label>Icon and background colour to use for each record</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -86,7 +86,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Field on &lt;Object_Name__c&gt; to show in Tooltip (only when needed)</label>
+        <label>API name of field to use in tooltips (Optional)</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -100,7 +100,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Id Field on &lt;Object_Name__c&gt; with Id to drilldown to when user clicks a record</label>
+        <label>Override the record shown when a user clicks on a record. (Optional)</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -114,7 +114,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Id Field on &lt;Object_Name__c&gt; to show when user hovers</label>
+        <label>If the UI API is supported but you want a related record shown. (Optional)</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
