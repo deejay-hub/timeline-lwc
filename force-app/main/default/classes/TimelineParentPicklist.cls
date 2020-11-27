@@ -53,8 +53,8 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
                     currentField.isNamePointing() == false &&
                     currentField.getLabel() != 'Master Record ID' &&
                     (String.valueOf(currentField.getReferenceTo()) != '' &&
-                    String.valueOf(currentField.getReferenceTo()) != null && 
-                    String.valueOf(currentField.getReferenceTo()) != '()' && 
+                    String.valueOf(currentField.getReferenceTo()) != null &&
+                    String.valueOf(currentField.getReferenceTo()) != '()' &&
                     String.valueOf(currentField.getReferenceTo()) != '(User)')
                 ) {
                     myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));

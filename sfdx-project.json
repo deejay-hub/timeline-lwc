@@ -4,7 +4,7 @@
             "path": "force-app",
             "default": true,
             "package": "TimeWarp",
-            "versionNumber": "1.4.0.NEXT"
+            "versionNumber": "1.5.0.NEXT"
         }
     ],
     "namespace": "bmpyrckt",
@@ -14,6 +14,7 @@
         "TimeWarp": "0Ho2w000000TNVlCAO",
         "TimeWarp@1.2.0-1": "04t2w000008K1N2AAK",
         "TimeWarp@1.3.0-1": "04t2w000008K1NRAA0",
-        "TimeWarp@1.4.0-1": "04t2w000008K1NWAA0"
+        "TimeWarp@1.4.0-1": "04t2w000008K1NWAA0",
+        "TimeWarp@1.5.0-1": "04t2w000008K32CAAS"
     }
 }

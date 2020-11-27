@@ -22,7 +22,7 @@ public with sharing class TimelineService {
             Map<String, String> childObjects = getChildObjects(parentObjectType);
 
             String queryTimelineConfiguration =
-                'SELECT Active__c, ' + 
+                'SELECT Active__c, ' +
                 'Relationship_Name__c, ' +
                 'Object_Name__c, ' +
                 'Tooltip_Object_Name__c, ' +
@@ -40,9 +40,10 @@ public with sharing class TimelineService {
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
             for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
-
-                if (childObjects.containsKey(timelineType.Object_Name__c + timelineType.Relationship_Name__c) ) {
-                    String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(timelineType.Object_Name__c))
+                if (childObjects.containsKey(timelineType.Object_Name__c + timelineType.Relationship_Name__c)) {
+                    String objectLabel = ((SObject) (Type.forName(
+                                'Schema.' + String.valueOf(timelineType.Object_Name__c)
+                            )
                             .newInstance()))
                         .getSObjectType()
                         .getDescribe(SObjectDescribeOptions.DEFERRED)
@@ -63,12 +64,11 @@ public with sharing class TimelineService {
                     }
 
                     mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
-                }
-                else {
+                } else {
                     String errorMsg =
-                    'You have asked to plot records for  \'' +
-                    timelineType.Object_Name__c +
-                    '\' but this entity cannot be found. Ask an administrator for help.';
+                        'You have asked to plot records for  \'' +
+                        timelineType.Object_Name__c +
+                        '\' but this entity cannot be found. Ask an administrator for help.';
                     throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
                 }
             }
