@@ -121,29 +121,11 @@ sfdx force:org:open
 
 ## How it Works
 
+For full details see the [Configuration Guide](https://salesforce.quip.com/ahFCA9VBEKtr)
+
 #### Object Support
 
-Timeline is installed as a custom component available in the App Builder component pallette. Currently the component is available on the following record home pages:
-
--   Account
--   Contact
--   Lead
--   Opportunity
--   Case
-
-This is a configuration limit specified in timeline.js-meta.xml. Since the timeline is designed to be driven from data it should be possible to extend the usage to other objects.
-
-```
-<targetConfig targets="lightning__RecordPage">
-     <objects>
-        <object>Contact</object>
-        <object>Lead</object>
-        <object>Account</object>
-        <object>Case</object>
-        <object>Opportunity</object>
-     </objects>
-</targetConfig>
-```
+Timeline is installed as a custom component available in the App Builder component pallette. The component is available on all standard and custom objects but has been designed specifically to see clusters of interactions over time.
 
 #### Component Properties
 
@@ -207,48 +189,43 @@ Specifying which child records to plot is done using the **Timeline_Configuratio
 
 ## FAQs
 
+For FAQs and troubleshooting see the [Knowledge Base](https://salesforce.quip.com/6yvoAcBukqZB)
+
 #### How to I specify the fields for the tooltip?
 
-For the most part the component uses the UI API powered by the Lightning Data Service (LDS). This means that the tooltip will use the compact layout of the object automatically in a 2 column format. So just update the compact layout for the object and it works like magic.
-The bad news is that not all objects have support yet. For a list of supported objects see https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_get_started_supported_objects.htm. If you want to plot an object that isn't included in the list (e.g. Case Comments, Tasks etc) then the timeline can show 2 fields in the tooltip specified by the Detail_Field**c field value and the Fallback_Field**c field value. So fill these fields in only for those objects not supported by the UI API.
+Use the Compact Layout of the object plotted (for the most part).	
 
-#### Does it support multiple languages other than English?
+#### Does it support multiple languages other than English?	
 
-Yes - for left-to-right languages. The users locale setting in Salesforce determines the date formats used. For a list of supported locales see - https://help.salesforce.com/articleView?id=admin_supported_date_time_format.htm&type=5
+Yes - Supports a users locale, language and has custom labels for translation available.
 
-All fields have their translated labels returned. Any custom labels can be translated (see Custom Labels).
+#### Does it support Communities?	
 
-Right-to-left languages can be supported but there are formatting issues currently that need to be fixed.
+Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.	
 
-Please note that translated values are not currently included - you need to enable transalation workbench and add them yourself. If you would like to provide translated values for a language I would happily incorporate them for everyones benefit.
+#### Does it support Mobile?	
 
-#### Does it support Communities?
+No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.	
 
-Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.
+#### Does it support Person Accounts?	
 
-#### Does it support Mobile?
+Yes.
 
-No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
+#### Does it support Files / Notes / Attachments?	
 
-#### Does it support Person Accounts?
+Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.	
 
-Yes. We have included values for the parent object 'PersonAccount' this will automatically be applied to any Account where the IsPersonAccount field is true. Since PersonAccounts can have relationships through ContactId or AccountId to their corresponding related records we have included metadata types for both. So you can choose to plot related cases where the AccountId, ContactId or both are populated.
+#### Does it support External Objects / Big Objects?	
 
-#### Does it support Files / Notes / Attachments?
+No. We would have to consider scale and performance too so for now the component only supports standard and custom objects.	
 
-Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.
+#### Does it support History Objects?	
 
-#### Does it support External Objects / Big Objects?
+No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates.
 
-No. Currently the SOQL is limited to those objects that can be included in a parent join. We would have to consider scale and performance too so for now the component only supports standard and custom objects.
+#### Does it support Junction Objects?	
 
-#### Does it support History Objects?
-
-No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates typically seen.
-
-#### Does it support Junction Objects?
-
-Yes. We have tested support for Multiple Contacts to Tasks/Events || Multiple Contacts to Accounts and Contact Roles for Opportunities. We have also tested custom junction objects. We have added simple dot notation to be able to plot the fields from the destination object.
+Yes.
 
 ## Contributing
 
