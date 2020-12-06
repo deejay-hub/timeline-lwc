@@ -57,6 +57,10 @@ A complete custom experience component. Created to allow users to view related r
 
 ## Installation Instructions
 
+Now available as a managed package from the [AppExchange](https://appexchange.salesforce.com/appxListingDetail?listingId=a0N4V00000GXVf4UAH).
+
+Alternatively you can install the component straight from source control into a Scratch Org using the instructions below:
+
 1. Set up your environment. Follow the steps in the [Quick Start: Lightning Web Components](https://trailhead.salesforce.com/content/learn/projects/quick-start-lightning-web-components/) Trailhead project. The steps include:
 
 -   Enable Dev Hub in your Trailhead Playground
