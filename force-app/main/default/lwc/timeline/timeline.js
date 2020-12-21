@@ -73,7 +73,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
     mouseOverDetailLabel;
     mouseOverDetailValue;
     mouseOverFallbackField;
-    mouseOverFallbackValue;
+	mouseOverFallbackValue;
+	mouseOverDateField;
+	mouseOverDateValue;
 
     currentParentField;
     filterValues = [];
@@ -265,6 +267,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             parentFieldName: me.timelineParent
         })
             .then((result) => {
+				console.log(result);
                 try {
                     if (result.length > 0) {
                         me.totalTimelineRecords = result.length;
@@ -402,7 +405,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             recordCopy.type = record.type;
             recordCopy.icon = record.icon;
-            recordCopy.iconBackground = record.iconBackground;
+			recordCopy.iconBackground = record.iconBackground;
+			recordCopy.iconBadge = record.iconBadge;
 
             timelineResult.push(recordCopy);
             timelineTimes.push(recordCopy.time);
@@ -556,6 +560,18 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 break;
                         }
                         return iconImage;
+					});
+
+					timelineCanvas.records
+                    .append('image')
+                    .attr('x', 18)
+                    .attr('y', 18)
+                    .attr('height', 10)
+                    .attr('width', 10)
+                    .attr('xlink:href', function (d) {
+						let iconImage = '';
+						iconImage = d.iconBadge;
+                        return iconImage;
                     });
 
                 timelineCanvas.records
@@ -608,13 +624,25 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 break;
                             }
                             default: {
-                                me[NavigationMixin.Navigate]({
-                                    type: 'standard__recordPage',
-                                    attributes: {
-                                        recordId: drilldownId,
-                                        actionName: 'view'
-                                    }
-                                });
+								if(drilldownId) {
+									if(drilldownId.startsWith('http')) {
+										me[NavigationMixin.Navigate]({
+											type: 'standard__webPage',
+											attributes: {
+												url: drilldownId
+											}
+										});
+									}
+									else {
+										me[NavigationMixin.Navigate]({
+											type: 'standard__recordPage',
+											attributes: {
+												recordId: drilldownId,
+												actionName: 'view'
+											}
+										});
+									}
+								}
                                 break;
                             }
                         }
@@ -635,7 +663,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me.mouseOverFallbackValue = d.fallbackTooltipValue;
 
                         me.mouseOverDetailLabel = d.detailFieldLabel;
-                        me.mouseOverDetailValue = d.detailField;
+						me.mouseOverDetailValue = d.detailField;
+
+						me.mouseOverDateField = d.positionDateField;
+                        me.mouseOverDateValue = moment(d.time).format('LLLL');
 
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
@@ -1048,6 +1079,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     get showFallbackTooltip() {
         if (this.mouseOverFallbackField != null && this.mouseOverFallbackField !== '') {
+            return true;
+        }
+        return false;
+	}
+	
+	get showCompactFormTooltip() {
+        if (!this.showFallbackTooltip && this.mouseOverRecordId != null && this.mouseOverRecordId !== '' && this.mouseOverObjectAPIName != null && this.mouseOverObjectAPIName !== '') {
             return true;
         }
         return false;

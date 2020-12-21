@@ -40,7 +40,19 @@ public with sharing class TimelineService {
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
             for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
-                if (childObjects.containsKey(timelineType.Object_Name__c + timelineType.Relationship_Name__c)) {
+				if(timelineType.Relationship_Name__c.startsWith('apex'))  {
+					try {
+						String className = timelineType.Relationship_Name__c.substringAfter('apex:');
+						Type t = Type.forName(className);
+						TimelineDataProviderInterface p = (TimelineDataProviderInterface)t.newInstance();
+						String objectLabel = p.getLabel();
+						mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
+					}
+					catch(Exception e) {
+						System.debug(e.getMessage() + '\r\n' + e.getStackTraceString());
+					}
+				}
+                else if (childObjects.containsKey(timelineType.Object_Name__c + timelineType.Relationship_Name__c)) {
                     String objectLabel = ((SObject) (Type.forName(
                                 'Schema.' + String.valueOf(timelineType.Object_Name__c)
                             )
@@ -148,7 +160,8 @@ public with sharing class TimelineService {
             Map<String, String> mapOfFields = new Map<String, String>();
 
             for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
-                TimelineRecord timelineRecord = new timelineRecord();
+				TimelineRecord timelineRecord = new TimelineRecord();
+				timelineRecord.parentObject = parentObjectType;
                 timelineRecord.relationshipName = timelineConfigurationRecord.Relationship_Name__c;
                 timelineRecord.icon = timelineConfigurationRecord.Icon__c;
                 timelineRecord.iconBackground = timelineConfigurationRecord.Icon_Background_Colour__c;
@@ -173,6 +186,8 @@ public with sharing class TimelineService {
                 mapOfFields.put(timelineRecord.type, timelineRecord.objectName);
             }
 
+            List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
+
             Map<String, String> childObjects = getChildObjects(parentObjectType);
 
             String innerQuery = '';
@@ -180,7 +195,14 @@ public with sharing class TimelineService {
             for (String eachObject : mapOfTimelineConfigurationRecords.keyset()) {
                 TimelineRecord tcr = mapOfTimelineConfigurationRecords.get(eachObject);
 
-                if (childObjects.containsKey(eachObject)) {
+				if(tcr.relationshipName.startsWith('apex')) {
+					String className = tcr.relationshipName.substringAfter('apex:');
+					Type t = Type.forName(className);
+					TimelineDataProviderInterface p = (TimelineDataProviderInterface)t.newInstance();
+					List<Map<String,String>> data = p.getData(tcr, parentObjectId, earliestRange, latestRange);
+					if(data != null && !data.isEmpty()) listOfTimelineData.addAll(data);
+				}
+                else if (childObjects.containsKey(eachObject)) {
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
                     String tooltipIdField = String.valueOf(tcr.tooltipIdField);
@@ -244,7 +266,6 @@ public with sharing class TimelineService {
 
             List<SObject> listOfTimelineRecords = Database.query(queryRecords); //NOPMD
 
-            List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
             Map<String, String> dupeDataCheck = new Map<String, String>();
 
             for (SObject each : listOfTimelineRecords) {
@@ -542,25 +563,25 @@ public with sharing class TimelineService {
         return parentDetails;
     }
 
-    private class TimelineRecord { //NOPMD
-        private String relationshipName;
-        private String parentObject;
-        private String detailField;
-        private String detailFieldLabel;
-        private String icon;
-        private String iconBackground;
-        private String positionDateField;
-        private String positionDateValue;
-        private String objectName;
-        private String type;
-        private String tooltipIdField;
-        private String tooltipObject;
-        private String drilldownIdField;
-        private String fallbackTooltipField;
-        private String fallbackTooltipValue;
-        private String fallbackNameField;
-        private String fallbackNameValue;
-        private Id recordId;
+    public class TimelineRecord { //NOPMD
+        public String relationshipName;
+        public String parentObject;
+        public String detailField;
+        public String detailFieldLabel;
+        public String icon;
+        public String iconBackground;
+        public String positionDateField;
+        public String positionDateValue;
+        public String objectName;
+        public String type;
+        public String tooltipIdField;
+        public String tooltipObject;
+        public String drilldownIdField;
+        public String fallbackTooltipField;
+        public String fallbackTooltipValue;
+        public String fallbackNameField;
+        public String fallbackNameValue;
+        public Id recordId;
     }
 
     private class FieldMetadata { //NOPMD

@@ -168,7 +168,7 @@
     <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top">
         <div class="tooltip-content">
             <template if:true={isMouseOver}>
-                <template if:false={showFallbackTooltip}>
+                <template if:true={showCompactFormTooltip}>
                     <lightning-record-form
                         record-id={mouseOverRecordId}
                         object-api-name={mouseOverObjectAPIName}
@@ -198,6 +198,16 @@
                                     <span class="slds-form-element__label">{mouseOverFallbackField} </span>
                                     <div class="slds-form-element__control">
                                         <div class="slds-form-element__static">{mouseOverFallbackValue}</div>
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+						<div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                    <span class="slds-form-element__label">{mouseOverDateField} </span>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-form-element__static">{mouseOverDateValue}</div>
                                     </div>
                                 </div>
                             </div>
