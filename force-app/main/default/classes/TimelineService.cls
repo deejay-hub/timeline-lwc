@@ -425,7 +425,12 @@ public with sharing class TimelineService {
             }
         }
 
-        objectCheck = String.valueOf(recordId.getSobjectType());
+        if ( String.valueOf( recordId ).startsWith('00a') ) {
+            objectCheck = 'CaseComment';
+        }
+        else {
+            objectCheck = String.valueOf(recordId.getSobjectType());
+        }
 
         Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, fieldStripped);
 
