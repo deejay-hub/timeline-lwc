@@ -267,7 +267,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
             parentFieldName: me.timelineParent
         })
             .then((result) => {
-				console.log(result);
                 try {
                     if (result.length > 0) {
                         me.totalTimelineRecords = result.length;
