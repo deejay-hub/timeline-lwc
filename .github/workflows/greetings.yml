@@ -10,4 +10,3 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         issue-message: 'Hello @${{ github.actor }} , thank you for submitting an issue we appreciate your time. We will take a look and give you an update as soon as we can. We aim for a 72 hour response time.'
-        pr-message: 'Thank you @${{ github.actor }} Pull requests are exactly how I can learn from your skills and experience. We will take a look at your suggested changes so stay tuned as we review it.'
