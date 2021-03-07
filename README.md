@@ -125,7 +125,7 @@ sfdx force:org:open
 
 ## How it Works
 
-For full details see the [Configuration Guide](https://salesforce.quip.com/ahFCA9VBEKtr)
+For full details see the [Configuration Guide](https://quip.com/ahFCA9VBEKtr)
 
 #### Object Support
 
@@ -192,7 +192,7 @@ Specifying which child records to plot is done using the **Timeline_Configuratio
 
 ## FAQs
 
-For FAQs and troubleshooting see the [Knowledge Base](https://salesforce.quip.com/6yvoAcBukqZB)
+For FAQs and troubleshooting see the [Knowledge Base](https://quip.com/6yvoAcBukqZB)
 
 #### How to I specify the fields for the tooltip?
 
