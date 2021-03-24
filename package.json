@@ -19,11 +19,11 @@
         "prettier:verify": "prettier --list-different '**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,yaml,yml}'"
     },
     "devDependencies": {
-        "@salesforce/eslint-config-lwc": "^0.7.0",
-        "@salesforce/sfdx-lwc-jest": "^0.10.2",
-        "eslint": "^7.14.0",
-        "prettier": "^2.2.0",
-        "prettier-plugin-apex": "^1.7.0",
+        "@salesforce/eslint-config-lwc": "^0.10.0",
+        "@salesforce/sfdx-lwc-jest": "^0.10.4",
+        "eslint": "^7.22.0",
+        "prettier": "^2.2.1",
+        "prettier-plugin-apex": "^1.8.0",
         "semver": "^7.3.2"
     },
     "repository": {
