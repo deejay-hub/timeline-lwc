@@ -516,6 +516,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             case 'Email':
                                 iconColour = '#95AEC5';
                                 break;
+                            case 'Event':
+                                iconColour = '#EB7092';
+                                break;
                             case 'SNOTE':
                                 iconColour = '#E6D478';
                                 break;
@@ -548,6 +551,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             case 'Email':
                                 iconImage = '/img/icon/t4v35/standard/email.svg';
                                 break;
+                            case 'Event':
+                                iconImage = '/img/icon/t4v35/standard/event.svg';
+                                break;    
                             case 'SNOTE':
                                 iconImage = '/img/icon/t4v35/standard/note.svg';
                                 break;
