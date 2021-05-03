@@ -192,6 +192,8 @@ public with sharing class TimelineService {
                     if (
                         (typeField != null && typeField != '') &&
                         (objName == 'Task' ||
+                        objName == 'OpenActivity' ||
+                        objName == 'ActivityHistory' ||
                         objName == 'TaskRelation' ||
                         objName == 'ContentDocumentLink')
                     ) {
