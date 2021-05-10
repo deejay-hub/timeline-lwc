@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
-        <label>Error Apex</label>
+        <label><!-- Timeline_Error_Apex --></label>
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
-        <label>No se puede cargar recursos de JavaScript</label>
+        <label><!-- Timeline_Error_JavaScriptResources --></label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
     <customLabels>
-        <label>No hay información para mostrar</label>
+        <label><!-- Timeline_Error_NoDataHeader --></label>
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>Registros relacionados aparecen aquí en una línea de tiempo interactiva. Revise su filtro o crear un registro.</label>
+        <label><!-- Timeline_Error_NoDataSubHeader --></label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
-        <label>Error de configuración</label>
+        <label><!-- Timeline_Error_Setup --></label>
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
-        <label>Hemos tenido un problema</label>
+        <label><!-- Timeline_Error_Unhandled --></label>
         <name>Timeline_Error_Unhandled</name>
     </customLabels>
     <customLabels>
-        <label>Solicitar</label>
+        <label><!-- Timeline_Label_Apply --></label>
         <name>Timeline_Label_Apply</name>
     </customLabels>
     <customLabels>
-        <label>Cancelar</label>
+        <label><!-- Timeline_Label_Cancel --></label>
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
-        <label>Rango de fechas</label>
+        <label><!-- Timeline_Label_Date_Range_Legend --></label>
         <name>Timeline_Label_Date_Range_Legend</name>
     </customLabels>
     <customLabels>
-        <label>dia(s)</label>
+        <label>journée(s)</label>
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
-        <label>Archivos | Notas</label>
+        <label>Remarques</label>
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
-        <label>Filtros</label>
+        <label><!-- Timeline_Label_Filter_All_Types --></label>
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>Todos los tipos</label>
+        <label><!-- Timeline_Label_Filter_Type_Legend --></label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>Tipos para mostrar</label>
+        <label><!-- Timeline_Label_Filters --></label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
-        <label>artículo(s)</label>
+        <label><!-- Timeline_Label_Items --></label>
         <name>Timeline_Label_Items</name>
     </customLabels>
     <customLabels>
-        <label>Demostración:</label>
+        <label><!-- Timeline_Label_Showing --></label>
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>Los registros de tipo '{0}' no son compatibles</label>
+        <label><!-- Timeline_Navigation_Toast_Body --></label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>
-        <label>Navegación no permitido</label>
+        <label><!-- Timeline_Navigation_Toast_Header --></label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
 </Translations>
