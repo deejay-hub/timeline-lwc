@@ -1,5 +1,11 @@
 {
     "orgName": "david.norris company",
-    "edition": "Developer",
-    "features": []
+    "edition": "Enterprise",
+    "features": [],
+    "settings": {
+      "languageSettings": {
+        "enableTranslationWorkbench":  true,
+        "enableEndUserLanguages": true
+      }
+    }
 }
