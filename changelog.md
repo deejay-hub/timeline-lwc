@@ -5,6 +5,7 @@
 -   Fixed bug causing error when adding Time Warp to Cases and using CaseComments
 -   Added support for 2, 3 and 5 year future time range values
 -   Added support for WorkOrders on the Asset object by default
+-   Added default translations for German, Spanish, French, Hindi, Japanese, Portuguese, Thai, Chinese (Simplified), Chinese (Traditional)
 -   Changed Salesforce API to v51.0 from v50.0
 
 ## 27 Nov 2020 v1.5.0
