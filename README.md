@@ -175,7 +175,7 @@ Labels can be translated where appropriate. Navigate to Setup -> Custom Labels a
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose
 
 | Field Name                  | Description                                                                                                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
 | `Parent_Object__c`          | The API Name of the **parent object** that the child record relates to                                                                                                                           |
 | `Object_Name__c`            | The API Name of the object that is the **child** to plot                                                                                                                                         |
 | `Relationship_Name__c`      | The API Name of the **relationship** between Parent and Child                                                                                                                                    |
@@ -184,7 +184,7 @@ Specifying which child records to plot is done using the **Timeline_Configuratio
 | `Icon__c`                   | A relative url to the image to use for this record                                                                                                                                               |
 | `Icon_Background_Colour__c` | The background colour to use for the above image (rgb and hex supported)                                                                                                                         |
 | `Type_Field__c`             | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name\_\_c is Task                                                                     |
-| `Fallback_Tooltip_Field__c` | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field**c value and the Fallback_Tooltip_Field**c as the tooltip. |                                            |
+| `Fallback_Tooltip_Field__c` | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field**c value and the Fallback_Tooltip_Field**c as the tooltip. |     |
 | `Drilldown_Id_Field__c`     | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects.                            |
 | `Tooltip_Id_Field__c`       | The field containing the Id value that should be used for the hover tooltip e.g. Which record should the user see when they hover over a record on the timeline. Important for junction objects. |
 | `Tooltip_Object_Name__c`    | The object used by the tooltip. The label is also looked up to use in the filter panel.                                                                                                          |
@@ -196,37 +196,37 @@ For FAQs and troubleshooting see the [Knowledge Base](https://quip.com/6yvoAcBuk
 
 #### How to I specify the fields for the tooltip?
 
-Use the Compact Layout of the object plotted (for the most part).	
+Use the Compact Layout of the object plotted (for the most part).
 
-#### Does it support multiple languages other than English?	
+#### Does it support multiple languages other than English?
 
 Yes - Supports a users locale, language and has custom labels for translation available.
 
-#### Does it support Communities?	
+#### Does it support Communities?
 
-Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.	
+Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.
 
-#### Does it support Mobile?	
+#### Does it support Mobile?
 
-No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.	
+No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
 
-#### Does it support Person Accounts?	
+#### Does it support Person Accounts?
 
 Yes.
 
-#### Does it support Files / Notes / Attachments?	
+#### Does it support Files / Notes / Attachments?
 
-Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.	
+Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.
 
-#### Does it support External Objects / Big Objects?	
+#### Does it support External Objects / Big Objects?
 
-No. We would have to consider scale and performance too so for now the component only supports standard and custom objects.	
+No. We would have to consider scale and performance too so for now the component only supports standard and custom objects.
 
-#### Does it support History Objects?	
+#### Does it support History Objects?
 
 No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates.
 
-#### Does it support Junction Objects?	
+#### Does it support Junction Objects?
 
 Yes.
 

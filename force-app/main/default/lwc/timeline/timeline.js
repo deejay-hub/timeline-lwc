@@ -553,7 +553,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 break;
                             case 'Event':
                                 iconImage = '/img/icon/t4v35/standard/event.svg';
-                                break;    
+                                break;
                             case 'SNOTE':
                                 iconImage = '/img/icon/t4v35/standard/note.svg';
                                 break;
