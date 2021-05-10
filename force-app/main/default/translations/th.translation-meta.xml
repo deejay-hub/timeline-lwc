@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label>ข้อผิดพลาดของเอเพ็กซ์</label>
+        <name>Timeline_Error_Apex</name>
+    </customLabels>
+    <customLabels>
+        <label>ไม่สามารถโหลดทรัพยากร JavaScript</label>
+        <name>Timeline_Error_JavaScriptResources</name>
+    </customLabels>
+    <customLabels>
+        <label>ไม่มีข้อมูลที่จะแสดง</label>
+        <name>Timeline_Error_NoDataHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>บันทึกที่เกี่ยวข้องแสดงขึ้นที่นี่ในระยะเวลาการโต้ตอบ ตรวจสอบตัวกรองของคุณหรือสร้างบันทึก</label>
+        <name>Timeline_Error_NoDataSubHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>ข้อผิดพลาดการติดตั้ง</label>
+        <name>Timeline_Error_Setup</name>
+    </customLabels>
+    <customLabels>
+        <label>ที่เราเคยมีปัญหา</label>
+        <name>Timeline_Error_Unhandled</name>
+    </customLabels>
+    <customLabels>
+        <label>ใช้</label>
+        <name>Timeline_Label_Apply</name>
+    </customLabels>
+    <customLabels>
+        <label>ยกเลิก</label>
+        <name>Timeline_Label_Cancel</name>
+    </customLabels>
+    <customLabels>
+        <label>ช่วงวันที่</label>
+        <name>Timeline_Label_Date_Range_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>วัน</label>
+        <name>Timeline_Label_Days</name>
+    </customLabels>
+    <customLabels>
+        <label>ไฟล์ | หมายเหตุ</label>
+        <name>Timeline_Label_Files</name>
+    </customLabels>
+    <customLabels>
+        <label>ฟิลเตอร์</label>
+        <name>Timeline_Label_Filter_All_Types</name>
+    </customLabels>
+    <customLabels>
+        <label>ทุกประเภท</label>
+        <name>Timeline_Label_Filter_Type_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>ประเภทการแสดง</label>
+        <name>Timeline_Label_Filters</name>
+    </customLabels>
+    <customLabels>
+        <label>รายการ</label>
+        <name>Timeline_Label_Items</name>
+    </customLabels>
+    <customLabels>
+        <label>แสดง: </label>
+        <name>Timeline_Label_Showing</name>
+    </customLabels>
+    <customLabels>
+        <label>ประวัติชนิด '{0}' ยังไม่ได้รับการสนับสนุน</label>
+        <name>Timeline_Navigation_Toast_Body</name>
+    </customLabels>
+    <customLabels>
+        <label>นำร่องไม่อนุญาต</label>
+        <name>Timeline_Navigation_Toast_Header</name>
+    </customLabels>
+</Translations>
