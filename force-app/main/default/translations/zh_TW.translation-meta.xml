@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
-        <label>先端錯誤</label>
+        <label>Apex 錯誤</label>
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
-        <label>無法加載JavaScript資源</label>
+        <label>無法加載JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
     <customLabels>
-        <label>沒有數據顯示</label>
+        <label>無數據顯示</label>
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>相關記錄顯示在這裡上的交互式時間表。檢查您的過濾器或創建一個記錄。</label>
+        <label>相關記錄在此交互式時間表顯示。檢查您的記錄篩選或創建新記錄。</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
-        <label>安裝錯誤></label>
+        <label>搭建錯誤></label>
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
-        <label>我們有一個問題</label>
+        <label>誤差信息</label>
         <name>Timeline_Error_Unhandled</name>
     </customLabels>
     <customLabels>
@@ -41,11 +41,11 @@
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
-        <label>文件 | 筆記</label>
+        <label>檔案 | 註釋</label>
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
-        <label>過濾器</label>
+        <label>篩選</label>
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
@@ -57,7 +57,7 @@
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
-        <label>項目</label>
+        <label>項目）</label>
         <name>Timeline_Label_Items</name>
     </customLabels>
     <customLabels>
@@ -65,11 +65,11 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>類型的記錄"{0}"不支持。</label>
+        <label>記錄類型"{0}"不支持。</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>
-        <label>導航不允許</label>
+        <label>導覽不允許</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
 </Translations>

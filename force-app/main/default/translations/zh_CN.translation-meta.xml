@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
-        <label>先端错误</label>
+        <label>Apex错误</label>
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
-        <label>无法加载JavaScript资源</label>
+        <label>无法加载JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
     <customLabels>
-        <label>没有数据显示</label>
+        <label>无数据显示</label>
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>相关记录显示在这里上的交互式时间表。检查您的过滤器或创建一个记录</label>
+        <label>相关记录在此交互式时间表显示。检查您的记录筛选或创建新记录</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
-        <label>安装错误</label>
+        <label>搭建错误</label>
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
-        <label>我们有一个问题</label>
+        <label>误差信息</label>
         <name>Timeline_Error_Unhandled</name>
     </customLabels>
     <customLabels>
@@ -41,11 +41,11 @@
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
-        <label>文件|笔记</label>
+        <label>档案 | 注释</label>
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
-        <label>过滤器</label>
+        <label>筛选</label>
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
@@ -65,11 +65,11 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>类型的记录"{0}"不支持。</label>
+        <label>记录类型"{0}"不支持。</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>
-        <label>导航不允许</label>
+        <label>导览不允许</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
 </Translations>
