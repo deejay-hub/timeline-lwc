@@ -13,7 +13,7 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>Des documents connexes apparaissent ici sur une chronologie interactive. Vérifiez votre filtre ou créer un enregistrement.</label>
+        <label>Les enregistrements associés apparaissent ici sur une chronologie interactive. Vérifiez votre filtre ou créez un enregistrement.</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
@@ -33,7 +33,7 @@
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
-        <label>Gamme Date</label>
+        <label>Plage de dates</label>
         <name>Timeline_Label_Date_Range_Legend</name>
     </customLabels>
     <customLabels>
@@ -41,7 +41,7 @@
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
-        <label>Remarques</label>
+        <label>Fichiers | Notes</label>
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>

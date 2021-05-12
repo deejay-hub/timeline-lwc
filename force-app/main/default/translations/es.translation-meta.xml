@@ -25,7 +25,7 @@
         <name>Timeline_Error_Unhandled</name>
     </customLabels>
     <customLabels>
-        <label>Applicar</label>
+        <label>Aplicar</label>
         <name>Timeline_Label_Apply</name>
     </customLabels>
     <customLabels>
@@ -33,7 +33,7 @@
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
-        <label>Rango de fechas</label>
+        <label>Intervalo de fechas</label>
         <name>Timeline_Label_Date_Range_Legend</name>
     </customLabels>
     <customLabels>
@@ -53,15 +53,15 @@
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>Tipos para mostrar</label>
+        <label>Tipos que mostrar</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
-        <label>artículo(s)</label>
+        <label>elemento(s)</label>
         <name>Timeline_Label_Items</name>
     </customLabels>
     <customLabels>
-        <label>Demostración:</label>
+        <label>Mostrando:</label>
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
