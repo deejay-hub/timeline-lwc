@@ -427,10 +427,9 @@ public with sharing class TimelineService {
             }
         }
 
-        if ( String.valueOf( recordId ).startsWith('00a') ) {
+        if (String.valueOf(recordId).startsWith('00a')) {
             objectCheck = 'CaseComment';
-        }
-        else {
+        } else {
             objectCheck = String.valueOf(recordId.getSobjectType());
         }
 

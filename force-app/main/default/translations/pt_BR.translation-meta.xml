@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
-        <label>Error Apex</label>
+        <label>Erro Apex</label>
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
-        <label>No se puede cargar recursos de JavaScript</label>
+        <label>Não é possível carregar recursos JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
     <customLabels>
-        <label>No hay información para mostrar</label>
+        <label>Sem dados para exibir</label>
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>Registros relacionados aparecen aquí en una línea de tiempo interactiva. Revise su filtro o crear un registro.</label>
+        <label>Registros relacionados aparecer aqui em uma linha do tempo interativa. Verifique se o seu filtro ou criar um registro.</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
-        <label>Error de configuración</label>
+        <label>Erro de configuração</label>
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
-        <label>Hemos tenido un problema</label>
+        <label>Nós tivemos um problema</label>
         <name>Timeline_Error_Unhandled</name>
     </customLabels>
     <customLabels>
@@ -33,7 +33,7 @@
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
-        <label>Intervalo de fechas</label>
+        <label>Intervalo de datas</label>
         <name>Timeline_Label_Date_Range_Legend</name>
     </customLabels>
     <customLabels>
@@ -41,7 +41,7 @@
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
-        <label>Archivos | Notas</label>
+        <label>Arquivos | Notas</label>
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
@@ -49,15 +49,15 @@
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>Todos los tipos</label>
+        <label>Todos os tipos</label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>Tipos que mostrar</label>
+        <label>Tipos para exibir</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
-        <label>elemento(s)</label>
+        <label>iten(s)</label>
         <name>Timeline_Label_Items</name>
     </customLabels>
     <customLabels>
@@ -65,11 +65,11 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>Los registros de tipo '{0}' no son compatibles</label>
+        <label>Registros do tipo '{0}' não são suportados.</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>
-        <label>Navegación no permitido</label>
+        <label>Navegação Não Permitido</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
 </Translations>
