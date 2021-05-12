@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
-        <label>アペックス・エラー</label>
+        <label>Apex エラー</label>
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
-        <label>JavaScriptのリソースを読み込むことができません</label>
+        <label>JavaScriptリソースを読み込めません</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
     <customLabels>
@@ -13,11 +13,11 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>関連レコードは、インタラクティブなタイムラインにここに表示します。あなたのフィルタを確認するか、レコードを作成します。</label>
+        <label>関連するレコードは、インタラクティブなタイムラインに表示されます。フィルタを確認するか、レコードを作成してください。</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
-        <label>セットアップエラー</label>
+        <label>構成エラー</label>
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
@@ -25,7 +25,7 @@
         <name>Timeline_Error_Unhandled</name>
     </customLabels>
     <customLabels>
-        <label>適用します</label>
+        <label>適用</label>
         <name>Timeline_Label_Apply</name>
     </customLabels>
     <customLabels>
@@ -33,7 +33,7 @@
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
-        <label>日付範囲</label>
+        <label>日付の範囲</label>
         <name>Timeline_Label_Date_Range_Legend</name>
     </customLabels>
     <customLabels>
@@ -41,23 +41,23 @@
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
-        <label>ファイル | ノート</label>
+        <label>ファイル | メモ</label>
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
-        <label>フィルタ</label>
+        <label>条件</label>
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>いろんなタイプ</label>
+        <label>すべての種別</label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>ショーのタイプ</label>
+        <label>表示するタイプ</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
-        <label>項目</label>
+        <label>個の項目</label>
         <name>Timeline_Label_Items</name>
     </customLabels>
     <customLabels>
@@ -65,11 +65,11 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>型「{0}」のレコードがサポートされていません</label>
+        <label>タイプ「{0}」のレコードはサポートされていません。</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>
         <label><!-- Timeline_Navigation_Toast_Header --></label>
-        <name>ナビゲーションはないが許可します</name>
+        <name>ナビゲーションは許可されていません</name>
     </customLabels>
 </Translations>
