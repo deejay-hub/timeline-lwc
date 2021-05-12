@@ -29,7 +29,7 @@
         <name>Timeline_Label_Apply</name>
     </customLabels>
     <customLabels>
-        <label>Stornieren</label>
+        <label>Abbrechen</label>
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
@@ -41,7 +41,7 @@
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
-        <label>Dateien | Anmerkungen</label>
+        <label>Dateien | Notizen</label>
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
@@ -49,7 +49,7 @@
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>Alle Arten</label>
+        <label>Alle Typen</label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
@@ -57,7 +57,7 @@
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
-        <label>artikel(s)</label>
+        <label>element(e)</label>
         <name>Timeline_Label_Items</name>
     </customLabels>
     <customLabels>

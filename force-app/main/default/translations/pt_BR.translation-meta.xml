@@ -5,11 +5,11 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
-        <label>Não é possível carregar recursos de JavaScript</label>
+        <label>Não é possível carregar recursos JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
     <customLabels>
-        <label>Nenhuma informação</label>
+        <label>Sem dados para exibir</label>
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
@@ -17,7 +17,7 @@
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
-        <label>erro de configuração</label>
+        <label>Erro de configuração</label>
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
@@ -33,7 +33,7 @@
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
-        <label>Período</label>
+        <label>Intervalo de datas</label>
         <name>Timeline_Label_Date_Range_Legend</name>
     </customLabels>
     <customLabels>
@@ -53,7 +53,7 @@
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>Tipos para mostrar</label>
+        <label>Tipos para exibir</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
