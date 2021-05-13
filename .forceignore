@@ -11,8 +11,6 @@ package.xml
 # LWC Jest
 **/__tests__/**
 
-# Transalations
-**/translations/**
 
 # Flexi Pages
 **/flexipages/**

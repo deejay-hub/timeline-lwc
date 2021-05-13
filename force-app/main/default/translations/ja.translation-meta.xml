@@ -45,15 +45,15 @@
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
-        <label>条件</label>
+        <label>すべての種別</label>
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>すべての種別</label>
+        <label>表示するタイプ</label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>表示するタイプ</label>
+        <label>条件</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>

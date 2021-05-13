@@ -45,15 +45,15 @@
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
-        <label>篩選</label>
+        <label>所有類型</label>
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>所有類型</label>
+        <label>類型顯示</label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>類型顯示</label>
+        <label>篩選</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
