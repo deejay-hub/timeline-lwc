@@ -174,21 +174,21 @@ Labels can be translated where appropriate. Navigate to Setup -> Custom Labels a
 
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose
 
-| Field Name                  | Description                                                                                                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
-| `Parent_Object__c`          | The API Name of the **parent object** that the child record relates to                                                                                                                           |
-| `Object_Name__c`            | The API Name of the object that is the **child** to plot                                                                                                                                         |
-| `Relationship_Name__c`      | The API Name of the **relationship** between Parent and Child                                                                                                                                    |
-| `Position_Date_Field__c`    | The API Name of the field on the child (Object_Name\_\_c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)                                     |
-| `Detail_Field__c`           | The API Name of the field on the child (Object_Name\_\_c) to use as the description for the record to plot on the timeline                                                                       |
-| `Icon__c`                   | A relative url to the image to use for this record                                                                                                                                               |
-| `Icon_Background_Colour__c` | The background colour to use for the above image (rgb and hex supported)                                                                                                                         |
-| `Type_Field__c`             | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name\_\_c is Task                                                                     |
-| `Fallback_Tooltip_Field__c` | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field**c value and the Fallback_Tooltip_Field**c as the tooltip. |     |
-| `Drilldown_Id_Field__c`     | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects.                            |
+| Field Name                  | Description                                                                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `Parent_Object__c`          | The API Name of the **parent object** that the child record relates to                                                           |
+| `Object_Name__c`            | The API Name of the object that is the **child** to plot                                                                         |
+| `Relationship_Name__c`      | The API Name of the **relationship** between Parent and Child                                                                    |
+| `Position_Date_Field__c`    | The API Name of the field on the child (Object_Name\_\_c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)|
+| `Detail_Field__c`           | The API Name of the field on the child (Object_Name\_\_c) to use as the description for the record to plot on the timeline       |
+| `Icon__c`                   | A relative url to the image to use for this record                                                                               |
+| `Icon_Background_Colour__c` | The background colour to use for the above image (rgb and hex supported)                                                         |
+| `Type_Field__c`             | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name\_\_c is Task     |
+| `Fallback_Tooltip_Field__c` | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip. |
+| `Drilldown_Id_Field__c`     | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects. |
 | `Tooltip_Id_Field__c`       | The field containing the Id value that should be used for the hover tooltip e.g. Which record should the user see when they hover over a record on the timeline. Important for junction objects. |
-| `Tooltip_Object_Name__c`    | The object used by the tooltip. The label is also looked up to use in the filter panel.                                                                                                          |
-| `Test__c`                   | Protected records used for _Apex testing only_.                                                                                                                                                  |
+| `Tooltip_Object_Name__c`    | The object used by the tooltip. The label is also looked up to use in the filter panel.                                          |
+| `Test__c`                   | Protected records used for _Apex testing only_.                                                                                  |
 
 ## FAQs
 
