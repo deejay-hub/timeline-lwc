@@ -45,15 +45,15 @@
         <name>Timeline_Label_Files</name>
     </customLabels>
     <customLabels>
-        <label>ฟิลเตอร์</label>
+        <label>ทุกประเภท</label>
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>ทุกประเภท</label>
+        <label>ประเภทการแสดง</label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>ประเภทการแสดง</label>
+        <label>ฟิลเตอร์</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
