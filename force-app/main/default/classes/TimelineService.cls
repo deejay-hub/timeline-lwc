@@ -268,13 +268,13 @@ public with sharing class TimelineService {
                             if (!dupeDataCheck.containsKey(myId)) {
                                 dupeDataCheck.put(myId, myId);
 
-                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh);
-                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh);
-                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh);
-                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh);
-                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh);
+                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh, tr.objectName);
+                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh, tr.objectName);
+                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh, tr.objectName);
+                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh, tr.objectName);
+                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh, tr.objectName);
 
-                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh);
+                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh, tr.objectName);
 
                                 if (tr.objectName == 'ContentDocumentLink') {
                                     //NOPMD
@@ -352,7 +352,7 @@ public with sharing class TimelineService {
         return childRelatedObjects;
     }
 
-    private static Map<String, String> getFieldValues(String field, Sobject records) {
+    private static Map<String, String> getFieldValues(String field, Sobject records, String objectName) {
         Map<String, String> fieldDetails = new Map<String, String>();
 
         String fieldValue = '';
@@ -427,10 +427,21 @@ public with sharing class TimelineService {
             }
         }
 
+        //Case comments cannot be translated to an sobjectype from the ID
         if (String.valueOf(recordId).startsWith('00a')) {
             objectCheck = 'CaseComment';
         } else {
             objectCheck = String.valueOf(recordId.getSobjectType());
+        }
+
+        //If parent object aggregates activity lists then field names change
+        //For activities their sobjecttype is Task and Event
+        switch on objectName {
+            when 'ActivityHistory', 'OpenActivity' {
+                if (objectCheck == 'Task' || objectCheck == 'Event') {
+                    objectCheck = objectName;
+                }
+            }
         }
 
         Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, fieldStripped);
