@@ -2,11 +2,16 @@
 
 ## XX Xxx 2021 v1.5.1
 
--   Fixed bug causing error when adding Time Warp to Cases and using CaseComments
+**WHAT'S NEW**
 -   Added support for 2, 3 and 5 year future time range values
 -   Added support for WorkOrders on the Asset object by default
 -   Added default translations for German, Spanish, French, Hindi, Japanese, Portuguese, Thai, Chinese (Simplified), Chinese (Traditional)
+-   Added support for OpenActivity and ActivityHistory relationships to support indirect rollups of tasks and events
 -   Changed Salesforce API to v51.0 from v50.0
+
+**BUG FIXES**
+-   Fixed bug causing error when adding Time Warp to Cases and using CaseComments
+
 
 ## 27 Nov 2020 v1.5.0
 
