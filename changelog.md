@@ -11,6 +11,7 @@
 
 **BUG FIXES**
 -   Fixed bug causing error when adding Time Warp to Cases and using CaseComments
+-   Fixed bug causing axis bars to be solid instead of dashed when flexipageRegionWidth is not set
 
 
 ## 27 Nov 2020 v1.5.0
