@@ -48,7 +48,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     @api flexipageRegionWidth; //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
 
-    timelineWidth;
+    timelineWidth = 'LARGE';
     timelineTypes;
     timelineStart; //Calculated based on the earliestRange
     timelineEnd; //Calculated based on the latestRange
@@ -189,17 +189,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     renderedCallback() {
+
+        if (this.flexipageRegionWidth === 'SMALL' || this.flexipageRegionWidth === 'MEDIUM' || this.flexipageRegionWidth === 'LARGE') {
+            this.timelineWidth = this.flexipageRegionWidth;
+        }
+
         if (!this._d3Rendered) {
             //set the height of the component as the height is dynamic based on the attributes
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
             this.currentParentField = this.timelineParent;
-
-            if (this.flexipageRegionWidth === undefined) {
-                this.timelineWidth = 'LARGE';
-            } else {
-                this.timelineWidth = this.flexipageRegionWidth;
-            }
-
             timelineDIV.setAttribute('style', 'height:' + this._timelineHeight + 'px');
 
             Promise.all([loadScript(this, d3JS), loadScript(this, momentJS)])
