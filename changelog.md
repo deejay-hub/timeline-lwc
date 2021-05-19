@@ -1,6 +1,6 @@
 # Change Log
 
-## XX Xxx 2021 v1.5.1
+## 21 May 2021 v1.8.0
 
 **WHAT'S NEW**
 -   Added support for 2, 3 and 5 year future time range values
@@ -12,7 +12,7 @@
 **BUG FIXES**
 -   Fixed bug causing error when adding Time Warp to Cases and using CaseComments
 -   Fixed bug causing axis bars to be solid instead of dashed when flexipageRegionWidth is not set
-
+-   Fixed bug causing test cases in a Scratch Org to fail when Last Modified By was not populated for the System Admin profile
 
 ## 27 Nov 2020 v1.5.0
 
