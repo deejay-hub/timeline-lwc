@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <quickActions>
+        <label><!-- Defer --></label>
+        <name>Defer</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_0 --></label>
+        <name>Defer_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_1 --></label>
+        <name>Defer_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_2 --></label>
+        <name>Defer_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_3 --></label>
+        <name>Defer_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Defer_4 --></label>
+        <name>Defer_4</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription --></label>
+        <name>EditDescription</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_0 --></label>
+        <name>EditDescription_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_1 --></label>
+        <name>EditDescription_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_2 --></label>
+        <name>EditDescription_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_3 --></label>
+        <name>EditDescription_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- EditDescription_4 --></label>
+        <name>EditDescription_4</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority --></label>
+        <name>UpdatePriority</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_0 --></label>
+        <name>UpdatePriority_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_1 --></label>
+        <name>UpdatePriority_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_2 --></label>
+        <name>UpdatePriority_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_3 --></label>
+        <name>UpdatePriority_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdatePriority_4 --></label>
+        <name>UpdatePriority_4</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus --></label>
+        <name>UpdateStatus</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_0 --></label>
+        <name>UpdateStatus_0</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_1 --></label>
+        <name>UpdateStatus_1</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_2 --></label>
+        <name>UpdateStatus_2</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_3 --></label>
+        <name>UpdateStatus_3</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- UpdateStatus_4 --></label>
+        <name>UpdateStatus_4</name>
+    </quickActions>
+</CustomObjectTranslation>

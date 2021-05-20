@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:type="xsd:string">Campaign.LastModifiedBy.Profile.LastModifiedBy.Name</value>
+        <value xsi:type="xsd:string">Campaign.CreatedBy.Profile.CreatedBy.Name</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
