@@ -44,6 +44,6 @@
     </values>
     <values>
         <field>Type_Field__c</field>
-        <value xsi:type="xsd:string">TaskSubtype</value>
+        <value xsi:type="xsd:string">ActivitySubtype</value>
     </values>
 </CustomMetadata>
