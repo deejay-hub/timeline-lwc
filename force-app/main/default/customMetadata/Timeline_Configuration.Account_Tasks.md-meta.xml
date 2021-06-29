@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:type="xsd:string">Description</value>
+        <value xsi:type="xsd:string">Status</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
