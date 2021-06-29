@@ -47,7 +47,7 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
 
             for (String field : myFields.keySet()) {
                 Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
-                System.Debug('@@@ - ' + currentField.getReferenceTo());
+
                 if (
                     currentField.isAccessible() &&
                     currentField.isNamePointing() == false &&

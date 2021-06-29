@@ -563,24 +563,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     });
 
                 timelineCanvas.records
-                    .append('rect')
-                    .attr('class', 'timeline-canvas-record-wrap')
-                    .attr('x', 24 + 8)
-                    .attr('y', 0)
-                    .attr('height', 24)
-                    .attr('rx', 3)
-                    .attr('ry', 3);
-                timelineCanvas.records
-                    .append('line')
-                    .attr('class', 'timeline-canvas-record-line')
-                    .attr('x1', 24)
-                    .attr('y1', 12)
-                    .attr('x2', 24 + 8)
-                    .attr('y2', 12);
-                timelineCanvas.records
                     .append('text')
                     .attr('class', 'timeline-canvas-record-label')
-                    .attr('x', 24 + 10)
+                    .attr('x', 30)
                     .attr('y', 16)
                     .attr('font-size', 12)
                     .on('click', function (d) {
