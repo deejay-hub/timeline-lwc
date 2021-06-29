@@ -61,12 +61,6 @@
     right: 0;
 }
 
-.timeline-canvas-icon-wrap {
-    fill: #fff;
-    stroke: #d5dbe4;
-    stroke-width: 1;
-}
-
 .timeline-map-wrapper {
     background-color: #f8fcff;
     padding: 10px;
