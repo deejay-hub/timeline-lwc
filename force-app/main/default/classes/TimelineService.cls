@@ -268,11 +268,31 @@ public with sharing class TimelineService {
                             if (!dupeDataCheck.containsKey(myId)) {
                                 dupeDataCheck.put(myId, myId);
 
-                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh, tr.objectName);
-                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh, tr.objectName);
-                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh, tr.objectName);
-                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh, tr.objectName);
-                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh, tr.objectName);
+                                Map<String, String> detailValues = getFieldValues(
+                                    tr.detailField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> positionValues = getFieldValues(
+                                    tr.positionDateField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> fallbackValues = getFieldValues(
+                                    tr.fallbackTooltipField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> tooltipIdValues = getFieldValues(
+                                    tr.tooltipIdField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> drilldownIdValues = getFieldValues(
+                                    tr.drilldownIdField,
+                                    eachCh,
+                                    tr.objectName
+                                );
 
                                 Map<String, String> typeValues = getFieldValues(tr.type, eachCh, tr.objectName);
 

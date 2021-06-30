@@ -3,10 +3,10 @@
     "edition": "Developer",
     "features": [],
     "settings": {
-      "languageSettings": {
-        "enableTranslationWorkbench":  true,
-        "enableEndUserLanguages": true,
-        "enablePlatformLanguages": true
-      }
+        "languageSettings": {
+            "enableTranslationWorkbench": true,
+            "enableEndUserLanguages": true,
+            "enablePlatformLanguages": true
+        }
     }
 }

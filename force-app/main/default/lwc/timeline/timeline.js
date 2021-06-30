@@ -189,8 +189,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     renderedCallback() {
-
-        if (this.flexipageRegionWidth === 'SMALL' || this.flexipageRegionWidth === 'MEDIUM' || this.flexipageRegionWidth === 'LARGE') {
+        if (
+            this.flexipageRegionWidth === 'SMALL' ||
+            this.flexipageRegionWidth === 'MEDIUM' ||
+            this.flexipageRegionWidth === 'LARGE'
+        ) {
             this.timelineWidth = this.flexipageRegionWidth;
         }
 
