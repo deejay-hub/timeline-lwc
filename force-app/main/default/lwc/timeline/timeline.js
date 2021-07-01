@@ -74,6 +74,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     mouseOverDetailValue;
     mouseOverFallbackField;
     mouseOverFallbackValue;
+    mouseOverPositionLabel;
+    mouseOverPositionValue;
 
     currentParentField;
     filterValues = [];
@@ -386,11 +388,27 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.recordId = record.objectId;
             recordCopy.id = index;
             recordCopy.label =
-                record.detailField.length <= 30 ? record.detailField : record.detailField.slice(0, 30) + '...';
-            recordCopy.time = moment(record.positionDateValue, 'YYYY-MM-DD HH:mm:ss').toDate();
-            recordCopy.week = moment(record.positionDateValue, 'YYYY-MM-DD').startOf('week');
+            record.detailField.length <= 30 ? record.detailField : record.detailField.slice(0, 30) + '...';
             recordCopy.objectName = record.objectName;
             recordCopy.positionDateField = record.positionDateField;
+
+            let convertDate = record.positionDateValue.replace(' ', 'T');
+            convertDate = convertDate + '.000Z';
+
+            var localDate = new Date(convertDate);
+
+            const options ={
+                hour: 'numeric', minute: 'numeric',
+                year: 'numeric', month: 'numeric', day: 'numeric'
+            };
+
+            var dateFormatter = new Intl.DateTimeFormat(LOCALE, options);
+
+            var localPositionDate = dateFormatter.format(localDate);
+            recordCopy.positionDateValue = localPositionDate;
+            recordCopy.time = new Date(convertDate);
+            recordCopy.week = moment(localPositionDate, 'YYYY-MM-DD').startOf('week');
+
             recordCopy.detailField = record.detailField;
             recordCopy.detailFieldLabel = record.detailFieldLabel;
 
@@ -628,6 +646,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                         me.mouseOverDetailLabel = d.detailFieldLabel;
                         me.mouseOverDetailValue = d.detailField;
+                       
+                        me.mouseOverPositionLabel = d.positionDateField;
+                        me.mouseOverPositionValue = d.positionDateValue;
 
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
