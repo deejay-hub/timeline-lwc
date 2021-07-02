@@ -383,6 +383,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
         let timelineResult = [];
         let timelineTimes = [];
 
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            timeZone: TIMEZONE
+        };
+
+        const dateFormatter = new Intl.DateTimeFormat(LOCALE, options);
+
         result.forEach(function (record, index) {
             let recordCopy = {};
 
@@ -396,20 +407,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let convertDate = record.positionDateValue.replace(' ', 'T');
             convertDate = convertDate + '.000Z';
 
-            var localDate = new Date(convertDate);
-
-            const options = {
-                hour: 'numeric',
-                minute: 'numeric',
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric',
-                timeZone: TIMEZONE
-            };
-
-            var dateFormatter = new Intl.DateTimeFormat(LOCALE, options);
-
-            var localPositionDate = dateFormatter.format(localDate);
+            let localDate = new Date(convertDate);
+            let localPositionDate = dateFormatter.format(localDate);
 
             recordCopy.positionDateValue = localPositionDate;
             recordCopy.time = localDate;
