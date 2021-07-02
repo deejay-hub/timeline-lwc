@@ -4,7 +4,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
-import TIMEZONE from '@salesforce/i18n/timeZone'
+import TIMEZONE from '@salesforce/i18n/timeZone';
 
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
 import getTimelineTypes from '@salesforce/apex/TimelineService.getTimelineTypes';
@@ -389,7 +389,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.recordId = record.objectId;
             recordCopy.id = index;
             recordCopy.label =
-            record.detailField.length <= 30 ? record.detailField : record.detailField.slice(0, 30) + '...';
+                record.detailField.length <= 30 ? record.detailField : record.detailField.slice(0, 30) + '...';
             recordCopy.objectName = record.objectName;
             recordCopy.positionDateField = record.positionDateField;
 
@@ -398,9 +398,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             var localDate = new Date(convertDate);
 
-            const options ={
-                hour: 'numeric', minute: 'numeric',
-                year: 'numeric', month: 'numeric', day: 'numeric',
+            const options = {
+                hour: 'numeric',
+                minute: 'numeric',
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
                 timeZone: TIMEZONE
             };
 
@@ -649,7 +652,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                         me.mouseOverDetailLabel = d.detailFieldLabel;
                         me.mouseOverDetailValue = d.detailField;
-                       
+
                         me.mouseOverPositionLabel = d.positionDateField;
                         me.mouseOverPositionValue = d.positionDateValue;
 
