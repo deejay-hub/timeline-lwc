@@ -4,6 +4,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
+import TIMEZONE from '@salesforce/i18n/timeZone'
 
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
 import getTimelineTypes from '@salesforce/apex/TimelineService.getTimelineTypes';
@@ -399,14 +400,16 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             const options ={
                 hour: 'numeric', minute: 'numeric',
-                year: 'numeric', month: 'numeric', day: 'numeric'
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                timeZone: TIMEZONE
             };
 
             var dateFormatter = new Intl.DateTimeFormat(LOCALE, options);
 
             var localPositionDate = dateFormatter.format(localDate);
+
             recordCopy.positionDateValue = localPositionDate;
-            recordCopy.time = new Date(convertDate);
+            recordCopy.time = localDate;
             recordCopy.week = moment(localPositionDate, 'YYYY-MM-DD').startOf('week');
 
             recordCopy.detailField = record.detailField;
