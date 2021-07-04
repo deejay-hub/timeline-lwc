@@ -4,6 +4,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
+import TIMEZONE from '@salesforce/i18n/timeZone';
 
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
 import getTimelineTypes from '@salesforce/apex/TimelineService.getTimelineTypes';
@@ -74,6 +75,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     mouseOverDetailValue;
     mouseOverFallbackField;
     mouseOverFallbackValue;
+    mouseOverPositionLabel;
+    mouseOverPositionValue;
 
     currentParentField;
     filterValues = [];
@@ -380,6 +383,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
         let timelineResult = [];
         let timelineTimes = [];
 
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            timeZone: TIMEZONE
+        };
+
+        const dateFormatter = new Intl.DateTimeFormat(LOCALE, options);
+
         result.forEach(function (record, index) {
             let recordCopy = {};
 
@@ -387,10 +401,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.id = index;
             recordCopy.label =
                 record.detailField.length <= 30 ? record.detailField : record.detailField.slice(0, 30) + '...';
-            recordCopy.time = moment(record.positionDateValue, 'YYYY-MM-DD HH:mm:ss').toDate();
-            recordCopy.week = moment(record.positionDateValue, 'YYYY-MM-DD').startOf('week');
             recordCopy.objectName = record.objectName;
             recordCopy.positionDateField = record.positionDateField;
+
+            let convertDate = record.positionDateValue.replace(' ', 'T');
+            convertDate = convertDate + '.000Z';
+
+            let localDate = new Date(convertDate);
+            let localPositionDate = dateFormatter.format(localDate);
+
+            recordCopy.positionDateValue = localPositionDate;
+            recordCopy.time = localDate;
+            recordCopy.week = moment(localPositionDate, 'YYYY-MM-DD').startOf('week');
+
             recordCopy.detailField = record.detailField;
             recordCopy.detailFieldLabel = record.detailFieldLabel;
 
@@ -628,6 +651,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                         me.mouseOverDetailLabel = d.detailFieldLabel;
                         me.mouseOverDetailValue = d.detailField;
+
+                        me.mouseOverPositionLabel = d.positionDateField;
+                        me.mouseOverPositionValue = d.positionDateValue;
 
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');

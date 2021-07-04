@@ -312,7 +312,7 @@ public with sharing class TimelineService {
                                 }
 
                                 mapData.put('detailFieldLabel', detailValues.get('label'));
-                                mapData.put('positionDateField', tr.positionDateField);
+                                mapData.put('positionDateField', positionValues.get('label'));
                                 mapData.put('positionDateValue', positionValues.get('value'));
                                 mapData.put('objectName', tr.objectName);
                                 mapData.put('fallbackTooltipField', fallbackValues.get('label'));
