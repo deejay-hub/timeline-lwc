@@ -1,5 +1,17 @@
 # Change Log
 
+## XX xxX 2021 v1.9.0
+
+**WHAT'S NEW**
+-   Added support for 4,6,7,8,9 and 10 year future time range values
+-   Added support for 4,6,7,8,9 and 10 year historical time range values
+-   Tweaked layouts to remove unnecessary DOM elements
+-   Changed Salesforce API to v52.0 from v51.0
+
+**BUG FIXES**
+-   Fixed bug causing Tasks and Events to not be plotted when using Large Text Areas in the metadata
+-   Fixed bug causing records to be plotted in UTC date time instead of the users timezone
+
 ## 21 May 2021 v1.8.0
 
 **WHAT'S NEW**
