@@ -25,6 +25,7 @@
 -   Fixed bug causing error when adding Time Warp to Cases and using CaseComments
 -   Fixed bug causing axis bars to be solid instead of dashed when flexipageRegionWidth is not set
 -   Fixed bug causing test cases in a Scratch Org to fail when Last Modified By was not populated for the System Admin profile
+-   Fixed bug causing the label of the position date to be retrieved as a literal instead of the label of the field
 
 ## 27 Nov 2020 v1.5.0
 
