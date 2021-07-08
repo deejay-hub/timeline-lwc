@@ -8,7 +8,7 @@
 -   Changed Salesforce API to v52.0 from v51.0
 
 **BUG FIXES**
--   Fixed bug causing Tasks and Events to not be plotted when using fields with data type Large Text Area
+-   Fixed bug causing missing Tasks and Events when using fields with data type Large Text Area in Timeline_Configuration__mdt
 -   Fixed bug causing records to be plotted in UTC date time instead of the users timezone
 
 ## 21 May 2021 v1.8.0
