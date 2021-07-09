@@ -594,7 +594,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('x', 30)
                     .attr('y', 16)
                     .attr('font-size', 12)
-                    
                     .on('click', function(event, d) {
                         let drilldownId = d.recordId;
                         if (d.drilldownId !== '') {
@@ -635,46 +634,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                         }
                     })
-                    /*.on('click', function (d) {
-                        let drilldownId = d.recordId;
-                        if (d.drilldownId !== '') {
-                            drilldownId = d.drilldownId;
-                        }
-
-                        switch (d.objectName) {
-                            case 'ContentDocumentLink': {
-                                me[NavigationMixin.Navigate]({
-                                    type: 'standard__namedPage',
-                                    attributes: {
-                                        pageName: 'filePreview'
-                                    },
-                                    state: {
-                                        selectedRecordId: d.recordId
-                                    }
-                                });
-                                break;
-                            }
-                            case 'CaseComment': {
-                                const event = new ShowToastEvent({
-                                    title: me.toast.NAVIGATION_HEADER,
-                                    message: me.toast.NAVIGATION_BODY,
-                                    messageData: [d.objectName]
-                                });
-                                this.dispatchEvent(event);
-                                break;
-                            }
-                            default: {
-                                me[NavigationMixin.Navigate]({
-                                    type: 'standard__recordPage',
-                                    attributes: {
-                                        recordId: drilldownId,
-                                        actionName: 'view'
-                                    }
-                                });
-                                break;
-                            }
-                        }
-                    })*/
                     .on('mouseover', function(event, d) {
                         let tooltipId = d.recordId;
                         let tooltipObject = d.objectName;
