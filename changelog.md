@@ -6,6 +6,8 @@
 -   Added support for 4,6,7,8,9 and 10 year future and historical time range values
 -   Tweaked layouts to remove unnecessary DOM elements
 -   Added the inclusion of Position Dates in the fallback tooltip for objects not supported by the UI API
+-   d3.js updated to v7.0.0
+-   moment.js updated to v2.29.1
 -   Changed Salesforce API to v52.0 from v51.0
 
 **BUG FIXES**
