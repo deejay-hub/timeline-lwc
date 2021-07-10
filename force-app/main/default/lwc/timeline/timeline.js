@@ -594,7 +594,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('x', 30)
                     .attr('y', 16)
                     .attr('font-size', 12)
-                    .on('click', function (d) {
+                    .on('click', function(event, d) {
                         let drilldownId = d.recordId;
                         if (d.drilldownId !== '') {
                             drilldownId = d.drilldownId;
@@ -634,7 +634,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                         }
                     })
-                    .on('mouseover', function (d) {
+                    .on('mouseover', function(event, d) {
                         let tooltipId = d.recordId;
                         let tooltipObject = d.objectName;
 
@@ -655,6 +655,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me.mouseOverPositionLabel = d.positionDateField;
                         me.mouseOverPositionValue = d.positionDateValue;
 
+                        console.log(me.mouseOverDetailValue = d.detailField);
+
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         tooltipDIV.setAttribute(
@@ -666,7 +668,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 'px ;visibility:visible'
                         );
                     })
-                    .on('mouseout', function () {
+                    .on('mouseout', function(event, d) {
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         tooltipDIV.setAttribute('style', 'visibility: hidden');
                         me.isMouseOver = false;
@@ -969,8 +971,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
             xBrush.call(brush).call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x));
         };
 
-        function brushed() {
-            const selection = d3.event.selection;
+        function brushed(event) {
+            const selection = event.selection;
             const dommy = [];
 
             if (selection) {
@@ -997,8 +999,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
         }
 
-        function brushStart() {
-            const selection = d3.event.selection;
+        function brushStart(event) {
+            const selection = event.selection;
 
             if (selection) {
                 emptySelectionStart = timelineMap.x.invert(selection[0]);
@@ -1008,8 +1010,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
         }
 
-        function brushEnd() {
-            const selection = d3.event.selection;
+        function brushEnd(event) {
+            const selection = event.selection;
 
             if (selection === null) {
                 me.zoomStartDate = moment(emptySelectionStart).toDate();

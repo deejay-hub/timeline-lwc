@@ -240,8 +240,8 @@ See [contributing.md](/contributing.md) for timeline principles.
 
 #### Dependencies
 
--   D3.js v 5.7.0
--   moment.js v2.2.4
+-   D3.js v 7.0.0
+-   moment.js v2.29.1
 
 #### Code formatting
 
