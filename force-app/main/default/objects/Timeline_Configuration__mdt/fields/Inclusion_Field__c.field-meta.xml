@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inclusion_Field__c</fullName>
+    <description>The API Name of a field that evaluates to TRUE when a record should be included in the plotted results</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>The API Name of a field that evaluates to TRUE when a record should be included in the plotted results</inlineHelpText>
+    <label>Inclusion Field</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
