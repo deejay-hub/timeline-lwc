@@ -126,7 +126,8 @@ public with sharing class TimelineService {
                 'Drilldown_Id_Field__c, ' +
                 'Tooltip_Id_Field__c, ' +
                 'Tooltip_Object_Name__c, ' +
-                'Fallback_Tooltip_Field__c ' +
+                'Fallback_Tooltip_Field__c, ' +
+                'Inclusion_Field__c ' +
                 'FROM Timeline_Configuration__mdt ' +
                 'WHERE Active__c = true AND ' +
                 'Test__c = ' +
@@ -160,6 +161,7 @@ public with sharing class TimelineService {
                 timelineRecord.tooltipIdField = timelineConfigurationRecord.Tooltip_Id_Field__c;
                 timelineRecord.tooltipObject = timelineConfigurationRecord.Tooltip_Object_Name__c;
                 timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
+                timelineRecord.inclusionField = timelineConfigurationRecord.Inclusion_Field__c;
 
                 mapOfTimelineConfigurationRecords.put(
                     timelineRecord.objectName + timelineRecord.relationshipName,
@@ -217,6 +219,11 @@ public with sharing class TimelineService {
                     }
 
                     String relationship = tcr.relationshipName;
+                    String optionalFilter = '';
+
+                    if ( tcr.inclusionField != '' && tcr.inclusionField != null ) {
+                        optionalFilter = tcr.inclusionField + ' = true AND ';
+                    } 
 
                     innerQuery =
                         innerQuery +
@@ -224,6 +231,7 @@ public with sharing class TimelineService {
                         +' FROM ' +
                         relationship +
                         ' WHERE ' +
+                        optionalFilter +
                         tcr.positionDateField +
                         '>= LAST_N_MONTHS:' +
                         earliestRange +
@@ -597,6 +605,7 @@ public with sharing class TimelineService {
         private String fallbackTooltipValue;
         private String fallbackNameField;
         private String fallbackNameValue;
+        private String inclusionField;
         private Id recordId;
     }
 
