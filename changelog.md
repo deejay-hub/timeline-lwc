@@ -3,6 +3,7 @@
 ## XX xxX 2021 v1.9.0
 
 **WHAT'S NEW**
+-   Added support to filter child records using a boolean value from a nominated field 
 -   Added support for 4,6,7,8,9 and 10 year future and historical time range values
 -   Tweaked layouts to remove unnecessary DOM elements
 -   Added the inclusion of Position Dates in the fallback tooltip for objects not supported by the UI API
