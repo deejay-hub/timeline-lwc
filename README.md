@@ -181,6 +181,7 @@ Specifying which child records to plot is done using the **Timeline_Configuratio
 | `Relationship_Name__c`      | The API Name of the **relationship** between Parent and Child                                                                    |
 | `Position_Date_Field__c`    | The API Name of the field on the child (Object_Name\_\_c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)|
 | `Detail_Field__c`           | The API Name of the field on the child (Object_Name\_\_c) to use as the description for the record to plot on the timeline       |
+| `Inclusion_Field__c`        | The API Name of the field on the child (Object_Name\_\_c) that evaluates to true when a record should be included        	 |
 | `Icon__c`                   | A relative url to the image to use for this record                                                                               |
 | `Icon_Background_Colour__c` | The background colour to use for the above image (rgb and hex supported)                                                         |
 | `Type_Field__c`             | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name\_\_c is Task     |
