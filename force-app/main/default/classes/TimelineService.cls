@@ -221,9 +221,9 @@ public with sharing class TimelineService {
                     String relationship = tcr.relationshipName;
                     String optionalFilter = '';
 
-                    if ( tcr.inclusionField != '' && tcr.inclusionField != null ) {
+                    if (tcr.inclusionField != '' && tcr.inclusionField != null) {
                         optionalFilter = tcr.inclusionField + ' = true AND ';
-                    } 
+                    }
 
                     innerQuery =
                         innerQuery +

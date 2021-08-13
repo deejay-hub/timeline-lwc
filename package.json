@@ -37,7 +37,7 @@
     "dependencies": {
         "check-node-version": "^4.1.0",
         "install": "^0.13.0",
-        "npm": "^7.19.0",
+        "npm": "^7.20.5",
         "typescript": "^4.3.4"
     }
 }

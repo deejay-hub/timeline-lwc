@@ -594,7 +594,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('x', 30)
                     .attr('y', 16)
                     .attr('font-size', 12)
-                    .on('click', function(event, d) {
+                    .on('click', function (event, d) {
                         let drilldownId = d.recordId;
                         if (d.drilldownId !== '') {
                             drilldownId = d.drilldownId;
@@ -614,12 +614,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 break;
                             }
                             case 'CaseComment': {
-                                const event = new ShowToastEvent({
+                                const toastEvent = new ShowToastEvent({
                                     title: me.toast.NAVIGATION_HEADER,
                                     message: me.toast.NAVIGATION_BODY,
                                     messageData: [d.objectName]
                                 });
-                                this.dispatchEvent(event);
+                                this.dispatchEvent(toastEvent);
                                 break;
                             }
                             default: {
@@ -634,7 +634,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                         }
                     })
-                    .on('mouseover', function(event, d) {
+                    .on('mouseover', function (event, d) {
                         let tooltipId = d.recordId;
                         let tooltipObject = d.objectName;
 
@@ -655,8 +655,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me.mouseOverPositionLabel = d.positionDateField;
                         me.mouseOverPositionValue = d.positionDateValue;
 
-                        console.log(me.mouseOverDetailValue = d.detailField);
-
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         tooltipDIV.setAttribute(
@@ -668,7 +666,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 'px ;visibility:visible'
                         );
                     })
-                    .on('mouseout', function(event, d) {
+                    .on('mouseout', function () {
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         tooltipDIV.setAttribute('style', 'visibility: hidden');
                         me.isMouseOver = false;
