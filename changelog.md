@@ -1,6 +1,6 @@
 # Change Log
 
-## XX xxX 2021 v1.9.0
+## 26 Sep 2021 v1.9.0
 
 **WHAT'S NEW**
 -   Added support to filter child records using a boolean value from a nominated field 
