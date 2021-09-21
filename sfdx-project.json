@@ -4,8 +4,9 @@
             "path": "force-app",
             "default": true,
             "package": "TimeWarp",
-            "versionNumber": "1.8.0.NEXT",
-            "ancestorVersion": "1.5.0"
+            "versionNumber": "1.9.0.NEXT",
+            "ancestorVersion": "1.8.0",
+            "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md#26-sep-2021-v190"
         }
     ],
     "namespace": "bmpyrckt",
@@ -19,6 +20,7 @@
         "TimeWarp@1.5.0-1": "04t2w000008K32CAAS",
         "TimeWarp@1.6.0-1": "04t2w000008K3UlAAK",
         "TimeWarp@1.7.0-1": "04t2w000008K3UqAAK",
-        "TimeWarp@1.8.0-1": "04t2w000008K3UvAAK"
+        "TimeWarp@1.8.0-1": "04t2w000008K3UvAAK",
+        "TimeWarp@1.9.0-1": "04t2w000009BbXOAA0"
     }
 }
