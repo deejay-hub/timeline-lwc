@@ -84,7 +84,7 @@ cd timeline-lwc
 4. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
 
 ```
-sfdx force:org:create -s -f config/project-scratch-def.json -a timeline-lwc
+sfdx force:org:create -s -f config/project-scratch-def.json -a timewarp-lwc
 ```
 
 5. Push the app to your scratch org:
