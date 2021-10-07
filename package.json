@@ -3,7 +3,7 @@
     "author": "Dave Norris",
     "description": "An interactive timeline for the Salesforce platform",
     "private": true,
-    "version": "1.8.0",
+    "version": "1.9.0",
     "engines": {
         "node": ">= 12.14.1",
         "npm": ">= 6.13.6"
@@ -19,15 +19,15 @@
         "prettier:verify": "prettier --list-different '**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,yaml,yml}'"
     },
     "devDependencies": {
-        "@lwc/eslint-plugin-lwc": "^1.0.1",
-        "@salesforce/eslint-config-lwc": "^2.0.0",
+        "@lwc/eslint-plugin-lwc": "^1.1.0",
+        "@salesforce/eslint-config-lwc": "^3.0.0",
         "@salesforce/eslint-plugin-lightning": "^0.1.1",
         "@salesforce/sfdx-lwc-jest": "^0.13.0",
-        "eslint": "^7.29.0",
+        "eslint": "^7.32.0",
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-jest": "^24.3.6",
-        "prettier": "^2.2.1",
-        "prettier-plugin-apex": "1.8.0",
+        "prettier": "^2.4.1",
+        "prettier-plugin-apex": "1.10.0",
         "semver": "^7.3.2"
     },
     "repository": {
@@ -37,7 +37,7 @@
     "dependencies": {
         "check-node-version": "^4.1.0",
         "install": "^0.13.0",
-        "npm": "^7.20.5",
+        "npm": "^7.24.2",
         "typescript": "^4.3.4"
     }
 }
