@@ -5,6 +5,8 @@ title: ''
 labels: ''
 assignees: ''
 ---
+**Time Warp version**
+Setup->Apps->Packaging->Installed Packages. What is the value in the Version Number column for the package Time Warp.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
