@@ -111,13 +111,19 @@ sfdx force:data:tree:import --plan data/timeline-plan.json
 sfdx force:org:open
 ```
 
-9. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
+9. Optional: Run npm install to support linting, prettification and test runs
 
-10. Find the contact **Jane Lo** and drill into her detailed information.
+```
+npm install
+```
 
-11. Navigate to **Setup**, and select Edit Page
+10. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
 
-12. Drag the timeline component into the page - found under custom components
+11. Find the contact **Jane Lo** and drill into her detailed information.
+
+12. Navigate to **Setup**, and select Edit Page
+
+13. Drag the timeline component into the page - found under custom components
 
 <p align="center">
   <img alt="timeline app builder" src="images/appBuilderDemo.gif">
