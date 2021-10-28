@@ -45,7 +45,7 @@
 
 A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js.
 
--   **Multi Object Support.** Plot related records to Lead, Account, Contact, Opportunity and Case.
+-   **Multi Object Support.** Plot related records to any parent object.
 -   **Junction Object Support.** Plot junction object records and use simple dot notation.
 -   **Multi Language Support.** All labels and error messages as translatable custom labels.
 -   **Locale Support for Dates.** Date formats change based on your Salesforce locale setting.
