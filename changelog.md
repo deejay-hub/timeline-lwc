@@ -6,7 +6,7 @@
 -   Changed Salesforce API to v53.0 from v52.0
 -   Added support for right-to-left languages. Hebrew and Arabic tested.
 -   Added default label translations for Hebrew and Arabic.
--   Added a loading spinner to the tooltip event to avoid blank screens whilst the data loads.
+-   Added a loading spinner to the tooltip event to avoid blank screens during loading.
 
 **BUG FIXES**
 -   Fixed bug
