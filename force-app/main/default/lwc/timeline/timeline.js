@@ -593,7 +593,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 timelineCanvas.records
                     .append('text')
                     .attr('class', 'timeline-canvas-record-label')
-                    .attr('x' , function (d) {
+                    .attr('x' , function () {
                         let x = 30;
                         switch (LANGUAGE) {
                             case 'he': 
@@ -1124,10 +1124,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 filterPopover.classList.remove('slds-panel_docked-right');
                 filterPopover.classList.add('slds-float_left');
                 filterPopover.classList.add('slds-panel_docked-left');
-                //filterPopover.left = 0;
                 filterPopover.setAttribute('style', 'left: 0px');
-                //filterPopover.classList.remove('timeline-filter');
-                //filterPopover.classList.add('timeline-filter-rtl');
                 break;
             default:
                 filterPopover.setAttribute('style', 'right: 0px');
