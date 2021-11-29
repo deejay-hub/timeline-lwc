@@ -58,7 +58,6 @@
 .timeline-filter {
     position: absolute;
     top: 0;
-    right: 0;
 }
 
 .timeline-map-wrapper {
@@ -226,24 +225,8 @@
     line-height: 1.25;
 }
 
-.slds-popover__header {
-    padding: 1rem 1rem 0.75rem;
-}
-
-.slds-popover {
-    border-radius: 0.25rem;
-    width: 25rem;
-    min-height: 2rem;
-    z-index: 98;
-    text-align: left;
-    background-color: #fff;
-    display: inline-block;
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
-    border: 1px solid #dddbda;
-}
-
-.slds-is-relative.record-form-spinner-holder {
-    min-height: 120px;
+.tooltip-loading {
+    height: 45px !important;
 }
 
 .tooltip-panel {
@@ -251,18 +234,33 @@
     color: #fff;
     position: fixed !important;
     border-radius: 4px;
-    padding: 10px;
+    padding: 14px;
     font-size: 12px;
     z-index: 98;
     min-width: 400px;
     min-height: 150px;
     visibility: hidden;
+    min-height: 100px !important;
 }
 
 .tooltip-content {
-    overflow: hidden;
+    --overflow: hidden;
     transition: 0.25s all ease;
     transition-delay: 0s;
+    min-height: 100px;
+}
+
+.tooltip-popover {
+    background: rgb(243, 242, 242) ;
+    border-radius: 0.25rem;
+    width: 25rem;
+    min-height: 2rem;
+    z-index: 98;
+    --text-align: left;
+    --background-color: #fff;
+    display: inline-block;
+    box-shadow: 0 2px 3px 0 rgb(0 0 0 / 16%);
+    border: 1px solid #dddbda;
 }
 
 @media only screen and (max-width: 900px) {

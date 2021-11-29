@@ -4,6 +4,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
+import LANGUAGE from '@salesforce/i18n/lang';
 import TIMEZONE from '@salesforce/i18n/timeZone';
 
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
@@ -69,6 +70,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     isError = false; //Boolean when there is an error
 
     isMouseOver = false; //Boolean when mouse over is detected
+    isTooltipLoading = true;
     mouseOverRecordId; //Current Id of the record being hovered over
     mouseOverObjectAPIName; //API Name for the object being hovered over
     mouseOverDetailLabel;
@@ -247,7 +249,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         me.illustrationVisibility = 'illustration-hidden';
         me.noData = false;
-
+      
         const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
         me.timelineStart = dateTimeFormat.format(moment().subtract(me.earliestRange, 'years'));
         me.timelineEnd = dateTimeFormat.format(moment().add(me.latestRange, 'years'));
@@ -591,7 +593,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 timelineCanvas.records
                     .append('text')
                     .attr('class', 'timeline-canvas-record-label')
-                    .attr('x', 30)
+                    .attr('x' , function (d) {
+                        let x = 30;
+                        switch (LANGUAGE) {
+                            case 'he': 
+                            case 'ar':
+                                x = -6;
+                                break;
+                            default:
+                                x = 30;
+                                break;
+                        }
+                        return x;
+                    })
                     .attr('y', 16)
                     .attr('font-size', 12)
                     .on('click', function (event, d) {
@@ -637,6 +651,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .on('mouseover', function (event, d) {
                         let tooltipId = d.recordId;
                         let tooltipObject = d.objectName;
+                        me.isTooltipLoading = true;
 
                         if (d.tooltipId !== '') {
                             tooltipId = d.tooltipId;
@@ -657,19 +672,35 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
-                        tooltipDIV.setAttribute(
-                            'style',
-                            'top:' +
-                                (this.getBoundingClientRect().top - 30) +
+                        let tipPosition;
+
+                        switch (LANGUAGE) {
+                            case 'he': 
+                            case 'ar':
+                                tipPosition = (this.getBoundingClientRect().top - 30) +
+                                'px ;left:' +
+                                (this.getBoundingClientRect().left - (tooltipDIV.offsetWidth) - 15) +
+                                'px ;visibility:visible'
+                                break;
+                            default:
+                                tipPosition = (this.getBoundingClientRect().top - 30) +
                                 'px ;left:' +
                                 (this.getBoundingClientRect().right + 15) +
                                 'px ;visibility:visible'
+                                break;
+                        }
+
+                        tooltipDIV.setAttribute(
+                            'style',
+                            'top:' +
+                                tipPosition
                         );
                     })
                     .on('mouseout', function () {
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         tooltipDIV.setAttribute('style', 'visibility: hidden');
                         me.isMouseOver = false;
+                        me.isTooltipLoading = true;
                     })
                     .text(function (d) {
                         return d.label;
@@ -1085,6 +1116,23 @@ export default class timeline extends NavigationMixin(LightningElement) {
             filterPopover.classList.add('slds-is-open');
             this.isFilter = true;
         }
+
+        switch (LANGUAGE) {
+            case 'he': 
+            case 'ar':
+                filterPopover.classList.remove('slds-float_right');
+                filterPopover.classList.remove('slds-panel_docked-right');
+                filterPopover.classList.add('slds-float_left');
+                filterPopover.classList.add('slds-panel_docked-left');
+                //filterPopover.left = 0;
+                filterPopover.setAttribute('style', 'left: 0px');
+                //filterPopover.classList.remove('timeline-filter');
+                //filterPopover.classList.add('timeline-filter-rtl');
+                break;
+            default:
+                filterPopover.setAttribute('style', 'right: 0px');
+                break;
+        } 
     }
 
     get filterOptions() {
@@ -1162,5 +1210,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this._d3timelineMap.redraw();
             this._d3brush.redraw();
         }
+    }
+
+    tooltipLoaded() {
+        this.isTooltipLoading = false;
     }
 }
