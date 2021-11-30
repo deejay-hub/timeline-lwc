@@ -294,7 +294,7 @@
 }
 
 .timeline-summary-verbose-SMALL {
-    display: none;
+    --display: none;
 }
 
 .timeline-summary-short {
