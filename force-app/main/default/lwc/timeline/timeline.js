@@ -55,7 +55,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     timelineStart; //Calculated based on the earliestRange
     timelineEnd; //Calculated based on the latestRange
 
-    timelineSummary = "";
+    timelineSummary = '';
 
     zoomStartDate; //Start date of the current zoom
     zoomEndDate; //End date of the current zoom
@@ -251,7 +251,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         me.illustrationVisibility = 'illustration-hidden';
         me.noData = false;
-      
+
         const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
         me.timelineStart = dateTimeFormat.format(moment().subtract(me.earliestRange, 'years'));
         me.timelineEnd = dateTimeFormat.format(moment().add(me.latestRange, 'years'));
@@ -488,15 +488,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             let data = timelineData.data
                 .filter(function (d) {
-                    
-                    if ( LANGUAGE === 'he' || LANGUAGE === 'ar') {
+                    if (LANGUAGE === 'he' || LANGUAGE === 'ar') {
                         d.endTime = new Date(d.time.getTime() - unitInterval * (d.label.length * 6 + 80));
                         return timelineCanvas.x.domain()[0] < d.time && d.endTime < timelineCanvas.x.domain()[1];
                     }
-                   
+
                     d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 6 + 80));
                     return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
-
                 })
                 .filter(timelineCanvas.filter);
 
@@ -505,30 +503,21 @@ export default class timeline extends NavigationMixin(LightningElement) {
             data.sort(me.sortByValue('time'));
 
             data.forEach(function (entry) {
-
                 for (i = 0, swimlane = 0; i < swimlanes.length; i++, swimlane++) {
-
-                    if ( LANGUAGE === 'he' || LANGUAGE === 'ar') {
-                      
-                        if (entry.endTime > swimlanes[i] ) {
+                    if (LANGUAGE === 'he' || LANGUAGE === 'ar') {
+                        if (entry.endTime > swimlanes[i]) {
                             break;
                         }
-                        
-                    }
-                    else {
-                        
+                    } else {
                         if (entry.time > swimlanes[i]) {
                             break;
                         }
-                        
-                        
                     }
                 }
 
-                if ( LANGUAGE === 'he' || LANGUAGE === 'ar') {
+                if (LANGUAGE === 'he' || LANGUAGE === 'ar') {
                     swimlanes[swimlane] = entry.time;
-                }
-                else {
+                } else {
                     swimlanes[swimlane] = entry.endTime;
                 }
                 entry.swimlane = swimlane;
@@ -625,10 +614,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 timelineCanvas.records
                     .append('text')
                     .attr('class', 'timeline-canvas-record-label')
-                    .attr('x' , function () {
+                    .attr('x', function () {
                         let x = 30;
                         switch (LANGUAGE) {
-                            case 'he': 
+                            case 'he':
                             case 'ar':
                                 x = -6;
                                 break;
@@ -707,26 +696,26 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         let tipPosition;
 
                         switch (LANGUAGE) {
-                            case 'he': 
+                            case 'he':
                             case 'ar':
-                                tipPosition = (this.getBoundingClientRect().top - 30) +
-                                'px ;left:' +
-                                (this.getBoundingClientRect().left - (tooltipDIV.offsetWidth) - 15) +
-                                'px ;visibility:visible'
+                                tipPosition =
+                                    this.getBoundingClientRect().top -
+                                    30 +
+                                    'px ;left:' +
+                                    (this.getBoundingClientRect().left - tooltipDIV.offsetWidth - 15) +
+                                    'px ;visibility:visible';
                                 break;
                             default:
-                                tipPosition = (this.getBoundingClientRect().top - 30) +
-                                'px ;left:' +
-                                (this.getBoundingClientRect().right + 15) +
-                                'px ;visibility:visible'
+                                tipPosition =
+                                    this.getBoundingClientRect().top -
+                                    30 +
+                                    'px ;left:' +
+                                    (this.getBoundingClientRect().right + 15) +
+                                    'px ;visibility:visible';
                                 break;
                         }
 
-                        tooltipDIV.setAttribute(
-                            'style',
-                            'top:' +
-                                tipPosition
-                        );
+                        tooltipDIV.setAttribute('style', 'top:' + tipPosition);
                     })
                     .on('mouseout', function () {
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
@@ -1150,7 +1139,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         switch (LANGUAGE) {
-            case 'he': 
+            case 'he':
             case 'ar':
                 filterPopover.classList.remove('slds-float_right');
                 filterPopover.classList.remove('slds-panel_docked-right');
@@ -1161,7 +1150,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             default:
                 filterPopover.setAttribute('style', 'right: 0px');
                 break;
-        } 
+        }
     }
 
     get filterOptions() {
@@ -1247,18 +1236,25 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     @api
     get timelineSummaryText() {
-        let summary = "";
+        let summary = '';
 
-        if (
-            this.flexipageRegionWidth === 'SMALL'
-        ) {
+        if (this.flexipageRegionWidth === 'SMALL') {
             summary = this.localisedZoomStartDate + ' - ' + this.localisedZoomEndDate;
-        }
-        else {
-            summary = this.label.SHOWING + ' ' + 
-            this.localisedZoomStartDate + ' - ' + this.localisedZoomEndDate + ' • ' + 
-            this.daysToShow + ' ' + this.label.DAYS + ' • ' + 
-            this.totalZoomedRecords + ' ' + this.label.ITEMS;
+        } else {
+            summary =
+                this.label.SHOWING +
+                ' ' +
+                this.localisedZoomStartDate +
+                ' - ' +
+                this.localisedZoomEndDate +
+                ' • ' +
+                this.daysToShow +
+                ' ' +
+                this.label.DAYS +
+                ' • ' +
+                this.totalZoomedRecords +
+                ' ' +
+                this.label.ITEMS;
         }
         return summary;
     }

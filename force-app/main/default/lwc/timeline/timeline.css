@@ -256,7 +256,7 @@
 }
 
 .tooltip-popover {
-    background: rgb(243, 242, 242) ;
+    background: rgb(243, 242, 242);
     border-radius: 0.25rem;
     width: 25rem;
     min-height: 2rem;
@@ -280,7 +280,6 @@
     .timeline-summary-short {
         display: inline-block !important;
     }
-
 }
 
 @media only screen and (max-width: 1200px) {
@@ -299,4 +298,4 @@
 
 .timeline-summary-short {
     display: none;
-} 
+}
