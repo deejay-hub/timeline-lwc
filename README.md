@@ -207,7 +207,7 @@ Use the Compact Layout of the object plotted (for the most part).
 
 #### Does it support multiple languages other than English?
 
-Yes - Supports a users locale, language and has custom labels for translation available. Default translations are available for French, Spanish, Portuguese, Chinese (Simplified), Chinese (Traditional), Thai, German and Hindi.
+Yes - Supports a users locale, language and has custom labels for translation available. Default translations are available for French, Spanish, Portuguese, Chinese (Simplified), Chinese (Traditional), Thai, German, Hebrew, Arabic and Hindi.
 
 #### Does it support Communities?
 
