@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
-        <label>خطأ قمة</label>
+        <label>خطأ بالكود</label>
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
-        <label>JavaScript تعذر تحميل موارد</label>
+        <label>تعذر تحميل موارد الجافاسكربت </label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
     <customLabels>
-        <label>لا توجد بيانات لعرض</label>
+        <label>لا توجد بيانات للعرض</label>
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>تظهر السجلات ذات الصلة هنا على جدول زمني تفاعلي. تحقق من عامل التصفية الخاص بك أو إنشاء سجل.</label>
+        <label>تحقق من عامل التصفيه</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
@@ -21,23 +21,23 @@
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
-        <label>لدينا مشكلة</label>
+        <label>يوجد خطأ غير معالج</label>
         <name>Timeline_Error_Unhandled</name>
     </customLabels>
     <customLabels>
-        <label>تطبيق</label>
+        <label>تأكيد</label>
         <name>Timeline_Label_Apply</name>
     </customLabels>
     <customLabels>
-        <label>يلغي</label>
+        <label>الغاء</label>
         <name>Timeline_Label_Cancel</name>
     </customLabels>
     <customLabels>
-        <label>نطاق الموعد</label>
+        <label>الفتره الزمينه</label>
         <name>Timeline_Label_Date_Range_Legend</name>
     </customLabels>
     <customLabels>
-        <label>?</label>
+        <label>يوم/أيام</label>
         <name>Timeline_Label_Days</name>
     </customLabels>
     <customLabels>
@@ -49,11 +49,11 @@
         <name>Timeline_Label_Filter_All_Types</name>
     </customLabels>
     <customLabels>
-        <label>أنواع للعرض</label>
+        <label>أنواع العرض</label>
         <name>Timeline_Label_Filter_Type_Legend</name>
     </customLabels>
     <customLabels>
-        <label>المرشحات</label>
+        <label>تنقيح البيانات</label>
         <name>Timeline_Label_Filters</name>
     </customLabels>
     <customLabels>
