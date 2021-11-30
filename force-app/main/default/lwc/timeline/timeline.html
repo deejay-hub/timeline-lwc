@@ -1,3 +1,4 @@
+<!-- sldsValidatorIgnore -->
 <template>
     <!--main timeline component-->
     <div class="timeline-container">
@@ -18,11 +19,6 @@
                             <div class="timeline-summary">
                                 <span class="timeline-summary-verbose">{timelineSummaryText} </span>
                                 <span class="timeline-summary-short">{localisedZoomStartDate} - {localisedZoomEndDate} </span>
-                                <!--<span class="timeline-summary-verbose">{label.SHOWING} </span>
-                                <span>{localisedZoomStartDate} - {localisedZoomEndDate} </span>
-                                <span class="timeline-summary-verbose">
-                                    • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}</span
-                                >-->
                             </div>
                         </template>
                         <template if:false={isLoaded}>

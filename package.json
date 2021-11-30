@@ -19,8 +19,8 @@
         "prettier:verify": "prettier --list-different '**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,yaml,yml}'"
     },
     "devDependencies": {
-        "@lwc/eslint-plugin-lwc": "^1.1.0",
-        "@salesforce/eslint-config-lwc": "^3.0.0",
+        "@lwc/eslint-plugin-lwc": "^1.1.1",
+        "@salesforce/eslint-config-lwc": "^3.2.0",
         "@salesforce/eslint-plugin-lightning": "^0.1.1",
         "@salesforce/sfdx-lwc-jest": "^0.13.0",
         "eslint": "^7.32.0",
