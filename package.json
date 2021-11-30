@@ -5,8 +5,8 @@
     "private": true,
     "version": "1.9.0",
     "engines": {
-        "node": ">= 12.14.1",
-        "npm": ">= 6.13.6"
+        "node": ">= 14.18.0",
+        "npm": ">= 8.1.4"
     },
     "scripts": {
         "lint": "eslint **/lwc/**",
