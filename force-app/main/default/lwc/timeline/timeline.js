@@ -34,7 +34,6 @@ import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
 import NAVIGATION_HEADER from '@salesforce/label/c.Timeline_Navigation_Toast_Header';
 import NAVIGATION_BODY from '@salesforce/label/c.Timeline_Navigation_Toast_Body';
-import Timeline_Label_Showing from '@salesforce/label/c.Timeline_Label_Showing';
 
 export default class timeline extends NavigationMixin(LightningElement) {
     //Adminstrator accessible attributes in app builder
@@ -490,18 +489,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let data = timelineData.data
                 .filter(function (d) {
                     
-                    if ( LANGUAGE == 'he' || LANGUAGE == 'ar') {
+                    if ( LANGUAGE === 'he' || LANGUAGE === 'ar') {
                         d.endTime = new Date(d.time.getTime() - unitInterval * (d.label.length * 6 + 80));
-                        //return timelineCanvas.x.domain()[0] < d.time + 80 && d.endTime < timelineCanvas.x.domain()[1];
                         return timelineCanvas.x.domain()[0] < d.time && d.endTime < timelineCanvas.x.domain()[1];
                     }
-                    else {
-                        d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 6 + 80));
-                        return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
-                    }
+                   
+                    d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 6 + 80));
+                    return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
 
-                    //return timelineCanvas.x.domain()[0] < d.time + 80 && d.time < timelineCanvas.x.domain()[1];
-                    //return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
                 })
                 .filter(timelineCanvas.filter);
 
@@ -510,17 +505,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
             data.sort(me.sortByValue('time'));
 
             data.forEach(function (entry) {
-                console.log('1@@ entry.time ' + entry.time);
-                console.log('1a@@ entry.endtime ' + entry.endTime);
-                console.log('2@@ swimlane.i ' +  swimlanes[i]);
-                //console.log('3@@ entry.time+ ' + new Date(entry.time + unitInterval * (entry.label.length * 6)));
 
                 for (i = 0, swimlane = 0; i < swimlanes.length; i++, swimlane++) {
 
-                    if ( LANGUAGE == 'he' || LANGUAGE == 'ar') {
+                    if ( LANGUAGE === 'he' || LANGUAGE === 'ar') {
                       
                         if (entry.endTime > swimlanes[i] ) {
-                           
                             break;
                         }
                         
@@ -528,22 +518,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     else {
                         
                         if (entry.time > swimlanes[i]) {
-                           
                             break;
                         }
                         
                         
                     }
-                    //if (entry.time > swimlanes[i]) break;
                 }
 
-                if ( LANGUAGE == 'he' || LANGUAGE == 'ar') {
+                if ( LANGUAGE === 'he' || LANGUAGE === 'ar') {
                     swimlanes[swimlane] = entry.time;
                 }
                 else {
                     swimlanes[swimlane] = entry.endTime;
                 }
-                console.log('4@@ swimlane ' + swimlane);
                 entry.swimlane = swimlane;
                 //swimlanes[swimlane] = entry.endTime;
             });
@@ -1259,7 +1246,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     @api
-    get timelineSummary() {
+    get timelineSummaryText() {
         let summary = "";
 
         if (
