@@ -34,6 +34,7 @@ import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 
 import NAVIGATION_HEADER from '@salesforce/label/c.Timeline_Navigation_Toast_Header';
 import NAVIGATION_BODY from '@salesforce/label/c.Timeline_Navigation_Toast_Body';
+import Timeline_Label_Showing from '@salesforce/label/c.Timeline_Label_Showing';
 
 export default class timeline extends NavigationMixin(LightningElement) {
     //Adminstrator accessible attributes in app builder
@@ -54,6 +55,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     timelineTypes;
     timelineStart; //Calculated based on the earliestRange
     timelineEnd; //Calculated based on the latestRange
+
+    timelineSummary = "";
 
     zoomStartDate; //Start date of the current zoom
     zoomEndDate; //End date of the current zoom
@@ -1211,5 +1214,23 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     tooltipLoaded() {
         this.isTooltipLoading = false;
+    }
+
+    @api
+    get timelineSummary() {
+        let summary = "";
+
+        if (
+            this.flexipageRegionWidth === 'SMALL'
+        ) {
+            summary = this.localisedZoomStartDate + ' - ' + this.localisedZoomEndDate;
+        }
+        else {
+            summary = this.label.SHOWING + ' ' + 
+            this.localisedZoomStartDate + ' - ' + this.localisedZoomEndDate + ' • ' + 
+            this.daysToShow + ' ' + this.label.DAYS + ' • ' + 
+            this.totalZoomedRecords + ' ' + this.label.ITEMS;
+        }
+        return summary;
     }
 }

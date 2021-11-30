@@ -229,6 +229,11 @@
     height: 45px !important;
 }
 
+.timeline-container .slds-grid.slds-grid_align-spread {
+    padding-right: 10px;
+    padding-left: 2px;
+}
+
 .tooltip-panel {
     background: rgb(243, 242, 242);
     color: #fff;
@@ -271,6 +276,11 @@
     .timeline-summary-verbose {
         display: none;
     }
+
+    .timeline-summary-short {
+        display: inline-block !important;
+    }
+
 }
 
 @media only screen and (max-width: 1200px) {
@@ -286,3 +296,7 @@
 .timeline-summary-verbose-SMALL {
     display: none;
 }
+
+.timeline-summary-short {
+    display: none;
+} 
