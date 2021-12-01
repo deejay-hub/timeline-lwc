@@ -521,7 +521,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     swimlanes[swimlane] = entry.endTime;
                 }
                 entry.swimlane = swimlane;
-                //swimlanes[swimlane] = entry.endTime;
             });
 
             timelineCanvas.width = timelineCanvas.x.range()[1];
