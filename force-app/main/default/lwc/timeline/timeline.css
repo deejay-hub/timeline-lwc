@@ -217,8 +217,7 @@
     position: relative;
 }
 
-.slds-text-heading_medium,
-.slds-text-heading--medium {
+.slds-text-heading_medium {
     font-weight: 500;
     font-size: 1rem;
     padding-left: 10px;
