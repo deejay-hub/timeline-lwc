@@ -186,7 +186,7 @@ public with sharing class TimelineService {
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
                     String tooltipIdField = String.valueOf(tcr.tooltipIdField);
-                    String drilldownIdField = String.valueOf(tcr.tooltipIdField);
+                    String drilldownIdField = String.valueOf(tcr.drilldownIdField);
                     String typeField = String.valueOf(tcr.type);
 
                     String selectStatement = '(SELECT Id, ' + tcr.detailField + ', ' + tcr.positionDateField + '';
