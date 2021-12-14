@@ -10,8 +10,7 @@
 -   BEM notation with double dashes removed in CSS as it's being deprecated in Summer '22
 
 **BUG FIXES**
--   Fixed bug
-
+-   Fixed bug when a custom field value is used in the Drilldown Id Field in the custom metadata causing an Apex exception
 
 ## 26 Sep 2021 v1.9.0
 
