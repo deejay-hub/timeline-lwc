@@ -49,6 +49,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     @api flexipageRegionWidth; //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
 
+    isLanguageRightToLeft = false;
+
     timelineWidth = 'LARGE';
     timelineTypes;
     timelineStart; //Calculated based on the earliestRange
@@ -250,6 +252,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         me.illustrationVisibility = 'illustration-hidden';
         me.noData = false;
+
+        //Work out if the language is right to left
+        if (LANGUAGE.startsWith("ar") || LANGUAGE.startsWith("he") ) {
+            this.isLanguageRightToLeft = true;
+        }
 
         const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
         //Convert earliestRange to months
@@ -489,7 +496,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let data = timelineData.data
                 .filter(function (d) {
                     
-                    if (LANGUAGE === 'he' || LANGUAGE === 'ar') {
+                    if (me.isLanguageRightToLeft) {
                         d.endTime = new Date(d.time.getTime() - unitInterval * (d.label.length * 6 + 80));
                         return timelineCanvas.x.domain()[0] < d.time && d.endTime < timelineCanvas.x.domain()[1];
                     }
@@ -505,7 +512,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             data.forEach(function (entry) {
                 for (i = 0, swimlane = 0; i < swimlanes.length; i++, swimlane++) {
-                    if (LANGUAGE === 'he' || LANGUAGE === 'ar') {
+                    if (me.isLanguageRightToLeft) {
                         if (entry.endTime > swimlanes[i]) {
                             break;
                         }
@@ -516,7 +523,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     }
                 }
 
-                if (LANGUAGE === 'he' || LANGUAGE === 'ar') {
+                if (me.isLanguageRightToLeft) {
                     swimlanes[swimlane] = entry.time;
                 } else {
                     swimlanes[swimlane] = entry.endTime;
@@ -616,9 +623,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('class', 'timeline-canvas-record-label')
                     .attr('x', function () {
                         let x = 30;
-                        switch (LANGUAGE) {
-                            case 'he':
-                            case 'ar':
+                        switch (me.isLanguageRightToLeft) {
+                            case true:
                                 x = -6;
                                 break;
                             default:
@@ -695,9 +701,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         let tipPosition;
 
-                        switch (LANGUAGE) {
-                            case 'he':
-                            case 'ar':
+                        switch (this.isLanguageRightToLeft) {
+                            case true:
                                 tipPosition =
                                     this.getBoundingClientRect().top -
                                     30 +
@@ -1152,9 +1157,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this.isFilter = true;
         }
 
-        switch (LANGUAGE) {
-            case 'he':
-            case 'ar':
+        switch (this.isLanguageRightToLeft) {
+            case true:
                 filterPopover.classList.remove('slds-float_right');
                 filterPopover.classList.remove('slds-panel_docked-right');
                 filterPopover.classList.add('slds-float_left');
