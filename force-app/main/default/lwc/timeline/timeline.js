@@ -701,7 +701,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         let tipPosition;
 
-                        switch (this.isLanguageRightToLeft) {
+                        switch (me.isLanguageRightToLeft) {
                             case true:
                                 tipPosition =
                                     this.getBoundingClientRect().top -
@@ -719,7 +719,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                     'px ;visibility:visible';
                                 break;
                         }
-
                         tooltipDIV.setAttribute('style', 'top:' + tipPosition);
                     })
                     .on('mouseout', function () {
