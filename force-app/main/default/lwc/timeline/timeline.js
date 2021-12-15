@@ -254,14 +254,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
         me.noData = false;
 
         //Work out if the language is right to left
-        if (LANGUAGE.startsWith("ar") || LANGUAGE.startsWith("he") ) {
+        if (LANGUAGE.startsWith('ar') || LANGUAGE.startsWith('he')) {
             this.isLanguageRightToLeft = true;
         }
 
         const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
         //Convert earliestRange to months
-        me.timelineStart = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() - (12 * me.earliestRange)));
-        me.timelineEnd = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() + 12 * (me.latestRange)));
+        me.timelineStart = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() - 12 * me.earliestRange));
+        me.timelineEnd = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() + 12 * me.latestRange));
 
         me._d3timelineCanvasSVG.selectAll('*').remove();
         me._d3timelineCanvasAxisSVG.selectAll('*').remove();
@@ -447,8 +447,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineRecords.maxTime = d3.max(timelineTimes);
 
         timelineRecords.requestRange = [
-            new Date(new Date().setMonth(new Date().getMonth() - (12 * this.earliestRange))),
-            new Date(new Date().setMonth(new Date().getMonth() + (12 * this.latestRange)))
+            new Date(new Date().setMonth(new Date().getMonth() - 12 * this.earliestRange)),
+            new Date(new Date().setMonth(new Date().getMonth() + 12 * this.latestRange))
         ];
 
         return timelineRecords;
@@ -495,7 +495,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             let data = timelineData.data
                 .filter(function (d) {
-                    
                     if (me.isLanguageRightToLeft) {
                         d.endTime = new Date(d.time.getTime() - unitInterval * (d.label.length * 6 + 80));
                         return timelineCanvas.x.domain()[0] < d.time && d.endTime < timelineCanvas.x.domain()[1];
@@ -965,14 +964,21 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         if (me.zoomStartDate !== undefined) {
-            startBrush = new Date(me.zoomStartDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-            endBrush = new Date(me.zoomEndDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-
+            startBrush = new Date(me.zoomStartDate).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            endBrush = new Date(me.zoomEndDate).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
         } else {
             startBrush = new Date(defaultZoomDate);
-            startBrush.setDate(startBrush.getDate() - (me.daysToShow / 2));
+            startBrush.setDate(startBrush.getDate() - me.daysToShow / 2);
             endBrush = new Date(defaultZoomDate);
-            endBrush.setDate(endBrush.getDate() + (me.daysToShow / 2));
+            endBrush.setDate(endBrush.getDate() + me.daysToShow / 2);
         }
 
         timelineMapLayoutB.append('g').attr('class', 'brush').attr('transform', 'translate(0, -1)');
@@ -1018,8 +1024,16 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .on('start', brushStart)
                 .on('end', brushEnd);
 
-            startBrush = new Date(me.zoomStartDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-            endBrush = new Date(me.zoomEndDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            startBrush = new Date(me.zoomStartDate).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            endBrush = new Date(me.zoomEndDate).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
 
             xBrush.call(brush).call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x));
         };
@@ -1040,7 +1054,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     return 'translate(' + (selection[i] - 2) + ', ' + 0 + ') scale(0.05)';
                 });
 
-               
                 let a = d3timeline.x.domain()[1];
                 let b = d3timeline.x.domain()[0];
 
@@ -1049,18 +1062,22 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                 // To calculate the time difference of two dates
                 let Difference_In_Time = a.getTime() - b.getTime();
-                
+
                 // To calculate the no. of days between two dates
                 let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
-                me.daysToShow = Difference_In_Days;       
-            
+                me.daysToShow = Difference_In_Days;
+
                 const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
 
-                me.zoomStartDate = timelineMap.x.invert(selection[0]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-                me.zoomEndDate = timelineMap.x.invert(selection[1]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+                me.zoomStartDate = timelineMap.x
+                    .invert(selection[0])
+                    .toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+                me.zoomEndDate = timelineMap.x
+                    .invert(selection[1])
+                    .toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-                me.localisedZoomStartDate = dateTimeFormat.format( new Date(timelineMap.x.invert(selection[0])));
-                me.localisedZoomEndDate = dateTimeFormat.format( new Date(timelineMap.x.invert(selection[1])));
+                me.localisedZoomStartDate = dateTimeFormat.format(new Date(timelineMap.x.invert(selection[0])));
+                me.localisedZoomEndDate = dateTimeFormat.format(new Date(timelineMap.x.invert(selection[1])));
             }
         }
 
@@ -1077,12 +1094,16 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         function brushEnd(event) {
             const selection = event.selection;
-           
+
             if (selection === null) {
-                me.zoomStartDate = emptySelectionStart.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+                me.zoomStartDate = emptySelectionStart.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
 
                 let eDate = new Date(me.zoomStartDate);
-                eDate.setDate(eDate.getDate() + 14)
+                eDate.setDate(eDate.getDate() + 14);
 
                 me.zoomEndDate = eDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
                 me._d3brush.redraw();
