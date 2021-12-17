@@ -196,6 +196,12 @@ public with sharing class TimelineService {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
                     }
 
+                    if ( (objName == 'OpenActivity' ||
+                        objName == 'ActivityHistory') && !selectStatement.contains('ActivityDate')
+                    ) {
+                        selectStatement = selectStatement + ', ActivityDate' + '';
+                    }
+
                     if (objName == 'ContentDocumentLink') {
                         selectStatement = selectStatement + ', ' + 'ContentDocumentId' + '';
                     }
@@ -219,21 +225,24 @@ public with sharing class TimelineService {
                         optionalFilter = tcr.inclusionField + ' = true AND ';
                     }
 
-                    innerQuery =
-                        innerQuery +
-                        selectStatement +
-                        +' FROM ' +
-                        relationship +
-                        ' WHERE ' +
-                        optionalFilter +
-                        tcr.positionDateField +
-                        '>= LAST_N_MONTHS:' +
-                        earliestRange +
-                        ' AND ' +
-                        tcr.positionDateField +
-                        ' <= NEXT_N_MONTHS:' +
-                        latestRange +
-                        '),';
+                    innerQuery = innerQuery + selectStatement + ' FROM ' + relationship;
+
+                    if ( objName == 'OpenActivity' || objName == 'ActivityHistory' ) {
+                        innerQuery = innerQuery + ' ORDER BY ' +
+                        'ActivityDate ASC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
+                    }
+                    else {
+                        innerQuery = innerQuery + ' WHERE ' +
+                            optionalFilter +
+                            tcr.positionDateField +
+                            '>= LAST_N_MONTHS:' +
+                            earliestRange +
+                            ' AND ' +
+                            tcr.positionDateField +
+                            ' <= NEXT_N_MONTHS:' +
+                            latestRange +
+                            '),';
+                    }
                 }
             }
 
