@@ -11,6 +11,7 @@
 
 **BUG FIXES**
 -   Fixed bug when a custom field value is used in the Drilldown Id Field in the custom metadata causing an Apex exception
+-   Fixed bug that assumed all users have access to all metadata objects
 
 ## 26 Sep 2021 v1.9.0
 
