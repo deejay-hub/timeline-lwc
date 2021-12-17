@@ -49,7 +49,7 @@
    <rule ref="category/apex/design.xml/NcssMethodCount" message="The method {0}() has an NCSS line count of {1}">
       <priority>3</priority>
       <properties>
-         <property name="minimum" value="120" />
+         <property name="minimum" value="220" />
          <!-- relevant for Code Climate output only -->
          <property name="cc_categories" value="Complexity" />
          <property name="cc_remediation_points_multiplier" value="50" />
@@ -69,7 +69,7 @@
    <rule ref="category/apex/design.xml/StdCyclomaticComplexity" message="The {0} ''{1}'' has a Standard Cyclomatic Complexity of {2}.">
       <priority>3</priority>
       <properties>
-         <property name="reportLevel" value="20" />
+         <property name="reportLevel" value="30" />
          <!-- relevant for Code Climate output only -->
          <property name="cc_categories" value="Complexity" />
          <property name="cc_remediation_points_multiplier" value="250" />
