@@ -64,12 +64,6 @@ public with sharing class TimelineService {
                     }
 
                     mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
-                } else {
-                    String errorMsg =
-                        'You have asked to plot records for  \'' +
-                        timelineType.Object_Name__c +
-                        '\' but this entity cannot be found. Ask an administrator for help.';
-                    throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
                 }
             }
 
