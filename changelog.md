@@ -12,6 +12,7 @@
 
 **BUG FIXES**
 -   Fixed bug when a custom field value is used in the Drilldown Id Field in the custom metadata causing an Apex exception
+-   Fixed bug causing Time Warp dates to be null when Lightning Web Security is enabled
 -   Fixed bug that assumed all users have access to all metadata objects for the component to load
 -   Fixed bug causing ActivityHistory and OpenActivity relationships to fail to load for non-admin users
 -   Fixed bug causing the border radius to be square and not round for the bottom left and right corners
