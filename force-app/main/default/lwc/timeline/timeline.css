@@ -64,6 +64,7 @@
     background-color: #f8fcff;
     padding: 10px;
     overflow: hidden;
+    border-radius: 0px 0px 3px 3px;
 }
 
 .timeline-canvas-record-line {
