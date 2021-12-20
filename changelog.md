@@ -9,6 +9,7 @@
 -   Added a loading spinner to the tooltip event to avoid blank screens during loading.
 -   BEM notation with double dashes removed in CSS as it's being deprecated in Summer '22
 -   Performance improvements removing moment.js as a dependency
+-   Modified the tooltip nubbin when hovering on a record to remove border shading
 
 **BUG FIXES**
 -   Fixed bug when a custom field value is used in the Drilldown Id Field in the custom metadata causing an Apex exception
