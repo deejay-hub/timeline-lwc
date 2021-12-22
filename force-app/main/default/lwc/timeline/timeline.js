@@ -254,7 +254,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
         me.noData = false;
 
         //Work out if the language is right to left
-        if (LANGUAGE.startsWith('ar') || LANGUAGE.startsWith('he')) {
+        if (LANGUAGE.startsWith('ar') || 
+            LANGUAGE.startsWith('he') || 
+            LANGUAGE.startsWith('ur') || 
+            LANGUAGE.startsWith('yi')) {
             this.isLanguageRightToLeft = true;
         }
 
