@@ -2,7 +2,6 @@ import { LightningElement, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import shortDateFormat from '@salesforce/i18n/dateTime.shortDateFormat';
 import LOCALE from '@salesforce/i18n/locale';
 import LANGUAGE from '@salesforce/i18n/lang';
 import TIMEZONE from '@salesforce/i18n/timeZone';
@@ -143,7 +142,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3timelineCanvasDIV = null;
     _d3timelineCanvasMapDIV = null;
 
-    _d3LocalisedShortDateFormat = null;
     _d3Rendered = false;
 
     @wire(getTimelineTypes, { parentObjectId: '$recordId', parentFieldName: '$timelineParent' })
@@ -193,7 +191,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     connectedCallback() {
         this._timelineHeight = this.getPreferredHeight();
-        this._d3LocalisedShortDateFormat = this.userDateFormat();
     }
 
     renderedCallback() {
@@ -294,7 +291,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me._d3timelineCanvas = me.timelineCanvas();
 
                         const axisDividerConfig = {
-                            tickFormat: '%d %b %Y',
                             innerTickSize: -me._d3timelineCanvas.SVGHeight,
                             translate: [0, me._d3timelineCanvas.SVGHeight],
                             tickPadding: 0,
@@ -309,7 +305,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         );
 
                         const axisLabelConfig = {
-                            tickFormat: me._d3LocalisedShortDateFormat,
                             innerTickSize: 0,
                             tickPadding: 2,
                             translate: [0, 5],
@@ -328,7 +323,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me._d3timelineMap.redraw();
 
                         const mapAxisConfig = {
-                            tickFormat: me._d3LocalisedShortDateFormat,
                             innerTickSize: 4,
                             tickPadding: 4,
                             ticks: 6,
@@ -748,7 +742,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .axisBottom(target.x)
             .tickSizeInner(axisConfig.innerTickSize)
             .ticks(axisConfig.ticks)
-            .tickFormat(d3.timeFormat(axisConfig.tickFormat))
+            .tickFormat(function(d) { 
+                let formattedDate = new Intl.DateTimeFormat(LOCALE, { day: '2-digit', month: '2-digit', year: 'numeric'}).format(d);
+                return formattedDate;
+            })
             .tickPadding(axisConfig.tickPadding);
 
         const axis = targetSVG
@@ -1070,7 +1067,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
                 me.daysToShow = Difference_In_Days;
 
-                const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
+                const dateTimeFormat = new Intl.DateTimeFormat(LOCALE, { day: '2-digit', month: '2-digit', year: 'numeric' });
 
                 me.zoomStartDate = timelineMap.x
                     .invert(selection[0])
@@ -1132,23 +1129,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
         return function (a, b) {
             return a[param] < b[param] ? -1 : a[param] > b[param] ? 1 : 0;
         };
-    }
-
-    userDateFormat() {
-        const userShortDate = shortDateFormat;
-
-        let d3DateFormat = userShortDate.replace(/dd/gi, 'd');
-        d3DateFormat = d3DateFormat.replace(/d/gi, 'd');
-        d3DateFormat = d3DateFormat.replace(/M/gi, 'm');
-        d3DateFormat = d3DateFormat.replace(/MM/gi, 'm');
-        d3DateFormat = d3DateFormat.replace(/YYYY/gi, 'y');
-        d3DateFormat = d3DateFormat.replace(/YY/gi, 'y');
-
-        d3DateFormat = d3DateFormat.replace(/d/gi, '%d');
-        d3DateFormat = d3DateFormat.replace(/m/gi, '%m');
-        d3DateFormat = d3DateFormat.replace(/y/gi, '%Y');
-
-        return d3DateFormat;
     }
 
     get showSummary() {

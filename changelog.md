@@ -4,8 +4,9 @@
 
 **WHAT'S NEW**
 -   Changed Salesforce API to v53.0 from v52.0
--   Added support for right-to-left languages. Hebrew, Arabic and Urdu.
+-   Added support for right-to-left languages. Hebrew, Yiddish, Arabic and Urdu.
 -   Added default label translations for Hebrew and Arabic.
+-   Modified x axis labels to use date formats based on the user locale
 -   Added a loading spinner to the tooltip event to avoid blank screens during loading.
 -   BEM notation with double dashes removed in CSS as it's being deprecated in Summer '22
 -   Performance improvements removing moment.js as a dependency
