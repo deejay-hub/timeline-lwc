@@ -1,5 +1,25 @@
 # Change Log
 
+## XX Feb 2022 v1.10.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to v53.0 from v52.0
+-   Added support for right-to-left languages. Hebrew, Yiddish, Arabic and Urdu.
+-   Added default label translations for Hebrew and Arabic.
+-   Modified x axis labels to use date formats based on the user locale
+-   Added a loading spinner to the tooltip event to avoid blank screens during loading.
+-   BEM notation with double dashes removed in CSS as it's being deprecated in Summer '22
+-   Performance improvements removing moment.js as a dependency
+-   Modified the tooltip nubbin when hovering on a record to remove border shading
+-   Removed moment.js as a dependency and moved to standard JavaScript for date manipulation
+
+**BUG FIXES**
+-   Fixed bug when a custom field value is used in the Drilldown Id Field in the custom metadata causing an Apex exception
+-   Fixed bug causing Time Warp dates to be null when Lightning Web Security is enabled
+-   Fixed bug that assumed all users have access to all metadata objects for the component to load
+-   Fixed bug causing ActivityHistory and OpenActivity relationships to fail to load for non-admin users
+-   Fixed bug causing the border radius to be square and not round for the bottom left and right corners
+
 ## 26 Sep 2021 v1.9.0
 
 **WHAT'S NEW**

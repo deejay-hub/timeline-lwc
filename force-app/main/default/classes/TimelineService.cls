@@ -64,12 +64,6 @@ public with sharing class TimelineService {
                     }
 
                     mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
-                } else {
-                    String errorMsg =
-                        'You have asked to plot records for  \'' +
-                        timelineType.Object_Name__c +
-                        '\' but this entity cannot be found. Ask an administrator for help.';
-                    throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
                 }
             }
 
@@ -186,7 +180,7 @@ public with sharing class TimelineService {
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
                     String tooltipIdField = String.valueOf(tcr.tooltipIdField);
-                    String drilldownIdField = String.valueOf(tcr.tooltipIdField);
+                    String drilldownIdField = String.valueOf(tcr.drilldownIdField);
                     String typeField = String.valueOf(tcr.type);
 
                     String selectStatement = '(SELECT Id, ' + tcr.detailField + ', ' + tcr.positionDateField + '';
@@ -200,6 +194,12 @@ public with sharing class TimelineService {
                         objName == 'ContentDocumentLink')
                     ) {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
+                    }
+
+                    if ( (objName == 'OpenActivity' ||
+                        objName == 'ActivityHistory') && !selectStatement.contains('ActivityDate')
+                    ) {
+                        selectStatement = selectStatement + ', ActivityDate' + '';
                     }
 
                     if (objName == 'ContentDocumentLink') {
@@ -225,21 +225,24 @@ public with sharing class TimelineService {
                         optionalFilter = tcr.inclusionField + ' = true AND ';
                     }
 
-                    innerQuery =
-                        innerQuery +
-                        selectStatement +
-                        +' FROM ' +
-                        relationship +
-                        ' WHERE ' +
-                        optionalFilter +
-                        tcr.positionDateField +
-                        '>= LAST_N_MONTHS:' +
-                        earliestRange +
-                        ' AND ' +
-                        tcr.positionDateField +
-                        ' <= NEXT_N_MONTHS:' +
-                        latestRange +
-                        '),';
+                    innerQuery = innerQuery + selectStatement + ' FROM ' + relationship;
+
+                    if ( objName == 'OpenActivity' || objName == 'ActivityHistory' ) {
+                        innerQuery = innerQuery + ' ORDER BY ' +
+                        'ActivityDate ASC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
+                    }
+                    else {
+                        innerQuery = innerQuery + ' WHERE ' +
+                            optionalFilter +
+                            tcr.positionDateField +
+                            '>= LAST_N_MONTHS:' +
+                            earliestRange +
+                            ' AND ' +
+                            tcr.positionDateField +
+                            ' <= NEXT_N_MONTHS:' +
+                            latestRange +
+                            '),';
+                    }
                 }
             }
 

@@ -1,3 +1,4 @@
+<!-- sldsValidatorIgnore -->
 <template>
     <!--main timeline component-->
     <div class="timeline-container">
@@ -16,11 +17,10 @@
                     <div class="slds-form-element">
                         <template if:true={showSummary}>
                             <div class="timeline-summary">
-                                <span class="timeline-summary-verbose">{label.SHOWING} </span>
-                                <span>{localisedZoomStartDate} - {localisedZoomEndDate} </span>
-                                <span class="timeline-summary-verbose">
-                                    • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}</span
-                                >
+                                <span class="timeline-summary-verbose">{timelineSummaryText} </span>
+                                <span class="timeline-summary-short"
+                                    >{localisedZoomStartDate} - {localisedZoomEndDate}
+                                </span>
                             </div>
                         </template>
                         <template if:false={isLoaded}>
@@ -175,10 +175,13 @@
     </div>
 
     <!--tooltips FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
-    <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top">
+    <div aria-label="Tooltip popover" class="tooltip-panel tooltip-popover slds-popover_panel slds-nubbin_left-top">
         <div class="tooltip-content">
             <template if:true={isMouseOver}>
                 <template if:false={showFallbackTooltip}>
+                    <template if:true={isTooltipLoading}>
+                        <div class="tooltip-loading"></div>
+                    </template>
                     <lightning-record-form
                         record-id={mouseOverRecordId}
                         object-api-name={mouseOverObjectAPIName}
@@ -186,6 +189,7 @@
                         columns="2"
                         mode="readonly"
                         class="tooltip-content"
+                        onload={tooltipLoaded}
                     >
                     </lightning-record-form>
                 </template>

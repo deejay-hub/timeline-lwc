@@ -43,7 +43,7 @@
 
 ## Overview
 
-A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js.
+A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline.
 
 -   **Multi Object Support.** Plot related records to any parent object.
 -   **Junction Object Support.** Plot junction object records and use simple dot notation.
@@ -207,7 +207,7 @@ Use the Compact Layout of the object plotted (for the most part).
 
 #### Does it support multiple languages other than English?
 
-Yes - Supports a users locale, language and has custom labels for translation available. Default translations are available for French, Spanish, Portuguese, Chinese (Simplified), Chinese (Traditional), Thai, German and Hindi.
+Yes - Supports a users locale, language and has custom labels for translation available. Default translations are available for French, Spanish, Portuguese, Chinese (Simplified), Chinese (Traditional), Thai, German, Hebrew, Arabic and Hindi.
 
 #### Does it support Communities?
 
@@ -248,7 +248,8 @@ See [contributing.md](/contributing.md) for timeline principles.
 #### Dependencies
 
 -   D3.js v 7.0.0
--   moment.js v2.29.1
+
+(moment.js v2.29.1) use deprecated in v1.10
 
 #### Code formatting
 

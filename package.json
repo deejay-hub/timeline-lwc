@@ -5,8 +5,8 @@
     "private": true,
     "version": "1.9.0",
     "engines": {
-        "node": ">= 12.14.1",
-        "npm": ">= 6.13.6"
+        "node": ">= 14.18.0",
+        "npm": ">= 8.1.4"
     },
     "scripts": {
         "lint": "eslint **/lwc/**",
@@ -27,7 +27,7 @@
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-jest": "^24.3.6",
         "prettier": "^2.4.1",
-        "prettier-plugin-apex": "1.10.0",
+        "prettier-plugin-apex": "1.8.0",
         "semver": "^7.3.2"
     },
     "repository": {
