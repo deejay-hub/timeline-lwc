@@ -336,7 +336,9 @@ public with sharing class TimelineService {
                                 mapData.put('icon', tr.icon);
                                 mapData.put('iconBackground', tr.iconBackground);
 
-                                listOfTimelineData.add(mapData);
+                                if ( positionValues.get('value') != null && positionValues.get('value') != '') {
+                                    listOfTimelineData.add(mapData);
+                                }
                             }
                         }
                     }
