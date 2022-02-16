@@ -3,7 +3,7 @@
 ## XX Xxx 2022 v1.11.0
 
 **WHAT'S NEW**
--   Changed Salesforce API to vXX from vXX
+-   Changed Salesforce API to v54.0 from v53.0
 -   Added default label translations for XX and XX.
 -   Performance improvements
 
