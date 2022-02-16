@@ -1,5 +1,16 @@
 # Change Log
 
+## XX Xxx 2022 v1.11.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to vXX from vXX
+-   Added default label translations for XX and XX.
+-   Performance improvements
+
+**BUG FIXES**
+-   Fixed bug when a null dates are found for OpenActivities and ActivityHistory relationships
+
+
 ## 15 Jan 2022 v1.10.0
 
 **WHAT'S NEW**
