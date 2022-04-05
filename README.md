@@ -247,7 +247,7 @@ See [contributing.md](/contributing.md) for timeline principles.
 
 -   D3.js v 7.0.0
 
-(moment.js v2.29.1) deprecated in v1.10 onwards
+(moment.js v2.29.1) deprecated from v1.10.
 
 #### Code formatting
 
