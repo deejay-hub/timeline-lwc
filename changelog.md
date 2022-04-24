@@ -10,7 +10,7 @@
 **BUG FIXES**
 -   Fixed bug when a null dates are found for OpenActivities and ActivityHistory relationship records causing a runtime error
 -   Fixed bug causing Parent Picklist design time attribute to be null when an invalid field label is found
-
+-   Fixed bug causing scratch Org creation to fail by adding instructions to overwrite sfdx-project.json 
 
 ## 15 Jan 2022 v1.10.0
 
