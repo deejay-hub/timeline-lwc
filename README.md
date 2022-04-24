@@ -103,25 +103,41 @@ sfdx force:user:permset:assign -n Timeline_User
 sfdx force:data:tree:import --plan data/timeline-plan.json
 ```
 
-8. Open the scratch org:
+8. Overwrite the project-sfdx.json file with the following
+
+```
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "TimeWarp"
+        }
+    ],
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "53.0"
+}
+```
+
+9. Open the scratch org:
 
 ```
 sfdx force:org:open
 ```
 
-9. Optional: Run npm install to support linting, prettification and test runs
+10. Optional: Run npm install to support linting, prettification and test runs
 
 ```
 npm install
 ```
 
-10. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
+11. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
 
-11. Find the contact **Jane Lo** and drill into her detailed information.
+12. Find the contact **Jane Lo** and drill into her detailed information.
 
-12. Navigate to **Setup**, and select Edit Page
+13. Navigate to **Setup**, and select Edit Page
 
-13. Drag the timeline component into the page - found under custom components
+14. Drag the timeline component into the page - found under custom components
 
 <p align="center">
   <img alt="timeline app builder" src="images/appBuilderDemo.gif">
