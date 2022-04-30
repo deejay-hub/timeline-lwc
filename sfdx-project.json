@@ -4,9 +4,9 @@
             "path": "force-app",
             "default": true,
             "package": "TimeWarp",
-            "versionNumber": "1.10.0.NEXT",
+            "versionNumber": "1.11.0.NEXT",
             "versionName": "Luyten",
-            "ancestorVersion": "1.9.0",
+            "ancestorVersion": "1.10.0",
             "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md#15-jan-2022-v1100"
         }
     ],
