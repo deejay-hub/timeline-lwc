@@ -6,6 +6,7 @@
 -   Changed Salesforce API to v54.0 from v53.0
 -   Added default label translations for XX and XX.
 -   Performance improvements using SObjectDescribeOptions.DEFERRED to enable lazy initialisation of describe attributes
+-   Added default timeline metadata for Incident, Change Request and Problem standard objects
 
 **BUG FIXES**
 -   Fixed bug when a null dates are found for OpenActivities and ActivityHistory relationship records causing a runtime error
