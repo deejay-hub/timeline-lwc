@@ -5,9 +5,9 @@
             "default": true,
             "package": "TimeWarp",
             "versionNumber": "1.11.0.NEXT",
-            "versionName": "Luyten",
+            "versionName": "Epsilon",
             "ancestorVersion": "1.10.0",
-            "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md#15-jan-2022-v1100"
+            "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md#27-jun-2022-v1110"
         }
     ],
     "namespace": "bmpyrckt",
