@@ -63,7 +63,7 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
                 }
             }
         }
-        catch (Exeption e) { //NOPMD
+        catch (Exception e) { //NOPMD
             //Suppress error
         }
         
