@@ -79,31 +79,7 @@ git clone https://github.com/deejay-hub/timeline-lwc
 cd timeline-lwc
 ```
 
-4. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
-
-```
-sfdx force:org:create -s -f config/project-scratch-def.json -a timewarp-lwc
-```
-
-5. Push the app to your scratch org:
-
-```
-sfdx force:source:push
-```
-
-6. Assign the Timeline_User permission set to the default user:
-
-```
-sfdx force:user:permset:assign -n Timeline_User
-```
-
-7. Load sample data:
-
-```
-sfdx force:data:tree:import --plan data/timeline-plan.json
-```
-
-8. Overwrite the project-sfdx.json file with the following
+4. Overwrite the project-sfdx.json file with the following
 
 ```
 {
@@ -117,6 +93,30 @@ sfdx force:data:tree:import --plan data/timeline-plan.json
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "53.0"
 }
+```
+
+5. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
+
+```
+sfdx force:org:create -s -f config/project-scratch-def.json -a timewarp-lwc
+```
+
+6. Push the app to your scratch org:
+
+```
+sfdx force:source:push
+```
+
+7. Assign the Timeline_User permission set to the default user:
+
+```
+sfdx force:user:permset:assign -n Timeline_User
+```
+
+8. Load sample data:
+
+```
+sfdx force:data:tree:import --plan data/timeline-plan.json
 ```
 
 9. Open the scratch org:
