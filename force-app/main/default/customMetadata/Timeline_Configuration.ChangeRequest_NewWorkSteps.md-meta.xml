@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ChangeRequest_NewWorkSteps</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Detail_Field__c</field>
+        <value xsi:type="xsd:string">WorkStep.Name</value>
+    </values>
+    <values>
+        <field>Drilldown_Id_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Fallback_Tooltip_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Icon_Background_Colour__c</field>
+        <value xsi:type="xsd:string">#159688</value>
+    </values>
+    <values>
+        <field>Icon__c</field>
+        <value xsi:type="xsd:string">/img/icon/t4v35/standard/work_step_120.png</value>
+    </values>
+    <values>
+        <field>Inclusion_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Object_Name__c</field>
+        <value xsi:type="xsd:string">WorkStep</value>
+    </values>
+    <values>
+        <field>Parent_Object__c</field>
+        <value xsi:type="xsd:string">ChangeRequest</value>
+    </values>
+    <values>
+        <field>Position_Date_Field__c</field>
+        <value xsi:type="xsd:string">CreatedDate</value>
+    </values>
+    <values>
+        <field>Relationship_Name__c</field>
+        <value xsi:type="xsd:string">NewWorkSteps</value>
+    </values>
+    <values>
+        <field>Sequence__c</field>
+        <value xsi:type="xsd:double">60.0</value>
+    </values>
+    <values>
+        <field>Test__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Tooltip_Id_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Tooltip_Object_Name__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Type_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>
