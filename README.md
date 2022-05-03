@@ -95,7 +95,7 @@ cd timeline-lwc
 }
 ```
 
-5. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
+5. Create a scratch org and provide it with an alias (**timewarp-lwc** in the command below):
 
 ```
 sfdx force:org:create -s -f config/project-scratch-def.json -a timewarp-lwc
