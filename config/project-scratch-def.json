@@ -1,7 +1,7 @@
 {
     "orgName": "Time Warp",
     "edition": "Developer",
-    "features": [],
+    "features": ["ServiceCloud", "ServiceUser"],
     "settings": {
         "languageSettings": {
             "enableTranslationWorkbench": true,
