@@ -251,10 +251,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
         me.noData = false;
 
         //Work out if the language is right to left
-        if (LANGUAGE.startsWith('ar') || 
-            LANGUAGE.startsWith('he') || 
-            LANGUAGE.startsWith('ur') || 
-            LANGUAGE.startsWith('yi')) {
+        if (
+            LANGUAGE.startsWith('ar') ||
+            LANGUAGE.startsWith('he') ||
+            LANGUAGE.startsWith('ur') ||
+            LANGUAGE.startsWith('yi')
+        ) {
             this.isLanguageRightToLeft = true;
         }
 
@@ -742,8 +744,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .axisBottom(target.x)
             .tickSizeInner(axisConfig.innerTickSize)
             .ticks(axisConfig.ticks)
-            .tickFormat(function(d) { 
-                let formattedDate = new Intl.DateTimeFormat(LOCALE, { day: '2-digit', month: '2-digit', year: 'numeric'}).format(d);
+            .tickFormat(function (d) {
+                let formattedDate = new Intl.DateTimeFormat(LOCALE, {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).format(d);
                 return formattedDate;
             })
             .tickPadding(axisConfig.tickPadding);
@@ -1067,7 +1073,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
                 me.daysToShow = Difference_In_Days;
 
-                const dateTimeFormat = new Intl.DateTimeFormat(LOCALE, { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const dateTimeFormat = new Intl.DateTimeFormat(LOCALE, {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
 
                 me.zoomStartDate = timelineMap.x
                     .invert(selection[0])
