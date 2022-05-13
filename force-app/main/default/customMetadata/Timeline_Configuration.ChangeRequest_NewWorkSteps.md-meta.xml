@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">WorkStep.Name</value>
+        <value xsi:type="xsd:string">Name</value>
     </values>
     <values>
         <field>Drilldown_Id_Field__c</field>

@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">ImpactType</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>

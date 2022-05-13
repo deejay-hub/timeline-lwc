@@ -12,11 +12,11 @@
     </values>
     <values>
         <field>Drilldown_Id_Field__c</field>
-        <value xsi:type="xsd:string">IssueId</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">RelationshipType</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
@@ -64,6 +64,6 @@
     </values>
     <values>
         <field>Type_Field__c</field>
-        <value xsi:type="xsd:string">RelatedEntityType</value>
+        <value xsi:nil="true"/>
     </values>
 </CustomMetadata>
