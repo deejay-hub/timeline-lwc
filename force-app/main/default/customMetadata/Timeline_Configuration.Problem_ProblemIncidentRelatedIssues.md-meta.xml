@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Problem_ProblemRelatedItems</label>
+    <label>Problem_ProblemIncidentRelatedIssues</label>
     <protected>false</protected>
     <values>
         <field>Active__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">Asset.Name</value>
+        <value xsi:type="xsd:string">Name</value>
     </values>
     <values>
         <field>Drilldown_Id_Field__c</field>
-        <value xsi:type="xsd:string">AssetId</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:type="xsd:string">ImpactType</value>
+        <value xsi:type="xsd:string">RelationshipType</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
-        <value xsi:type="xsd:string">#317992</value>
+        <value xsi:type="xsd:string">#47cfd2</value>
     </values>
     <values>
         <field>Icon__c</field>
-        <value xsi:type="xsd:string">/img/icon/t4v35/standard/product.svg</value>
+        <value xsi:type="xsd:string">/img/icon/t4/custom/custom14_120.png</value>
     </values>
     <values>
         <field>Inclusion_Field__c</field>
@@ -32,7 +32,7 @@
     </values>
     <values>
         <field>Object_Name__c</field>
-        <value xsi:type="xsd:string">ProblemRelatedItem</value>
+        <value xsi:type="xsd:string">ProblemIncident</value>
     </values>
     <values>
         <field>Parent_Object__c</field>
@@ -44,7 +44,7 @@
     </values>
     <values>
         <field>Relationship_Name__c</field>
-        <value xsi:type="xsd:string">ProblemRelatedItems</value>
+        <value xsi:type="xsd:string">ProblemIncidentRelatedIssues</value>
     </values>
     <values>
         <field>Sequence__c</field>

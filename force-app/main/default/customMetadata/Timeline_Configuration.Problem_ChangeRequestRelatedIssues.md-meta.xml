@@ -4,19 +4,19 @@
     <protected>false</protected>
     <values>
         <field>Active__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>Detail_Field__c</field>
-        <value xsi:type="xsd:string">ChangeRequest.Name</value>
+        <value xsi:type="xsd:string">ChangeRequest.Subject</value>
     </values>
     <values>
         <field>Drilldown_Id_Field__c</field>
-        <value xsi:type="xsd:string">ChangeRequest.Id</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Fallback_Tooltip_Field__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">RelationshipType</value>
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
@@ -56,11 +56,11 @@
     </values>
     <values>
         <field>Tooltip_Id_Field__c</field>
-        <value xsi:type="xsd:string">ChangeRequest.Id</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Tooltip_Object_Name__c</field>
-        <value xsi:type="xsd:string">ChangeRequest</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Type_Field__c</field>
