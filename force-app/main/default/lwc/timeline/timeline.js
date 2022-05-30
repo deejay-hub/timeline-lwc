@@ -418,6 +418,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             convertEndDate = convertEndDate + '.000Z';
 
             let localDate = new Date(convertDate);
+            let localEndDate = new Date(convertEndDate);
             let localPositionDate = dateFormatter.format(localDate);
 
             recordCopy.positionDateValue = localPositionDate;
