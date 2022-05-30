@@ -8,7 +8,7 @@
 -   Performance improvements using SObjectDescribeOptions.DEFERRED to enable lazy initialisation of describe attributes
 -   Added default timeline metadata for Incident, Change Request and Problem standard objects
 -   Days to Show now allows values up to 365. Allowing for rolling years.
--   Reduced Metadata Type usage by 20% in subscriber Orgs.
+-   Reduced Metadata Type usage by 35%.
 -   d3.js updated to v7.4.4
 
 **BUG FIXES**
