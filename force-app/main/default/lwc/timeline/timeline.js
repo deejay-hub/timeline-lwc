@@ -903,7 +903,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             let data = timelineData.data
                 .filter(function (d) {
-                    d.endTime = new Date(d.time.getTime() + unitInterval * 10);
+                    d.endTime = new Date(d.time.getTime() + Math.max(d.length, unitInterval * 10));
                     return true;
                 })
                 .filter(timelineMap.filter);
