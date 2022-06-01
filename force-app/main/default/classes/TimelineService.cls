@@ -196,8 +196,9 @@ public with sharing class TimelineService {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
                     }
 
-                    if ( (objName == 'OpenActivity' ||
-                        objName == 'ActivityHistory') && !selectStatement.contains('ActivityDate')
+                    if (
+                        (objName == 'OpenActivity' || objName == 'ActivityHistory') &&
+                        !selectStatement.contains('ActivityDate')
                     ) {
                         selectStatement = selectStatement + ', ActivityDate' + '';
                     }
@@ -227,12 +228,15 @@ public with sharing class TimelineService {
 
                     innerQuery = innerQuery + selectStatement + ' FROM ' + relationship;
 
-                    if ( objName == 'OpenActivity' || objName == 'ActivityHistory' ) {
-                        innerQuery = innerQuery + ' ORDER BY ' +
-                        'ActivityDate ASC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
-                    }
-                    else {
-                        innerQuery = innerQuery + ' WHERE ' +
+                    if (objName == 'OpenActivity' || objName == 'ActivityHistory') {
+                        innerQuery =
+                            innerQuery +
+                            ' ORDER BY ' +
+                            'ActivityDate ASC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
+                    } else {
+                        innerQuery =
+                            innerQuery +
+                            ' WHERE ' +
                             optionalFilter +
                             tcr.positionDateField +
                             '>= LAST_N_MONTHS:' +
@@ -336,7 +340,9 @@ public with sharing class TimelineService {
                                 mapData.put('icon', tr.icon);
                                 mapData.put('iconBackground', tr.iconBackground);
 
-                                listOfTimelineData.add(mapData);
+                                if (positionValues.get('value') != null && positionValues.get('value') != '') {
+                                    listOfTimelineData.add(mapData);
+                                }
                             }
                         }
                     }

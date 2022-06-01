@@ -4,15 +4,15 @@
             "path": "force-app",
             "default": true,
             "package": "TimeWarp",
-            "versionNumber": "1.10.0.NEXT",
-            "versionName": "Luyten",
-            "ancestorVersion": "1.9.0",
-            "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md#15-jan-2022-v1100"
+            "versionNumber": "1.11.0.NEXT",
+            "versionName": "Epsilon",
+            "ancestorVersion": "1.10.0",
+            "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md#27-jun-2022-v1110"
         }
     ],
     "namespace": "bmpyrckt",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "53.0",
+    "sourceApiVersion": "54.0",
     "packageAliases": {
         "TimeWarp": "0Ho2w000000TNVlCAO",
         "TimeWarp@1.2.0-1": "04t2w000008K1N2AAK",

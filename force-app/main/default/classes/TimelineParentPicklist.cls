@@ -35,34 +35,38 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
         VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
         myValues.addRow(getDefaultValue());
 
-        if (this.context.entityName != null && this.context.pageType != 'CommRecordPage') {
-            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
-                        'Schema.' + this.context.entityName
-                    )
-                    .newInstance()))
-                .getSObjectType()
-                .getDescribe(SObjectDescribeOptions.DEFERRED);
+        try {
+            if (this.context.entityName != null && this.context.pageType != 'CommRecordPage') {
+                Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
+                            'Schema.' + this.context.entityName
+                        )
+                        .newInstance()))
+                    .getSObjectType()
+                    .getDescribe(SObjectDescribeOptions.DEFERRED);
 
-            Map<String, Schema.SObjectField> myFields = describeSobjects.fields.getMap();
+                Map<String, Schema.SObjectField> myFields = describeSobjects.fields.getMap();
 
-            for (String field : myFields.keySet()) {
-                Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
+                for (String field : myFields.keySet()) {
+                    Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
 
-                if (
-                    currentField.isAccessible() &&
-                    currentField.isNamePointing() == false &&
-                    currentField.getLabel() != 'Master Record ID' &&
-                    (String.valueOf(currentField.getReferenceTo()) != '' &&
-                    String.valueOf(currentField.getReferenceTo()) != null &&
-                    String.valueOf(currentField.getReferenceTo()) != '()' &&
-                    String.valueOf(currentField.getReferenceTo()) != '(User)')
-                ) {
-                    myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));
+                    if (
+                        currentField.isAccessible() &&
+                        currentField.isNamePointing() == false &&
+                        currentField.getLabel() != 'Master Record ID' &&
+                        (String.valueOf(currentField.getReferenceTo()) != '' &&
+                        String.valueOf(currentField.getReferenceTo()) != null &&
+                        String.valueOf(currentField.getReferenceTo()) != '()' &&
+                        String.valueOf(currentField.getReferenceTo()) != '(User)')
+                    ) {
+                        myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));
+                    }
                 }
             }
-            return myValues;
-        } else {
-            return myValues;
+        } catch (Exception e) {
+            //NOPMD
+            //Suppress error
         }
+
+        return myValues;
     }
 }

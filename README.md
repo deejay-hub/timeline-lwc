@@ -79,49 +79,65 @@ git clone https://github.com/deejay-hub/timeline-lwc
 cd timeline-lwc
 ```
 
-4. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
+4. Overwrite the project-sfdx.json file with the following
+
+```
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "TimeWarp"
+        }
+    ],
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "54.0"
+}
+```
+
+5. Create a scratch org and provide it with an alias (**timewarp-lwc** in the command below):
 
 ```
 sfdx force:org:create -s -f config/project-scratch-def.json -a timewarp-lwc
 ```
 
-5. Push the app to your scratch org:
+6. Push the app to your scratch org:
 
 ```
 sfdx force:source:push
 ```
 
-6. Assign the Timeline_User permission set to the default user:
+7. Assign the Timeline_User permission set to the default user:
 
 ```
 sfdx force:user:permset:assign -n Timeline_User
 ```
 
-7. Load sample data:
+8. Load sample data:
 
 ```
 sfdx force:data:tree:import --plan data/timeline-plan.json
 ```
 
-8. Open the scratch org:
+9. Open the scratch org:
 
 ```
 sfdx force:org:open
 ```
 
-9. Optional: Run npm install to support linting, prettification and test runs
+10. Optional: Run npm install to support linting, prettification and test runs
 
 ```
 npm install
 ```
 
-10. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
+11. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
 
-11. Find the contact **Jane Lo** and drill into her detailed information.
+12. Find the contact **Jane Lo** and drill into her detailed information.
 
-12. Navigate to **Setup**, and select Edit Page
+13. Navigate to **Setup**, and select Edit Page
 
-13. Drag the timeline component into the page - found under custom components
+14. Drag the timeline component into the page - found under custom components
 
 <p align="center">
   <img alt="timeline app builder" src="images/appBuilderDemo.gif">
@@ -147,7 +163,7 @@ The component has the following properties that can be set at design time in App
 | `Historical Time Range (Years)` | Adjusts the start date           | Picklist (0.25 - 10)                   |
 | `Future Time Range (Years)`     | Adjusts the end date             | Picklist (0.25 - 10)                   |
 | `Zoom Based On`                 | Adjusts the position of the zoom | Picklist (Current Date, Last Activity) |
-| `Zoom Range (Days)`             | Adjusts the extent of the zoom   | Integer min 15 max 120                 |
+| `Zoom Range (Days)`             | Adjusts the extent of the zoom   | Integer min 15 max 365                 |
 
 #### Custom Labels
 
@@ -245,9 +261,9 @@ See [contributing.md](/contributing.md) for timeline principles.
 
 #### Dependencies
 
--   D3.js v 7.0.0
+-   D3.js v 7.4.4
 
-(moment.js v2.29.1) deprecated in v1.10 onwards
+(moment.js v2.29.1) deprecated from v1.10.
 
 #### Code formatting
 

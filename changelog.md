@@ -1,5 +1,22 @@
 # Change Log
 
+## 27 Jun 2022 v1.11.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to v54.0 from v53.0
+-   Added default label translations for Italian and Korean.
+-   Performance improvements using SObjectDescribeOptions.DEFERRED to enable lazy initialisation of describe attributes
+-   Added default timeline metadata for Incident, Change Request and Problem standard objects
+-   Days to Show now allows values up to 365. Allowing for rolling years.
+-   Reduced Metadata Type usage by 35%.
+-   d3.js updated to v7.4.4
+
+**BUG FIXES**
+-   Fixed bug when a null dates are found for OpenActivities and ActivityHistory relationship records causing a runtime error
+-   Fixed bug causing Parent Picklist design time attribute to be null when an invalid field label is found
+-   Fixed bug causing scratch Org creation to fail with invalid sfdx-project.json
+-   Fixed bug causing tooltip to be hidden in the Service Cloud Console
+
 ## 15 Jan 2022 v1.10.0
 
 **WHAT'S NEW**

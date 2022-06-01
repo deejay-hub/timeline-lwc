@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label>Errore Apex</label>
+        <name>Timeline_Error_Apex</name>
+    </customLabels>
+    <customLabels>
+        <label>Impossibile caricare le risorse JavaScript</label>
+        <name>Timeline_Error_JavaScriptResources</name>
+    </customLabels>
+    <customLabels>
+        <label>Nessun dato da visualizzare</label>
+        <name>Timeline_Error_NoDataHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>I record correlati vengono visualizzati qui su una sequenza temporale interattiva. Controlla il filtro o crea un record.</label>
+        <name>Timeline_Error_NoDataSubHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>Errore di configurazione</label>
+        <name>Timeline_Error_Setup</name>
+    </customLabels>
+    <customLabels>
+        <label>Abbiamo avuto un problema</label>
+        <name>Timeline_Error_Unhandled</name>
+    </customLabels>
+    <customLabels>
+        <label>Applicare</label>
+        <name>Timeline_Label_Apply</name>
+    </customLabels>
+    <customLabels>
+        <label>Annulla</label>
+        <name>Timeline_Label_Cancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Intervallo di date</label>
+        <name>Timeline_Label_Date_Range_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>giorno/i</label>
+        <name>Timeline_Label_Days</name>
+    </customLabels>
+    <customLabels>
+        <label>File | Appunti</label>
+        <name>Timeline_Label_Files</name>
+    </customLabels>
+    <customLabels>
+        <label>Tutti i tipi</label>
+        <name>Timeline_Label_Filter_All_Types</name>
+    </customLabels>
+    <customLabels>
+        <label>Tipi da mostrare</label>
+        <name>Timeline_Label_Filter_Type_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>Filtri</label>
+        <name>Timeline_Label_Filters</name>
+    </customLabels>
+    <customLabels>
+        <label>elemento</label>
+        <name>Timeline_Label_Items</name>
+    </customLabels>
+    <customLabels>
+        <label>Mostrando:</label>
+        <name>Timeline_Label_Showing</name>
+    </customLabels>
+    <customLabels>
+        <label>I record di tipo '{0}' non sono supportati</label>
+        <name>Timeline_Navigation_Toast_Body</name>
+    </customLabels>
+    <customLabels>
+        <label>Navigazione non consentita</label>
+        <name>Timeline_Navigation_Toast_Header</name>
+    </customLabels>
+</Translations>
