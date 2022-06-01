@@ -115,6 +115,7 @@ public with sharing class TimelineService {
                 'Icon__c, ' +
                 'Icon_Background_Colour__c, ' +
                 'Position_Date_Field__c, ' +
+                'Position_End_Date_Field__c, ' +
                 'Object_Name__c, ' +
                 'Type_Field__c, ' +
                 'Drilldown_Id_Field__c, ' +
@@ -151,6 +152,7 @@ public with sharing class TimelineService {
                 timelineRecord.objectName = timelineConfigurationRecord.Object_Name__c;
                 timelineRecord.type = timelineConfigurationRecord.Type_Field__c;
                 timelineRecord.positionDateField = timelineConfigurationRecord.Position_Date_Field__c;
+                timelineRecord.positionEndDateField = timelineConfigurationRecord.Position_End_Date_Field__c;
                 timelineRecord.fallbackTooltipField = timelineConfigurationRecord.Fallback_Tooltip_Field__c;
                 timelineRecord.tooltipIdField = timelineConfigurationRecord.Tooltip_Id_Field__c;
                 timelineRecord.tooltipObject = timelineConfigurationRecord.Tooltip_Object_Name__c;
@@ -183,7 +185,13 @@ public with sharing class TimelineService {
                     String drilldownIdField = String.valueOf(tcr.drilldownIdField);
                     String typeField = String.valueOf(tcr.type);
 
-                    String selectStatement = '(SELECT Id, ' + tcr.detailField + ', ' + tcr.positionDateField + '';
+                    String selectStatement = '(SELECT Id, ' +
+                        tcr.detailField + ', ' +
+                        tcr.positionDateField +
+                        (String.isBlank(tcr.positionEndDateField)
+                            ? ''
+                            : (', ' + tcr.positionEndDateField)
+                        );
 
                     if (
                         (typeField != null && typeField != '') &&
@@ -293,6 +301,11 @@ public with sharing class TimelineService {
                                     eachCh,
                                     tr.objectName
                                 );
+                                Map<String, String> positionEndValues = getFieldValues(
+                                    tr.positionEndDateField,
+                                    eachCh,
+                                    tr.objectName
+                                );
                                 Map<String, String> fallbackValues = getFieldValues(
                                     tr.fallbackTooltipField,
                                     eachCh,
@@ -329,6 +342,12 @@ public with sharing class TimelineService {
                                 mapData.put('detailFieldLabel', detailValues.get('label'));
                                 mapData.put('positionDateField', positionValues.get('label'));
                                 mapData.put('positionDateValue', positionValues.get('value'));
+                                mapData.put('positionEndDateField', positionEndValues.get('label'));
+                                if (String.isBlank(positionEndValues.get('value'))){
+                                    mapData.put('positionEndDateValue', positionValues.get('value'));
+                                } else {
+                                    mapData.put('positionEndDateValue', positionEndValues.get('value'));
+                                }
                                 mapData.put('objectName', tr.objectName);
                                 mapData.put('fallbackTooltipField', fallbackValues.get('label'));
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
@@ -603,6 +622,8 @@ public with sharing class TimelineService {
         private String detailFieldLabel;
         private String icon;
         private String iconBackground;
+        private String positionEndDateField;
+        private String positionEndDateValue;
         private String positionDateField;
         private String positionDateValue;
         private String objectName;
