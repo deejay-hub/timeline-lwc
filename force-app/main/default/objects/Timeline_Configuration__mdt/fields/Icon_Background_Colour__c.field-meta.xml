@@ -5,7 +5,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The background colour to use for the icon</inlineHelpText>
     <label>Icon Background Colour</label>
-    <length>255</length>
+    <length>7</length>
     <required>true</required>
     <type>Text</type>
     <unique>false</unique>

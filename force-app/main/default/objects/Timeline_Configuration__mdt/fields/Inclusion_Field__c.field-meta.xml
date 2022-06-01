@@ -6,7 +6,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The API Name of a field that evaluates to TRUE when a record should be included in the plotted results</inlineHelpText>
     <label>Inclusion Field</label>
-    <length>255</length>
+    <length>150</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>
