@@ -39,6 +39,10 @@
         <value xsi:type="xsd:string">StartDate</value>
     </values>
     <values>
+        <field>Position_End_Date_Field__c</field>
+        <value xsi:type="xsd:string">EndDate</value>
+    </values>
+    <values>
         <field>Relationship_Name__c</field>
         <value xsi:type="xsd:string">Entitlements</value>
     </values>
