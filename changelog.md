@@ -13,6 +13,7 @@
 
 **BUG FIXES**
 -   Fixed bug when a null dates are found for OpenActivities and ActivityHistory relationship records causing a runtime error
+-   Fixed bug causing ActivityHistory relationships to fail to load for non-admin users
 -   Fixed bug causing Parent Picklist design time attribute to be null when an invalid field label is found
 -   Fixed bug causing scratch Org creation to fail with invalid sfdx-project.json
 -   Fixed bug causing tooltip to be hidden in the Service Cloud Console
