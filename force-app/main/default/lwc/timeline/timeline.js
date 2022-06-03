@@ -423,13 +423,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.positionDateField = record.positionDateField;
 
             let convertDate = record.positionDateValue.replace(' ', 'T');
+            let convertEndDate = record.positionEndDateValue.replace(' ', 'T');
             convertDate = convertDate + '.000Z';
+            convertEndDate = convertEndDate + '.000Z';
 
             let localDate = new Date(convertDate);
+            let localEndDate = new Date(convertEndDate);
             let localPositionDate = dateFormatter.format(localDate);
 
             recordCopy.positionDateValue = localPositionDate;
             recordCopy.time = localDate;
+            recordCopy.length = localEndDate - localDate;
 
             recordCopy.detailField = record.detailField;
             recordCopy.detailFieldLabel = record.detailFieldLabel;
@@ -459,6 +463,20 @@ export default class timeline extends NavigationMixin(LightningElement) {
         ];
 
         return timelineRecords;
+    }
+
+    getEventLength(length){
+        length = Math.abs(length/1000);
+        let earliestRange = parseFloat(this.earliestRange);
+        let latestRange = parseFloat(this.latestRange);
+        let yearRange = earliestRange + latestRange;
+        let width = ((length / (365 * 24 * 60 * 60 * yearRange)) * this?._d3timelineCanvas?.width);
+        return Math.max(3, width);
+    }
+
+    getIconEventLength(length){
+        let width = this.unitInterval * length;
+        return Math.max(width, 24);
     }
 
     timelineCanvas() {
@@ -521,7 +539,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let data = timelineData.data
                 .filter(function (d) {
                     if (me.isLanguageRightToLeft) {
-                        d.endTime = new Date(d.time.getTime() - unitInterval * (d.label.length * 6 + 80));
+                        d.endTime = new Date(d.time.getTime() - Math.max(d.length, unitInterval * (d.label.length * 6 + 80)));
                         return timelineCanvas.x.domain()[0] < d.time && d.endTime < timelineCanvas.x.domain()[1];
                     }
 
@@ -531,6 +549,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     wrapWidth > minWidth ? labelLength = wrapWidth - 34 : labelLength = (d.label.length * 6 + 80);
                     !d.timeEnded ? (d.endTime = new Date(d.time.getTime() + unitInterval * labelLength)) 
                     : (wrapWidth > minWidth ? (d.endTime = d.timeEnded) : (d.endTime = new Date(d.time.getTime() + unitInterval * labelLength)));
+                    d.endTime = new Date(d.time.getTime() + Math.max(d.length, unitInterval * (d.label.length * 6 + 80)));
                     return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
                 })
                 .filter(timelineCanvas.filter);
@@ -578,6 +597,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     return 'translate(' + timelineCanvas.x(d.time) + ', ' + timelineCanvas.y(d.swimlane) + ')';
                 });
 
+            timelineCanvas.data
+                .selectAll('[class~=timeline-canvas-icon-wrap]')
+                .attr('width', d => me.getIconEventLength(d.length))
+
             timelineCanvas.records = timelineCanvas.data
                 .enter()
                 .append('g')
@@ -613,7 +636,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     })
                     .attr('x', 0)
                     .attr('y', 0)
-                    .attr('width', 24)
+                    .attr('width', d => me.getIconEventLength(d.length))
                     .attr('height', 24)
                     .attr('rx', 3)
                     .attr('ry', 3);
@@ -994,6 +1017,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
         return height;
     }
 
+    get unitInterval(){
+        return this._d3timelineMapSVG.width / (this._d3timelineCanvas.x.domain()[1] - this._d3timelineCanvas.x.domain()[0]);
+    }
+
     timelineMap() {
         const me = this;
 
@@ -1027,6 +1054,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let data = timelineData.data
                 .filter(function (d) {
                     !d.timeEnded ? d.endTime = new Date(d.time.getTime() + unitInterval * 10) : d.endTime = d.timeEnded; 
+                    //d.endTime = new Date(d.time.getTime() + Math.max(d.length, unitInterval * 10));
                     return true;
                 })
                 .filter(timelineMap.filter);
@@ -1077,6 +1105,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .attr('width', function (d){
                     return !d.timeEnded ? 2 : Math.ceil(timelineMap.x(d.timeEnded) - timelineMap.x(d.time));
                 })
+                //.attr('width', d => me.getEventLength(d.length))
                 .attr('height', 2)
                 .attr('rx', 0.2)
                 .attr('ry', 0.2);
