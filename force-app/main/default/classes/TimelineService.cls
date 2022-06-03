@@ -228,11 +228,16 @@ public with sharing class TimelineService {
 
                     innerQuery = innerQuery + selectStatement + ' FROM ' + relationship;
 
-                    if (objName == 'OpenActivity' || objName == 'ActivityHistory') {
+                    if (objName == 'OpenActivity') {
                         innerQuery =
                             innerQuery +
                             ' ORDER BY ' +
                             'ActivityDate ASC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
+                    } else if (objName == 'ActivityHistory') {
+                        innerQuery =
+                            innerQuery +
+                            ' ORDER BY ' +
+                            'ActivityDate DESC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
                     } else {
                         innerQuery =
                             innerQuery +
