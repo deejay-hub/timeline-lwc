@@ -70,9 +70,6 @@ describe('c-timeline', () => {
         document.body.appendChild(element);
 
         return flushPromises().then(() => {
-            const toggleButton = element.shadowRoot.querySelector('lightning-button-icon.timeline-refresh');
-            toggleButton.click();
-
             const title = element.shadowRoot.querySelector('h1');
             expect(title.textContent).toBe('Sample Title');
         });
