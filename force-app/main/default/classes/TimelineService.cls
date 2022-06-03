@@ -165,6 +165,7 @@ public with sharing class TimelineService {
                 );
                 mapOfFields.put(timelineRecord.detailField, timelineRecord.objectName);
                 mapOfFields.put(timelineRecord.positionDateField, timelineRecord.objectName);
+                mapOfFields.put(timelineRecord.positionEndDateField, timelineRecord.objectName);
                 mapOfFields.put(timelineRecord.fallbackTooltipField, timelineRecord.objectName);
                 mapOfFields.put(timelineRecord.tooltipIdField, timelineRecord.objectName);
                 mapOfFields.put(timelineRecord.drilldownIdField, timelineRecord.objectName);
@@ -184,6 +185,15 @@ public with sharing class TimelineService {
                     String tooltipIdField = String.valueOf(tcr.tooltipIdField);
                     String drilldownIdField = String.valueOf(tcr.drilldownIdField);
                     String typeField = String.valueOf(tcr.type);
+                    
+                    String selectStatement = '(SELECT Id, ' 
+                                    + tcr.detailField + ', ' 
+                                    + tcr.positionDateField + '';
+
+                    if (String.valueOf(tcr.positionEndDateField) != null && String.valueOf(tcr.positionEndDateField) != ''){
+                        selectStatement = selectStatement + ', '
+                                    + tcr.positionEndDateField + '';
+                    }
 
                     String selectStatement = '(SELECT Id, ' +
                         tcr.detailField + ', ' +
@@ -626,6 +636,8 @@ public with sharing class TimelineService {
         private String positionEndDateValue;
         private String positionDateField;
         private String positionDateValue;
+        private String positionEndDateField;
+        private String positionDateEndValue;
         private String objectName;
         private String type;
         private String tooltipIdField;
