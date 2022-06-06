@@ -69,9 +69,12 @@ describe('c-timeline', () => {
 
         document.body.appendChild(element);
 
+        // Emit data from @wire
+        //getTimelineTypesAdapter.emit(APEX_TIMELINE_TYPES);
+
         return flushPromises().then(() => {
-            const toggleButton = element.shadowRoot.querySelector('lightning-button-icon.timeline-refresh');
-            toggleButton.click();
+            //const toggleButton = element.shadowRoot.querySelector('lightning-button-icon.timeline-refresh');
+            //toggleButton.click();
 
             const title = element.shadowRoot.querySelector('h1');
             expect(title.textContent).toBe('Sample Title');
