@@ -7,7 +7,7 @@
             },
             "Name": "This is an Opportunity for 500 Wizzels",
             "Amount": 2000,
-            "CloseDate": "2020-01-01",
+            "CloseDate": "2021-01-01",
             "StageName": "Value Proposition",
             "AccountId": "@AccountRef1"
         },
@@ -18,7 +18,7 @@
             },
             "Name": "This is an Opportunity for 5 Woozels",
             "Amount": 99200,
-            "CloseDate": "2019-01-01",
+            "CloseDate": "2020-01-01",
             "StageName": "Value Proposition",
             "AccountId": "@AccountRef1"
         }
