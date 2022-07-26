@@ -1,5 +1,13 @@
 # Change Log
 
+## XX Xxx 2023 v1.12.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to v55.0 from v54.0
+
+**BUG FIXES**
+-   Fixed bug with linting error for invalid sfdx-project.json
+
 ## 20 Jun 2022 v1.11.0
 
 **WHAT'S NEW**
