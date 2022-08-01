@@ -86,8 +86,7 @@ cd timeline-lwc
     "packageDirectories": [
         {
             "path": "force-app",
-            "default": true,
-            "package": "TimeWarp"
+            "default": true
         }
     ],
     "sfdcLoginUrl": "https://login.salesforce.com",
