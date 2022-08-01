@@ -487,7 +487,6 @@ public with sharing class TimelineService {
             }
         }
 
-        System.Debug('@@ | ' + objectCheck + ' '  +fieldStripped );
         Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, fieldStripped);
 
         fieldLabel = fieldMetadata.getLabel();
