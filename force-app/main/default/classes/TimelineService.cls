@@ -175,9 +175,7 @@ public with sharing class TimelineService {
 
             for (String eachObject : mapOfTimelineConfigurationRecords.keyset()) {
                 TimelineRecord tcr = mapOfTimelineConfigurationRecords.get(eachObject);
-                System.Debug('@@Each Object ' + eachObject);
-                System.Debug('@@Contains Key ' + childObjects.containsKey(eachObject));
-
+                
                 if (childObjects.containsKey(eachObject)) {
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
