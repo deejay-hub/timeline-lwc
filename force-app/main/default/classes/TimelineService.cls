@@ -175,6 +175,8 @@ public with sharing class TimelineService {
 
             for (String eachObject : mapOfTimelineConfigurationRecords.keyset()) {
                 TimelineRecord tcr = mapOfTimelineConfigurationRecords.get(eachObject);
+                System.Debug('@@Each Object ' + eachObject);
+                System.Debug('@@Contains Key ' + childObjects.containsKey(eachObject));
 
                 if (childObjects.containsKey(eachObject)) {
                     String objName = String.valueOf(tcr.objectName);
@@ -191,7 +193,8 @@ public with sharing class TimelineService {
                         objName == 'OpenActivity' ||
                         objName == 'ActivityHistory' ||
                         objName == 'TaskRelation' ||
-                        objName == 'ContentDocumentLink')
+                        objName == 'ContentDocumentLink'||
+                        objName == 'LookedUpFromActivity')
                     ) {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
                     }
@@ -479,13 +482,14 @@ public with sharing class TimelineService {
         //If parent object aggregates activity lists then field names change
         //For activities their sobjecttype is Task and Event
         switch on objectName {
-            when 'ActivityHistory', 'OpenActivity' {
+            when 'ActivityHistory', 'OpenActivity', 'LookedUpFromActivity' {
                 if (objectCheck == 'Task' || objectCheck == 'Event') {
                     objectCheck = objectName;
                 }
             }
         }
 
+        System.Debug('@@ | ' + objectCheck + ' '  +fieldStripped );
         Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, fieldStripped);
 
         fieldLabel = fieldMetadata.getLabel();
