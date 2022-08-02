@@ -4,6 +4,7 @@
 
 **WHAT'S NEW**
 -   Changed Salesforce API to v55.0 from v54.0
+-   Added default label translations for Swedish and Norweigan.
 -   Added support for custom relationships on the Activity object
 
 **BUG FIXES**
