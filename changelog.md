@@ -10,6 +10,7 @@
 
 **BUG FIXES**
 -   Fixed bug with linting error for invalid sfdx-project.json
+-   Fixed bug formatting dates for the Icelandic locale
 
 ## 20 Jun 2022 v1.11.0
 
