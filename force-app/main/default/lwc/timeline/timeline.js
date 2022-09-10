@@ -2,7 +2,7 @@ import { LightningElement, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import LOCALE from '@salesforce/i18n/locale';
+import I18NLOCALE from '@salesforce/i18n/locale';
 import LANGUAGE from '@salesforce/i18n/lang';
 import TIMEZONE from '@salesforce/i18n/timeZone';
 
@@ -47,6 +47,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api recordId; //current record id of lead, case, opportunity, contact or account
 
     @api flexipageRegionWidth; //SMALL, MEDIUM and LARGE based on where the component is placed in App Builder templates
+
+    LOCALE = I18NLOCALE;
 
     isLanguageRightToLeft = false;
 
@@ -246,7 +248,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const me = this;
         me.isError = false;
         me.isLoaded = false;
-
+        me.localeOverride();
         me.illustrationVisibility = 'illustration-hidden';
         me.noData = false;
 
@@ -1288,5 +1290,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 this.label.ITEMS;
         }
         return summary;
+    }
+
+    get localeOverride() {
+
+        if ( I18NLOCALE === 'IS') {
+            this.LOCALE = 'FI';
+        }
     }
 }
