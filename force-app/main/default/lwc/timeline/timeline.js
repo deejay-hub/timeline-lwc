@@ -144,6 +144,23 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     _d3Rendered = false;
 
+    calculatedLOCALE () {
+
+        let tempLocale;
+    
+        switch (LOCALE) {
+            case 'is':
+            case 'is-IS' :
+                tempLocale = 'fi-FI';
+                break;
+            default:
+                tempLocale = LOCALE;
+                break;
+        }
+    
+        return tempLocale;
+    }
+
     @wire(getTimelineTypes, { parentObjectId: '$recordId', parentFieldName: '$timelineParent' })
     wiredResult(result) {
         if (result.data) {
@@ -260,7 +277,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this.isLanguageRightToLeft = true;
         }
 
-        const dateTimeFormat = new Intl.DateTimeFormat(LOCALE);
+        const dateTimeFormat = new Intl.DateTimeFormat(me.calculatedLOCALE());
         //Convert earliestRange to months
         me.timelineStart = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() - 12 * me.earliestRange));
         me.timelineEnd = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() + 12 * me.latestRange));
@@ -389,6 +406,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     getTimelineRecords(result) {
+        const me = this;
         let timelineRecords = {};
         let timelineResult = [];
         let timelineTimes = [];
@@ -402,8 +420,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
             timeZone: TIMEZONE
         };
 
-        const dateFormatter = new Intl.DateTimeFormat(LOCALE, options);
-
+        const dateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), options);
+        
         result.forEach(function (record, index) {
             let recordCopy = {};
 
@@ -745,7 +763,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .tickSizeInner(axisConfig.innerTickSize)
             .ticks(axisConfig.ticks)
             .tickFormat(function (d) {
-                let formattedDate = new Intl.DateTimeFormat(LOCALE, {
+                let formattedDate = new Intl.DateTimeFormat(me.calculatedLOCALE(), {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric'
@@ -1076,7 +1094,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
                 me.daysToShow = Difference_In_Days;
 
-                const dateTimeFormat = new Intl.DateTimeFormat(LOCALE, {
+                const dateTimeFormat = new Intl.DateTimeFormat(me.calculatedLOCALE(), {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric'
