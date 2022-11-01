@@ -964,6 +964,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
             case 'Last Activity':
                 defaultZoomDate = new Date(timelineData.maxTime).getTime();
                 break;
+            case 'First Activity':
+                defaultZoomDate = new Date(timelineData.minTime).getTime();
+                break;
             default:
                 defaultZoomDate = new Date().getTime();
                 break;
