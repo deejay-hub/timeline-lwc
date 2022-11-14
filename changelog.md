@@ -6,7 +6,7 @@
 -   Changed Salesforce API to v55.0 from v54.0
 -   Added default label translations for Swedish and Norweigan.
 -   Added support for custom relationships on the Activity object
--   Added the ability to zoom to 'First Activity' and 'Centered'
+-   Added the ability to zoom to 'First Activity'
 -   Documentation improvements
 -   Added open source code of conduct
 
