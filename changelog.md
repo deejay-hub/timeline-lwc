@@ -1,5 +1,19 @@
 # Change Log
 
+## XX Xxx 2023 v1.12.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to v55.0 from v54.0
+-   Added default label translations for Swedish and Norweigan.
+-   Added support for custom relationships on the Activity object
+-   Added the ability to zoom to 'First Activity'
+-   Documentation improvements
+-   Added open source code of conduct
+
+**BUG FIXES**
+-   Fixed bug with linting error for invalid sfdx-project.json
+-   Fixed bug formatting dates for the Icelandic locale
+
 ## 20 Jun 2022 v1.11.0
 
 **WHAT'S NEW**

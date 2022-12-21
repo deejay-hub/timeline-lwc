@@ -79,15 +79,14 @@ git clone https://github.com/deejay-hub/timeline-lwc
 cd timeline-lwc
 ```
 
-4. Overwrite the project-sfdx.json file with the following
+4. Overwrite the sfdx-project.json file with the following
 
 ```
 {
     "packageDirectories": [
         {
             "path": "force-app",
-            "default": true,
-            "package": "TimeWarp"
+            "default": true
         }
     ],
     "sfdcLoginUrl": "https://login.salesforce.com",

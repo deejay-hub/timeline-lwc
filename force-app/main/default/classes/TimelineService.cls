@@ -175,7 +175,7 @@ public with sharing class TimelineService {
 
             for (String eachObject : mapOfTimelineConfigurationRecords.keyset()) {
                 TimelineRecord tcr = mapOfTimelineConfigurationRecords.get(eachObject);
-
+                
                 if (childObjects.containsKey(eachObject)) {
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
@@ -191,7 +191,8 @@ public with sharing class TimelineService {
                         objName == 'OpenActivity' ||
                         objName == 'ActivityHistory' ||
                         objName == 'TaskRelation' ||
-                        objName == 'ContentDocumentLink')
+                        objName == 'ContentDocumentLink'||
+                        objName == 'LookedUpFromActivity')
                     ) {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
                     }
@@ -479,7 +480,7 @@ public with sharing class TimelineService {
         //If parent object aggregates activity lists then field names change
         //For activities their sobjecttype is Task and Event
         switch on objectName {
-            when 'ActivityHistory', 'OpenActivity' {
+            when 'ActivityHistory', 'OpenActivity', 'LookedUpFromActivity' {
                 if (objectCheck == 'Task' || objectCheck == 'Event') {
                     objectCheck = objectName;
                 }
