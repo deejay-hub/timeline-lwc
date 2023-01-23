@@ -70,11 +70,7 @@ public with sharing class TimelineService {
             return mapOfTimelineTypes;
         } catch (System.QueryException e) {
             throw new AuraHandledException(
-                '{"type": "Setup-Error", "message": "' +
-                e.getMessage() +
-                ' : ' +
-                e.getStackTraceString() +
-                '"}'
+                '{"type": "Setup-Error", "message": "' + e.getMessage() + ' : ' + e.getStackTraceString() + '"}'
             );
         } catch (TimelineSetupException e) {
             throw new AuraHandledException(e.getMessage());
@@ -175,7 +171,7 @@ public with sharing class TimelineService {
 
             for (String eachObject : mapOfTimelineConfigurationRecords.keyset()) {
                 TimelineRecord tcr = mapOfTimelineConfigurationRecords.get(eachObject);
-                
+
                 if (childObjects.containsKey(eachObject)) {
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
@@ -191,7 +187,7 @@ public with sharing class TimelineService {
                         objName == 'OpenActivity' ||
                         objName == 'ActivityHistory' ||
                         objName == 'TaskRelation' ||
-                        objName == 'ContentDocumentLink'||
+                        objName == 'ContentDocumentLink' ||
                         objName == 'LookedUpFromActivity')
                     ) {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
@@ -359,11 +355,7 @@ public with sharing class TimelineService {
             throw new AuraHandledException(e.getMessage());
         } catch (System.QueryException e) {
             throw new AuraHandledException(
-                '{"type": "Setup-Error", "message": "' +
-                e.getMessage() +
-                ' : ' +
-                e.getStackTraceString() +
-                '"}'
+                '{"type": "Setup-Error", "message": "' + e.getMessage() + ' : ' + e.getStackTraceString() + '"}'
             );
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
