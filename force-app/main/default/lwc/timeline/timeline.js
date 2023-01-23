@@ -1183,7 +1183,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     get showRecordTooltip() {
-        if (this.isMouseOver && this.showFallbackTooltip == false) {
+        if (this.isMouseOver && this.showFallbackTooltip === false) {
             return true;
         }
         return false;
