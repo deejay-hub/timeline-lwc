@@ -144,20 +144,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     _d3Rendered = false;
 
-    calculatedLOCALE () {
-
+    calculatedLOCALE() {
         let tempLocale;
-    
+
         switch (LOCALE) {
             case 'is':
-            case 'is-IS' :
+            case 'is-IS':
                 tempLocale = 'fi-FI';
                 break;
             default:
                 tempLocale = LOCALE;
                 break;
         }
-    
+
         return tempLocale;
     }
 
@@ -421,7 +420,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         };
 
         const dateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), options);
-        
+
         result.forEach(function (record, index) {
             let recordCopy = {};
 
