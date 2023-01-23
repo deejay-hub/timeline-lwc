@@ -1162,6 +1162,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
         };
     }
 
+    get isLoading() {
+        if (!this.isLoaded) {
+            return true;
+        }
+        return false;
+    }
+
     get showSummary() {
         if (this.isError || this.noData || this.noFilterData || !this.isLoaded) {
             return false;
@@ -1170,7 +1177,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     get showFallbackTooltip() {
-        if (this.mouseOverFallbackField != null && this.mouseOverFallbackField !== '') {
+        if (this.isMouseOver && this.mouseOverFallbackField != null && this.mouseOverFallbackField !== '') {
+            return true;
+        }
+        return false;
+    }
+
+    get showRecordTooltip() {
+        if (this.isMouseOver && this.showFallbackTooltip == false) {
             return true;
         }
         return false;
