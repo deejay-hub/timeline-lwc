@@ -3,10 +3,11 @@
 ## XX Xxx 2023 v1.12.0
 
 **WHAT'S NEW**
--   Changed Salesforce API to v55.0 from v54.0
+-   Changed Salesforce API to v56.0 from v54.0
 -   Added default label translations for Swedish and Norweigan.
 -   Added support for custom relationships on the Activity object
 -   Added the ability to zoom to 'First Activity'
+-   Added support for new conditional directives - lwc:if 
 -   Documentation improvements
 -   Added open source code of conduct
 
