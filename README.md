@@ -214,7 +214,7 @@ Specifying which child records to plot is done using the **Timeline_Configuratio
 
 For FAQs and troubleshooting see the [Knowledge Base](https://quip.com/6yvoAcBukqZB)
 
-#### How to I specify the fields for the tooltip?
+#### How do I specify the fields for the tooltip?
 
 Use the Compact Layout of the object plotted (for the most part).
 
