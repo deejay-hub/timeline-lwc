@@ -161,7 +161,7 @@ The component has the following properties that can be set at design time in App
 | `Height`                        | Adjusts the vertical height      | Picklist (1 - 5)                       |
 | `Historical Time Range (Years)` | Adjusts the start date           | Picklist (0.25 - 10)                   |
 | `Future Time Range (Years)`     | Adjusts the end date             | Picklist (0.25 - 10)                   |
-| `Zoom Based On`                 | Adjusts the position of the zoom | Picklist (Current Date, Last Activity) |
+| `Zoom Based On`                 | Adjusts the position of the zoom | Picklist (First Date, Current Date, Last Activity) |
 | `Zoom Range (Days)`             | Adjusts the extent of the zoom   | Integer min 15 max 365                 |
 
 #### Custom Labels
