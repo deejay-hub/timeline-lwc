@@ -9,7 +9,7 @@
 -   Added the ability to zoom to 'First Activity'
 -   Added support for new conditional directives - lwc:if 
 -   Added SLDS alignment for WCAG standards for colour contrast
--   Documentation improvements
+-   Documentation improvements including sfdx to sf install instructions
 -   Added open source code of conduct
 
 **BUG FIXES**
