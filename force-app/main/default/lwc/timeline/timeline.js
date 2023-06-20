@@ -580,16 +580,16 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         let iconColour = '';
                         switch (d.type) {
                             case 'Call':
-                                iconColour = '#48C3CC';
+                                iconColour = '#06a59a';
                                 break;
                             case 'Email':
-                                iconColour = '#95AEC5';
+                                iconColour = '#939393';
                                 break;
                             case 'Event':
-                                iconColour = '#EB7092';
+                                iconColour = '#ff538a';
                                 break;
                             case 'SNOTE':
-                                iconColour = '#E6D478';
+                                iconColour = '#939393';
                                 break;
                             default:
                                 iconColour = d.iconBackground;
