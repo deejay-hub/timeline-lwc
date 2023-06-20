@@ -69,13 +69,13 @@ Alternatively you can install the component straight from source control into a 
 2. If you haven't already done so, authenticate with your hub org and provide it with an alias (**myhuborg** in the command below):
 
 ```
-sfdx force:auth:web:login -d -a myhuborg
+sf org login web -d -a myhuborg
 ```
 
 3. Clone the timeline-lwc repository:
 
 ```
-git clone https://github.com/deejay-hub/timeline-lwc
+gh repo clone https://github.com/deejay-hub/timeline-lwc
 cd timeline-lwc
 ```
 
@@ -97,31 +97,31 @@ cd timeline-lwc
 5. Create a scratch org and provide it with an alias (**timewarp-lwc** in the command below):
 
 ```
-sfdx force:org:create -s -f config/project-scratch-def.json -a timewarp-lwc
+sf org create scratch -d -f config/project-scratch-def.json -a timewarp-lwc -y 30
 ```
 
 6. Push the app to your scratch org:
 
 ```
-sfdx force:source:push
+sf project deploy start
 ```
 
 7. Assign the Timeline_User permission set to the default user:
 
 ```
-sfdx force:user:permset:assign -n Timeline_User
+sf org assign permset --name "Timeline_User" 
 ```
 
 8. Load sample data:
 
 ```
-sfdx force:data:tree:import --plan data/timeline-plan.json
+sf data import tree --plan data/timeline-plan.json
 ```
 
 9. Open the scratch org:
 
 ```
-sfdx force:org:open
+sf org open
 ```
 
 10. Optional: Run npm install to support linting, prettification and test runs
