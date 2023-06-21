@@ -1,12 +1,12 @@
 .stencil-label {
-    background-color: #e4e0e0;
+    background-color: #b0adab;
     height: 0.4rem;
     border-radius: 2rem;
     width: 10rem;
 }
 
 .stencil-value {
-    background-color: #c5c2c2;
+    background-color: #969492;
     height: 0.4rem;
     border-radius: 2rem;
     margin-top: 0.5rem;
@@ -43,7 +43,7 @@
     padding: 10px 5px 5px 5px;
     background-color: #fff;
     border-radius: 5px 5px 5px 5px;
-    border: rgb(221, 219, 218);
+    border: #c9c9c9;
     border-width: 1px;
     border-style: solid;
 }
@@ -61,7 +61,7 @@
 }
 
 .timeline-map-wrapper {
-    background-color: #f8fcff;
+    background-color: #eaf5fe;
     padding: 10px;
     overflow: hidden;
     border-radius: 0px 0px 3px 3px;
@@ -74,13 +74,13 @@
 
 .timeline-canvas {
     overflow-y: auto;
-    border-bottom: 1px solid #d5dbe4;
+    border-bottom: 1px solid #c9c9c9;
     overflow-x: hidden;
 }
 
 .timeline-canvas-axis {
     background-color: #fff;
-    border-bottom: 1px solid #d5dbe4;
+    border-bottom: 1px solid #c9c9c9;
     height: 25px;
 }
 
@@ -90,7 +90,7 @@
 
 .timeline-map {
     background-color: #fff;
-    border: 1px solid #4b97e6;
+    border: 1px solid #107cad;
     border-radius: 3px;
     height: 40px;
 }
@@ -136,40 +136,41 @@
 /* axis tick marks */
 .axis-ticks line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .axis-ticks-LARGE line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .axis-ticks-MEDIUM line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .axis-ticks-SMALL line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
+    --stroke: rgb(221, 224, 228);
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .timeline-map-axis line {
-    stroke: #72a8e0;
+    stroke: #107cad;
 }
 
 .timeline-map-axis text {
-    fill: #72a8e0;
+    fill: #107cad;
     height: 10px;
-    color: #92bce4;
+    color: #107cad;
     font-size: 0.7rem;
 }
 
@@ -192,8 +193,8 @@
 
 /* brush */
 .brush .selection {
-    stroke: #61adfc;
-    fill: #61adfc;
+    stroke: #107cad;
+    fill: #1ab9ff;
     fill-opacity: 0.3;
 }
 
@@ -213,7 +214,7 @@
 
 .timeline-wrapper {
     margin: 10px 10px 10px 10px;
-    border: 1px solid #d5dbe4;
+    border: 1px solid #747474;
     border-radius: 3px;
     position: relative;
 }

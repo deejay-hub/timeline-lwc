@@ -946,7 +946,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             timelineMap.records
                 .append('rect')
                 .attr('style', function () {
-                    return 'fill: #98C3EE; stroke: #4B97E6';
+                    return 'fill: #107cad; stroke: #107cad';
                 })
                 .attr('width', 3)
                 .attr('height', 2)
@@ -1027,7 +1027,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .enter()
             .append('path')
             .attr('class', 'handle--custom')
-            .attr('fill', '#61adfc')
+            .attr('fill', '#107cad')
             .attr('fill-opacity', 1)
             .attr('stroke', '#000')
             .attr('height', 40)
