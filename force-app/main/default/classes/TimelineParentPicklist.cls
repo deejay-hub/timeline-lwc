@@ -58,7 +58,7 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
                         String.valueOf(currentField.getReferenceTo()) != '()' &&
                         String.valueOf(currentField.getReferenceTo()) != '(User)')
                     ) {
-                        myValues.addRow(new VisualEditor.DataRow(currentField.getLabel(), field));
+                        myValues.addRow(new VisualEditor.DataRow(currentField.getName(), currentField.getName()));
                     }
                 }
             }
