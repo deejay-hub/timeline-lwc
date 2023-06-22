@@ -3,8 +3,10 @@
 # For useful gitignore templates see: https://github.com/github/gitignore
 
 # Salesforce cache
+.sf/
 .sfdx/
 .localdevserver/
+deploy-options.json
 
 #PMD cache
 .pmdCache
@@ -31,3 +33,6 @@ ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 .vscode/settings.json
+
+# Local environment variables
+.env
