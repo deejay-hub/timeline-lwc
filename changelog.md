@@ -16,6 +16,7 @@
 -   Fixed bug formatting dates for the Icelandic locale
 -   Fixed bug causing border radii to overlap
 -   Fixed bug causing scratch Org creation to fail with invalid sfdx-project.json
+-   Fixed node module dependency versions for security
 
 ## 20 Jun 2022 v1.11.0
 
