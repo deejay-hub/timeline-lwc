@@ -1,6 +1,6 @@
 # Change Log
 
-## XX Xxx 2023 v1.12.0
+## 27 Jun 2023 v1.20.0
 
 **WHAT'S NEW**
 -   Changed Salesforce API to v58.0 from v54.0
@@ -10,11 +10,11 @@
 -   Added support for new conditional directives - lwc:if 
 -   Added SLDS alignment for WCAG standards for colour contrast
 -   Documentation improvements including sfdx to sf install instructions
--   Added open source code of conduct
 
 **BUG FIXES**
 -   Fixed bug with linting error for invalid sfdx-project.json
 -   Fixed bug formatting dates for the Icelandic locale
+-   Fixed bug causing border radii to overlap
 -   Fixed bug causing scratch Org creation to fail with invalid sfdx-project.json
 
 ## 20 Jun 2022 v1.11.0
