@@ -1,6 +1,6 @@
 # Change Log
 
-## 26 Jun 2023 v1.20.0
+## 26 Jun 2023 v1.12.0
 
 **WHAT'S NEW**
 -   Changed Salesforce API to v58.0 from v54.0
