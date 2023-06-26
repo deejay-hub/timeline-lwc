@@ -4,10 +4,10 @@
             "path": "force-app",
             "default": true,
             "package": "TimeWarp",
-            "versionNumber": "1.11.0.NEXT",
-            "versionName": "Epsilon",
-            "ancestorVersion": "1.10.0",
-            "releaseNotesUrl": "https://dave-norris.medium.com/time-warp-roadmap-july-2022-4e902853ca54?source=friends_link&sk=40e95cc761e3bf8b462abcb2aafba174"
+            "versionNumber": "1.12.0.NEXT",
+            "versionName": "Luyten",
+            "ancestorVersion": "1.11.0",
+            "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md"
         }
     ],
     "namespace": "bmpyrckt",
@@ -23,6 +23,7 @@
         "TimeWarp@1.7.0-1": "04t2w000008K3UqAAK",
         "TimeWarp@1.8.0-1": "04t2w000008K3UvAAK",
         "TimeWarp@1.9.0-1": "04t2w000009BbXOAA0",
-        "TimeWarp@1.10.0-1": "04t2w000009BbjoAAC"
+        "TimeWarp@1.10.0-1": "04t2w000009BbjoAAC",
+        "TimeWarp@1.11.0-1": "04t2w000009Bc08AAC"
     }
 }
