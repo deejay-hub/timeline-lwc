@@ -42,6 +42,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api latestRange; //How far into the future to go
     @api zoomTo; //Zoom to current dat or latest activity
     @api daysToShow; //number of days to plot for the default zoom
+    @api defaultMultiDay; //Show mutli-day view as default
 
     //Component calculated attributes
     @api recordId; //current record id of lead, case, opportunity, contact or account
@@ -91,6 +92,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
     isFilterUpdated;
     isFilterLoaded = false;
 
+    localStorage; //Local browser storage used to store default span setting
+    isMultiDay;
+    
     illustrationVisibility = 'illustration-hidden'; //Toggles the class to show and hide the illustration component
 
     illustrationHeader; //Header to display when an information box displays
@@ -207,6 +211,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     connectedCallback() {
         this._timelineHeight = this.getPreferredHeight();
+        this._d3LocalisedShortDateFormat = this.userDateFormat();
+        this.localStorage = window.localStorage;
+        this.isMultiDay = localStorage.getItem('multiDay') == null ? this.defaultMultiDay : (localStorage.getItem('multiDay') == true ? true : false);
     }
 
     renderedCallback() {
@@ -422,6 +429,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const dateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), options);
 
         result.forEach(function (record, index) {
+
             let recordCopy = {};
 
             recordCopy.recordId = record.objectId;
@@ -432,13 +440,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.positionDateField = record.positionDateField;
 
             let convertDate = record.positionDateValue.replace(' ', 'T');
+            let convertEndDate = record.positionEndDateValue.replace(' ', 'T');
             convertDate = convertDate + '.000Z';
+            convertEndDate = convertEndDate + '.000Z';
 
             let localDate = new Date(convertDate);
+            let localEndDate = new Date(convertEndDate);
             let localPositionDate = dateFormatter.format(localDate);
 
             recordCopy.positionDateValue = localPositionDate;
             recordCopy.time = localDate;
+            recordCopy.length = localEndDate - localDate;
 
             recordCopy.detailField = record.detailField;
             recordCopy.detailFieldLabel = record.detailFieldLabel;
@@ -470,6 +482,20 @@ export default class timeline extends NavigationMixin(LightningElement) {
         return timelineRecords;
     }
 
+    getEventLength(length){
+        length = Math.abs(length/1000);
+        let earliestRange = parseFloat(this.earliestRange);
+        let latestRange = parseFloat(this.latestRange);
+        let yearRange = earliestRange + latestRange;
+        let width = ((length / (365 * 24 * 60 * 60 * yearRange)) * this?._d3timelineCanvas?.width);
+        return Math.max(3, width);
+    }
+
+    getIconEventLength(length){
+        let width = this.unitInterval * length;
+        return Math.max(width, 24);
+    }
+
     timelineCanvas() {
         const me = this;
         const timelineCanvasDIV = this.template.querySelector('div.timeline-canvas');
@@ -498,9 +524,27 @@ export default class timeline extends NavigationMixin(LightningElement) {
             return false;
         };
 
+        function getTextColor(hex){
+            const threshold = 152; /* out of max 256. Lower threshold equals more dark text on dark background  */
+                
+            const hRed = hexToR(hex);
+            const hGreen = hexToG(hex);
+            const hBlue = hexToB(hex);
+            
+      
+            function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+            function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+            function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+            function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+    
+            const cBrightness = ((hRed * 299) + (hGreen * 587) + (hBlue * 114)) / 1000;
+              if (cBrightness > threshold){return "#3f4247";} else { return "#ffffff";}	
+        }
+
         timelineCanvas.redraw = function (domain) {
             var i = 0;
             var swimlane = 0;
+            const minWidth = 74;
 
             if (domain) {
                 timelineCanvas.x.domain(domain);
@@ -512,11 +556,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let data = timelineData.data
                 .filter(function (d) {
                     if (me.isLanguageRightToLeft) {
-                        d.endTime = new Date(d.time.getTime() - unitInterval * (d.label.length * 6 + 80));
+                        d.endTime = new Date(d.time.getTime() - Math.max(d.length, unitInterval * (d.label.length * 6 + 80)));
                         return timelineCanvas.x.domain()[0] < d.time && d.endTime < timelineCanvas.x.domain()[1];
                     }
 
                     d.endTime = new Date(d.time.getTime() + unitInterval * (d.label.length * 6 + 80));
+                    var labelLength;
+                    const wrapWidth = (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                    wrapWidth > minWidth ? labelLength = wrapWidth - 34 : labelLength = (d.label.length * 6 + 80);
+                    !d.timeEnded ? (d.endTime = new Date(d.time.getTime() + unitInterval * labelLength)) 
+                    : (wrapWidth > minWidth ? (d.endTime = d.timeEnded) : (d.endTime = new Date(d.time.getTime() + unitInterval * labelLength)));
+                    d.endTime = new Date(d.time.getTime() + Math.max(d.length, unitInterval * (d.label.length * 6 + 80)));
                     return timelineCanvas.x.domain()[0] < d.endTime && d.time < timelineCanvas.x.domain()[1];
                 })
                 .filter(timelineCanvas.filter);
@@ -564,6 +614,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     return 'translate(' + timelineCanvas.x(d.time) + ', ' + timelineCanvas.y(d.swimlane) + ')';
                 });
 
+            timelineCanvas.data
+                .selectAll('[class~=timeline-canvas-icon-wrap]')
+                .attr('width', d => me.getIconEventLength(d.length))
+
             timelineCanvas.records = timelineCanvas.data
                 .enter()
                 .append('g')
@@ -599,13 +653,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     })
                     .attr('x', 0)
                     .attr('y', 0)
-                    .attr('width', 24)
+                    .attr('width', d => me.getIconEventLength(d.length))
                     .attr('height', 24)
                     .attr('rx', 3)
                     .attr('ry', 3);
 
                 timelineCanvas.records
                     .append('image')
+                    .attr('class', 'timeline-canvas-record-icon')
                     .attr('x', 1)
                     .attr('y', 1)
                     .attr('height', 22)
@@ -746,6 +801,117 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         return d.label;
                     });
             }
+
+            timelineCanvas.records = timelineCanvas
+            .selectAll('[class~=timeline-canvas-record-icon]')
+            .attr('x', function (d) {
+                const wrapWidth = !d.timeEnded ? 34 : (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                if(wrapWidth > minWidth || wrapWidth < 24){
+                    if(-14 > timelineCanvas.x(d.time) && timelineCanvas.x(d.timeEnded) > 38){
+                        return Math.abs(timelineCanvas.x(d.time)) + 1;
+                    }else{
+                        return 1;
+                    }
+                }else{
+                    return 1;
+                }                  
+            })
+
+            timelineCanvas.records = timelineCanvas
+                .selectAll('[class~=timeline-canvas-icon-wrap]')
+                .data(data, function (d) {
+                    return d.id;
+                })
+                .attr('width', function (d) {
+                    const wrapWidth = !d.timeEnded ? 24 : (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                    return wrapWidth < 24 ? 24 : wrapWidth;
+                });
+
+            timelineCanvas.records = timelineCanvas
+                .selectAll('[class~=timeline-canvas-record-line]')
+                .data(data, function (d) {
+                    return d.id;
+                })
+                .attr('x1', function (d) {
+                    const wrapWidth = !d.timeEnded ? 24 : (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                    if(wrapWidth > minWidth || wrapWidth < 24){
+                        if(-14 > timelineCanvas.x(d.time) && timelineCanvas.x(d.timeEnded) > 38){
+                            return Math.abs(timelineCanvas.x(d.time)) + 24;
+                        }else{
+                            return 24
+                        }
+                    }else{
+                        return wrapWidth + 4
+                    }
+                })
+                .attr('x2', function (d) {
+                    const wrapWidth = !d.timeEnded ? 32 : (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                    if(wrapWidth > minWidth || wrapWidth < 24){
+                        if(-14 > timelineCanvas.x(d.time) && timelineCanvas.x(d.timeEnded) > 38){
+                            return Math.abs(timelineCanvas.x(d.time)) + 32;
+                        }else{
+                            return 32
+                        }
+                    }else{
+                        return wrapWidth + 12
+                    }                
+                });
+
+            timelineCanvas.records = timelineCanvas
+                .selectAll('[class~=timeline-canvas-record-label]')
+                .data(data, function (d) {
+                    return d.id;
+                })
+                .style('fill', function (d) {
+                    const wrapWidth = !d.timeEnded ? 34 : (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                    if(wrapWidth > minWidth){
+                        let iconColour = '';
+                        switch (d.type) {
+                            case 'Call':
+                                iconColour = '#48C3CC';
+                                break;
+                            case 'Email':
+                                iconColour = '#95AEC5';
+                                break;
+                            case 'SNOTE':
+                                iconColour = '#E6D478';
+                                break;
+                            default:
+                                iconColour = d.iconBackground;
+                                break;
+                        }
+                        return getTextColor(iconColour);
+                    }else{
+                        return '#3f4247';
+                    } 
+                })
+                .attr('x', function (d) {
+                    const wrapWidth = !d.timeEnded ? 34 : (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                    if(wrapWidth > minWidth || wrapWidth < 24){
+                        if(-14 > timelineCanvas.x(d.time) && timelineCanvas.x(d.timeEnded) > 38){
+                            return Math.abs(timelineCanvas.x(d.time)) + 34;
+                        }else{
+                            return 34;
+                        }
+                    }else{
+                        return wrapWidth + 14
+                    }                  
+                })
+                .each( function (d) {
+                    var self = d3.select(this);
+                    self.text(d.label);
+                    var textLength = self.node().getComputedTextLength(),
+                    text = self.text(),
+                    wrapWidth = (timelineCanvas.x(d.timeEnded) - timelineCanvas.x(d.time));
+                    if(wrapWidth > minWidth){
+                        while ((textLength > (wrapWidth - 42) && text.length > 0) || (textLength > (timelineCanvas.x(d.timeEnded) - 34) && text.length > 0)) {
+                            text = text.slice(0, -1);
+                            self.text(text + '...');
+                            textLength = self.node().getComputedTextLength();
+                        }
+                    }
+                });
+
             timelineCanvas.data.exit().remove();
         };
         return timelineCanvas;
@@ -868,6 +1034,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
         return height;
     }
 
+    get unitInterval(){
+        return this._d3timelineMapSVG.width / (this._d3timelineCanvas.x.domain()[1] - this._d3timelineCanvas.x.domain()[0]);
+    }
+
     timelineMap() {
         const me = this;
 
@@ -900,7 +1070,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             let data = timelineData.data
                 .filter(function (d) {
-                    d.endTime = new Date(d.time.getTime() + unitInterval * 10);
+                    !d.timeEnded ? d.endTime = new Date(d.time.getTime() + unitInterval * 10) : d.endTime = d.timeEnded; 
+                    //d.endTime = new Date(d.time.getTime() + Math.max(d.length, unitInterval * 10));
                     return true;
                 })
                 .filter(timelineMap.filter);
@@ -948,7 +1119,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .attr('style', function () {
                     return 'fill: #107cad; stroke: #107cad';
                 })
-                .attr('width', 3)
+                .attr('width', function (d){
+                    return !d.timeEnded ? 2 : Math.ceil(timelineMap.x(d.timeEnded) - timelineMap.x(d.time));
+                })
+                //.attr('width', d => me.getEventLength(d.length))
                 .attr('height', 2)
                 .attr('rx', 0.2)
                 .attr('ry', 0.2);
@@ -1225,6 +1399,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     get selectedFilterValues() {
         return this.filterValues.join(', ');
+    }
+
+    toggleMultiDay() {
+        this.isMultiDay = !this.isMultiDay;
+        this.localStorage.setItem('multiDay', this.isMultiDay);
+        this.processTimeline();
     }
 
     handleFilterChange(e) {
