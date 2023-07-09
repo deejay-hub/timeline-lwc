@@ -1,12 +1,12 @@
 .stencil-label {
-    background-color: #e4e0e0;
+    background-color: #b0adab;
     height: 0.4rem;
     border-radius: 2rem;
     width: 10rem;
 }
 
 .stencil-value {
-    background-color: #c5c2c2;
+    background-color: #969492;
     height: 0.4rem;
     border-radius: 2rem;
     margin-top: 0.5rem;
@@ -26,6 +26,7 @@
 
 .illustration {
     padding: 10px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
     background-color: #fff;
     width: 100%;
     height: 100%;
@@ -43,7 +44,7 @@
     padding: 10px 5px 5px 5px;
     background-color: #fff;
     border-radius: 5px 5px 5px 5px;
-    border: rgb(221, 219, 218);
+    border: #c9c9c9;
     border-width: 1px;
     border-style: solid;
 }
@@ -58,19 +59,13 @@
 .timeline-filter {
     position: absolute;
     top: 0;
-    right: 0;
-}
-
-.timeline-canvas-icon-wrap {
-    fill: #fff;
-    stroke: #d5dbe4;
-    stroke-width: 1;
 }
 
 .timeline-map-wrapper {
-    background-color: #f8fcff;
+    background-color: #eaf5fe;
     padding: 10px;
     overflow: hidden;
+    border-radius: 0px 0px 3px 3px;
 }
 
 .timeline-canvas-record-line {
@@ -80,13 +75,13 @@
 
 .timeline-canvas {
     overflow-y: auto;
-    border-bottom: 1px solid #d5dbe4;
+    border-bottom: 1px solid #c9c9c9;
     overflow-x: hidden;
 }
 
 .timeline-canvas-axis {
     background-color: #fff;
-    border-bottom: 1px solid #d5dbe4;
+    border-bottom: 1px solid #c9c9c9;
     height: 25px;
 }
 
@@ -96,7 +91,7 @@
 
 .timeline-map {
     background-color: #fff;
-    border: 1px solid #4b97e6;
+    border: 1px solid #107cad;
     border-radius: 3px;
     height: 40px;
 }
@@ -142,40 +137,41 @@
 /* axis tick marks */
 .axis-ticks line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .axis-ticks-LARGE line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .axis-ticks-MEDIUM line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .axis-ticks-SMALL line {
     stroke-width: 1;
-    stroke: rgb(221, 224, 228);
+    stroke: #c9c9c9;
+    --stroke: rgb(221, 224, 228);
     stroke-dasharray: 9, 9;
     shape-rendering: crispEdges;
 }
 
 .timeline-map-axis line {
-    stroke: #72a8e0;
+    stroke: #107cad;
 }
 
 .timeline-map-axis text {
-    fill: #72a8e0;
+    fill: #107cad;
     height: 10px;
-    color: #92bce4;
+    color: #107cad;
     font-size: 0.7rem;
 }
 
@@ -198,8 +194,8 @@
 
 /* brush */
 .brush .selection {
-    stroke: #61adfc;
-    fill: #61adfc;
+    stroke: #107cad;
+    fill: #1ab9ff;
     fill-opacity: 0.3;
 }
 
@@ -219,37 +215,25 @@
 
 .timeline-wrapper {
     margin: 10px 10px 10px 10px;
-    border: 1px solid #d5dbe4;
+    border: 1px solid #747474;
     border-radius: 3px;
     position: relative;
 }
 
-.slds-text-heading_medium,
-.slds-text-heading--medium {
+.slds-text-heading_medium {
     font-weight: 500;
     font-size: 1rem;
     padding-left: 10px;
     line-height: 1.25;
 }
 
-.slds-popover__header {
-    padding: 1rem 1rem 0.75rem;
+.tooltip-loading {
+    height: 45px !important;
 }
 
-.slds-popover {
-    border-radius: 0.25rem;
-    width: 25rem;
-    min-height: 2rem;
-    z-index: 98;
-    text-align: left;
-    background-color: #fff;
-    display: inline-block;
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
-    border: 1px solid #dddbda;
-}
-
-.slds-is-relative.record-form-spinner-holder {
-    min-height: 120px;
+.timeline-container .slds-grid.slds-grid_align-spread {
+    padding-right: 2px;
+    padding-left: 2px;
 }
 
 .tooltip-panel {
@@ -257,18 +241,37 @@
     color: #fff;
     position: fixed !important;
     border-radius: 4px;
-    padding: 10px;
+    padding: 14px;
     font-size: 12px;
     z-index: 98;
     min-width: 400px;
     min-height: 150px;
     visibility: hidden;
+    min-height: 100px !important;
 }
 
 .tooltip-content {
-    overflow: hidden;
+    --overflow: hidden;
     transition: 0.25s all ease;
     transition-delay: 0s;
+    min-height: 100px;
+}
+
+.tooltip-popover {
+    background: rgb(243, 242, 242);
+    border-radius: 0.25rem;
+    width: 25rem;
+    min-height: 2rem;
+    z-index: 98;
+    --text-align: left;
+    --background-color: #fff;
+    display: inline-block;
+    box-shadow: 0 2px 3px 0 rgb(0 0 0 / 16%);
+    border: 1px solid #dddbda;
+}
+
+.slds-nubbin_left-top:after {
+    box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 16%) !important;
 }
 
 @media only screen and (max-width: 900px) {
@@ -278,6 +281,10 @@
 
     .timeline-summary-verbose {
         display: none;
+    }
+
+    .timeline-summary-short {
+        display: inline-block !important;
     }
 }
 
@@ -292,5 +299,9 @@
 }
 
 .timeline-summary-verbose-SMALL {
+    --display: none;
+}
+
+.timeline-summary-short {
     display: none;
 }

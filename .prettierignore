@@ -8,3 +8,10 @@
 .localdevserver
 
 staticresources
+
+changelog.md
+README.md
+package-lock.json
+package.json
+licence.md
+sfdx-project.json

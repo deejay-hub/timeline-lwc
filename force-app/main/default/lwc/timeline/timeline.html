@@ -1,29 +1,34 @@
+<!-- sldsValidatorIgnore -->
 <template>
     <!--main timeline component-->
     <div class="timeline-container">
         <!--header-->
         <div class="slds-grid slds-grid_align-spread">
             <div class="slds-col slds-shrink slds-align-middle">
-                <template if:true={isLoaded}>
+                <template lwc:if={isLoaded}>
                     <h1 class="slds-text-heading_medium">{timelineTitle}</h1>
                 </template>
-                <template if:false={isLoaded}>
+                <template lwc:else>
                     <div class="stencil-value" style="margin-left: 10px"></div>
+                    <!--spinner when component is loading-->
+                    <div class="stencil-timeline-spinner">
+                        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                    </div>
+                    <!--end spinner-->
                 </template>
             </div>
             <div class="slds-col slds-shrink-none slds-align-middle">
                 <div class="slds-form--inline">
                     <div class="slds-form-element">
-                        <template if:true={showSummary}>
+                        <template lwc:if={showSummary}>
                             <div class="timeline-summary">
-                                <span class="timeline-summary-verbose">{label.SHOWING} </span>
-                                <span>{localisedZoomStartDate} - {localisedZoomEndDate} </span>
-                                <span class="timeline-summary-verbose">
-                                    • {daysToShow} {label.DAYS} • {totalZoomedRecords} {label.ITEMS}</span
-                                >
+                                <span class="timeline-summary-verbose">{timelineSummaryText} </span>
+                                <span class="timeline-summary-short"
+                                    >{localisedZoomStartDate} - {localisedZoomEndDate}
+                                </span>
                             </div>
                         </template>
-                        <template if:false={isLoaded}>
+                        <template lwc:if={isLoading}>
                             <div class="stencil-label"></div>
                         </template>
                     </div>
@@ -76,24 +81,7 @@
                 aria-hidden="false"
             >
                 <div class="slds-panel__header" style="height: 50px">
-                    <template if:false={isFilterUpdated}>
-                        <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">
-                            {label.FILTERS}
-                        </h2>
-                        <button
-                            class="slds-button slds-button_icon slds-button_icon slds-button_icon-small slds-float_right slds-panel__close"
-                            title="Close dialog"
-                            onclick={toggleFilter}
-                        >
-                            <lightning-icon
-                                icon-name="utility:close"
-                                alternative-text="Close"
-                                size="xx-small"
-                            ></lightning-icon>
-                        </button>
-                    </template>
-
-                    <template if:true={isFilterUpdated}>
+                    <template lwc:if={isFilterUpdated}>
                         <div class="slds-grid" style="width: 100%">
                             <div>
                                 <lightning-button
@@ -111,6 +99,23 @@
                                 ></lightning-button>
                             </div>
                         </div>
+                    </template>
+
+                    <template lwc:else>
+                        <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">
+                            {label.FILTERS}
+                        </h2>
+                        <button
+                            class="slds-button slds-button_icon slds-button_icon slds-button_icon-small slds-float_right slds-panel__close"
+                            title="Close dialog"
+                            onclick={toggleFilter}
+                        >
+                            <lightning-icon
+                                icon-name="utility:close"
+                                alternative-text="Close"
+                                size="xx-small"
+                            ></lightning-icon>
+                        </button>
                     </template>
                 </div>
 
@@ -135,7 +140,7 @@
                         </div>
                     </div>
 
-                    <template if:true={isFilter}>
+                    <template lwc:if={isFilter}>
                         <lightning-checkbox-group
                             name="Types Shown"
                             label=""
@@ -154,51 +159,29 @@
             </div>
         </div>
         <!--end timeline body-->
-
-        <!--spinner when component is loading-->
-        <div class="stencil-timeline-spinner">
-            <template if:false={isLoaded}>
-                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
-            </template>
-        </div>
-        <!--end spinner-->
     </div>
 
     <!--tooltips FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
-    <div aria-label="Tooltip popover" class="tooltip-panel slds-popover slds-popover_panel slds-nubbin_left-top">
+    <div aria-label="Tooltip popover" class="tooltip-panel tooltip-popover slds-popover_panel slds-nubbin_left-top">
         <div class="tooltip-content">
-            <template if:true={isMouseOver}>
-                <template if:true={showCompactFormTooltip}>
-                    <lightning-record-form
-                        record-id={mouseOverRecordId}
-                        object-api-name={mouseOverObjectAPIName}
-                        layout-type="Compact"
-                        columns="2"
-                        mode="readonly"
-                        class="tooltip-content"
-                    >
-                    </lightning-record-form>
-                </template>
-
-                <template if:true={showFallbackTooltip}>
-                    <div class="slds-form" role="list">
-                        <div class="slds-form__row">
-                            <div class="slds-form__item" role="listitem">
-                                <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
-                                    <span class="slds-form-element__label">{mouseOverDetailLabel} </span>
-                                    <div class="slds-form-element__control">
-                                        <div class="slds-form-element__static">{mouseOverDetailValue}</div>
-                                    </div>
+            <template lwc:if={showFallbackTooltip}>
+                <div class="slds-form" role="list">
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                <span class="slds-form-element__label">{mouseOverDetailLabel} </span>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-form-element__static">{mouseOverDetailValue}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="slds-form__row">
-                            <div class="slds-form__item" role="listitem">
-                                <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
-                                    <span class="slds-form-element__label">{mouseOverFallbackField} </span>
-                                    <div class="slds-form-element__control">
-                                        <div class="slds-form-element__static">{mouseOverFallbackValue}</div>
-                                    </div>
+                    </div>
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                <span class="slds-form-element__label">{mouseOverFallbackField} </span>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-form-element__static">{mouseOverFallbackValue}</div>
                                 </div>
                             </div>
 						</div>
@@ -213,7 +196,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_readonly slds-form-element_stacked">
+                                <span class="slds-form-element__label">{mouseOverPositionLabel} </span>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-form-element__static">{mouseOverPositionValue}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={showRecordTooltip}>
+                <template lwc:if={isTooltipLoading}>
+                    <div class="tooltip-loading"></div>
                 </template>
+                <lightning-record-form
+                    record-id={mouseOverRecordId}
+                    object-api-name={mouseOverObjectAPIName}
+                    layout-type="Compact"
+                    columns="2"
+                    mode="readonly"
+                    class="tooltip-content"
+                    onload={tooltipLoaded}
+                >
+                </lightning-record-form>
             </template>
         </div>
     </div>

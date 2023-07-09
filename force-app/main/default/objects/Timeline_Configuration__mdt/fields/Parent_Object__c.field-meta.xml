@@ -5,7 +5,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The Parent Objects API Name that the child record applies to</inlineHelpText>
     <label>Parent Object</label>
-    <length>150</length>
+    <length>75</length>
     <required>true</required>
     <type>Text</type>
     <unique>false</unique>

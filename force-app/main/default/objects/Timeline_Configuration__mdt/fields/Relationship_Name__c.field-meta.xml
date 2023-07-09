@@ -6,7 +6,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>The API name corresponding to the relationship between the objects. Note that custom relationships end with __r.</inlineHelpText>
     <label>Relationship Name</label>
-    <length>255</length>
+    <length>80</length>
     <required>true</required>
     <type>Text</type>
     <unique>false</unique>

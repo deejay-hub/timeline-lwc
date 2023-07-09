@@ -76,23 +76,13 @@ public with sharing class TimelineService {
                     }
 
                     mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
-                } else {
-                    String errorMsg =
-                        'You have asked to plot records for  \'' +
-                        timelineType.Object_Name__c +
-                        '\' but this entity cannot be found. Ask an administrator for help.';
-                    throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
                 }
             }
 
             return mapOfTimelineTypes;
         } catch (System.QueryException e) {
             throw new AuraHandledException(
-                '{"type": "Setup-Error", "message": "' +
-                e.getMessage() +
-                ' : ' +
-                e.getStackTraceString() +
-                '"}'
+                '{"type": "Setup-Error", "message": "' + e.getMessage() + ' : ' + e.getStackTraceString() + '"}'
             );
         } catch (TimelineSetupException e) {
             throw new AuraHandledException(e.getMessage());
@@ -138,7 +128,8 @@ public with sharing class TimelineService {
                 'Drilldown_Id_Field__c, ' +
                 'Tooltip_Id_Field__c, ' +
                 'Tooltip_Object_Name__c, ' +
-                'Fallback_Tooltip_Field__c ' +
+                'Fallback_Tooltip_Field__c, ' +
+                'Inclusion_Field__c ' +
                 'FROM Timeline_Configuration__mdt ' +
                 'WHERE Active__c = true AND ' +
                 'Test__c = ' +
@@ -173,6 +164,7 @@ public with sharing class TimelineService {
                 timelineRecord.tooltipIdField = timelineConfigurationRecord.Tooltip_Id_Field__c;
                 timelineRecord.tooltipObject = timelineConfigurationRecord.Tooltip_Object_Name__c;
                 timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
+                timelineRecord.inclusionField = timelineConfigurationRecord.Inclusion_Field__c;
 
                 mapOfTimelineConfigurationRecords.put(
                     timelineRecord.objectName + timelineRecord.relationshipName,
@@ -206,7 +198,7 @@ public with sharing class TimelineService {
                     String objName = String.valueOf(tcr.objectName);
                     String tooltipField = String.valueOf(tcr.fallbackTooltipField);
                     String tooltipIdField = String.valueOf(tcr.tooltipIdField);
-                    String drilldownIdField = String.valueOf(tcr.tooltipIdField);
+                    String drilldownIdField = String.valueOf(tcr.drilldownIdField);
                     String typeField = String.valueOf(tcr.type);
 
                     String selectStatement = '(SELECT Id, ' + tcr.detailField + ', ' + tcr.positionDateField + '';
@@ -214,10 +206,20 @@ public with sharing class TimelineService {
                     if (
                         (typeField != null && typeField != '') &&
                         (objName == 'Task' ||
+                        objName == 'OpenActivity' ||
+                        objName == 'ActivityHistory' ||
                         objName == 'TaskRelation' ||
-                        objName == 'ContentDocumentLink')
+                        objName == 'ContentDocumentLink' ||
+                        objName == 'LookedUpFromActivity')
                     ) {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
+                    }
+
+                    if (
+                        (objName == 'OpenActivity' || objName == 'ActivityHistory') &&
+                        !selectStatement.contains('ActivityDate')
+                    ) {
+                        selectStatement = selectStatement + ', ActivityDate' + '';
                     }
 
                     if (objName == 'ContentDocumentLink') {
@@ -237,21 +239,38 @@ public with sharing class TimelineService {
                     }
 
                     String relationship = tcr.relationshipName;
+                    String optionalFilter = '';
 
-                    innerQuery =
-                        innerQuery +
-                        selectStatement +
-                        +' FROM ' +
-                        relationship +
-                        ' WHERE ' +
-                        tcr.positionDateField +
-                        '>= LAST_N_MONTHS:' +
-                        earliestRange +
-                        ' AND ' +
-                        tcr.positionDateField +
-                        ' <= NEXT_N_MONTHS:' +
-                        latestRange +
-                        '),';
+                    if (tcr.inclusionField != '' && tcr.inclusionField != null) {
+                        optionalFilter = tcr.inclusionField + ' = true AND ';
+                    }
+
+                    innerQuery = innerQuery + selectStatement + ' FROM ' + relationship;
+
+                    if (objName == 'OpenActivity') {
+                        innerQuery =
+                            innerQuery +
+                            ' ORDER BY ' +
+                            'ActivityDate ASC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
+                    } else if (objName == 'ActivityHistory') {
+                        innerQuery =
+                            innerQuery +
+                            ' ORDER BY ' +
+                            'ActivityDate DESC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
+                    } else {
+                        innerQuery =
+                            innerQuery +
+                            ' WHERE ' +
+                            optionalFilter +
+                            tcr.positionDateField +
+                            '>= LAST_N_MONTHS:' +
+                            earliestRange +
+                            ' AND ' +
+                            tcr.positionDateField +
+                            ' <= NEXT_N_MONTHS:' +
+                            latestRange +
+                            '),';
+                    }
                 }
             }
 
@@ -287,13 +306,33 @@ public with sharing class TimelineService {
                             if (!dupeDataCheck.containsKey(myId)) {
                                 dupeDataCheck.put(myId, myId);
 
-                                Map<String, String> detailValues = getFieldValues(tr.detailField, eachCh);
-                                Map<String, String> positionValues = getFieldValues(tr.positionDateField, eachCh);
-                                Map<String, String> fallbackValues = getFieldValues(tr.fallbackTooltipField, eachCh);
-                                Map<String, String> tooltipIdValues = getFieldValues(tr.tooltipIdField, eachCh);
-                                Map<String, String> drilldownIdValues = getFieldValues(tr.drilldownIdField, eachCh);
+                                Map<String, String> detailValues = getFieldValues(
+                                    tr.detailField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> positionValues = getFieldValues(
+                                    tr.positionDateField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> fallbackValues = getFieldValues(
+                                    tr.fallbackTooltipField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> tooltipIdValues = getFieldValues(
+                                    tr.tooltipIdField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> drilldownIdValues = getFieldValues(
+                                    tr.drilldownIdField,
+                                    eachCh,
+                                    tr.objectName
+                                );
 
-                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh);
+                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh, tr.objectName);
 
                                 if (tr.objectName == 'ContentDocumentLink') {
                                     //NOPMD
@@ -311,7 +350,7 @@ public with sharing class TimelineService {
                                 }
 
                                 mapData.put('detailFieldLabel', detailValues.get('label'));
-                                mapData.put('positionDateField', tr.positionDateField);
+                                mapData.put('positionDateField', positionValues.get('label'));
                                 mapData.put('positionDateValue', positionValues.get('value'));
                                 mapData.put('objectName', tr.objectName);
                                 mapData.put('fallbackTooltipField', fallbackValues.get('label'));
@@ -324,7 +363,9 @@ public with sharing class TimelineService {
                                 mapData.put('icon', tr.icon);
                                 mapData.put('iconBackground', tr.iconBackground);
 
-                                listOfTimelineData.add(mapData);
+                                if (positionValues.get('value') != null && positionValues.get('value') != '') {
+                                    listOfTimelineData.add(mapData);
+                                }
                             }
                         }
                     }
@@ -335,11 +376,7 @@ public with sharing class TimelineService {
             throw new AuraHandledException(e.getMessage());
         } catch (System.QueryException e) {
             throw new AuraHandledException(
-                '{"type": "Setup-Error", "message": "' +
-                e.getMessage() +
-                ' : ' +
-                e.getStackTraceString() +
-                '"}'
+                '{"type": "Setup-Error", "message": "' + e.getMessage() + ' : ' + e.getStackTraceString() + '"}'
             );
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
@@ -371,7 +408,7 @@ public with sharing class TimelineService {
         return childRelatedObjects;
     }
 
-    private static Map<String, String> getFieldValues(String field, Sobject records) {
+    private static Map<String, String> getFieldValues(String field, Sobject records, String objectName) {
         Map<String, String> fieldDetails = new Map<String, String>();
 
         String fieldValue = '';
@@ -446,7 +483,22 @@ public with sharing class TimelineService {
             }
         }
 
-        objectCheck = String.valueOf(recordId.getSobjectType());
+        //Case comments cannot be translated to an sobjectype from the ID
+        if (String.valueOf(recordId).startsWith('00a')) {
+            objectCheck = 'CaseComment';
+        } else {
+            objectCheck = String.valueOf(recordId.getSobjectType());
+        }
+
+        //If parent object aggregates activity lists then field names change
+        //For activities their sobjecttype is Task and Event
+        switch on objectName {
+            when 'ActivityHistory', 'OpenActivity', 'LookedUpFromActivity' {
+                if (objectCheck == 'Task' || objectCheck == 'Event') {
+                    objectCheck = objectName;
+                }
+            }
+        }
 
         Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, fieldStripped);
 
@@ -563,25 +615,26 @@ public with sharing class TimelineService {
         return parentDetails;
     }
 
-    public class TimelineRecord { //NOPMD
-        public String relationshipName;
-        public String parentObject;
-        public String detailField;
-        public String detailFieldLabel;
-        public String icon;
-        public String iconBackground;
-        public String positionDateField;
-        public String positionDateValue;
-        public String objectName;
-        public String type;
-        public String tooltipIdField;
-        public String tooltipObject;
-        public String drilldownIdField;
-        public String fallbackTooltipField;
-        public String fallbackTooltipValue;
-        public String fallbackNameField;
-        public String fallbackNameValue;
-        public Id recordId;
+    private class TimelineRecord { //NOPMD
+        private String relationshipName;
+        private String parentObject;
+        private String detailField;
+        private String detailFieldLabel;
+        private String icon;
+        private String iconBackground;
+        private String positionDateField;
+        private String positionDateValue;
+        private String objectName;
+        private String type;
+        private String tooltipIdField;
+        private String tooltipObject;
+        private String drilldownIdField;
+        private String fallbackTooltipField;
+        private String fallbackTooltipValue;
+        private String fallbackNameField;
+        private String fallbackNameValue;
+        private String inclusionField;
+        private Id recordId;
     }
 
     private class FieldMetadata { //NOPMD

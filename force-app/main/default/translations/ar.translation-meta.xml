@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label>خطأ بالكود</label>
+        <name>Timeline_Error_Apex</name>
+    </customLabels>
+    <customLabels>
+        <label>تعذر تحميل موارد الجافاسكربت </label>
+        <name>Timeline_Error_JavaScriptResources</name>
+    </customLabels>
+    <customLabels>
+        <label>لا توجد بيانات للعرض</label>
+        <name>Timeline_Error_NoDataHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>تحقق من عامل التصفيه</label>
+        <name>Timeline_Error_NoDataSubHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>خطأ في الإعداد</label>
+        <name>Timeline_Error_Setup</name>
+    </customLabels>
+    <customLabels>
+        <label>يوجد خطأ غير معالج</label>
+        <name>Timeline_Error_Unhandled</name>
+    </customLabels>
+    <customLabels>
+        <label>تأكيد</label>
+        <name>Timeline_Label_Apply</name>
+    </customLabels>
+    <customLabels>
+        <label>الغاء</label>
+        <name>Timeline_Label_Cancel</name>
+    </customLabels>
+    <customLabels>
+        <label>الفتره الزمينه</label>
+        <name>Timeline_Label_Date_Range_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>يوم/أيام</label>
+        <name>Timeline_Label_Days</name>
+    </customLabels>
+    <customLabels>
+        <label>الملفات</label>
+        <name>Timeline_Label_Files</name>
+    </customLabels>
+    <customLabels>
+        <label>كل الانواع</label>
+        <name>Timeline_Label_Filter_All_Types</name>
+    </customLabels>
+    <customLabels>
+        <label>أنواع العرض</label>
+        <name>Timeline_Label_Filter_Type_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>تنقيح البيانات</label>
+        <name>Timeline_Label_Filters</name>
+    </customLabels>
+    <customLabels>
+        <label>العناصر</label>
+        <name>Timeline_Label_Items</name>
+    </customLabels>
+    <customLabels>
+        <label>عرض:</label>
+        <name>Timeline_Label_Showing</name>
+    </customLabels>
+    <customLabels>
+        <label>السجلات من النوع '{0}' غير مدعومة.</label>
+        <name>Timeline_Navigation_Toast_Body</name>
+    </customLabels>
+    <customLabels>
+        <label>التنقل غير مسموح به</label>
+        <name>Timeline_Navigation_Toast_Header</name>
+    </customLabels>
+</Translations>

@@ -6,7 +6,7 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>If the UI API is supported but you want a related record shown specify the sObject API name to use when hovering here.</inlineHelpText>
     <label>Tooltip Object Name</label>
-    <length>150</length>
+    <length>75</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>

@@ -33,8 +33,6 @@
   	</a>
 	<a href="https://www.codacy.com/manual/deejay-hub/timeline-lwc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deejay-hub/timeline-lwc&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/c03e8f3db45a46dc93a62d61a5a8108f"/>
 	</a>
-	<a href="https://gitter.im/timeline-lwc/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img src="https://badges.gitter.im/timeline-lwc/community.svg"/>
-	</a>
 </h3>
 
 <p align="center">
@@ -43,9 +41,9 @@
 
 ## Overview
 
-A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline written with D3.js.
+A complete custom experience component. Created to allow users to view related records to a parent on an interactive timeline.
 
--   **Multi Object Support.** Plot related records to Lead, Account, Contact, Opportunity and Case.
+-   **Multi Object Support.** Plot related records to any parent object.
 -   **Junction Object Support.** Plot junction object records and use simple dot notation.
 -   **Multi Language Support.** All labels and error messages as translatable custom labels.
 -   **Locale Support for Dates.** Date formats change based on your Salesforce locale setting.
@@ -57,7 +55,7 @@ A complete custom experience component. Created to allow users to view related r
 
 ## Installation Instructions
 
-Now available as a managed package from the [AppExchange](https://appexchange.salesforce.com/appxListingDetail?listingId=a0N4V00000GXVf4UAH).
+Now available as a **free** managed package from the [AppExchange](https://appexchange.salesforce.com/appxListingDetail?listingId=a0N4V00000GXVf4UAH).
 
 Alternatively you can install the component straight from source control into a Scratch Org using the instructions below:
 
@@ -71,53 +69,74 @@ Alternatively you can install the component straight from source control into a 
 2. If you haven't already done so, authenticate with your hub org and provide it with an alias (**myhuborg** in the command below):
 
 ```
-sfdx force:auth:web:login -d -a myhuborg
+sf org login web -d -a myhuborg
 ```
 
 3. Clone the timeline-lwc repository:
 
 ```
-git clone https://github.com/deejay-hub/timeline-lwc
+gh repo clone https://github.com/deejay-hub/timeline-lwc
 cd timeline-lwc
 ```
 
-4. Create a scratch org and provide it with an alias (**timeline-lwc** in the command below):
+4. Overwrite the sfdx-project.json file with the following
 
 ```
-sfdx force:org:create -s -f config/project-scratch-def.json -a timeline-lwc
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true
+        }
+    ],
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "58.0"
+}
 ```
 
-5. Push the app to your scratch org:
+5. Create a scratch org and provide it with an alias (**timewarp-lwc** in the command below):
 
 ```
-sfdx force:source:push
+sf org create scratch -d -f config/project-scratch-def.json -a timewarp-lwc -y 30
 ```
 
-6. Assign the Timeline_User permission set to the default user:
+6. Push the app to your scratch org:
 
 ```
-sfdx force:user:permset:assign -n Timeline_User
+sf project deploy start
 ```
 
-7. Load sample data:
+7. Assign the Timeline_User permission set to the default user:
 
 ```
-sfdx force:data:tree:import --plan data/timeline-plan.json
+sf org assign permset --name "Timeline_User" 
 ```
 
-8. Open the scratch org:
+8. Load sample data:
 
 ```
-sfdx force:org:open
+sf data import tree --plan data/timeline-plan.json
 ```
 
-9. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
+9. Open the scratch org:
 
-10. Find the contact **Jane Lo** and drill into her detailed information.
+```
+sf org open
+```
 
-11. Navigate to **Setup**, and select Edit Page
+10. Optional: Run npm install to support linting, prettification and test runs
 
-12. Drag the timeline component into the page - found under custom components
+```
+npm install
+```
+
+11. Navigate to **Sales**, under **App Launcher**, select the **Sales** app.
+
+12. Find the contact **Jane Lo** and drill into her detailed information.
+
+13. Navigate to **Setup**, and select Edit Page
+
+14. Drag the timeline component into the page - found under custom components
 
 <p align="center">
   <img alt="timeline app builder" src="images/appBuilderDemo.gif">
@@ -125,7 +144,7 @@ sfdx force:org:open
 
 ## How it Works
 
-For full details see the [Configuration Guide](https://salesforce.quip.com/ahFCA9VBEKtr)
+For full details see the [Configuration Guide](https://quip.com/ahFCA9VBEKtr)
 
 #### Object Support
 
@@ -140,10 +159,10 @@ The component has the following properties that can be set at design time in App
 | `Parent Record`                 | Adjusts the timeline parent id   | Dynamic Picklist (valid relationships) |
 | `Title`                         | Adjusts the label                | String                                 |
 | `Height`                        | Adjusts the vertical height      | Picklist (1 - 5)                       |
-| `Historical Time Range (Years)` | Adjusts the start date           | Picklist (0.25 - 5)                    |
-| `Future Time Range (Years)`     | Adjusts the end date             | Picklist (0.25 - 1)                    |
-| `Zoom Based On`                 | Adjusts the position of the zoom | Picklist (Current Date, Last Activity) |
-| `Zoom Range (Days)`             | Adjusts the extent of the zoom   | Integer min 15 max 120                 |
+| `Historical Time Range (Years)` | Adjusts the start date           | Picklist (0.25 - 10)                   |
+| `Future Time Range (Years)`     | Adjusts the end date             | Picklist (0.25 - 10)                   |
+| `Zoom Based On`                 | Adjusts the position of the zoom | Picklist (First Date, Current Date, Last Activity) |
+| `Zoom Range (Days)`             | Adjusts the extent of the zoom   | Integer min 15 max 365                 |
 
 #### Custom Labels
 
@@ -174,60 +193,60 @@ Labels can be translated where appropriate. Navigate to Setup -> Custom Labels a
 
 Specifying which child records to plot is done using the **Timeline_Configuration_mdt** metadata type. When populating the metadata type the following is a description of the columns and their purpose
 
-| Field Name                  | Description                                                                                                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Parent_Object__c`          | The API Name of the **parent object** that the child record relates to                                                                                                                           |
-| `Object_Name__c`            | The API Name of the object that is the **child** to plot                                                                                                                                         |
-| `Relationship_Name__c`      | The API Name of the **relationship** between Parent and Child                                                                                                                                    |
-| `Position_Date_Field__c`    | The API Name of the field on the child (Object_Name\_\_c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)                                     |
-| `Detail_Field__c`           | The API Name of the field on the child (Object_Name\_\_c) to use as the description for the record to plot on the timeline                                                                       |
-| `Icon__c`                   | A relative url to the image to use for this record                                                                                                                                               |
-| `Icon_Background_Colour__c` | The background colour to use for the above image (rgb and hex supported)                                                                                                                         |
-| `Type_Field__c`             | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name\_\_c is Task                                                                     |
-| `Fallback_Tooltip_Field__c` | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field**c value and the Fallback_Tooltip_Field**c as the tooltip. |
-| `Allow_Drilldown__c`        | Should the object support drilling into the individual record. If false then a toast error will appear when a user clicks on that record type                                                    |
-| `Drilldown_Id_Field__c`     | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects.                            |
+| Field Name                  | Description                                                                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `Parent_Object__c`          | The API Name of the **parent object** that the child record relates to                                                           |
+| `Object_Name__c`            | The API Name of the object that is the **child** to plot                                                                         |
+| `Relationship_Name__c`      | The API Name of the **relationship** between Parent and Child                                                                    |
+| `Position_Date_Field__c`    | The API Name of the field on the child (Object_Name\_\_c) to use as the date value to use to position the record on the timeline (must be Date or Date/Time)|
+| `Detail_Field__c`           | The API Name of the field on the child (Object_Name\_\_c) to use as the description for the record to plot on the timeline       |
+| `Inclusion_Field__c`        | The API Name of the field on the child (Object_Name\_\_c) that evaluates to true when a record should be included        	 |
+| `Icon__c`                   | A relative url to the image to use for this record                                                                               |
+| `Icon_Background_Colour__c` | The background colour to use for the above image (rgb and hex supported)                                                         |
+| `Type_Field__c`             | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name\_\_c is Task     |
+| `Fallback_Tooltip_Field__c` | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip. |
+| `Drilldown_Id_Field__c`     | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects. |
 | `Tooltip_Id_Field__c`       | The field containing the Id value that should be used for the hover tooltip e.g. Which record should the user see when they hover over a record on the timeline. Important for junction objects. |
-| `Tooltip_Object_Name__c`    | The object used by the tooltip. The label is also looked up to use in the filter panel.                                                                                                          |
-| `Test__c`                   | Protected records used for _Apex testing only_.                                                                                                                                                  |
+| `Tooltip_Object_Name__c`    | The object used by the tooltip. The label is also looked up to use in the filter panel.                                          |
+| `Test__c`                   | Protected records used for _Apex testing only_.                                                                                  |
 
 ## FAQs
 
-For FAQs and troubleshooting see the [Knowledge Base](https://salesforce.quip.com/6yvoAcBukqZB)
+For FAQs and troubleshooting see the [Knowledge Base](https://quip.com/6yvoAcBukqZB)
 
-#### How to I specify the fields for the tooltip?
+#### How do I specify the fields for the tooltip?
 
-Use the Compact Layout of the object plotted (for the most part).	
+Use the Compact Layout of the object plotted (for the most part).
 
-#### Does it support multiple languages other than English?	
+#### Does it support multiple languages other than English?
 
-Yes - Supports a users locale, language and has custom labels for translation available.
+Yes - Supports a users locale, language and has custom labels for translation available. Default translations are available for French, Spanish, Portuguese, Chinese (Simplified), Chinese (Traditional), Thai, German, Hebrew, Arabic and Hindi.
 
-#### Does it support Communities?	
+#### Does it support Communities?
 
-Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.	
+Yes. The timeline will work on a record detail page in the community. Sadly we don't support changing Parent Field at this stage.
 
-#### Does it support Mobile?	
+#### Does it support Mobile?
 
-No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.	
+No. The timeline component is really best suited to the desktop. Long term it is a goal to come up with a mobile version suited to reduced real estate. At the moment the component cannot be dragged into a mobile layout.
 
-#### Does it support Person Accounts?	
+#### Does it support Person Accounts?
 
 Yes.
 
-#### Does it support Files / Notes / Attachments?	
+#### Does it support Files / Notes / Attachments?
 
-Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.	
+Yes. Files and Notes (sometimes referred to as enhanced Notes) are supported. We have added any record in the ContentDocumentLink object.
 
-#### Does it support External Objects / Big Objects?	
+#### Does it support External Objects / Big Objects?
 
-No. We would have to consider scale and performance too so for now the component only supports standard and custom objects.	
+No. We would have to consider scale and performance too so for now the component only supports standard and custom objects.
 
-#### Does it support History Objects?	
+#### Does it support History Objects?
 
 No. History objects are deliberately removed from the query. They don't make good candidates to plot on the timeline due to the volume of updates.
 
-#### Does it support Junction Objects?	
+#### Does it support Junction Objects?
 
 Yes.
 
@@ -241,8 +260,9 @@ See [contributing.md](/contributing.md) for timeline principles.
 
 #### Dependencies
 
--   D3.js v 5.7.0
--   moment.js v2.2.4
+-   D3.js v 7.4.4
+
+(moment.js v2.29.1) deprecated from v1.10.
 
 #### Code formatting
 

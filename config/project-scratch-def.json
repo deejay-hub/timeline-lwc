@@ -1,5 +1,12 @@
 {
-    "orgName": "david.norris company",
+    "orgName": "Time Warp",
     "edition": "Developer",
-    "features": []
+    "features": ["ServiceCloud", "ServiceUser"],
+    "settings": {
+        "languageSettings": {
+            "enableTranslationWorkbench": true,
+            "enableEndUserLanguages": true,
+            "enablePlatformLanguages": true
+        }
+    }
 }

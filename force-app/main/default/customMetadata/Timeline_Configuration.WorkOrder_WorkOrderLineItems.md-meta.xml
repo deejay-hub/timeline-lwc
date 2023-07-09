@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Icon_Background_Colour__c</field>
-        <value xsi:type="xsd:string">#33a8dc</value>
+        <value xsi:type="xsd:string">#1b96ff</value>
     </values>
     <values>
         <field>Icon__c</field>
