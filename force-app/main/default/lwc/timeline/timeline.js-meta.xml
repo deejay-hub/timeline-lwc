@@ -19,6 +19,9 @@
             <property name="zoomTo" label="Zoom Based On" default="Current Date" required="true" type="String" datasource="Current Date, Last Activity, First Activity" description="Zoom to the last record found (even if it's in the past or future) OR zoom to the current date (even if there are no records)."/>
             <property name="daysToShow" label="Zoom Range (Days)" default="60" required="true" type="Integer" min="7" max="365" description="Specify how many days to zoom to by default. e.g. 60 days would show 30 days prior to and 30 days after the specified 'zoom based on' setting."/>
 
+            <property name="showToday" label="Show Today" default="Yes" required="true" type="String" description="Show today's date." datasource="Yes, No"/>
+            <property name="showTodayColour" label="Today Colour" default="Blue" required="true" type="String" datasource="Blue, Black, Green, Indigo, Pink, Purple, Teal, Red" />
+
             <supportedFormFactors>
                 <supportedFormFactor type="Large" />
             </supportedFormFactors>
