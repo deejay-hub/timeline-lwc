@@ -902,6 +902,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
             case "Red":
                 colour = "#ea001e";
                 break;
+            default:
+                colour = "#107cad";
+                break;
         }
 
         return colour;
