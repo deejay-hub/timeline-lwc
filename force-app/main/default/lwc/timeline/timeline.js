@@ -525,6 +525,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .style("x", "-4")
             .style("y", timelineHeight - 8)
 
+
         timelineCanvas.redraw = function (domain) {
             var i = 0;
             var swimlane = 0;
