@@ -905,6 +905,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             default:
                 colour = "#107cad";
                 break;
+
         }
 
         return colour;
