@@ -505,26 +505,28 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         let currentDate = new Date();
 
-        let today = timelineCanvas.append('g')
+        if ( this.showToday === "Yes" ) {
+            let today = timelineCanvas.append('g')
             .attr('class', 'timeline-canvas-current-date')
             .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
         
-        today.append("line")
-            .style("stroke", this.todaysColour)
-            .style("stroke-width", "1.5px")
-            .style("stroke-dasharray", "7, 7")
-            .style("shape-rendering", "crispEdges")
-            .attr("y2", timelineHeight);
-        
-        today.append("rect")
-            .style("fill", this.todaysColour)
-            .style("width", "8")
-            .style("height", "13")
-            .style("rx", "3")
-            .style("ry", "3")
-            .style("x", "-4")
-            .style("y", timelineHeight - 8)
-
+            today.append("line")
+                .style("stroke", this.todaysColour)
+                .style("stroke-width", "1.5px")
+                .style("stroke-dasharray", "7, 7")
+                .style("shape-rendering", "crispEdges")
+                .attr("y2", timelineHeight);
+            
+            today.append("rect")
+                .style("fill", this.todaysColour)
+                .style("width", "8")
+                .style("height", "13")
+                .style("rx", "3")
+                .style("ry", "3")
+                .style("x", "-4")
+                .style("y", timelineHeight - 8)
+        }
+    
         timelineCanvas.redraw = function (domain) {
             var i = 0;
             var swimlane = 0;
@@ -957,16 +959,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineMap.height = timelineMapDIV.offsetHeight;
 
         let currentDate = new Date();
-        let today = timelineMap.append('g')
-            .attr('class', 'timeline-map-current-date')
-            .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );
-        
-        today.append("line")
-            .style("stroke", this.todaysColour)
-            .style("stroke-width", "1.5px")
-            .style("stroke-dasharray", "2, 2")
-            .style("shape-rendering", "crispEdges")
-            .attr("y2", timelineMap.height);
+
+        if ( this.showToday === "Yes" ) {
+            let today = timelineMap.append('g')
+                .attr('class', 'timeline-map-current-date')
+                .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );
+            
+            today.append("line")
+                .style("stroke", this.todaysColour)
+                .style("stroke-width", "1.5px")
+                .style("stroke-dasharray", "2, 2")
+                .style("shape-rendering", "crispEdges")
+                .attr("y2", timelineMap.height);
+        }
 
         timelineMap.redraw = function () {
             var i = 0;
