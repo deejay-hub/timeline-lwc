@@ -498,6 +498,27 @@ export default class timeline extends NavigationMixin(LightningElement) {
             return false;
         };
 
+        let currentDate = new Date();
+        let today = timelineCanvas.append('g')
+            .attr('class', 'timeline-canvas-current-date')
+            .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
+        
+        today.append("line")
+            .style("stroke", "#107cad")
+            .style("stroke-width", "1px")
+            .style("stroke-dasharray", "9, 9")
+            .style("shape-rendering", "crispEdges")
+            .attr("y2", timelineHeight);
+        
+        today.append("rect")
+            .style("fill", "#107cad")
+            .style("width", "10")
+            .style("height", "13")
+            .style("rx", "3")
+            .style("ry", "3")
+            .style("x", "-5")
+            .style("y", timelineHeight - 10)
+
         timelineCanvas.redraw = function (domain) {
             var i = 0;
             var swimlane = 0;
@@ -522,6 +543,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .filter(timelineCanvas.filter);
 
             me.totalZoomedRecords = data.length;
+
+            timelineCanvas.currentDate = timelineCanvas
+                .selectAll('[class~=timeline-canvas-current-date]')
+                .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
 
             data.sort(me.sortByValue('time'));
 
@@ -891,6 +916,18 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         timelineMap.width = timelineMapDIV.offsetWidth;
         timelineMap.height = timelineMapDIV.offsetHeight;
+
+        let currentDate = new Date();
+        let today = timelineMap.append('g')
+            .attr('class', 'timeline-map-current-date')
+            .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );
+        
+        today.append("line")
+            .style("stroke", "#107cad")
+            .style("stroke-width", "1px")
+            .style("stroke-dasharray", "2, 2")
+            .style("shape-rendering", "crispEdges")
+            .attr("y2", timelineMap.height);
 
         timelineMap.redraw = function () {
             var i = 0;
