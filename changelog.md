@@ -6,6 +6,7 @@
 -   Changed Salesforce API to v59.0 from v58.0
 -   Added the ability to plot today's date
 -   Added the ability to change the colour used for today's date
+-   d3.js updated to v7.8.5
 -   Documentation improvements
 
 **BUG FIXES**
