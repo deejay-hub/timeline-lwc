@@ -42,6 +42,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api latestRange; //How far into the future to go
     @api zoomTo; //Zoom to current dat or latest activity
     @api daysToShow; //number of days to plot for the default zoom
+    @api showToday; //should today's date be plotted
+    @api showTodayColour; //if today's date is shown - what colour
 
     //Component calculated attributes
     @api recordId; //current record id of lead, case, opportunity, contact or account
@@ -96,6 +98,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     illustrationHeader; //Header to display when an information box displays
     illustrationSubHeader; //Sub Header to display when an info box appears
     illustrationType; //Type of illustration to display, 'error' or 'no data'
+
+    todaysColour;
 
     label = {
         DAYS,
@@ -219,6 +223,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         if (!this._d3Rendered) {
+            this.todaysColour = this.getTodaysColour();
             //set the height of the component as the height is dynamic based on the attributes
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
             this.currentParentField = this.timelineParent;
@@ -498,6 +503,30 @@ export default class timeline extends NavigationMixin(LightningElement) {
             return false;
         };
 
+        let currentDate = new Date();
+
+        if ( this.showToday === "Yes" ) {
+            let today = timelineCanvas.append('g')
+            .attr('class', 'timeline-canvas-current-date')
+            .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
+        
+            today.append("line")
+                .style("stroke", this.todaysColour)
+                .style("stroke-width", "1.5px")
+                .style("stroke-dasharray", "7, 7")
+                .style("shape-rendering", "crispEdges")
+                .attr("y2", timelineHeight);
+            
+            today.append("rect")
+                .style("fill", this.todaysColour)
+                .style("width", "8")
+                .style("height", "13")
+                .style("rx", "3")
+                .style("ry", "3")
+                .style("x", "-4")
+                .style("y", timelineHeight - 8)
+        }
+    
         timelineCanvas.redraw = function (domain) {
             var i = 0;
             var swimlane = 0;
@@ -522,6 +551,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .filter(timelineCanvas.filter);
 
             me.totalZoomedRecords = data.length;
+
+            timelineCanvas.currentDate = timelineCanvas
+                .selectAll('[class~=timeline-canvas-current-date]')
+                .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
 
             data.sort(me.sortByValue('time'));
 
@@ -586,7 +619,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 iconColour = '#939393';
                                 break;
                             case 'Event':
-                                iconColour = '#ff538a';
+                                iconColour = '#CB65FF';
                                 break;
                             case 'SNOTE':
                                 iconColour = '#939393';
@@ -841,6 +874,42 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
     }
 
+    getTodaysColour() {
+        let colour;
+
+        switch (this.showTodayColour) {
+            case "Blue":
+                colour = "#107cad";
+                break;
+            case "Green":
+                colour = "#2e844a";
+                break;
+            case "Black":
+                colour = "#444444";
+                break;
+            case "Purple":
+                colour = "#9050e9";
+                break;
+            case "Indigo":
+                colour = "#5867e8";
+                break;
+            case "Teal":
+                colour = "#0b827c";
+                break;
+            case "Pink":
+                colour = "#e3066a";
+                break;
+            case "Red":
+                colour = "#ea001e";
+                break;
+            default:
+                colour = "#107cad";
+                break;
+        }
+
+        return colour;
+    }
+
     getPreferredHeight() {
         let height;
 
@@ -892,11 +961,30 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineMap.width = timelineMapDIV.offsetWidth;
         timelineMap.height = timelineMapDIV.offsetHeight;
 
+        let currentDate = new Date();
+
+        if ( this.showToday === "Yes" ) {
+            let today = timelineMap.append('g')
+                .attr('class', 'timeline-map-current-date')
+                .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );
+            
+            today.append("line")
+                .style("stroke", this.todaysColour)
+                .style("stroke-width", "1.5px")
+                .style("stroke-dasharray", "2, 2")
+                .style("shape-rendering", "crispEdges")
+                .attr("y2", timelineMap.height);
+        }
+
         timelineMap.redraw = function () {
             var i = 0;
             var swimlane = 0;
             let swimlanes = [];
             const unitInterval = (timelineMap.x.domain()[1] - timelineMap.x.domain()[0]) / timelineMap.width;
+
+            timelineMap.currentDate = timelineMap
+                .selectAll('[class~=timeline-map-current-date]')
+                .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );
 
             let data = timelineData.data
                 .filter(function (d) {
