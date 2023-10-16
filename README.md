@@ -262,7 +262,7 @@ See [contributing.md](/contributing.md) for timeline principles.
 
 #### Dependencies
 
--   D3.js v 7.4.4
+-   D3.js v 7.8.5
 
 (moment.js v2.29.1) deprecated from v1.10.
 
