@@ -1,9 +1,9 @@
-<h1 align="center">
+<div align="center">
 	<img
 	width="50"
-	src="/force-app/main/default/lwc/timeline/timeline.svg"></br>
-	Time Warp<br>     
-</h1>
+	src="/force-app/main/default/lwc/timeline/timeline.svg">
+	<h1>Time Warp</h1>
+</div>
 
 <h4 align="center">
 	<a href="#overview">Overview</a> |
