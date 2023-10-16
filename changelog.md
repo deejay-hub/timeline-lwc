@@ -1,5 +1,16 @@
 # Change Log
 
+## XX Xxx 202X v1.14.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to v59.0 from v58.0
+-   Added the ability to plot today's date
+-   Added the ability to change the colour used for today's date
+-   Documentation improvements
+
+**BUG FIXES**
+-   Fixed WCAG colour schemes used in Winter '24
+
 ## 26 Jun 2023 v1.12.0
 
 **WHAT'S NEW**
