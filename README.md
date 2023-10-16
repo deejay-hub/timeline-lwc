@@ -1,9 +1,9 @@
-<h1 align="center">
+<div align="center">
 	<img
 	width="50"
-	src="/force-app/main/default/lwc/timeline/timeline.svg"></br>
-	Time Warp<br>     
-</h1>
+	src="/force-app/main/default/lwc/timeline/timeline.svg">
+	<h1>Time Warp</h1>
+</div>
 
 <h4 align="center">
 	<a href="#overview">Overview</a> |
@@ -90,7 +90,7 @@ cd timeline-lwc
         }
     ],
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "58.0"
+    "sourceApiVersion": "59.0"
 }
 ```
 
@@ -262,7 +262,7 @@ See [contributing.md](/contributing.md) for timeline principles.
 
 #### Dependencies
 
--   D3.js v 7.4.4
+-   D3.js v 7.8.5
 
 (moment.js v2.29.1) deprecated from v1.10.
 
