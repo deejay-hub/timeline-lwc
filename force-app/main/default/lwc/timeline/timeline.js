@@ -619,7 +619,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 iconColour = '#939393';
                                 break;
                             case 'Event':
-                                iconColour = '#ff538a';
+                                iconColour = '#CB65FF';
                                 break;
                             case 'SNOTE':
                                 iconColour = '#939393';
