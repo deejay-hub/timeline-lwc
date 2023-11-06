@@ -6,14 +6,14 @@
 -   Changed Salesforce API to v59.0 from v58.0
 -   Added the ability to plot today's date
 -   Added the ability to change the colour used for today's date
--   Added resize observer to replace window resize events
+-   Added the ability to use fields for icon and icon colour
 -   d3.js updated to v7.8.5
 -   Documentation improvements
 
 **BUG FIXES**
 -   Fixed WCAG colour schemes used in Winter '24
 -   Fixed zero width issues in service console
--   Fixed resize events when splitter is used
+-   Fixed resize events when splitter is used using resize observer
 
 ## 26 Jun 2023 v1.12.0
 
