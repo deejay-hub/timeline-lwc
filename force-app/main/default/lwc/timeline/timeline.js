@@ -42,8 +42,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api latestRange; //How far into the future to go
     @api zoomTo; //Zoom to current dat or latest activity
     @api daysToShow; //number of days to plot for the default zoom
-    @api showToday; //should today's date be plotted
-    @api showTodayColour; //if today's date is shown - what colour
+    @api showToday; //should today's date be plotted and in what colour
 
     //Component calculated attributes
     @api recordId; //current record id of lead, case, opportunity, contact or account
@@ -99,7 +98,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
     illustrationSubHeader; //Sub Header to display when an info box appears
     illustrationType; //Type of illustration to display, 'error' or 'no data'
 
-    todaysColour;
+    todayColourMap = {
+        Blue: "#107cad",
+        Green: "#2e844a",
+        Black: "#444444",
+        Purple: "#9050e9",
+        Indigo: "#5867e8",
+        Teal: "#0b827c",
+        Pink: "#e3066a",
+        Red: "#ea001e",
+        No: "#107cad"
+    };
 
     label = {
         DAYS,
@@ -130,6 +139,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     _timelineData = null;
     _timelineHeight = null;
+
+    heightMap = {
+        "1 - Smallest": 125,
+        "2 - Small": 200,
+        "3 - Default": 275,
+        "4 - Big": 350,
+        "5 - Biggest": 425,
+      };
 
     //These are the objects holding individual instances of the timeline
     _d3timelineCanvas = null;
@@ -210,7 +227,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     connectedCallback() {
-        this._timelineHeight = this.getPreferredHeight();
+        this._timelineHeight = this.heightMap[this.preferredHeight];
     }
 
     renderedCallback() {
@@ -223,7 +240,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         if (!this._d3Rendered) {
-            this.todaysColour = this.getTodaysColour();
+            this.todaysColour = this.todayColourMap[this.showToday];
             //set the height of the component as the height is dynamic based on the attributes
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
             this.currentParentField = this.timelineParent;
@@ -505,7 +522,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         let currentDate = new Date();
 
-        if ( this.showToday === "Yes" ) {
+        if ( this.showToday !== "No" ) {
             let today = timelineCanvas.append('g')
             .attr('class', 'timeline-canvas-current-date')
             .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
@@ -874,69 +891,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
     }
 
-    getTodaysColour() {
-        let colour;
-
-        switch (this.showTodayColour) {
-            case "Blue":
-                colour = "#107cad";
-                break;
-            case "Green":
-                colour = "#2e844a";
-                break;
-            case "Black":
-                colour = "#444444";
-                break;
-            case "Purple":
-                colour = "#9050e9";
-                break;
-            case "Indigo":
-                colour = "#5867e8";
-                break;
-            case "Teal":
-                colour = "#0b827c";
-                break;
-            case "Pink":
-                colour = "#e3066a";
-                break;
-            case "Red":
-                colour = "#ea001e";
-                break;
-            default:
-                colour = "#107cad";
-                break;
-        }
-
-        return colour;
-    }
-
-    getPreferredHeight() {
-        let height;
-
-        switch (this.preferredHeight) {
-            case '1 - Smallest':
-                height = 125;
-                break;
-            case '2 - Small':
-                height = 200;
-                break;
-            case '3 - Default':
-                height = 275;
-                break;
-            case '4 - Big':
-                height = 350;
-                break;
-            case '5 - Biggest':
-                height = 425;
-                break;
-            default:
-                height = 275;
-                break;
-        }
-
-        return height;
-    }
-
     timelineMap() {
         const me = this;
 
@@ -963,7 +917,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         let currentDate = new Date();
 
-        if ( this.showToday === "Yes" ) {
+        if ( this.showToday !== "No" ) {
             let today = timelineMap.append('g')
                 .attr('class', 'timeline-map-current-date')
                 .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );

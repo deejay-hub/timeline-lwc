@@ -110,6 +110,8 @@ public with sharing class TimelineService {
                 'Active__c, ' +
                 'Icon__c, ' +
                 'Icon_Background_Colour__c, ' +
+                'Icon_Field__c, ' +
+                'Icon_Background_Colour_Field__c, ' +
                 'Position_Date_Field__c, ' +
                 'Object_Name__c, ' +
                 'Type_Field__c, ' +
@@ -136,13 +138,14 @@ public with sharing class TimelineService {
             }
 
             Map<String, TimelineRecord> mapOfTimelineConfigurationRecords = new Map<String, TimelineRecord>();
-            Map<String, String> mapOfFields = new Map<String, String>();
 
             for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
                 TimelineRecord timelineRecord = new timelineRecord();
                 timelineRecord.relationshipName = timelineConfigurationRecord.Relationship_Name__c;
                 timelineRecord.icon = timelineConfigurationRecord.Icon__c;
                 timelineRecord.iconBackground = timelineConfigurationRecord.Icon_Background_Colour__c;
+                timelineRecord.iconField = timelineConfigurationRecord.Icon_Field__c;
+                timelineRecord.iconBackgroundField = timelineConfigurationRecord.Icon_Background_Colour_Field__c;
                 timelineRecord.detailField = timelineConfigurationRecord.Detail_Field__c;
                 timelineRecord.objectName = timelineConfigurationRecord.Object_Name__c;
                 timelineRecord.type = timelineConfigurationRecord.Type_Field__c;
@@ -152,17 +155,11 @@ public with sharing class TimelineService {
                 timelineRecord.tooltipObject = timelineConfigurationRecord.Tooltip_Object_Name__c;
                 timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
                 timelineRecord.inclusionField = timelineConfigurationRecord.Inclusion_Field__c;
-
+           
                 mapOfTimelineConfigurationRecords.put(
                     timelineRecord.objectName + timelineRecord.relationshipName,
                     timelineRecord
                 );
-                mapOfFields.put(timelineRecord.detailField, timelineRecord.objectName);
-                mapOfFields.put(timelineRecord.positionDateField, timelineRecord.objectName);
-                mapOfFields.put(timelineRecord.fallbackTooltipField, timelineRecord.objectName);
-                mapOfFields.put(timelineRecord.tooltipIdField, timelineRecord.objectName);
-                mapOfFields.put(timelineRecord.drilldownIdField, timelineRecord.objectName);
-                mapOfFields.put(timelineRecord.type, timelineRecord.objectName);
             }
 
             Map<String, String> childObjects = getChildObjects(parentObjectType);
@@ -178,6 +175,8 @@ public with sharing class TimelineService {
                     String tooltipIdField = String.valueOf(tcr.tooltipIdField);
                     String drilldownIdField = String.valueOf(tcr.drilldownIdField);
                     String typeField = String.valueOf(tcr.type);
+                    String iconField = String.valueOf(tcr.iconField);
+                    String iconColourField = String.valueOf(tcr.iconBackgroundField);
 
                     String selectStatement = '(SELECT Id, ' + tcr.detailField + ', ' + tcr.positionDateField + '';
 
@@ -214,6 +213,14 @@ public with sharing class TimelineService {
 
                     if (tooltipIdField != null && tooltipIdField != '' && tcr.drilldownIdField <> tcr.tooltipIdField) {
                         selectStatement = selectStatement + ', ' + tcr.tooltipIdField + '';
+                    }
+
+                    if (iconField != null && iconField != '' ) {
+                        selectStatement = selectStatement + ', ' + tcr.iconField + '';
+                    }
+
+                    if (iconColourField != null && iconColourField != '' ) {
+                        selectStatement = selectStatement + ', ' + tcr.iconBackgroundField + '';
                     }
 
                     String relationship = tcr.relationshipName;
@@ -310,6 +317,16 @@ public with sharing class TimelineService {
                                     eachCh,
                                     tr.objectName
                                 );
+                                Map<String, String> iconValues = getFieldValues(
+                                    tr.iconField,
+                                    eachCh,
+                                    tr.objectName
+                                );
+                                Map<String, String> iconColourValues = getFieldValues(
+                                    tr.iconBackgroundField,
+                                    eachCh,
+                                    tr.objectName
+                                );
 
                                 Map<String, String> typeValues = getFieldValues(tr.type, eachCh, tr.objectName);
 
@@ -339,8 +356,20 @@ public with sharing class TimelineService {
                                 mapData.put('tooltipObject', tr.tooltipObject);
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
                                 mapData.put('type', typeValues.get('value'));
-                                mapData.put('icon', tr.icon);
-                                mapData.put('iconBackground', tr.iconBackground);
+
+                                if (iconValues.get('value') != null && iconValues.get('value') != '') {
+                                    mapData.put('icon', iconValues.get('value'));
+                                }
+                                else {
+                                    mapData.put('icon', tr.icon);
+                                }
+
+                                if (iconColourValues.get('value') != null && iconColourValues.get('value') != '') {
+                                    mapData.put('iconBackground', iconColourValues.get('value'));
+                                }
+                                else {
+                                    mapData.put('iconBackground', tr.iconBackground);
+                                }
 
                                 if (positionValues.get('value') != null && positionValues.get('value') != '') {
                                     listOfTimelineData.add(mapData);
@@ -393,7 +422,7 @@ public with sharing class TimelineService {
         String fieldValue = '';
         String fieldLabel = '';
         String objectCheck = '';
-        String fieldCheck = '';
+        //String fieldCheck = '';
         String fieldStripped = '';
         Boolean fieldCanAccess = true;
 
@@ -601,6 +630,8 @@ public with sharing class TimelineService {
         private String detailFieldLabel;
         private String icon;
         private String iconBackground;
+        private String iconField;
+        private String iconBackgroundField;
         private String positionDateField;
         private String positionDateValue;
         private String objectName;
