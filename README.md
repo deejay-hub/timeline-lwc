@@ -204,8 +204,8 @@ Specifying which child records to plot is done using the **Timeline_Configuratio
 | `Inclusion_Field__c`        | The API Name of the field on the child (Object_Name\_\_c) that evaluates to true when a record should be included        	 |
 | `Icon__c`                   | A relative url to the image to use for this record                                                                               |
 | `Icon_Background_Colour__c` | The background colour to use for the above image (rgb and hex supported)                                                         |
-| `Icon_Field__c`                   | The API Name of the formula field to use to get the image text from                                                        |
-| `Icon_Background_Colour_Field__c` | The API Name of the formula field to use to get the image background colour from                                           |
+| `Icon_Field__c`                   | The API Name of the formula field to dynamically get the image text                                                        |
+| `Icon_Background_Colour_Field__c` | The API Name of the formula field to dynamically get the image background colour                                           |
 | `Type_Field__c`             | Reserved for 'Tasks' only. Used to specify the field to distinguish Calls vs Emails. Only used when Object_Name\_\_c is Task     |
 | `Fallback_Tooltip_Field__c` | The API Name of the field on the child object to use when the UI API does not support this object. Timeline will use the Detail_Field__c value and the Fallback_Tooltip_Field__c as the tooltip. |
 | `Drilldown_Id_Field__c`     | The field containing the Id value that should be used for the drilldown operation. e.g. Which record should the user be navigated to. Important for junction objects. |
