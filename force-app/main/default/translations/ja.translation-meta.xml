@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>コンソールの競合</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>タイム ワープは、親サブタブと子サブタブに同時に読み込むことはできません。このタイムラインを表示するには、タイム ワープを更新します。</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>JavaScriptリソースを読み込めません</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -70,6 +78,6 @@
     </customLabels>
     <customLabels>
         <label><!-- Timeline_Navigation_Toast_Header --></label>
-        <name>ナビゲーションは許可されていません</name>
+        <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
 </Translations>

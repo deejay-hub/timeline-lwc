@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>Konsolkonflikt</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp kan inte laddas på en förälder- och underflik samtidigt. Uppdatera Time Warp för att se denna tidslinje.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>Det går inte att läsa in JavaScript resurser</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>'{0}' stöds inte register av typ.</label>
+        <label>&apos;{0}&apos; stöds inte register av typ.</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

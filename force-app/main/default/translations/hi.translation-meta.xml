@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>कंसोल संघर्ष</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>टाइम वॉर्प एक ही समय में पैरेंट और चाइल्ड सब टैब पर लोड नहीं हो सकता। इस टाइमलाइन को देखने के लिए टाइम वॉर्प को रिफ्रेश करें।</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>JavaScript संसाधनों को लोड करने में असमर्थ</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>प्रकार के रिकॉर्ड्स '{0}' समर्थित नहीं हैं।</label>
+        <label>प्रकार के रिकॉर्ड्स &apos;{0}&apos; समर्थित नहीं हैं।</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

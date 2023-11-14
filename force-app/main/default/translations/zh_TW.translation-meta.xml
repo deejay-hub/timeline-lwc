@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>控制台衝突</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>時間扭曲無法同時載入到父選項卡和子選項卡上。刷新時間扭曲即可查看此時間軸。</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>無法加載JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -17,7 +25,7 @@
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
-        <label>搭建錯誤></label>
+        <label>搭建錯誤&gt;</label>
         <name>Timeline_Error_Setup</name>
     </customLabels>
     <customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>記錄類型"{0}"不支持。</label>
+        <label>記錄類型&quot;{0}&quot;不支持。</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

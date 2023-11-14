@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>ความขัดแย้งของคอนโซล</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp ไม่สามารถโหลดบนแท็บย่อยพาเรนต์และย่อยพร้อมกันได้ รีเฟรช Time Warp เพื่อดูไทม์ไลน์นี้</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>ไม่สามารถโหลดทรัพยากร JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>ประวัติชนิด '{0}' ยังไม่ได้รับการสนับสนุน</label>
+        <label>ประวัติชนิด &apos;{0}&apos; ยังไม่ได้รับการสนับสนุน</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

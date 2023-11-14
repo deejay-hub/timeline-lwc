@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>Conflicto de consola</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp no se puede cargar en una subpestaña principal y secundaria al mismo tiempo. Actualiza Time Warp para ver esta línea de tiempo.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>No se puede cargar recursos de JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>Los registros de tipo '{0}' no son compatibles</label>
+        <label>Los registros de tipo &apos;{0}&apos; no son compatibles</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

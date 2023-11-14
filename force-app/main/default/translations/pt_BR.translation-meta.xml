@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>Conflito de console</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>O Time Warp não pode carregar em uma subguia pai e filho ao mesmo tempo. Atualize o Time Warp para visualizar esta linha do tempo.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>Não é possível carregar recursos JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>Registros do tipo '{0}' não são suportados.</label>
+        <label>Registros do tipo &apos;{0}&apos; não são suportados.</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

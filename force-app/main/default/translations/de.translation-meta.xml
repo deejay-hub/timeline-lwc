@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>Konsolenkonflikt</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp kann nicht gleichzeitig auf einer übergeordneten und untergeordneten unterregisterkarte geladen werden. Aktualisieren Sie Time Warp, um diese zeitleiste anzuzeigen.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>Unfähig JavaScript-Ressourcen zu laden</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>Aufzeichnungen vom Typ '{0}' werden nicht unterstützt.</label>
+        <label>Aufzeichnungen vom Typ &apos;{0}&apos; werden nicht unterstützt.</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

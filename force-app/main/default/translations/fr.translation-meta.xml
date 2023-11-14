@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>Conflit de console</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp ne peut pas se charger simultanément sur un sous-onglet parent et enfant. Actualisez Time Warp pour afficher cette chronologie.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>Impossible de charger les ressources JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>

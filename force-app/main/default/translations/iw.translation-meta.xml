@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>קונפליקט מסוף</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp לא יכול להיטען בכרטיסיית משנה של הורה וילד בו-זמנית. רענן את Time Warp כדי להציג את ציר הזמן הזה.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>לא ניתן לטעון משאבי JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>רשומות מסוג '{0}' אינן נתמכות.</label>
+        <label>רשומות מסוג &apos;{0}&apos; אינן נתמכות.</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>
