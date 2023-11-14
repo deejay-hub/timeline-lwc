@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>Conflitto della console</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp non può essere caricato contemporaneamente su una sottoscheda principale e secondaria. Aggiorna Time Warp per visualizzare questa sequenza temporale.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>Impossibile caricare le risorse JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>I record di tipo '{0}' non sono supportati</label>
+        <label>I record di tipo &apos;{0}&apos; non sono supportati</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

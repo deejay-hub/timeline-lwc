@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>Konsollkonflikt</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp kan ikke lastes inn på en overordnet og underordnet underkategori samtidig. Oppdater Time Warp for å se denne tidslinjen.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>Kan ikke laste ressurser Javascript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>

@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>控制台冲突</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>时间扭曲无法同时加载到父选项卡和子选项卡上。刷新时间扭曲即可查看此时间线。</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>无法加载JavaScript</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>记录类型"{0}"不支持。</label>
+        <label>记录类型&quot;{0}&quot;不支持。</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

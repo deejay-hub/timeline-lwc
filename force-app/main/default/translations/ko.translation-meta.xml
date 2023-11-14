@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>콘솔 충돌</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>시간 왜곡은 상위 및 하위 하위 탭에 동시에 로드할 수 없습니다. 이 타임라인을 보려면 Time Warp를 새로고침하세요.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>JavaScript 리소스를 로드할 수 없습니다.</label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>'{0}' 유형의 레코드는 지원되지 않습니다.</label>
+        <label>&apos;{0}&apos; 유형의 레코드는 지원되지 않습니다.</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>

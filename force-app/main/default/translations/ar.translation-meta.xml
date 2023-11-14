@@ -5,6 +5,14 @@
         <name>Timeline_Error_Apex</name>
     </customLabels>
     <customLabels>
+        <label>صراع وحدة التحكم</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>لا يمكن تحميل Time Warp على علامة التبويب الفرعية الأصل والفرعية في نفس الوقت. قم بتحديث Time Warp لعرض هذا المخطط الزمني.</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
         <label>تعذر تحميل موارد الجافاسكربت </label>
         <name>Timeline_Error_JavaScriptResources</name>
     </customLabels>
@@ -65,7 +73,7 @@
         <name>Timeline_Label_Showing</name>
     </customLabels>
     <customLabels>
-        <label>السجلات من النوع '{0}' غير مدعومة.</label>
+        <label>السجلات من النوع &apos;{0}&apos; غير مدعومة.</label>
         <name>Timeline_Navigation_Toast_Body</name>
     </customLabels>
     <customLabels>
