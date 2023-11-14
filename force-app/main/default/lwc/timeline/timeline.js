@@ -16,6 +16,8 @@ import APEX from '@salesforce/label/c.Timeline_Error_Apex';
 import SETUP from '@salesforce/label/c.Timeline_Error_Setup';
 import NO_DATA_HEADER from '@salesforce/label/c.Timeline_Error_NoDataHeader';
 import NO_DATA_SUBHEADER from '@salesforce/label/c.Timeline_Error_NoDataSubHeader';
+import CONSOLE_HEADER from '@salesforce/label/c.Timeline_Error_ConsoleTab';
+import CONSOLE_SUBHEADER from '@salesforce/label/c.Timeline_Error_ConsoleTabSubHeader';
 import JAVASCRIPT_LOAD from '@salesforce/label/c.Timeline_Error_JavaScriptResources';
 import UNHANDLED from '@salesforce/label/c.Timeline_Error_Unhandled';
 
@@ -126,6 +128,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     error = {
         APEX,
         SETUP,
+        CONSOLE_HEADER,
+        CONSOLE_SUBHEADER,
         NO_DATA_HEADER,
         NO_DATA_SUBHEADER,
         JAVASCRIPT_LOAD,
@@ -321,86 +325,90 @@ export default class timeline extends NavigationMixin(LightningElement) {
         })
             .then((result) => {
                 try {
-                    if (result.length > 0) {
-                        me.totalTimelineRecords = result.length;
+                    if ( this.template.querySelector('div.timeline-canvas').offsetWidth !== 0 ) {
+                        if (result.length > 0) {
+                            me.totalTimelineRecords = result.length;
 
-                        //Process timeline records
-                        me._timelineData = me.getTimelineRecords(result);
+                            //Process timeline records
+                            me._timelineData = me.getTimelineRecords(result);
 
-                        //Process timeline canvas
-                        me._d3timelineCanvas = me.timelineCanvas();
+                            //Process timeline canvas
+                            me._d3timelineCanvas = me.timelineCanvas();
 
-                        const axisDividerConfig = {
-                            innerTickSize: -me._d3timelineCanvas.SVGHeight,
-                            translate: [0, me._d3timelineCanvas.SVGHeight],
-                            tickPadding: 0,
-                            ticks: 6,
-                            class: 'axis-ticks'
-                        };
+                            const axisDividerConfig = {
+                                innerTickSize: -me._d3timelineCanvas.SVGHeight,
+                                translate: [0, me._d3timelineCanvas.SVGHeight],
+                                tickPadding: 0,
+                                ticks: 6,
+                                class: 'axis-ticks'
+                            };
 
-                        me._d3timelineCanvasAxis = me.axis(
-                            axisDividerConfig,
-                            me._d3timelineCanvasSVG,
-                            me._d3timelineCanvas
-                        );
+                            me._d3timelineCanvasAxis = me.axis(
+                                axisDividerConfig,
+                                me._d3timelineCanvasSVG,
+                                me._d3timelineCanvas
+                            );
 
-                        const axisLabelConfig = {
-                            innerTickSize: 0,
-                            tickPadding: 2,
-                            translate: [0, 5],
-                            ticks: 6,
-                            class: 'axis-label'
-                        };
+                            const axisLabelConfig = {
+                                innerTickSize: 0,
+                                tickPadding: 2,
+                                translate: [0, 5],
+                                ticks: 6,
+                                class: 'axis-label'
+                            };
 
-                        me._d3timelineCanvasAxisLabel = me.axis(
-                            axisLabelConfig,
-                            me._d3timelineCanvasAxisSVG,
-                            me._d3timelineCanvas
-                        );
+                            me._d3timelineCanvasAxisLabel = me.axis(
+                                axisLabelConfig,
+                                me._d3timelineCanvasAxisSVG,
+                                me._d3timelineCanvas
+                            );
 
-                        //Process timeline map
-                        me._d3timelineMap = me.timelineMap();
-                        me._d3timelineMap.redraw();
+                            //Process timeline map
+                            me._d3timelineMap = me.timelineMap();
+                            me._d3timelineMap.redraw();
 
-                        const mapAxisConfig = {
-                            innerTickSize: 4,
-                            tickPadding: 4,
-                            ticks: 6,
-                            class: 'axis-label'
-                        };
+                            const mapAxisConfig = {
+                                innerTickSize: 4,
+                                tickPadding: 4,
+                                ticks: 6,
+                                class: 'axis-label'
+                            };
 
-                        me._d3timelineMapAxis = me.axis(mapAxisConfig, me._d3timelineMapAxisSVG, me._d3timelineMap);
+                            me._d3timelineMapAxis = me.axis(mapAxisConfig, me._d3timelineMapAxisSVG, me._d3timelineMap);
 
-                        me._d3brush = me.brush();
+                            me._d3brush = me.brush();
 
-                        window.addEventListener(
-                            'resize',
-                            me.debounce(() => {
-                                try {
-                                    if (me.template.querySelector('div.timeline-canvas').offsetWidth !== 0) {
-                                        me._d3timelineCanvas.x.range([
-                                            0,
-                                            me.template.querySelector('div.timeline-canvas').offsetWidth
-                                        ]);
-                                        me._d3timelineMap.x.range([
-                                            0,
-                                            Math.max(me.template.querySelector('div.timeline-map').offsetWidth, 0)
-                                        ]);
-                                        me._d3timelineCanvasAxis.redraw();
-                                        me._d3timelineCanvasAxisLabel.redraw();
-                                        me._d3timelineMap.redraw();
-                                        me._d3timelineMapAxis.redraw();
-                                        me._d3brush.redraw();
+                            window.addEventListener(
+                                'resize',
+                                me.debounce(() => {
+                                    try {
+                                        if (me.template.querySelector('div.timeline-canvas').offsetWidth !== 0) {
+                                            me._d3timelineCanvas.x.range([
+                                                0,
+                                                me.template.querySelector('div.timeline-canvas').offsetWidth
+                                            ]);
+                                            me._d3timelineMap.x.range([
+                                                0,
+                                                Math.max(me.template.querySelector('div.timeline-map').offsetWidth, 0)
+                                            ]);
+                                            me._d3timelineCanvasAxis.redraw();
+                                            me._d3timelineCanvasAxisLabel.redraw();
+                                            me._d3timelineMap.redraw();
+                                            me._d3timelineMapAxis.redraw();
+                                            me._d3brush.redraw();
+                                        }
+                                    } catch (error) {
+                                        //stay silent
                                     }
-                                } catch (error) {
-                                    //stay silent
-                                }
-                            }, 200)
-                        );
+                                }, 200)
+                            );
 
-                        me.isLoaded = true;
+                            me.isLoaded = true;
+                        } else {
+                            me.processError('No-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
+                        }
                     } else {
-                        me.processError('No-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
+                        me.processError('Setup-Error', me.error.CONSOLE_HEADER, me.error.CONSOLE_SUBHEADER);
                     }
                 } catch (error) {
                     me.processError('Error', me.error.UNHANDLED, error.message);
