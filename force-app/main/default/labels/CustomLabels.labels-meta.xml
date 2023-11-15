@@ -144,4 +144,20 @@
         <shortDescription>Timeline_Navigation_Toast_Header</shortDescription>
         <value>Navigation Not Permitted</value>
     </labels>
+    <labels>
+        <fullName>Timeline_Error_ConsoleTab</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_ConsoleTab</shortDescription>
+        <value>Console tab conflict</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_ConsoleTabSubHeader</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_ConsoleTabSubHeader</shortDescription>
+        <value>Time Warp cannot load on a parent and child sub tab at the same time. Refresh Time Warp to view this timeline.</value>
+    </labels>
 </CustomLabels>
