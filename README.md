@@ -176,6 +176,8 @@ Labels can be translated where appropriate. Navigate to Setup -> Custom Labels a
 | `Timeline_Error_JavaScriptResources` | Unable to load JavaScript resources                                                            |
 | `Timeline_Error_NoDataHeader`        | No data to display                                                                             |
 | `Timeline_Error_NoDataSubHeader`     | Related records show up here on an interactive timeline. Check your filter or create a record. |
+| `Timeline_Error_ConsoleTab`          | Console tab conflict                                                                           |
+| `Timeline_Error_ConsoleTabSubHeader` | Time Warp cannot load on a parent and child sub tab at the same time. Refresh Time Warp to view this timeline.  |
 | `Timeline_Error_Unhandled`           | Houston...we've had a problem                                                                  |
 | `Timeline_Label_Days`                | day(s)                                                                                         |
 | `Timeline_Label_Items`               | item(s)                                                                                        |
