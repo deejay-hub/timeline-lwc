@@ -440,19 +440,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
         let timelineResult = [];
         let timelineTimes = [];
 
-        const options = {
-            hour: 'numeric',
-            minute: 'numeric',
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            timeZone: TIMEZONE
-        };
-
-        const dateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), options);
-
         result.forEach(function (record, index) {
             let recordCopy = {};
+            let options;
 
             recordCopy.recordId = record.objectId;
             recordCopy.id = index;
@@ -461,9 +451,34 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.objectName = record.objectName;
             recordCopy.positionDateField = record.positionDateField;
 
-            let convertDate = record.positionDateValue.replace(' ', 'T');
-            convertDate = convertDate + '.000Z';
+            if (record.positionDateType === 'DATE') {
+                options = {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric'
+                };
+            }      
+            else {
+                options = {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    timeZone: TIMEZONE
+                };
+            }  
 
+            let dateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), options);
+
+            let convertDate = record.positionDateValue;
+            
+
+            if (record.positionDateType === 'DATETIME') {
+                convertDate = record.positionDateValue.replace(' ', 'T');
+                convertDate = convertDate + '.000Z';
+            }
+            
             let localDate = new Date(convertDate);
             let localPositionDate = dateFormatter.format(localDate);
 
@@ -472,10 +487,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             recordCopy.detailField = record.detailField;
             recordCopy.detailFieldLabel = record.detailFieldLabel;
-
             recordCopy.fallbackTooltipField = record.fallbackTooltipField;
             recordCopy.fallbackTooltipValue = record.fallbackTooltipValue;
-
             recordCopy.tooltipId = record.tooltipId;
             recordCopy.tooltipObject = record.tooltipObject;
             recordCopy.drilldownId = record.drilldownId;

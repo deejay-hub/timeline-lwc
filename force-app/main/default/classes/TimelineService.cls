@@ -348,6 +348,7 @@ public with sharing class TimelineService {
                                 mapData.put('detailFieldLabel', detailValues.get('label'));
                                 mapData.put('positionDateField', positionValues.get('label'));
                                 mapData.put('positionDateValue', positionValues.get('value'));
+                                mapData.put('positionDateType', positionValues.get('type'));
                                 mapData.put('objectName', tr.objectName);
                                 mapData.put('fallbackTooltipField', fallbackValues.get('label'));
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
@@ -421,6 +422,7 @@ public with sharing class TimelineService {
 
         String fieldValue = '';
         String fieldLabel = '';
+        String fieldType = '';
         String objectCheck = '';
         //String fieldCheck = '';
         String fieldStripped = '';
@@ -512,6 +514,7 @@ public with sharing class TimelineService {
 
         fieldLabel = fieldMetadata.getLabel();
         fieldCanAccess = fieldMetadata.isAccessible();
+        fieldType = String.valueOf(fieldMetadata.getType());
 
         if (fieldCanAccess == false) {
             fieldValue = '![' + fieldLabel + ']!';
@@ -523,6 +526,7 @@ public with sharing class TimelineService {
 
         fieldDetails.put('value', fieldValue);
         fieldDetails.put('label', fieldLabel);
+        fieldDetails.put('type', fieldType);
 
         return fieldDetails;
     }
@@ -634,6 +638,7 @@ public with sharing class TimelineService {
         private String iconBackgroundField;
         private String positionDateField;
         private String positionDateValue;
+        private String positionDateType;
         private String objectName;
         private String type;
         private String tooltipIdField;
