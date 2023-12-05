@@ -7,6 +7,7 @@
 -   Added the ability to plot today's date
 -   Added the ability to change the colour used for today's date
 -   Added the ability to use fields for icon and icon colour
+-   Added default label translations for Danish.
 -   d3.js updated to v7.8.5
 -   Documentation improvements
 
@@ -15,6 +16,7 @@
 -   Fixed zero width issues in service console
 -   Fixed resize events when splitter is used using resize observer
 -   Fixed title padding for right to left languages
+-   Fixed timezone adjustments for date type fields
 
 ## 26 Jun 2023 v1.12.0
 
