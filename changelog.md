@@ -9,7 +9,6 @@
 -   Added the ability to use fields for icon and icon colour
 -   Added default label translations for Danish.
 -   d3.js updated to v7.8.5
--   Documentation improvements
 
 **BUG FIXES**
 -   Fixed WCAG colour schemes used in Winter '24
