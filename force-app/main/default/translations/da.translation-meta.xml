@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label>Apex fejl</label>
+        <name>Timeline_Error_Apex</name>
+    </customLabels>
+    <customLabels>
+        <label>Console Tab -konflikt</label>
+        <name>Timeline_Error_ConsoleTab</name>
+    </customLabels>
+    <customLabels>
+        <label>Time Warp kan ikke indlæses på 2 faner i et hiraki på samme tid. Opdater Time Warp for at se denne tidslinje</label>
+        <name>Timeline_Error_ConsoleTabSubHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>Kan ikke indlæse JavaScript ressourcer</label>
+        <name>Timeline_Error_JavaScriptResources</name>
+    </customLabels>
+    <customLabels>
+        <label>Der er ingen data at vise</label>
+        <name>Timeline_Error_NoDataHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>Relaterede poster vises her på en interaktiv tidslinje. Tjek dit filter eller oprette en post.</label>
+        <name>Timeline_Error_NoDataSubHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>Opsætningsfejl</label>
+        <name>Timeline_Error_Setup</name>
+    </customLabels>
+    <customLabels>
+        <label>Der opstod en fejl</label>
+        <name>Timeline_Error_Unhandled</name>
+    </customLabels>
+    <customLabels>
+        <label>Anvend</label>
+        <name>Timeline_Label_Apply</name>
+    </customLabels>
+    <customLabels>
+        <label>Afbryd</label>
+        <name>Timeline_Label_Cancel</name>
+    </customLabels>
+    <customLabels>
+        <label>Datointerval</label>
+        <name>Timeline_Label_Date_Range_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>dag(e)</label>
+        <name>Timeline_Label_Days</name>
+    </customLabels>
+    <customLabels>
+        <label>Filer | Noter</label>
+        <name>Timeline_Label_Files</name>
+    </customLabels>
+    <customLabels>
+        <label>Alle typer</label>
+        <name>Timeline_Label_Filter_All_Types</name>
+    </customLabels>
+    <customLabels>
+        <label>Typer der skal vises</label>
+        <name>Timeline_Label_Filter_Type_Legend</name>
+    </customLabels>
+    <customLabels>
+        <label>Filtre</label>
+        <name>Timeline_Label_Filters</name>
+    </customLabels>
+    <customLabels>
+        <label>element(er)</label>
+        <name>Timeline_Label_Items</name>
+    </customLabels>
+    <customLabels>
+        <label>Viser:</label>
+        <name>Timeline_Label_Showing</name>
+    </customLabels>
+    <customLabels>
+        <label>Poster af typen '{0}' er ikke understøttet.</label>
+        <name>Timeline_Navigation_Toast_Body</name>
+    </customLabels>
+    <customLabels>
+        <label>Navigation ikke tilladt</label>
+        <name>Timeline_Navigation_Toast_Header</name>
+    </customLabels>
+</Translations>
