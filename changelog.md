@@ -13,7 +13,6 @@
 **BUG FIXES**
 -   Fixed WCAG colour schemes used in Winter '24
 -   Fixed zero width issues in service console
--   Fixed resize events when splitter is used using resize observer
 -   Fixed title padding for right to left languages
 -   Fixed timezone adjustments for date type fields
 
