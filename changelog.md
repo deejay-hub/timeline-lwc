@@ -1,5 +1,13 @@
 # Change Log
 
+## XX Xxx 2024 v1.15.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to v60.0 from v59.0
+
+**BUG FIXES**
+-   Fixed memory leak issue
+  
 ## 30 Jan 2024 v1.14.0
 
 **WHAT'S NEW**

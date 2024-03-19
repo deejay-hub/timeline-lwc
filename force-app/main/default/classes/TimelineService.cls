@@ -16,7 +16,7 @@ public with sharing class TimelineService {
             Map<String, String> parentDetails = getParentDetails(parentObjectId, parentFieldName);
 
             String parentObjectType = parentDetails.get('QueryObjectType');
-            String parentConfigType = parentDetails.get('ConfigObjectType');
+            String parentConfigType = parentDetails.get('ConfigObjectType'); //NOPMD
             parentObjectId = parentDetails.get('Id');
 
             Map<String, String> childObjects = getChildObjects(parentObjectType);
@@ -98,7 +98,7 @@ public with sharing class TimelineService {
             Map<String, String> parentDetails = getParentDetails(parentObjectId, parentFieldName);
 
             String parentObjectType = parentDetails.get('QueryObjectType');
-            String parentConfigType = parentDetails.get('ConfigObjectType');
+            String parentConfigType = parentDetails.get('ConfigObjectType'); //NOPMD
             parentObjectId = parentDetails.get('Id');
 
             earliestRange = String.ValueOf((Decimal.ValueOf(earliestRange) * 12).intValue());
