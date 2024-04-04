@@ -4,6 +4,7 @@
 
 **WHAT'S NEW**
 -   Changed Salesforce API to v60.0 from v59.0
+-   Added EmailMessage drilldown support for ActivityHistory and OpenActivities
 
 **BUG FIXES**
 -   Fixed memory leak issue

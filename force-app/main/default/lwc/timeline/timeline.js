@@ -492,6 +492,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.tooltipId = record.tooltipId;
             recordCopy.tooltipObject = record.tooltipObject;
             recordCopy.drilldownId = record.drilldownId;
+            recordCopy.alternateDetailId = record.alternateDetailId;
 
             recordCopy.type = record.type;
             recordCopy.icon = record.icon;
@@ -725,6 +726,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         let drilldownId = d.recordId;
                         if (d.drilldownId !== '') {
                             drilldownId = d.drilldownId;
+                        }
+
+                        if (d.alternateDetailId !== '') {
+                            drilldownId = d.alternateDetailId;
                         }
 
                         switch (d.objectName) {
