@@ -187,6 +187,7 @@ public with sharing class TimelineService {
                         objName == 'ActivityHistory' ||
                         objName == 'TaskRelation' ||
                         objName == 'ContentDocumentLink' ||
+                        objName == 'TaskWhoRelation' ||
                         objName == 'LookedUpFromActivity')
                     ) {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
