@@ -5,9 +5,12 @@
 **WHAT'S NEW**
 -   Changed Salesforce API to v61.0 from v59.0
 -   Added EmailMessage drilldown support for ActivityHistory and OpenActivities
+-   Added UI support for SLDS v2 (Enhanced Lightning)
+-   Added support for circular iconography to align with SLDS v2
 
 **BUG FIXES**
 -   Fixed issue plotting tasks for Person Accounts
+-   Fixed font and font size mismatches with SLDS v1 and v2
   
 ## 30 Jan 2024 v1.14.0
 
