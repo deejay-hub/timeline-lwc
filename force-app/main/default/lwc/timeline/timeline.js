@@ -40,6 +40,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api timelineParent; //parent field for the lwc set as design attribute
     @api timelineTitle; //title for the lwc set as design attribute
     @api preferredHeight; //height of the timeline set as design attribute
+    @api iconStyle; //the style of icon plotted in the canvas
     @api earliestRange; //How far back in time to go
     @api latestRange; //How far into the future to go
     @api zoomTo; //Zoom to current dat or latest activity
@@ -111,6 +112,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
         Red: "#ea001e",
         No: "#107cad"
     };
+
+    iconStyleMap = {
+        Square: 3,
+        Circular: 20
+    };
+
+    iconRoundedValue = 3;
 
     label = {
         DAYS,
@@ -245,6 +253,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         if (!this._d3Rendered) {
             this.todaysColour = this.todayColourMap[this.showToday];
+            this.iconRoundedValue = this.iconStyleMap[this.iconStyle];
             //set the height of the component as the height is dynamic based on the attributes
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
             this.currentParentField = this.timelineParent;
@@ -643,7 +652,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .attr('transform', function (d) {
                     return 'translate(' + timelineCanvas.x(d.time) + ', ' + timelineCanvas.y(d.swimlane) + ')';
                 });
-
             if (timelineCanvas.records.size() > 0) {
                 timelineCanvas.records
                     .append('rect')
@@ -673,8 +681,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('y', 0)
                     .attr('width', 24)
                     .attr('height', 24)
-                    .attr('rx', 3)
-                    .attr('ry', 3);
+                    .attr('rx', me.iconRoundedValue)
+                    .attr('ry',  me.iconRoundedValue);
 
                 timelineCanvas.records
                     .append('image')
