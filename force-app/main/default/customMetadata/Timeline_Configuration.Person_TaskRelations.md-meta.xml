@@ -28,7 +28,7 @@
     </values>
     <values>
         <field>Object_Name__c</field>
-        <value xsi:type="xsd:string">TaskRelation</value>
+        <value xsi:type="xsd:string">TaskWhoRelation</value>
     </values>
     <values>
         <field>Parent_Object__c</field>
@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>Relationship_Name__c</field>
-        <value xsi:type="xsd:string">TaskRelations</value>
+        <value xsi:type="xsd:string">PersonTaskWhoRelations</value>
     </values>
     <values>
         <field>Sequence__c</field>
