@@ -142,7 +142,6 @@ public with sharing class TimelineService {
 
             for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
                 TimelineRecord timelineRecord = new timelineRecord();
-                //String timelineObjectLabel = timelineConfigObjectName.get(timelineConfigurationRecord.Id)
                 Schema.SObjectType timelineRecordObjectType = Schema.getGlobalDescribe().get(timelineConfigurationRecord.Object_Name__c);
                 Schema.DescribeSObjectResult timelineDescribeResult = timelineRecordObjectType.getDescribe();
                 timelineRecord.objectLabel = timelineDescribeResult.getLabel();
