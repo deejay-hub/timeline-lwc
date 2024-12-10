@@ -306,3 +306,18 @@
 .timeline-summary-short {
     display: none;
 }
+
+.sr-only {
+    font-size: 0;
+}
+
+.sticky-button {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    padding: 5px;
+}
+
+.slds-panel__body {
+    padding-bottom: 50px;
+}
