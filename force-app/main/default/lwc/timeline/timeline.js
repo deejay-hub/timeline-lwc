@@ -728,7 +728,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         return d.positionDateValue;
                     });
 
-                //let eye=0;
                 timelineCanvas.records
                     .append('text')
                     .attr('class', 'timeline-canvas-record-label')
@@ -1397,7 +1396,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this.isFilterUpdated = true;
         }
     }
-    //let zoomStartDateString;
+
     handleStartDateChange(e){
         this.zoomStartDateString = e.target.value;
         this.isFilterUpdated = true;
