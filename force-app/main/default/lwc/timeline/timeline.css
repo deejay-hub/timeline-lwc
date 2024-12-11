@@ -1,15 +1,14 @@
 .stencil-label {
-    background-color: #b0adab;
+    background-color: #83807f;
     height: 0.4rem;
     border-radius: 2rem;
     width: 10rem;
 }
 
 .stencil-value {
-    background-color: #969492;
+    background-color: #5f5e5d;
     height: 0.4rem;
     border-radius: 2rem;
-    margin-top: 0.5rem;
     width: 10rem;
 }
 
@@ -22,6 +21,10 @@
 
 .stencil-timeline-spinner {
     text-align: center;
+}
+
+.slds-spinner_container, .slds-spinner--container {
+    border-radius: 20px !important;
 }
 
 .illustration {
@@ -214,7 +217,7 @@
 }
 
 .timeline-wrapper {
-    margin: 10px 10px 10px 10px;
+    --margin: 5px 5px 5px 5px;
     border: 1px solid #747474;
     border-radius: 3px;
     position: relative;
@@ -281,10 +284,12 @@
     }
 
     .timeline-summary-verbose {
+        padding-right: 10px;
         display: none;
     }
 
     .timeline-summary-short {
+        padding-right: 10px;
         display: inline-block !important;
     }
 }
@@ -304,6 +309,7 @@
 }
 
 .timeline-summary-short {
+    padding-right: 10px;
     display: none;
 }
 
@@ -320,4 +326,9 @@
 
 .slds-panel__body {
     padding-bottom: 50px;
+}
+
+.timeline-summary-verbose {
+    padding-right: 10px;
+
 }

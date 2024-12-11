@@ -191,6 +191,7 @@ public with sharing class TimelineService {
                         objName == 'ActivityHistory' ||
                         objName == 'TaskRelation' ||
                         objName == 'ContentDocumentLink' ||
+                        objName == 'TaskWhoRelation' ||
                         objName == 'LookedUpFromActivity')
                     ) {
                         selectStatement = selectStatement + ', ' + tcr.type + '';
@@ -201,6 +202,13 @@ public with sharing class TimelineService {
                         !selectStatement.contains('ActivityDate')
                     ) {
                         selectStatement = selectStatement + ', ActivityDate' + '';
+                    }
+
+                    if (
+                        (objName == 'OpenActivity' || objName == 'ActivityHistory') &&
+                        !selectStatement.contains('AlternateDetailId')
+                    ) {
+                        selectStatement = selectStatement + ', AlternateDetailId' + '';
                     }
 
                     if (objName == 'ContentDocumentLink') {
@@ -333,6 +341,16 @@ public with sharing class TimelineService {
                                 );
 
                                 Map<String, String> typeValues = getFieldValues(tr.type, eachCh, tr.objectName);
+
+                                String alternateDetailId = '';
+
+                                if ( (tr.objectName == 'OpenActivity' || tr.objectName == 'ActivityHistory') && 
+                                        (String.valueOf(eachCh.get('AlternateDetailId')) != '' && 
+                                        String.valueOf(eachCh.get('AlternateDetailId')) != null) ) {
+                                    alternateDetailId = String.valueOf(eachCh.get('AlternateDetailId'));
+                                }
+                                
+                                mapData.put('alternateDetailId', alternateDetailId);
 
                                 if (tr.objectName == 'ContentDocumentLink') {
                                     //NOPMD
@@ -655,6 +673,7 @@ public with sharing class TimelineService {
         private String fallbackNameField;
         private String fallbackNameValue;
         private String inclusionField;
+        private String alternateDetailId;
         private Id recordId;
     }
 
