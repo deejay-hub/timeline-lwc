@@ -128,6 +128,7 @@ public with sharing class TimelineService {
                 'Parent_Object__c =:parentConfigType'; //NOPMD
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query(queryTimelineConfiguration); //NOPMD
+            Map<ID, Timeline_Configuration__mdt> timelineConfigObjectName = new Map <ID, Timeline_Configuration__mdt>([SELECT Id, Object_Name__c FROM Timeline_Configuration__mdt]);
 
             if (listofTimelineConfigurations.size() < 1) {
                 String errorMsg =
@@ -141,6 +142,9 @@ public with sharing class TimelineService {
 
             for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
                 TimelineRecord timelineRecord = new timelineRecord();
+                Schema.SObjectType timelineRecordObjectType = Schema.getGlobalDescribe().get(timelineConfigurationRecord.Object_Name__c);
+                Schema.DescribeSObjectResult timelineDescribeResult = timelineRecordObjectType.getDescribe();
+                timelineRecord.objectLabel = timelineDescribeResult.getLabel();
                 timelineRecord.relationshipName = timelineConfigurationRecord.Relationship_Name__c;
                 timelineRecord.icon = timelineConfigurationRecord.Icon__c;
                 timelineRecord.iconBackground = timelineConfigurationRecord.Icon_Background_Colour__c;
@@ -368,6 +372,7 @@ public with sharing class TimelineService {
                                 mapData.put('positionDateValue', positionValues.get('value'));
                                 mapData.put('positionDateType', positionValues.get('type'));
                                 mapData.put('objectName', tr.objectName);
+                                mapData.put('objectLabel', tr.objectLabel);
                                 mapData.put('fallbackTooltipField', fallbackValues.get('label'));
                                 mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
                                 mapData.put('drilldownId', drilldownIdValues.get('value'));
@@ -658,6 +663,7 @@ public with sharing class TimelineService {
         private String positionDateValue;
         private String positionDateType;
         private String objectName;
+        private String objectLabel;
         private String type;
         private String tooltipIdField;
         private String tooltipObject;
