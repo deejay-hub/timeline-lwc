@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="timeline">
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>61.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Time Warp</masterLabel>
     <targets>
@@ -14,6 +14,7 @@
             <property name="timelineParent" label="Parent Record" type="String" datasource="apex://TimelineParentPicklist" required="true" />
             <property name="timelineTitle" label="Title" default="Timeline" required="true" type="String" />
             <property name="preferredHeight" label="Height" default="3 - Default" required="true" type="String" datasource="1 - Smallest, 2 - Small, 3 - Default, 4 - Big, 5 - Biggest" />
+            <property name="iconStyle" label="Icon Style" default="Square" required="true" type="String" datasource="Square, Circular" />
             <property name="earliestRange" label="Historical Time Range (Years)" default="3" required="true" type="String" datasource="0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10" description="Specify the start range for the timeline. As n minus current date."/>
             <property name="latestRange" label="Future Time Range (Years)" default="0.5" required="true" type="String" datasource="0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10" description="Specify the end range for the timeline. As n plus current date."/>
             <property name="zoomTo" label="Zoom Based On" default="Current Date" required="true" type="String" datasource="Current Date, Last Activity, First Activity" description="Zoom to the last record found (even if it's in the past or future) OR zoom to the current date (even if there are no records)."/>
@@ -30,6 +31,7 @@
             <property name="timelineParent" label="Parent Record" type="String" datasource="apex://TimelineParentPicklist" required="true" />
             <property name="timelineTitle" label="Title" default="Timeline" required="true" type="String" />
             <property name="preferredHeight" label="Height" default="3 - Default" required="true" type="String" datasource="1 - Smallest, 2 - Small, 3 - Default, 4 - Big, 5 - Biggest" />
+            <property name="iconStyle" label="Icon Style" default="Square" required="true" type="String" datasource="Square, Circular" />
             <property name="earliestRange" label="Historical Time Range (Years)" default="3" required="true" type="String" datasource="0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10" description="Specify the start range for the timeline. As n minus current date."/>
             <property name="latestRange" label="Future Time Range (Years)" default="0.5" required="true" type="String" datasource="0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10" description="Specify the end range for the timeline. As n plus current date."/>
             <property name="zoomTo" label="Zoom Based On" default="Current Date" required="true" type="String" datasource="Current Date, Last Activity, First Activity" description="Zoom to the last record found (even if it's in the past or future) OR zoom to the current date (even if there are no records)."/>
