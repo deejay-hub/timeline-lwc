@@ -11,6 +11,7 @@
 **BUG FIXES**
 -   Fixed issue plotting tasks for Person Accounts
 -   Fixed font and font size mismatches with SLDS v1 and v2
+-   Fixed accessibility issues related to tab stops and hyperlinks
   
 ## 30 Jan 2024 v1.14.0
 
