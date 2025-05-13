@@ -90,7 +90,7 @@ cd timeline-lwc
         }
     ],
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "61.0"
+    "sourceApiVersion": "63.0"
 }
 ```
 
