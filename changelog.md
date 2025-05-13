@@ -3,7 +3,7 @@
 ## XX Xxx 2025 v1.15.0
 
 **WHAT'S NEW**
--   Changed Salesforce API to v61.0 from v59.0
+-   Changed Salesforce API to v63.0 from v59.0
 -   Added EmailMessage drilldown support for ActivityHistory and OpenActivities
 -   Added UI support for SLDS v2 (Enhanced Lightning)
 -   Added support for circular iconography to align with SLDS v2
@@ -13,6 +13,7 @@
 -   Fixed font and font size mismatches with SLDS v1 and v2
 -   Fixed accessibility issues related to tab stops and hyperlinks
 -   Fixed issue with DOM elements not being removed when filtered
+-   Fixed memory leak when adding listener to resize event
   
 ## 30 Jan 2024 v1.14.0
 
