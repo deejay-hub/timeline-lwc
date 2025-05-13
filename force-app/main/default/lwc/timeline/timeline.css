@@ -62,6 +62,7 @@
 .timeline-filter {
     position: absolute;
     top: 0;
+    border-radius: 2px;
 }
 
 .timeline-map-wrapper {

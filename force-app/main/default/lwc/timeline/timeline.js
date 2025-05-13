@@ -26,7 +26,6 @@ import SHOWING from '@salesforce/label/c.Timeline_Label_Showing';
 import ITEMS from '@salesforce/label/c.Timeline_Label_Items';
 import FILTERS from '@salesforce/label/c.Timeline_Label_Filters';
 import TYPE_LEGEND from '@salesforce/label/c.Timeline_Label_Filter_Type_Legend';
-import DATE_LEGEND from '@salesforce/label/c.Timeline_Label_Filter_Date_Legend';
 import DATE_RANGE_LEGEND from '@salesforce/label/c.Timeline_Label_Date_Range_Legend';
 import FILE_TYPE from '@salesforce/label/c.Timeline_Label_Files';
 import ALL_TYPES from '@salesforce/label/c.Timeline_Label_Filter_All_Types';
@@ -127,7 +126,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
         ITEMS,
         FILTERS,
         TYPE_LEGEND,
-        DATE_LEGEND,
         DATE_RANGE_LEGEND,
         FILE_TYPE,
         ALL_TYPES,
@@ -215,6 +213,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     this.allFilterValues.push(key);
                 }
             }
+            this.isFilterLoaded = true;
         } else if (result.error) {
             let errorType = 'Error';
             let errorHeading,
@@ -236,7 +235,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     disconnectedCallback() {
-        window.removeEventListener('resize', this.debounce);
+        if (this._debouncedResizeHandler) {
+            window.removeEventListener('resize', this._debouncedResizeHandler);
+            this._debouncedResizeHandler = null; // Good practice to clear it
+        }
     }
 
     connectedCallback() {
@@ -292,6 +294,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 timelineSummary[i].classList.add('timeline-summary-verbose-' + this.timelineWidth);
             }
         }
+
+        // In renderedCallback, after D3 setup
+        this._debouncedResizeHandler = this.debounce(() => {
+            // resize logic
+        }, 200);
+        window.addEventListener('resize', this._debouncedResizeHandler);
     }
 
     processTimeline() {
@@ -456,7 +464,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             recordCopy.recordId = record.objectId;
             recordCopy.id = index;
-            recordCopy.label = record.detailField;
+            recordCopy.label =
+                record.detailField.length <= 30 ? record.detailField : record.detailField.slice(0, 30) + '...';
             recordCopy.objectName = record.objectName;
             recordCopy.objectLabel = record.objectLabel;
             recordCopy.positionDateField = record.positionDateField;
@@ -636,18 +645,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             timelineCanvas.attr('height', svgHeight - 1);
             timelineCanvas.SVGHeight = svgHeight;
-            if(me.isLanguageRightToLeft){
-                timelineCanvas.append('clipPath')
-                .attr('id', 'clipText')
-                .append('polygon')
-                    .attr('points','-215,0 0,0 0,30 -215,30');
-            }
-            else{
-                timelineCanvas.append('clipPath')
-                .attr('id', 'clipText')
-                .append('polygon')
-                    .attr('points','0,0 215,0 215,30 0,30');
-            }
 
             timelineCanvas.data = timelineCanvas
                 .selectAll('[class~=timeline-canvas-record]')
@@ -661,7 +658,60 @@ export default class timeline extends NavigationMixin(LightningElement) {
             timelineCanvas.records = timelineCanvas.data
                 .enter()
                 .append('g')
+                .on('keydown', function (event, d) {
+
+                    if (event.keyCode === 13 ) {
+                        let drilldownId = d.recordId;
+                        if (d.drilldownId !== '') {
+                            drilldownId = d.drilldownId;
+                        }
+
+                        if (d.alternateDetailId !== '') {
+                            drilldownId = d.alternateDetailId;
+                        }
+
+                        switch (d.objectName) {
+                            case 'ContentDocumentLink': {
+                                me[NavigationMixin.Navigate]({
+                                    type: 'standard__namedPage',
+                                    attributes: {
+                                        pageName: 'filePreview'
+                                    },
+                                    state: {
+                                        selectedRecordId: d.recordId
+                                    }
+                                });
+                                break;
+                            }
+                            case 'CaseComment': {
+                                const toastEvent = new ShowToastEvent({
+                                    title: me.toast.NAVIGATION_HEADER,
+                                    message: me.toast.NAVIGATION_BODY,
+                                    messageData: [d.objectName]
+                                });
+                                this.dispatchEvent(toastEvent);
+                                break;
+                            }
+                            default: {
+                                me[NavigationMixin.Navigate]({
+                                    type: 'standard__recordPage',
+                                    attributes: {
+                                        recordId: drilldownId,
+                                        actionName: 'view'
+                                    }
+                                });
+                                break;
+                            }
+                        }
+                    }
+
+                
+                })
                 .attr('class', 'timeline-canvas-record')
+                .attr('tabindex', '0')
+                .attr('aria-label', function (d) {
+                    return d.objectLabel + ' with label ' + d.label + ' plotted on ' + d.positionDateValue;
+                }) 
                 .attr('transform', function (d) {
                     return 'translate(' + timelineCanvas.x(d.time) + ', ' + timelineCanvas.y(d.swimlane) + ')';
                 });
@@ -703,10 +753,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('y', 1)
                     .attr('height', 22)
                     .attr('width', 22)
-                    .attr('aria-label', function (d){
-                        const altText = d.objectLabel;
-                        return altText;
-                    })
                     .attr('xlink:href', function (d) {
                         let iconImage = '';
 
@@ -730,17 +776,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         return iconImage;
                     });
 
-                 timelineCanvas.records
-                    .append('text')
-                    .attr('class', 'sr-only')
-                    .text(function (d) {
-                        return d.positionDateValue;
-                    });
-
                 timelineCanvas.records
                     .append('text')
                     .attr('class', 'timeline-canvas-record-label')
-                    .attr('clip-path','url(#clipText)')
                     .attr('x', function () {
                         let x = 30;
                         switch (me.isLanguageRightToLeft) {
@@ -755,7 +793,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     })
                     .attr('y', 16)
                     .attr('font-size', 12)
-                    .attr('tabindex', '0')
                     .on('click', function (event, d) {
                         let drilldownId = d.recordId;
                         if (d.drilldownId !== '') {
@@ -800,49 +837,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                         }
                     })
-                    .on('keydown', function (event, d) {
-                        if(event.key === ' ' || event.key === 'Enter'){
-
-                            let drilldownId = d.recordId;
-                            if (d.drilldownId !== '') {
-                                drilldownId = d.drilldownId;
-                            }
-
-                            switch (d.objectName) {
-                                case 'ContentDocumentLink': {
-                                    me[NavigationMixin.Navigate]({
-                                        type: 'standard__namedPage',
-                                        attributes: {
-                                            pageName: 'filePreview'
-                                        },
-                                        state: {
-                                            selectedRecordId: d.recordId
-                                        }
-                                    });
-                                    break;
-                                }
-                                case 'CaseComment': {
-                                    const toastEvent = new ShowToastEvent({
-                                        title: me.toast.NAVIGATION_HEADER,
-                                        message: me.toast.NAVIGATION_BODY,
-                                        messageData: [d.objectName]
-                                    });
-                                    this.dispatchEvent(toastEvent);
-                                    break;
-                                }
-                                default: {
-                                    me[NavigationMixin.Navigate]({
-                                        type: 'standard__recordPage',
-                                        attributes: {
-                                            recordId: drilldownId,
-                                            actionName: 'view'
-                                        }
-                                    });
-                                    break;
-                                }
-                            }
-                        }
-                    })
                     .on('mouseover', function (event, d) {
                         let tooltipId = d.recordId;
                         let tooltipObject = d.objectName;
@@ -871,44 +865,21 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                         switch (me.isLanguageRightToLeft) {
                             case true:
-                                if(this.getBoundingClientRect().width < 184){
-                                    tipPosition =
-                                        this.getBoundingClientRect().top -
-                                        30 +
-                                        'px ;left:' +
-                                        (this.getBoundingClientRect().left - tooltipDIV.offsetWidth - 15) +
-                                        'px ;visibility:visible';
-                                    break;
-                                }
-                                else{
-                                    tipPosition =
-                                        this.getBoundingClientRect().top -
-                                        30 +
-                                        'px ;left:' +
-                                        (this.getBoundingClientRect().right- tooltipDIV.offsetWidth - 215) +
-                                        'px ;visibility:visible';
-                                    break;
-                                }
-                                
+                                tipPosition =
+                                    this.getBoundingClientRect().top -
+                                    30 +
+                                    'px ;left:' +
+                                    (this.getBoundingClientRect().left - tooltipDIV.offsetWidth - 15) +
+                                    'px ;visibility:visible';
+                                break;
                             default:
-                                if(this.getBoundingClientRect().width < 184){
-                                    tipPosition =
-                                        this.getBoundingClientRect().top -
-                                        30 +
-                                        'px ;left:' +
-                                        (this.getBoundingClientRect().right + 15) +
-                                        'px ;visibility:visible';
-                                    break;
-                                }
-                                else{
-                                    tipPosition =
-                                        this.getBoundingClientRect().top -
-                                        30 +
-                                        'px ;left:' +
-                                        (this.getBoundingClientRect().left + 205) +
-                                        'px ;visibility:visible';
-                                    break;
-                                }
+                                tipPosition =
+                                    this.getBoundingClientRect().top -
+                                    30 +
+                                    'px ;left:' +
+                                    (this.getBoundingClientRect().right + 15) +
+                                    'px ;visibility:visible';
+                                break;
                         }
                         tooltipDIV.setAttribute('style', 'top:' + tipPosition);
                     })
@@ -932,6 +903,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const timelineCanvas = me._d3timelineCanvas;
 
         targetSVG.attr('width', target.width);
+        targetSVG.attr('height', '105px');
 
         let x_axis = d3
             .axisBottom(target.x)
@@ -1197,7 +1169,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .enter()
             .append('path')
             .attr('class', 'handle--custom')
-            .attr('fill', '#107cad')
+            .attr('fill', '#107cad')                        
             .attr('fill-opacity', 1)
             .attr('stroke', '#000')
             .attr('height', 40)
@@ -1207,6 +1179,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 'd',
                 'M0,0 L75,0 L75,176 C75,184.284271 68.2842712,191 60,191 L15,191 C6.71572875,191 1.01453063e-15,184.284271 0,176 L0,0 L0,0 Z'
             );
+
         xBrush.call(brush).call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x));
 
         brush.redraw = function () {
@@ -1363,19 +1336,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const filterPopover = this.template.querySelector('div.timeline-filter');
         const filterClasses = String(filterPopover.classList);
         const refreshButton = this.template.querySelector('lightning-button-icon.timeline-refresh');
-        const closeButton = this.template.querySelector('[data-id="closeDialogBtn"]');
-        const filterButton = this.template.querySelector('[data-id="filterBtn"]');
 
         if (filterClasses.includes('slds-is-open')) {
             refreshButton.disabled = false;
             filterPopover.classList.remove('slds-is-open');
             this.isFilter = false;
-            filterButton.focus();
         } else {
             refreshButton.disabled = true;
             filterPopover.classList.add('slds-is-open');
             this.isFilter = true;
-            closeButton.focus();
         }
 
         switch (this.isLanguageRightToLeft) {
@@ -1408,16 +1377,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
         if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
             this.isFilterUpdated = true;
         }
-    }
-
-    handleStartDateChange(e){
-        this.zoomStartDateString = e.target.value;
-        this.isFilterUpdated = true;
-    }
-
-    handleEndDateChange(e){
-        this.zoomEndDateString = e.target.value;
-        this.isFilterUpdated = true;
     }
 
     handleAllTypesChange(e) {
@@ -1455,20 +1414,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     applyFilter() {
-        console.log('applyFilter start');
-        console.log('this.filterValues: '+this.filterValues);
-        if (this.zoomStartDateString) {
-            this.zoomStartDate = new Date(this.zoomStartDateString);  // Convert string to Date object
-            console.log('Start Date updated to:', this.zoomStartDate);
-        } else {
-            console.log('Please enter a valid startdate.');
-        }
-        if (this.zoomEndDateString) {
-            this.zoomEndDate = new Date(this.zoomEndDateString);  // Convert string to Date object
-            console.log('End Date updated to:', this.zoomEndDate);
-        } else {
-            console.log('Please enter a valid end date.');
-        }
         this.refreshTimeline();
         this.isFilterUpdated = false;
         this.startingFilterValues = this.filterValues;
