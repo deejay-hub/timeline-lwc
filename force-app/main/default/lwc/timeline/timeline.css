@@ -62,7 +62,7 @@
 .timeline-filter {
     position: absolute;
     top: 0;
-    border-radius: 2px;
+    border-radius: --slds-borderRadiusSmall;
 }
 
 .timeline-map-wrapper {
@@ -285,12 +285,14 @@
     }
 
     .timeline-summary-verbose {
-        padding-right: 10px;
+        padding-right: 5px;
+        padding-left: 5px;
         display: none;
     }
 
     .timeline-summary-short {
-        padding-right: 10px;
+        padding-right: 5px;
+        padding-left: 5px;
         display: inline-block !important;
     }
 }
@@ -310,7 +312,8 @@
 }
 
 .timeline-summary-short {
-    padding-right: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
     display: none;
 }
 
@@ -330,6 +333,6 @@
 }
 
 .timeline-summary-verbose {
-    padding-right: 10px;
-
+    padding-right: 5px;
+    padding-left: 5px;
 }
