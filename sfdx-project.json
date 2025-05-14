@@ -4,15 +4,15 @@
             "path": "force-app",
             "default": true,
             "package": "TimeWarp",
-            "versionNumber": "1.14.0.NEXT",
-            "versionName": "Ross",
-            "ancestorVersion": "1.12.0",
+            "versionNumber": "1.15.0.NEXT",
+            "versionName": "Epsilon",
+            "ancestorVersion": "1.14.0",
             "releaseNotesUrl": "https://github.com/deejay-hub/timeline-lwc/blob/main/changelog.md"
         }
     ],
     "namespace": "bmpyrckt",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "59.0",
+    "sourceApiVersion": "63.0",
     "packageAliases": {
         "TimeWarp": "0Ho2w000000TNVlCAO",
         "TimeWarp@1.2.0-1": "04t2w000008K1N2AAK",
@@ -25,6 +25,7 @@
         "TimeWarp@1.9.0-1": "04t2w000009BbXOAA0",
         "TimeWarp@1.10.0-1": "04t2w000009BbjoAAC",
         "TimeWarp@1.11.0-1": "04t2w000009Bc08AAC",
-        "TimeWarp@1.12.0-1": "04t2w000009VNfnAAG"
+        "TimeWarp@1.12.0-1": "04t2w000009VNfnAAG",
+        "TimeWarp@1.14.0-1": "04t2w000009gtDFAAY"
     }
 }
