@@ -1,46 +1,50 @@
 {
-    "name": "timeline-lwc",
-    "author": "Dave Norris",
-    "description": "An interactive timeline for the Salesforce platform",
-    "private": true,
-    "version": "1.14.0",
-    "scripts": {
-        "lint": "eslint **/{aura,lwc}/**",
-        "test": "npm run test:unit",
-        "test:unit": "sfdx-lwc-jest",
-        "test:unit:watch": "sfdx-lwc-jest --watch",
-        "test:unit:debug": "sfdx-lwc-jest --debug",
-        "test:unit:coverage": "sfdx-lwc-jest --coverage",
-        "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-        "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-        "postinstall": "husky install",
-        "precommit": "lint-staged"
-    },
-    "devDependencies": {
-        "@lwc/eslint-plugin-lwc": "^1.6.4",
-        "@prettier/plugin-xml": "^3.2.2",
-        "@salesforce/eslint-config-lwc": "^3.5.2",
-        "@salesforce/eslint-plugin-aura": "^2.1.0",
-        "@salesforce/eslint-plugin-lightning": "^1.0.0",
-        "@salesforce/sfdx-lwc-jest": "^3.0.1",
-        "eslint": "^8.52.0",
-        "eslint-plugin-import": "^2.29.0",
-        "eslint-plugin-jest": "^27.6.0",
-        "husky": "^8.0.3",
-        "lint-staged": "^15.0.2",
-        "prettier": "^3.0.3",
-        "prettier-plugin-apex": "^2.0.1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/deejay-hub/timeline-lwc"
-    },
-    "lint-staged": {
-        "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
-        "prettier --write"
-        ],
-        "**/{aura,lwc}/**": [
-        "eslint"
-        ]
+  "name": "timeline-lwc",
+  "author": "Dave Norris",
+  "description": "An interactive timeline for the Salesforce platform",
+  "private": true,
+  "version": "1.15.0",
+  "scripts": {
+    "lint": "eslint **/{aura,lwc}/**",
+    "test": "npm run test:unit",
+    "test:unit": "sfdx-lwc-jest",
+    "test:unit:watch": "sfdx-lwc-jest --watch",
+    "test:unit:debug": "sfdx-lwc-jest --debug",
+    "test:unit:coverage": "sfdx-lwc-jest --coverage",
+    "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+    "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+    "postinstall": "husky init",
+    "precommit": "lint-staged",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@lwc/eslint-plugin-lwc": "^2.2.0",
+    "@lwc/engine-dom": "^8.18.0",
+    "@lwc/jest-preset": "^19.1.0",
+    "@prettier/plugin-xml": "^3.4.1",
+    "@salesforce/eslint-config-lwc": "^3.7.2",
+    "@salesforce/eslint-plugin-aura": "^2.1.0",
+    "@salesforce/eslint-plugin-lightning": "^1.0.0",
+    "@salesforce/sfdx-lwc-jest": "^7.0.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jest": "^28.11.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.5.1",
+    "prettier": "^3.5.3",
+    "prettier-plugin-apex": "^2.2.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deejay-hub/timeline-lwc"
+  },
+  "lint-staged": {
+    "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
+      "prettier --write"
+    ],
+    "**/{aura,lwc}/**": [
+      "eslint"
+    ]
   }
 }
