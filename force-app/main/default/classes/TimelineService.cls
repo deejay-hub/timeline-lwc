@@ -600,7 +600,7 @@ public with sharing class TimelineService {
             Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName('Schema.' + parentObjectType)
                     .newInstance()))
                 .getSObjectType()
-                .getDescribe();
+                .getDescribe(SObjectDescribeOptions.DEFERRED);
 
             String fieldLabel = String.valueOf(describeSobjects.fields.getMap().get(field).getDescribe().getLabel());
 
