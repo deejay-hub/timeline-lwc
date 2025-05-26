@@ -1,22 +1,24 @@
 <!-- sldsValidatorIgnore -->
 <template>
     <!--main timeline component-->
-        <article class="slds-card slds-card_boundary slds-card_related-list-fix">
-            <div class="slds-card__header slds-grid">
-              <header class="slds-media slds-media_center slds-has-flexi-truncate">
+    <article class="slds-card slds-card_boundary slds-card_related-list-fix">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
                 <div class="slds-media__body">
-                  <template lwc:if={isLoaded}>
-                    <h2 class="slds-card__header-title">
-                      {timelineTitle}
-                    </h2>
-                  </template>
-                  <template lwc:else>
-                    <div class="stencil-value" style="margin-left: 10px"></div>
-                    <!--spinner when component is loading-->
-                    <div class="stencil-timeline-spinner">
-                        <lightning-spinner variant="brand" alternative-text="Loading" size="small"></lightning-spinner>
-                    </div>
-                  </template>
+                    <template lwc:if={isLoaded}>
+                        <h2 class="slds-card__header-title">{timelineTitle}</h2>
+                    </template>
+                    <template lwc:else>
+                        <div class="stencil-value" style="margin-left: 10px"></div>
+                        <!--spinner when component is loading-->
+                        <div class="stencil-timeline-spinner">
+                            <lightning-spinner
+                                variant="brand"
+                                alternative-text="Loading"
+                                size="small"
+                            ></lightning-spinner>
+                        </div>
+                    </template>
                 </div>
                 <div class="slds-no-flex">
                     <template lwc:if={showSummary}>
@@ -31,7 +33,7 @@
                         <div class="stencil-label" style="margin-right: 5px; margin-left: 5px"></div>
                     </template>
                 </div>
-             
+
                 <div class="slds-no-flex">
                     <lightning-button-group>
                         <lightning-button-icon
@@ -48,16 +50,19 @@
                         ></lightning-button-icon-stateful>
                     </lightning-button-group>
                 </div>
-              </header>
-            </div>
-            <div class="slds-card__body slds-card__body_inner">
-            
-            
-                 <!--timeline body-->
-            <div id="timeline-wrapper" class="timeline-wrapper" >
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <!--timeline body-->
+            <div id="timeline-wrapper" class="timeline-wrapper">
                 <div class="slds-col slds-size_1-of-1">
-                    <div class="timeline-canvas" id="timeline-canvas" lwc:dom="manual" ></div>
-                    <div class="timeline-canvas-axis" aria-hidden="true" id="timeline-canvas-axis" lwc:dom="manual"></div>
+                    <div class="timeline-canvas" id="timeline-canvas" lwc:dom="manual"></div>
+                    <div
+                        class="timeline-canvas-axis"
+                        aria-hidden="true"
+                        id="timeline-canvas-axis"
+                        lwc:dom="manual"
+                    ></div>
                     <div class="timeline-map-wrapper" aria-hidden="true">
                         <div class="timeline-map" id="timeline-map" lwc:dom="manual"></div>
                         <div class="timeline-map-axis" id="timeline-map-axis" lwc:dom="manual"></div>
@@ -102,7 +107,10 @@
                         </template>
 
                         <template lwc:else>
-                            <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">
+                            <h2
+                                class="slds-panel__header-title slds-text-heading_small slds-truncate"
+                                title="Panel Header"
+                            >
                                 {label.FILTERS}
                             </h2>
                             <button
@@ -154,7 +162,9 @@
                         <div style="padding-top: 10px"></div>
                         <legend class="slds-form-element__label slds-text-title_caps">{label.DATE_RANGE_LEGEND}</legend>
 
-                        <div class="slds-form-element__label" style="padding-top: 5px">{timelineStart} - {timelineEnd}</div>
+                        <div class="slds-form-element__label" style="padding-top: 5px">
+                            {timelineStart} - {timelineEnd}
+                        </div>
                     </div>
                 </div>
             </div>

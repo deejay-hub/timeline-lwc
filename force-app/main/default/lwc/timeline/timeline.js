@@ -102,15 +102,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
     illustrationType; //Type of illustration to display, 'error' or 'no data'
 
     todayColourMap = {
-        Blue: "#107cad",
-        Green: "#2e844a",
-        Black: "#444444",
-        Purple: "#9050e9",
-        Indigo: "#5867e8",
-        Teal: "#0b827c",
-        Pink: "#e3066a",
-        Red: "#ea001e",
-        No: "#107cad"
+        Blue: '#107cad',
+        Green: '#2e844a',
+        Black: '#444444',
+        Purple: '#9050e9',
+        Indigo: '#5867e8',
+        Teal: '#0b827c',
+        Pink: '#e3066a',
+        Red: '#ea001e',
+        No: '#107cad'
     };
 
     iconStyleMap = {
@@ -153,12 +153,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _timelineHeight = null;
 
     heightMap = {
-        "1 - Smallest": 125,
-        "2 - Small": 200,
-        "3 - Default": 275,
-        "4 - Big": 350,
-        "5 - Biggest": 425,
-      };
+        '1 - Smallest': 125,
+        '2 - Small': 200,
+        '3 - Default': 275,
+        '4 - Big': 350,
+        '5 - Biggest': 425
+    };
 
     //These are the objects holding individual instances of the timeline
     _d3timelineCanvas = null;
@@ -300,15 +300,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
             try {
                 const canvas = this.template.querySelector('div.timeline-canvas');
                 // Ensure main D3 objects used in resize are initialized and canvas is valid
-                if (canvas && canvas.offsetWidth !== 0 &&
-                    this._d3timelineCanvas && this._d3timelineMap &&
-                    this._d3timelineCanvasAxis && this._d3timelineCanvasAxisLabel &&
-                    this._d3timelineMapAxis && this._d3brush) {
-
-                    this._d3timelineCanvas.x.range([
-                        0,
-                        canvas.offsetWidth
-                    ]);
+                if (
+                    canvas &&
+                    canvas.offsetWidth !== 0 &&
+                    this._d3timelineCanvas &&
+                    this._d3timelineMap &&
+                    this._d3timelineCanvasAxis &&
+                    this._d3timelineCanvasAxisLabel &&
+                    this._d3timelineMapAxis &&
+                    this._d3brush
+                ) {
+                    this._d3timelineCanvas.x.range([0, canvas.offsetWidth]);
                     this._d3timelineMap.x.range([
                         0,
                         Math.max(this.template.querySelector('div.timeline-map').offsetWidth, 0)
@@ -368,7 +370,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         })
             .then((result) => {
                 try {
-                    if ( this.template.querySelector('div.timeline-canvas').offsetWidth !== 0 ) {
+                    if (this.template.querySelector('div.timeline-canvas').offsetWidth !== 0) {
                         if (result.length > 0) {
                             me.totalTimelineRecords = result.length;
 
@@ -476,8 +478,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     month: 'numeric',
                     day: 'numeric'
                 };
-            }      
-            else {
+            } else {
                 options = {
                     hour: 'numeric',
                     minute: 'numeric',
@@ -486,18 +487,17 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     day: 'numeric',
                     timeZone: TIMEZONE
                 };
-            }  
+            }
 
             let dateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), options);
 
             let convertDate = record.positionDateValue;
-            
 
             if (record.positionDateType === 'DATETIME') {
                 convertDate = record.positionDateValue.replace(' ', 'T');
                 convertDate = convertDate + '.000Z';
             }
-            
+
             let localDate = new Date(convertDate);
             let localPositionDate = dateFormatter.format(localDate);
 
@@ -563,28 +563,31 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         let currentDate = new Date();
 
-        if ( this.showToday !== "No" ) {
-            let today = timelineCanvas.append('g')
-            .attr('class', 'timeline-canvas-current-date')
-            .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
-        
-            today.append("line")
-                .style("stroke", this.todaysColour)
-                .style("stroke-width", "1.5px")
-                .style("stroke-dasharray", "7, 7")
-                .style("shape-rendering", "crispEdges")
-                .attr("y2", timelineHeight);
-            
-            today.append("rect")
-                .style("fill", this.todaysColour)
-                .style("width", "8")
-                .style("height", "13")
-                .style("rx", "3")
-                .style("ry", "3")
-                .style("x", "-4")
-                .style("y", timelineHeight - 8)
+        if (this.showToday !== 'No') {
+            let today = timelineCanvas
+                .append('g')
+                .attr('class', 'timeline-canvas-current-date')
+                .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')');
+
+            today
+                .append('line')
+                .style('stroke', this.todaysColour)
+                .style('stroke-width', '1.5px')
+                .style('stroke-dasharray', '7, 7')
+                .style('shape-rendering', 'crispEdges')
+                .attr('y2', timelineHeight);
+
+            today
+                .append('rect')
+                .style('fill', this.todaysColour)
+                .style('width', '8')
+                .style('height', '13')
+                .style('rx', '3')
+                .style('ry', '3')
+                .style('x', '-4')
+                .style('y', timelineHeight - 8);
         }
-    
+
         timelineCanvas.redraw = function (domain) {
             var i = 0;
             var swimlane = 0;
@@ -612,7 +615,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             timelineCanvas.currentDate = timelineCanvas
                 .selectAll('[class~=timeline-canvas-current-date]')
-                .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')' );
+                .attr('transform', 'translate(' + timelineCanvas.x(currentDate) + ')');
 
             data.sort(me.sortByValue('time'));
 
@@ -659,8 +662,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .enter()
                 .append('g')
                 .on('keydown', function (event, d) {
-
-                    if (event.keyCode === 13 ) {
+                    if (event.keyCode === 13) {
                         let drilldownId = d.recordId;
                         if (d.drilldownId !== '') {
                             drilldownId = d.drilldownId;
@@ -704,14 +706,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                         }
                     }
-
-                
                 })
                 .attr('class', 'timeline-canvas-record')
                 .attr('tabindex', '0')
                 .attr('aria-label', function (d) {
                     return d.objectLabel + ' with label ' + d.label + ' plotted on ' + d.positionDateValue;
-                }) 
+                })
                 .attr('transform', function (d) {
                     return 'translate(' + timelineCanvas.x(d.time) + ', ' + timelineCanvas.y(d.swimlane) + ')';
                 });
@@ -745,7 +745,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('width', 24)
                     .attr('height', 24)
                     .attr('rx', me.iconRoundedValue)
-                    .attr('ry',  me.iconRoundedValue);
+                    .attr('ry', me.iconRoundedValue);
 
                 timelineCanvas.records
                     .append('image')
@@ -922,7 +922,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const axis = targetSVG
             .insert('g', ':first-child')
             .attr('class', axisConfig.class + '-' + me.timelineWidth)
-            .attr('role', 'presentation') 
+            .attr('role', 'presentation')
             .attr('aria-hidden', 'true')
             .call(x_axis);
 
@@ -1017,17 +1017,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         let currentDate = new Date();
 
-        if ( this.showToday !== "No" ) {
-            let today = timelineMap.append('g')
+        if (this.showToday !== 'No') {
+            let today = timelineMap
+                .append('g')
                 .attr('class', 'timeline-map-current-date')
-                .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );
-            
-            today.append("line")
-                .style("stroke", this.todaysColour)
-                .style("stroke-width", "1.5px")
-                .style("stroke-dasharray", "2, 2")
-                .style("shape-rendering", "crispEdges")
-                .attr("y2", timelineMap.height);
+                .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')');
+
+            today
+                .append('line')
+                .style('stroke', this.todaysColour)
+                .style('stroke-width', '1.5px')
+                .style('stroke-dasharray', '2, 2')
+                .style('shape-rendering', 'crispEdges')
+                .attr('y2', timelineMap.height);
         }
 
         timelineMap.redraw = function () {
@@ -1038,7 +1040,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
             timelineMap.currentDate = timelineMap
                 .selectAll('[class~=timeline-map-current-date]')
-                .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')' );
+                .attr('transform', 'translate(' + timelineMap.x(currentDate) + ')');
 
             let data = timelineData.data
                 .filter(function (d) {
@@ -1169,7 +1171,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             .enter()
             .append('path')
             .attr('class', 'handle--custom')
-            .attr('fill', '#107cad')                        
+            .attr('fill', '#107cad')
             .attr('fill-opacity', 1)
             .attr('stroke', '#000')
             .attr('height', 40)
