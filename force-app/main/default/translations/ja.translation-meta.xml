@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>Apex エラー</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>タイム ワープは、親サブタブと子サブタブに同時に読み込むことはできません。このタイムラインを表示するには、タイム ワープを更新します。</label>
+        <label
+        >タイム ワープは、親サブタブと子サブタブに同時に読み込むことはできません。このタイムラインを表示するには、タイム ワープを更新します。</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>
@@ -21,7 +22,8 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>関連するレコードは、インタラクティブなタイムラインに表示されます。フィルタを確認するか、レコードを作成してください。</label>
+        <label
+        >関連するレコードは、インタラクティブなタイムラインに表示されます。フィルタを確認するか、レコードを作成してください。</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>

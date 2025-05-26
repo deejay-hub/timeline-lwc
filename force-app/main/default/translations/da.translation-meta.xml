@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>Apex fejl</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>Time Warp kan ikke indlæses på 2 faner i et hiraki på samme tid. Opdater Time Warp for at se denne tidslinje</label>
+        <label
+        >Time Warp kan ikke indlæses på 2 faner i et hiraki på samme tid. Opdater Time Warp for at se denne tidslinje</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>

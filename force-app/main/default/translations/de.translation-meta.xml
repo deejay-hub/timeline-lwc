@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>Apex Fehler</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>Time Warp kann nicht gleichzeitig auf einer übergeordneten und untergeordneten unterregisterkarte geladen werden. Aktualisieren Sie Time Warp, um diese zeitleiste anzuzeigen.</label>
+        <label
+        >Time Warp kann nicht gleichzeitig auf einer übergeordneten und untergeordneten unterregisterkarte geladen werden. Aktualisieren Sie Time Warp, um diese zeitleiste anzuzeigen.</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>
@@ -21,7 +22,8 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>Verwandte Aufzeichnungen zeigen, hier auf einer interaktiven Zeitleiste nach oben. Prüfen Sie die Filter oder einen Datensatz erstellen.</label>
+        <label
+        >Verwandte Aufzeichnungen zeigen, hier auf einer interaktiven Zeitleiste nach oben. Prüfen Sie die Filter oder einen Datensatz erstellen.</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>

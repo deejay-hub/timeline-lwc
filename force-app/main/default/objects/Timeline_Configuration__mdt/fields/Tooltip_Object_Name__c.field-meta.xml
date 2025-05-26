@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Tooltip_Object_Name__c</fullName>
     <description>The sObject API name for the tooltip.</description>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>If the UI API is supported but you want a related record shown specify the sObject API name to use when hovering here.</inlineHelpText>
+    <inlineHelpText
+    >If the UI API is supported but you want a related record shown specify the sObject API name to use when hovering here.</inlineHelpText>
     <label>Tooltip Object Name</label>
     <length>75</length>
     <required>false</required>

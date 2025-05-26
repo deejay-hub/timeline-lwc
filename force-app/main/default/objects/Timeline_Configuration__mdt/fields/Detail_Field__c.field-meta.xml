@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Detail_Field__c</fullName>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>The field to use to show against each record on the timeline lwc as a short description (30 chars shown)</inlineHelpText>
+    <inlineHelpText
+    >The field to use to show against each record on the timeline lwc as a short description (30 chars shown)</inlineHelpText>
     <label>Detail Field</label>
     <length>150</length>
     <required>true</required>

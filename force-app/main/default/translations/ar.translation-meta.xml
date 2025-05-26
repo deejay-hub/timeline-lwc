@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>خطأ بالكود</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>لا يمكن تحميل Time Warp على علامة التبويب الفرعية الأصل والفرعية في نفس الوقت. قم بتحديث Time Warp لعرض هذا المخطط الزمني.</label>
+        <label
+        >لا يمكن تحميل Time Warp على علامة التبويب الفرعية الأصل والفرعية في نفس الوقت. قم بتحديث Time Warp لعرض هذا المخطط الزمني.</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>

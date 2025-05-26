@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>Error Apex</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>Time Warp no se puede cargar en una subpestaña principal y secundaria al mismo tiempo. Actualiza Time Warp para ver esta línea de tiempo.</label>
+        <label
+        >Time Warp no se puede cargar en una subpestaña principal y secundaria al mismo tiempo. Actualiza Time Warp para ver esta línea de tiempo.</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>
@@ -21,7 +22,8 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>Registros relacionados aparecen aquí en una línea de tiempo interactiva. Revise su filtro o crear un registro.</label>
+        <label
+        >Registros relacionados aparecen aquí en una línea de tiempo interactiva. Revise su filtro o crear un registro.</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>

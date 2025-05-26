@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Drilldown_Id_Field__c</fullName>
     <businessStatus>Active</businessStatus>
-    <description>The Id field to use when navigating on click of a record in the timeline. Used to support the ability to show a junction object record but drill into a parent.</description>
+    <description
+    >The Id field to use when navigating on click of a record in the timeline. Used to support the ability to show a junction object record but drill into a parent.</description>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>Override the record shown when a user clicks on a record. The Id field to use when navigating goes here.</inlineHelpText>
+    <inlineHelpText
+    >Override the record shown when a user clicks on a record. The Id field to use when navigating goes here.</inlineHelpText>
     <label>Drilldown Id Field</label>
     <length>150</length>
     <required>false</required>

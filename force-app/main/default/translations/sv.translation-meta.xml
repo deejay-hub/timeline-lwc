@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>Apex fel</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>Time Warp kan inte laddas på en förälder- och underflik samtidigt. Uppdatera Time Warp för att se denna tidslinje.</label>
+        <label
+        >Time Warp kan inte laddas på en förälder- och underflik samtidigt. Uppdatera Time Warp för att se denna tidslinje.</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>
@@ -21,7 +22,8 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>Relaterade poster dyker upp här på en interaktiv tidslinje. Kontrollera filter eller skapa ett rekord.</label>
+        <label
+        >Relaterade poster dyker upp här på en interaktiv tidslinje. Kontrollera filter eller skapa ett rekord.</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>

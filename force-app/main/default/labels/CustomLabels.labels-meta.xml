@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
         <fullName>Timeline_Error_Apex</fullName>
@@ -166,6 +166,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Timeline_Error_ConsoleTabSubHeader</shortDescription>
-        <value>Time Warp cannot load on a parent and child sub tab at the same time. Refresh Time Warp to view this timeline.</value>
+        <value
+        >Time Warp cannot load on a parent and child sub tab at the same time. Refresh Time Warp to view this timeline.</value>
     </labels>
 </CustomLabels>

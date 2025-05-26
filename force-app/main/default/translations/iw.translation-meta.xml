@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>שגיאת Apex</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>Time Warp לא יכול להיטען בכרטיסיית משנה של הורה וילד בו-זמנית. רענן את Time Warp כדי להציג את ציר הזמן הזה.</label>
+        <label
+        >Time Warp לא יכול להיטען בכרטיסיית משנה של הורה וילד בו-זמנית. רענן את Time Warp כדי להציג את ציר הזמן הזה.</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>

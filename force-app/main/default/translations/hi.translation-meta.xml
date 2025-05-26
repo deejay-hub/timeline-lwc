@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>एपेक्स त्रुटि</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>टाइम वॉर्प एक ही समय में पैरेंट और चाइल्ड सब टैब पर लोड नहीं हो सकता। इस टाइमलाइन को देखने के लिए टाइम वॉर्प को रिफ्रेश करें।</label>
+        <label
+        >टाइम वॉर्प एक ही समय में पैरेंट और चाइल्ड सब टैब पर लोड नहीं हो सकता। इस टाइमलाइन को देखने के लिए टाइम वॉर्प को रिफ्रेश करें।</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>
@@ -21,7 +22,8 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>संबंधित रिकॉर्ड एक इंटरैक्टिव समय रेखा पर वह यहां दिखाई। अपने फिल्टर की जाँच करें या एक रिकॉर्ड बनाने के।</label>
+        <label
+        >संबंधित रिकॉर्ड एक इंटरैक्टिव समय रेखा पर वह यहां दिखाई। अपने फिल्टर की जाँच करें या एक रिकॉर्ड बनाने के।</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>

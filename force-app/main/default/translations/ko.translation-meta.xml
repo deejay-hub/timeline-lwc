@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>에이펙스 오류</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>시간 왜곡은 상위 및 하위 하위 탭에 동시에 로드할 수 없습니다. 이 타임라인을 보려면 Time Warp를 새로고침하세요.</label>
+        <label
+        >시간 왜곡은 상위 및 하위 하위 탭에 동시에 로드할 수 없습니다. 이 타임라인을 보려면 Time Warp를 새로고침하세요.</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>

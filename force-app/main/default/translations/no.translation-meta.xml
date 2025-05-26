@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
         <label>Apex feil</label>
@@ -9,7 +9,8 @@
         <name>Timeline_Error_ConsoleTab</name>
     </customLabels>
     <customLabels>
-        <label>Time Warp kan ikke lastes inn på en overordnet og underordnet underkategori samtidig. Oppdater Time Warp for å se denne tidslinjen.</label>
+        <label
+        >Time Warp kan ikke lastes inn på en overordnet og underordnet underkategori samtidig. Oppdater Time Warp for å se denne tidslinjen.</label>
         <name>Timeline_Error_ConsoleTabSubHeader</name>
     </customLabels>
     <customLabels>
@@ -21,7 +22,8 @@
         <name>Timeline_Error_NoDataHeader</name>
     </customLabels>
     <customLabels>
-        <label>Relaterte poster dukker opp her på en interaktiv tidslinje. Sjekk filteret eller opprette en post.</label>
+        <label
+        >Relaterte poster dukker opp her på en interaktiv tidslinje. Sjekk filteret eller opprette en post.</label>
         <name>Timeline_Error_NoDataSubHeader</name>
     </customLabels>
     <customLabels>
