@@ -85,6 +85,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     mouseOverFallbackValue;
     mouseOverPositionLabel;
     mouseOverPositionValue;
+    nubbinClass = 'slds-nubbin_left-top'; // Default nubbin class
 
     currentParentField;
     filterValues = [];
@@ -862,26 +863,75 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me.isMouseOver = true;
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
                         let tipPosition;
-
-                        switch (me.isLanguageRightToLeft) {
-                            case true:
-                                tipPosition =
-                                    this.getBoundingClientRect().top -
-                                    30 +
-                                    'px ;left:' +
-                                    (this.getBoundingClientRect().left - tooltipDIV.offsetWidth - 15) +
-                                    'px ;visibility:visible';
-                                break;
-                            default:
-                                tipPosition =
-                                    this.getBoundingClientRect().top -
-                                    30 +
-                                    'px ;left:' +
-                                    (this.getBoundingClientRect().right + 15) +
-                                    'px ;visibility:visible';
-                                break;
+                        
+                        // Get viewport dimensions
+                        const viewportWidth = window.innerWidth;
+                        const viewportHeight = window.innerHeight;
+                        
+                        // Get element position and dimensions
+                        const elementRect = this.getBoundingClientRect();
+                        const tooltipWidth = tooltipDIV.offsetWidth;
+                        const tooltipHeight = tooltipDIV.offsetHeight;
+                        
+                        // Calculate available space on each side
+                        const spaceRight = viewportWidth - elementRect.right;
+                        const spaceLeft = elementRect.left;
+                        
+                        // Default vertical position (centered with element)
+                        let top = elementRect.top - 30;
+                        
+                        // Adjust vertical position if tooltip would be cut off
+                        if (top < 0) {
+                            top = 10; // Add some padding from top
+                        } else if (top + tooltipHeight > viewportHeight) {
+                            top = viewportHeight - tooltipHeight - 10; // Add some padding from bottom
                         }
-                        tooltipDIV.setAttribute('style', 'top:' + tipPosition);
+                        
+                        // Determine horizontal position based on available space and language direction
+                        let left;
+                        let showOnRight = true;
+                        let hasEnoughSpace = false;
+                        
+                        if (me.isLanguageRightToLeft) {
+                            // For RTL, prefer left side if there's enough space
+                            if (spaceLeft >= tooltipWidth + 15) {
+                                left = elementRect.left - tooltipWidth - 15;
+                                showOnRight = false;
+                                hasEnoughSpace = true;
+                            } else {
+                                // If not enough space on left, try right side
+                                left = elementRect.right + 15;
+                                showOnRight = true;
+                            }
+                        } else {
+                            // For LTR, try right side first
+                            if (spaceRight >= tooltipWidth + 15) {
+                                // Enough space on right
+                                left = elementRect.right + 15;
+                                showOnRight = true;
+                                hasEnoughSpace = true;
+                            } else if (spaceLeft >= tooltipWidth + 15) {
+                                // Not enough space on right, but enough on left
+                                left = elementRect.left - tooltipWidth - 15;
+                                showOnRight = false;
+                                hasEnoughSpace = true;
+                            } else {
+                                // Not enough space on either side, force right
+                                left = elementRect.right + 15;
+                                showOnRight = true;
+                            }
+                        }
+                        
+                        // Only ensure tooltip stays within viewport if we had enough space on preferred side
+                        if (hasEnoughSpace) {
+                            left = Math.max(10, Math.min(left, viewportWidth - tooltipWidth - 10));
+                        }
+                        
+                        // Update nubbin class based on position
+                        me.nubbinClass = showOnRight ? 'slds-nubbin_left-top' : 'slds-nubbin_right-top';
+                        
+                        tipPosition = `top: ${top}px; left: ${left}px; visibility: visible`;
+                        tooltipDIV.setAttribute('style', tipPosition);
                     })
                     .on('mouseout', function () {
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
@@ -1332,6 +1382,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
             return true;
         }
         return false;
+    }
+
+    get tooltipClass() {
+        return `tooltip-panel tooltip-popover slds-popover_panel ${this.nubbinClass}`;
     }
 
     toggleFilter() {

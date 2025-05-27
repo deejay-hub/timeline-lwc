@@ -23,7 +23,8 @@
     text-align: center;
 }
 
-.slds-spinner_container, .slds-spinner--container {
+.slds-spinner_container,
+.slds-spinner--container {
     border-radius: 20px !important;
 }
 
@@ -115,7 +116,9 @@
 
 /* axis labels */
 .axis-ticks {
-    font-family: Salesforce Sans, sans-serif;
+    font-family:
+        Salesforce Sans,
+        sans-serif;
     font-size: 10px;
 }
 
@@ -273,10 +276,61 @@
     display: inline-block;
     box-shadow: 0 2px 3px 0 rgb(0 0 0 / 16%);
     border: 1px solid #dddbda;
+    position: relative;
 }
 
+/* Nubbin styles */
+.slds-nubbin_left-top:before,
+.slds-nubbin_left-top:after,
+.slds-nubbin_right-top:before,
+.slds-nubbin_right-top:after {
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    transform: rotate(45deg);
+    content: '';
+    background-color: inherit;
+    left: 50%;
+    top: 50%;
+    margin-top: -0.5rem;
+}
+
+.slds-nubbin_left-top:before,
+.slds-nubbin_right-top:before {
+    --background-color: #dddbda;
+    margin-left: -0.5rem;
+}
+
+.slds-nubbin_left-top:after,
+.slds-nubbin_right-top:after {
+    --background-color: rgb(243, 242, 242);
+    margin-left: -0.5rem;
+}
+
+.slds-nubbin_left-top:before,
 .slds-nubbin_left-top:after {
-    box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 16%) !important;
+    left: 0rem;
+}
+
+.slds-nubbin_right-top:before,
+.slds-nubbin_right-top:after {
+    left: auto;
+    right: -0.5rem;
+}
+
+.slds-nubbin_left-top:before,
+.slds-nubbin_left-top:after,
+.slds-nubbin_right-top:before,
+.slds-nubbin_right-top:after {
+    top: 2.4rem;
+}
+
+.slds-nubbin_left-bottom:before,
+.slds-nubbin_left-bottom:after,
+.slds-nubbin_right-bottom:before,
+.slds-nubbin_right-bottom:after {
+    top: auto;
+    bottom: 0.75rem;
 }
 
 @media only screen and (max-width: 900px) {
