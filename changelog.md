@@ -7,6 +7,7 @@
 -   Added EmailMessage drilldown support for ActivityHistory and OpenActivities
 -   Added UI support for SLDS v2 (Enhanced Lightning)
 -   Added support for circular iconography to align with SLDS v2
+-   Reposition tooltip based on available viewport
 
 **BUG FIXES**
 -   Fixed issue plotting tasks for Person Accounts
