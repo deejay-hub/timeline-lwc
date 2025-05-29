@@ -1,6 +1,6 @@
 # Change Log
 
-## XX Xxx 2025 v1.15.0
+## 29 May 2025 v1.15.0
 
 **WHAT'S NEW**
 -   Changed Salesforce API to v63.0 from v59.0
