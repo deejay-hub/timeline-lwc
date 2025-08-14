@@ -128,9 +128,6 @@ public with sharing class TimelineService {
                 'Parent_Object__c =:parentConfigType'; //NOPMD
 
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query(queryTimelineConfiguration); //NOPMD
-            Map<ID, Timeline_Configuration__mdt> timelineConfigObjectName = new Map<ID, Timeline_Configuration__mdt>(
-                [SELECT Id, Object_Name__c FROM Timeline_Configuration__mdt]
-            );
 
             if (listofTimelineConfigurations.size() < 1) {
                 String errorMsg =
