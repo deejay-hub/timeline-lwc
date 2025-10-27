@@ -1,5 +1,15 @@
 # Change Log
 
+## XX Xxx 2026 v1.16.0
+
+**WHAT'S NEW**
+-   Changed Salesforce API to v65.0 from v63.0
+
+**BUG FIXES**
+-   Fixed issue with unused SOQL impacting performance
+-   Fixed casing issue when comparing values
+-   Fixed SOQL limits issues for LookedUpFromActivity Object
+  
 ## 29 May 2025 v1.15.0
 
 **WHAT'S NEW**
