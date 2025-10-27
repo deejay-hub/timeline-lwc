@@ -249,7 +249,7 @@ public with sharing class TimelineService {
                             innerQuery +
                             ' ORDER BY ' +
                             'ActivityDate ASC NULLS LAST, LastModifiedDate DESC LIMIT 500),';
-                    } else if (objName == 'ActivityHistory') {
+                    } else if (objName == 'ActivityHistory' || objName == 'LookedUpFromActivity') {
                         innerQuery =
                             innerQuery +
                             ' ORDER BY ' +
