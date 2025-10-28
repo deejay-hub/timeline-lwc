@@ -35,7 +35,7 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
 
     global override VisualEditor.DynamicPickListRows getValues() {
         VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
-    
+       
         try {
             myValues.addRow(getDefaultValue());
             
@@ -47,17 +47,20 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
 
                 Map<String, Schema.SObjectField> myFields = describeSobjects.fields.getMap();
 
-                for (String field : myFields.keySet()) {
-                    Schema.DescribeFieldResult currentField = myFields.get(field).getDescribe();
+                for (Schema.SObjectField field : myFields.values()) {
+                    Schema.DescribeFieldResult currentField = field.getDescribe();
+
+                    List<Schema.SObjectType> referenceTo = currentField.getReferenceTo();
+                    
+                    // Skip non-reference fields immediately
+                    if (referenceTo.isEmpty()) {
+                        continue;
+                    }
 
                     if (
                         currentField.isAccessible() &&
                         currentField.isNamePointing() == false &&
-                        currentField.getLabel() != 'Master Record ID' &&
-                        (String.valueOf(currentField.getReferenceTo()) != '' &&
-                        String.valueOf(currentField.getReferenceTo()) != null &&
-                        String.valueOf(currentField.getReferenceTo()) != '()' &&
-                        String.valueOf(currentField.getReferenceTo()) != '(User)')
+                        currentField.getLabel() != 'Master Record ID'
                     ) {
                         myValues.addRow(new VisualEditor.DataRow(currentField.getName(), currentField.getName()));
                     }
