@@ -281,18 +281,31 @@ public with sharing class TimelineService {
                 ' WHERE Id =:parentObjectId'; //NOPMD
 
             List<SObject> listOfTimelineRecords = Database.query(queryRecords); //NOPMD
+            SObjectAccessDecision parentAccessDecision = Security.stripInaccessible(
+                AccessType.READABLE,
+                listOfTimelineRecords
+            );
+            List<SObject> secureTimelineRecords = parentAccessDecision.getRecords();
 
             List<Map<String, String>> listOfTimelineData = new List<Map<String, String>>();
             Map<String, String> dupeDataCheck = new Map<String, String>();
 
-            for (SObject each : listOfTimelineRecords) {
+            for (SObject each : secureTimelineRecords) {
                 Map<String, Object> childRecordsAsMap = each.getPopulatedFieldsAsMap();
 
                 for (String fieldName : childRecordsAsMap.keySet()) {
                     if (childRecordsAsMap.get(fieldName) instanceof List<sObject>) {
                         List<sObject> childRecords = (List<sObject>) childRecordsAsMap.get(fieldName);
+                        if (childRecords.isEmpty()) {
+                            continue;
+                        }
+                        SObjectAccessDecision childAccessDecision = Security.stripInaccessible(
+                            AccessType.READABLE,
+                            childRecords
+                        );
+                        List<SObject> secureChildRecords = childAccessDecision.getRecords();
 
-                        for (Sobject eachCh : childRecords) {
+                        for (Sobject eachCh : secureChildRecords) {
                             Map<String, String> mapData = new Map<String, String>();
 
                             TimelineRecord tr = mapOfTimelineConfigurationRecords.get(
