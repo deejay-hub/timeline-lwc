@@ -4,11 +4,13 @@
 
 **WHAT'S NEW**
 -   Changed Salesforce API to v65.0 from v63.0
+-   Enforced FLS with stripInnaccesible aligning to best practice 
 
 **BUG FIXES**
 -   Fixed issue with unused SOQL impacting performance
 -   Fixed casing issue when comparing values
 -   Fixed SOQL limits issues for LookedUpFromActivity Object
+-   Fixed duplicate resize handlers
   
 ## 29 May 2025 v1.15.0
 
