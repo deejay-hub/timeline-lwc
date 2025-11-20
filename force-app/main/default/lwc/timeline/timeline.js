@@ -177,6 +177,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3timelineCanvasMapDIV = null;
 
     _d3Rendered = false;
+    _debouncedResizeHandler = null;
 
     calculatedLOCALE() {
         let tempLocale;
@@ -200,20 +201,28 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this.timelineTypes = result;
             const timelineTs = result.data;
 
+            const newFilterValues = [];
+            const newObjectFilter = [];
+            const newAllFilterValues = [];
+
             for (let key in timelineTs) {
                 // eslint-disable-next-line no-prototype-builtins
                 if (timelineTs.hasOwnProperty(key)) {
-                    this.filterValues.push(key);
                     let tempFilter = [];
 
                     tempFilter.label = timelineTs[key];
                     tempFilter.value = key;
 
-                    this.objectFilter.push(tempFilter);
-                    this.startingFilterValues.push(key);
-                    this.allFilterValues.push(key);
+                    newFilterValues.push(key);
+                    newObjectFilter.push(tempFilter);
+                    newAllFilterValues.push(key);
                 }
             }
+
+            this.filterValues = [...newFilterValues];
+            this.objectFilter = newObjectFilter;
+            this.startingFilterValues = [...newFilterValues];
+            this.allFilterValues = [...newAllFilterValues];
             this.isFilterLoaded = true;
         } else if (result.error) {
             let errorType = 'Error';
@@ -297,37 +306,39 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         // In renderedCallback, after D3 setup
-        this._debouncedResizeHandler = this.debounce(() => {
-            try {
-                const canvas = this.template.querySelector('div.timeline-canvas');
-                // Ensure main D3 objects used in resize are initialized and canvas is valid
-                if (
-                    canvas &&
-                    canvas.offsetWidth !== 0 &&
-                    this._d3timelineCanvas &&
-                    this._d3timelineMap &&
-                    this._d3timelineCanvasAxis &&
-                    this._d3timelineCanvasAxisLabel &&
-                    this._d3timelineMapAxis &&
-                    this._d3brush
-                ) {
-                    this._d3timelineCanvas.x.range([0, canvas.offsetWidth]);
-                    this._d3timelineMap.x.range([
-                        0,
-                        Math.max(this.template.querySelector('div.timeline-map').offsetWidth, 0)
-                    ]);
-                    this._d3timelineCanvasAxis.redraw();
-                    this._d3timelineCanvasAxisLabel.redraw();
-                    this._d3timelineMap.redraw();
-                    this._d3timelineMapAxis.redraw();
-                    this._d3brush.redraw();
+        if (!this._debouncedResizeHandler) {
+            this._debouncedResizeHandler = this.debounce(() => {
+                try {
+                    const canvas = this.template.querySelector('div.timeline-canvas');
+                    // Ensure main D3 objects used in resize are initialized and canvas is valid
+                    if (
+                        canvas &&
+                        canvas.offsetWidth !== 0 &&
+                        this._d3timelineCanvas &&
+                        this._d3timelineMap &&
+                        this._d3timelineCanvasAxis &&
+                        this._d3timelineCanvasAxisLabel &&
+                        this._d3timelineMapAxis &&
+                        this._d3brush
+                    ) {
+                        this._d3timelineCanvas.x.range([0, canvas.offsetWidth]);
+                        this._d3timelineMap.x.range([
+                            0,
+                            Math.max(this.template.querySelector('div.timeline-map').offsetWidth, 0)
+                        ]);
+                        this._d3timelineCanvasAxis.redraw();
+                        this._d3timelineCanvasAxisLabel.redraw();
+                        this._d3timelineMap.redraw();
+                        this._d3timelineMapAxis.redraw();
+                        this._d3brush.redraw();
+                    }
+                } catch (error) {
+                    // Log errors during resize handling for better diagnostics
+                    console.error('Error during timeline resize:', error);
                 }
-            } catch (error) {
-                // Log errors during resize handling for better diagnostics
-                console.error('Error during timeline resize:', error);
-            }
-        }, 200);
-        window.addEventListener('resize', this._debouncedResizeHandler);
+            }, 200);
+            window.addEventListener('resize', this._debouncedResizeHandler);
+        }
     }
 
     processTimeline() {
