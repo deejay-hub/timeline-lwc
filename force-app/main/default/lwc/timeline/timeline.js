@@ -235,7 +235,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 errorType = customError.type;
                 errorMessage = customError.message;
                 errorHeading = this.error.SETUP;
-            } catch (error2) {
+            } catch {
                 //fails to parse message so is a generic apex error
                 errorHeading = this.error.APEX;
             }
@@ -457,7 +457,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     errorType = customError.type;
                     errorMessage = customError.message;
                     errorHeading = me.error.SETUP;
-                } catch (error2) {
+                } catch {
                     //fails to parse message so is a generic apex error
                     errorHeading = me.error.APEX;
                 }
