@@ -1,7 +1,6 @@
 import { createElement } from 'lwc';
 import Timeline from 'c/timeline';
 import getTimelineData from '@salesforce/apex/TimelineService.getTimelineRecords';
-import { createApexTestWireAdapter } from '@salesforce/wire-service-jest-util';
 
 jest.mock('@salesforce/i18n/locale', () => 'en-US', { virtual: true });
 jest.mock('@salesforce/i18n/lang', () => 'en', { virtual: true });
@@ -25,6 +24,7 @@ let mockGetTimelineTypesAdapter;
 jest.mock(
     '@salesforce/apex/TimelineService.getTimelineTypes',
     () => {
+        const { createApexTestWireAdapter } = require('@salesforce/wire-service-jest-util');
         mockGetTimelineTypesAdapter = createApexTestWireAdapter(jest.fn());
         return {
             default: mockGetTimelineTypesAdapter
