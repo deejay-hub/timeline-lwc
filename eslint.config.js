@@ -24,5 +24,21 @@ module.exports = [
             'no-console': 'off',
         },
     },
+    {
+        files: ['**/__tests__/**/*.js'],
+        rules: {
+            'no-undef': 'off', // Allow 'require' which might be flagged if not in globals
+        },
+        languageOptions: {
+            globals: {
+                require: 'readonly',
+                jest: 'readonly',
+                describe: 'readonly',
+                it: 'readonly',
+                expect: 'readonly',
+                beforeEach: 'readonly',
+                afterEach: 'readonly',
+            },
+        },
+    },
 ];
-

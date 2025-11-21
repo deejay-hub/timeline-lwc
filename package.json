@@ -5,7 +5,7 @@
   "private": true,
   "version": "1.15.0",
   "scripts": {
-    "lint": "eslint **/{aura,lwc}/**",
+    "lint": "eslint --no-error-on-unmatched-pattern \"force-app/main/default/{aura,lwc}/**/*.js\"",
     "test": "npm run test:unit",
     "test:unit": "sfdx-lwc-jest",
     "test:unit:watch": "sfdx-lwc-jest --watch",
@@ -40,8 +40,11 @@
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
       "prettier --write"
     ],
-    "**/{aura,lwc}/**": [
-      "eslint"
+    "force-app/main/default/lwc/**/*.js": [
+      "eslint --max-warnings=0"
+    ],
+    "force-app/main/default/aura/**/*.js": [
+      "eslint --max-warnings=0"
     ]
   }
 }
