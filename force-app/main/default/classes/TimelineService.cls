@@ -11,7 +11,7 @@ public with sharing class TimelineService {
     private static Map<String, Schema.DescribeFieldResult> fieldDescribeCache = new Map<String, Schema.DescribeFieldResult>();
 
     @AuraEnabled(cacheable=true)
-    public static Map<String, String> getTimelineTypes(String parentObjectId, String parentFieldName) {
+    public static Map<String, String> getTimelineTypes(Id parentObjectId, String parentFieldName) {
         try {
             Map<String, String> parentDetails = getParentDetails(parentObjectId, parentFieldName);
 
@@ -89,7 +89,7 @@ public with sharing class TimelineService {
      * @return A map of API Object Names and their corresponding translated labels
      */
     public static List<Map<String, String>> getTimelineRecords(
-        String parentObjectId,
+        Id parentObjectId,
         String earliestRange,
         String latestRange,
         String parentFieldName
@@ -592,16 +592,24 @@ public with sharing class TimelineService {
         return false;
     }
 
-    private static Map<String, String> getParentDetails(String recordId, String field) {
+    private static Map<String, String> getParentDetails(Id recordId, String field) {
         Map<String, String> parentDetails = new Map<String, String>();
 
-        String parentObjectType = String.valueOf(Id.valueOf(recordId).getSobjectType());
+        String parentObjectType = String.valueOf(recordId.getSobjectType());
         String parentConfigType = parentObjectType;
         String fieldValue;
 
         if (field == 'Default_Picklist_Value') {
-            fieldValue = recordId;
+            fieldValue = String.valueOf(recordId);
         } else {
+
+            SObjectType parentType = ((SObject) Type.forName('Schema.' + parentObjectType).newInstance()).getSObjectType();
+            
+            // Database.query is blocked unless field exists in the schema map remediating SOQL injection risks.
+            if (!parentType.getDescribe().fields.getMap().containsKey(field)) {
+                throw new AuraHandledException('Invalid field name provided for Parent Object: ' + parentObjectType + ' - ' + field);
+            }
+
             String queryParentId = 'SELECT Id, ' + field + ' FROM ' + parentObjectType + ' Where Id =:recordId';
 
             List<SObject> newDefaultRecord = Database.query(queryParentId); //NOPMD
