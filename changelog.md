@@ -5,7 +5,9 @@
 **WHAT'S NEW**
 -   Changed Salesforce API to v65.0 from v63.0
 -   Enforced FLS with stripInaccesible aligning to best practice
+-   Security improvements
 -   Improved CPU time for Parent Object Picklist resolution
+-   Performance improvements handling String.split operations 
 
 **BUG FIXES**
 -   Fixed issue with unused SOQL impacting performance
