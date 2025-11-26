@@ -602,12 +602,14 @@ public with sharing class TimelineService {
         if (field == 'Default_Picklist_Value') {
             fieldValue = String.valueOf(recordId);
         } else {
+            SObjectType parentType = ((SObject) Type.forName('Schema.' + parentObjectType).newInstance())
+                .getSObjectType();
 
-            SObjectType parentType = ((SObject) Type.forName('Schema.' + parentObjectType).newInstance()).getSObjectType();
-            
             // Database.query is blocked unless field exists in the schema map remediating SOQL injection risks.
             if (!parentType.getDescribe().fields.getMap().containsKey(field)) {
-                throw new AuraHandledException('Invalid field name provided for Parent Object: ' + parentObjectType + ' - ' + field);
+                throw new AuraHandledException(
+                    'Invalid field name provided for Parent Object: ' + parentObjectType + ' - ' + field
+                );
             }
 
             String queryParentId = 'SELECT Id, ' + field + ' FROM ' + parentObjectType + ' Where Id =:recordId';

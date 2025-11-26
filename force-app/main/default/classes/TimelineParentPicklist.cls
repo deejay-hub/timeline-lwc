@@ -15,7 +15,6 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
 
     global override VisualEditor.DataRow getDefaultValue() {
         try {
-
             if (this.context.entityName != null) {
                 List<Schema.DescribeSObjectResult> describes = Schema.describeSObjects(
                     new List<String>{ this.context.entityName }
@@ -23,8 +22,6 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
                 String objectLabel = describes[0].getLabel();
                 return new VisualEditor.DataRow('Use This ' + objectLabel, 'Default_Picklist_Value');
             }
-
-            
         } catch (Exception e) {
             //NOPMD
             // Suppress error and return fallback value
@@ -35,10 +32,10 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
 
     global override VisualEditor.DynamicPickListRows getValues() {
         VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
-       
+
         try {
             myValues.addRow(getDefaultValue());
-            
+
             if (this.context.entityName != null && this.context.pageType != 'CommRecordPage') {
                 List<Schema.DescribeSObjectResult> describes = Schema.describeSObjects(
                     new List<String>{ this.context.entityName }
@@ -51,7 +48,7 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
                     Schema.DescribeFieldResult currentField = field.getDescribe();
 
                     List<Schema.SObjectType> referenceTo = currentField.getReferenceTo();
-                    
+
                     // Skip non-reference fields immediately
                     if (referenceTo.isEmpty()) {
                         continue;

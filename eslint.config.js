@@ -1,44 +1,57 @@
-const lwcRecommended = require('@salesforce/eslint-config-lwc/recommended');
+const { defineConfig } = require('eslint/config');
+const eslintJs = require('@eslint/js');
+const jestPlugin = require('eslint-plugin-jest');
+const auraConfig = require('@salesforce/eslint-plugin-aura');
+const lwcConfig = require('@salesforce/eslint-config-lwc/recommended');
+const globals = require('globals');
 
-module.exports = [
+module.exports = defineConfig([
+    // Aura configuration
     {
-        ignores: [
-            '**/lwc/**/*.css',
-            '**/lwc/**/*.html',
-            '**/lwc/**/*.json',
-            '**/lwc/**/*.svg',
-            '**/lwc/**/*.xml',
-            '.sfdx',
-        ],
+        files: ['**/aura/**/*.js'],
+        extends: [...auraConfig.configs.recommended, ...auraConfig.configs.locker]
     },
-    ...lwcRecommended,
+
+    // LWC configuration
     {
-        files: ['force-app/main/default/lwc/**/*.js'],
+        files: ['**/lwc/**/*.js'],
+        extends: [lwcConfig],
         languageOptions: {
             globals: {
-                moment: 'readonly',
-                d3: 'readonly',
-            },
-        },
-        rules: {
-            'no-console': 'off',
-        },
+                d3: 'readonly'
+            }
+        }
     },
+
+    // LWC configuration with override for LWC test files
     {
-        files: ['**/__tests__/**/*.js'],
+        files: ['**/lwc/**/*.test.js'],
+        extends: [lwcConfig],
         rules: {
-            'no-undef': 'off', // Allow 'require' which might be flagged if not in globals
+            '@lwc/lwc/no-unexpected-wire-adapter-usages': 'off'
         },
         languageOptions: {
             globals: {
-                require: 'readonly',
-                jest: 'readonly',
-                describe: 'readonly',
-                it: 'readonly',
-                expect: 'readonly',
-                beforeEach: 'readonly',
-                afterEach: 'readonly',
-            },
-        },
+                ...globals.node
+            }
+        }
     },
-];
+
+    // Jest mocks configuration
+    {
+        files: ['**/jest-mocks/**/*.js'],
+        languageOptions: {
+            sourceType: 'module',
+            ecmaVersion: 'latest',
+            globals: {
+                ...globals.node,
+                ...globals.es2021,
+                ...jestPlugin.environments.globals.globals
+            }
+        },
+        plugins: {
+            eslintJs
+        },
+        extends: ['eslintJs/recommended']
+    }
+]);

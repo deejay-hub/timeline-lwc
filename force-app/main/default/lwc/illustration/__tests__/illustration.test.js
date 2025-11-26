@@ -1,11 +1,7 @@
 import { createElement } from 'lwc';
 import Illustration from 'c/illustration';
 
-jest.mock(
-    '@salesforce/resourceUrl/images',
-    () => ({ default: 'https://static.example.com' }),
-    { virtual: true }
-);
+jest.mock('@salesforce/resourceUrl/images', () => ({ default: 'https://static.example.com' }), { virtual: true });
 
 const appendIllustration = async (props = {}) => {
     const element = createElement('c-illustration', { is: Illustration });
