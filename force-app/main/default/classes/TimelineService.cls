@@ -138,6 +138,9 @@ public with sharing class TimelineService {
             }
 
             Map<String, TimelineRecord> mapOfTimelineConfigurationRecords = new Map<String, TimelineRecord>();
+            
+            // Optimization: Cache field paths to avoid repeated string splitting
+            Map<String, Map<String, FieldPath>> configFieldPaths = new Map<String, Map<String, FieldPath>>();
 
             for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
                 TimelineRecord timelineRecord = new timelineRecord();
@@ -160,10 +163,25 @@ public with sharing class TimelineService {
                 timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
                 timelineRecord.inclusionField = timelineConfigurationRecord.Inclusion_Field__c;
 
+                String configKey = timelineRecord.objectName + timelineRecord.relationshipName;
+
                 mapOfTimelineConfigurationRecords.put(
-                    timelineRecord.objectName + timelineRecord.relationshipName,
+                    configKey,
                     timelineRecord
                 );
+
+                // Pre-calculate field paths for this configuration
+                Map<String, FieldPath> paths = new Map<String, FieldPath>();
+                paths.put('detailField', new FieldPath(timelineRecord.detailField));
+                paths.put('positionDateField', new FieldPath(timelineRecord.positionDateField));
+                paths.put('fallbackTooltipField', new FieldPath(timelineRecord.fallbackTooltipField));
+                paths.put('tooltipIdField', new FieldPath(timelineRecord.tooltipIdField));
+                paths.put('drilldownIdField', new FieldPath(timelineRecord.drilldownIdField));
+                paths.put('iconField', new FieldPath(timelineRecord.iconField));
+                paths.put('iconBackgroundField', new FieldPath(timelineRecord.iconBackgroundField));
+                paths.put('type', new FieldPath(timelineRecord.type));
+                
+                configFieldPaths.put(configKey, paths);
             }
 
             Map<String, String> childObjects = getChildObjects(parentObjectType);
@@ -308,9 +326,9 @@ public with sharing class TimelineService {
                         for (Sobject eachCh : secureChildRecords) {
                             Map<String, String> mapData = new Map<String, String>();
 
-                            TimelineRecord tr = mapOfTimelineConfigurationRecords.get(
-                                eachCh.getSObjectType() + fieldName
-                            );
+                            String configKey = eachCh.getSObjectType() + fieldName;
+                            TimelineRecord tr = mapOfTimelineConfigurationRecords.get(configKey);
+                            Map<String, FieldPath> paths = configFieldPaths.get(configKey);
 
                             String myId = eachCh.Id;
 
@@ -318,38 +336,38 @@ public with sharing class TimelineService {
                                 dupeDataCheck.put(myId, myId);
 
                                 Map<String, String> detailValues = getFieldValues(
-                                    tr.detailField,
+                                    paths.get('detailField'),
                                     eachCh,
                                     tr.objectName
                                 );
                                 Map<String, String> positionValues = getFieldValues(
-                                    tr.positionDateField,
+                                    paths.get('positionDateField'),
                                     eachCh,
                                     tr.objectName
                                 );
                                 Map<String, String> fallbackValues = getFieldValues(
-                                    tr.fallbackTooltipField,
+                                    paths.get('fallbackTooltipField'),
                                     eachCh,
                                     tr.objectName
                                 );
                                 Map<String, String> tooltipIdValues = getFieldValues(
-                                    tr.tooltipIdField,
+                                    paths.get('tooltipIdField'),
                                     eachCh,
                                     tr.objectName
                                 );
                                 Map<String, String> drilldownIdValues = getFieldValues(
-                                    tr.drilldownIdField,
+                                    paths.get('drilldownIdField'),
                                     eachCh,
                                     tr.objectName
                                 );
-                                Map<String, String> iconValues = getFieldValues(tr.iconField, eachCh, tr.objectName);
+                                Map<String, String> iconValues = getFieldValues(paths.get('iconField'), eachCh, tr.objectName);
                                 Map<String, String> iconColourValues = getFieldValues(
-                                    tr.iconBackgroundField,
+                                    paths.get('iconBackgroundField'),
                                     eachCh,
                                     tr.objectName
                                 );
 
-                                Map<String, String> typeValues = getFieldValues(tr.type, eachCh, tr.objectName);
+                                Map<String, String> typeValues = getFieldValues(paths.get('type'), eachCh, tr.objectName);
 
                                 String alternateDetailId = '';
 
@@ -449,7 +467,7 @@ public with sharing class TimelineService {
         return childRelatedObjects;
     }
 
-    private static Map<String, String> getFieldValues(String field, Sobject records, String objectName) {
+    private static Map<String, String> getFieldValues(FieldPath path, Sobject records, String objectName) {
         Map<String, String> fieldDetails = new Map<String, String>();
 
         String fieldValue = '';
@@ -457,69 +475,60 @@ public with sharing class TimelineService {
         String fieldType = '';
         String objectCheck = '';
         //String fieldCheck = '';
-        String fieldStripped = '';
         Boolean fieldCanAccess = true;
 
         Id recordId;
 
-        if (field == null || field == '') {
+        if (path == null || !path.isValid) {
             fieldDetails.put('value', '');
             fieldDetails.put('label', '');
             return fieldDetails;
         }
 
-        String[] objectFieldSplit = field.split('\\.');
-
-        if (objectFieldSplit.size() > 1) {
-            fieldStripped = objectFieldSplit[objectFieldSplit.size() - 1];
-        } else {
-            fieldStripped = field;
-        }
-
-        switch on objectFieldSplit.size() {
+        switch on path.parts.size() {
             when 1 {
-                fieldValue = String.valueOf(records.get(field));
+                fieldValue = String.valueOf(records.get(path.fieldName));
                 recordId = String.valueOf(records.get('Id'));
             }
             when 2 {
-                fieldValue = String.valueOf(records.getSobject(objectFieldSplit[0]).get(objectFieldSplit[1]));
-                recordId = String.valueOf(records.getSobject(objectFieldSplit[0]).get('Id'));
+                fieldValue = String.valueOf(records.getSobject(path.parts[0]).get(path.parts[1]));
+                recordId = String.valueOf(records.getSobject(path.parts[0]).get('Id'));
             }
             when 3 {
                 fieldValue = String.valueOf(
-                    records.getSobject(objectFieldSplit[0]).getSobject(objectFieldSplit[1]).get(objectFieldSplit[2])
+                    records.getSobject(path.parts[0]).getSobject(path.parts[1]).get(path.parts[2])
                 );
                 recordId = String.valueOf(
-                    records.getSobject(objectFieldSplit[0]).getSobject(objectFieldSplit[1]).get('Id')
+                    records.getSobject(path.parts[0]).getSobject(path.parts[1]).get('Id')
                 );
             }
             when 4 {
                 fieldValue = String.valueOf(
-                    records.getSobject(objectFieldSplit[0])
-                        .getSobject(objectFieldSplit[1])
-                        .getSobject(objectFieldSplit[2])
-                        .get(objectFieldSplit[3])
+                    records.getSobject(path.parts[0])
+                        .getSobject(path.parts[1])
+                        .getSobject(path.parts[2])
+                        .get(path.parts[3])
                 );
                 recordId = String.valueOf(
-                    records.getSobject(objectFieldSplit[0])
-                        .getSobject(objectFieldSplit[1])
-                        .getSobject(objectFieldSplit[2])
+                    records.getSobject(path.parts[0])
+                        .getSobject(path.parts[1])
+                        .getSobject(path.parts[2])
                         .get('Id')
                 );
             }
             when 5 {
                 fieldValue = String.valueOf(
-                    records.getSobject(objectFieldSplit[0])
-                        .getSobject(objectFieldSplit[1])
-                        .getSobject(objectFieldSplit[2])
-                        .getSobject(objectFieldSplit[3])
-                        .get(objectFieldSplit[4])
+                    records.getSobject(path.parts[0])
+                        .getSobject(path.parts[1])
+                        .getSobject(path.parts[2])
+                        .getSobject(path.parts[3])
+                        .get(path.parts[4])
                 );
                 recordId = String.valueOf(
-                    records.getSobject(objectFieldSplit[0])
-                        .getSobject(objectFieldSplit[1])
-                        .getSobject(objectFieldSplit[2])
-                        .getSobject(objectFieldSplit[3])
+                    records.getSobject(path.parts[0])
+                        .getSobject(path.parts[1])
+                        .getSobject(path.parts[2])
+                        .getSobject(path.parts[3])
                         .get('Id')
                 );
             }
@@ -542,7 +551,7 @@ public with sharing class TimelineService {
             }
         }
 
-        Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, fieldStripped);
+        Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, path.fieldStripped);
 
         fieldLabel = fieldMetadata.getLabel();
         fieldCanAccess = fieldMetadata.isAccessible();
@@ -699,6 +708,26 @@ public with sharing class TimelineService {
     private class FieldMetadata { //NOPMD
         private Boolean canAccess;
         private String label;
+    }
+
+    private class FieldPath {
+        public String[] parts;
+        public String fieldName;
+        public String fieldStripped;
+        public Boolean isValid = false;
+
+        public FieldPath(String field) {
+            if (field != null && field != '') {
+                this.fieldName = field;
+                this.parts = field.split('\\.');
+                if (this.parts.size() > 1) {
+                    this.fieldStripped = this.parts[this.parts.size() - 1];
+                } else {
+                    this.fieldStripped = field;
+                }
+                this.isValid = true;
+            }
+        }
     }
 
     private class TimelineSetupException extends Exception {
