@@ -14,6 +14,7 @@
 -   Fixed casing issue when comparing values
 -   Fixed SOQL limits issues for LookedUpFromActivity Object
 -   Fixed duplicate resize handlers
+-   Fixed tooltip nubbin placement for RTLs
   
 ## 29 May 2025 v1.15.0
 
