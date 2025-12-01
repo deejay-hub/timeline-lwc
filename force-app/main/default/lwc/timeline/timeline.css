@@ -290,34 +290,49 @@
     transform: rotate(45deg);
     content: '';
     background-color: inherit;
-    left: 50%;
     top: 50%;
     margin-top: -0.5rem;
 }
 
-.slds-nubbin_left-top:before,
-.slds-nubbin_right-top:before {
-    --background-color: #dddbda;
-    margin-left: -0.5rem;
-}
-
-.slds-nubbin_left-top:after,
-.slds-nubbin_right-top:after {
-    --background-color: rgb(243, 242, 242);
-    margin-left: -0.5rem;
-}
-
+/* In LTR: left-top is on the left side */
 .slds-nubbin_left-top:before,
 .slds-nubbin_left-top:after {
-    left: 0rem;
+    left: -0.5rem;
+    right: auto;
 }
 
+/* In LTR: right-top is on the right side */
 .slds-nubbin_right-top:before,
 .slds-nubbin_right-top:after {
     left: auto;
     right: -0.5rem;
 }
 
+/* Handle RTL Mirroring explicitly if needed, or rely on physical positioning */
+/* Since we are manually positioning absolute elements, we might need to force directions */
+[dir='rtl'] .slds-nubbin_left-top:before,
+[dir='rtl'] .slds-nubbin_left-top:after {
+    left: -0.5rem;
+    right: auto;
+}
+
+[dir='rtl'] .slds-nubbin_right-top:before,
+[dir='rtl'] .slds-nubbin_right-top:after {
+    left: auto;
+    right: -0.5rem;
+}
+
+.slds-nubbin_left-top:before,
+.slds-nubbin_right-top:before {
+    --background-color: #dddbda;
+}
+
+.slds-nubbin_left-top:after,
+.slds-nubbin_right-top:after {
+    --background-color: rgb(243, 242, 242);
+}
+
+/* Specific vertical positioning */
 .slds-nubbin_left-top:before,
 .slds-nubbin_left-top:after,
 .slds-nubbin_right-top:before,
