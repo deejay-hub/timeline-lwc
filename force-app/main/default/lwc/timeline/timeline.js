@@ -178,6 +178,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     _d3Rendered = false;
     _debouncedResizeHandler = null;
+    _tooltipDelayTimeout = null;
+    tooltipHoverDelayMs = 150;
 
     calculatedLOCALE() {
         let tempLocale;
@@ -849,16 +851,34 @@ export default class timeline extends NavigationMixin(LightningElement) {
                             }
                         }
                     })
-                    .on('mouseover', function (event, d) {
-                        let tooltipId = d.recordId;
-                        let tooltipObject = d.objectName;
+                .on('pointerenter', function (event, d) {
+                    let tooltipId = d.recordId;
+                    let tooltipObject = d.objectName;
+
+                    if (d.tooltipId !== '') {
+                        tooltipId = d.tooltipId;
+                        tooltipObject = d.tooltipObject;
+                    }
+
+                    // Skip if hovering the same record/object to avoid redundant work
+                    if (
+                        me.isMouseOver &&
+                        me.mouseOverRecordId === tooltipId &&
+                        me.mouseOverObjectAPIName === tooltipObject
+                    ) {
+                        return;
+                    }
+
+                    // Clear any pending show from a previous hover
+                    if (me._tooltipDelayTimeout) {
+                        clearTimeout(me._tooltipDelayTimeout);
+                        me._tooltipDelayTimeout = null;
+                    }
+
+                    const targetElement = this;
+
+                    const showTooltip = () => {
                         me.isTooltipLoading = true;
-
-                        if (d.tooltipId !== '') {
-                            tooltipId = d.tooltipId;
-                            tooltipObject = d.tooltipObject;
-                        }
-
                         me.mouseOverObjectAPIName = tooltipObject;
                         me.mouseOverRecordId = tooltipId;
 
@@ -880,7 +900,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         const viewportHeight = window.innerHeight;
 
                         // Get element position and dimensions
-                        const elementRect = this.getBoundingClientRect();
+                        const elementRect = targetElement.getBoundingClientRect();
                         const tooltipWidth = tooltipDIV.offsetWidth;
                         const tooltipHeight = tooltipDIV.offsetHeight;
 
@@ -943,13 +963,22 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                         tipPosition = `top: ${top}px; left: ${left}px; visibility: visible`;
                         tooltipDIV.setAttribute('style', tipPosition);
-                    })
-                    .on('mouseout', function () {
-                        let tooltipDIV = me.template.querySelector('div.tooltip-panel');
-                        tooltipDIV.setAttribute('style', 'visibility: hidden');
-                        me.isMouseOver = false;
-                        me.isTooltipLoading = true;
-                    })
+                        me._tooltipDelayTimeout = null;
+                    };
+
+                    // Delay showing the tooltip to avoid rapid reflows on quick passes
+                    me._tooltipDelayTimeout = setTimeout(showTooltip, me.tooltipHoverDelayMs);
+                })
+                .on('pointerleave', function () {
+                    if (me._tooltipDelayTimeout) {
+                        clearTimeout(me._tooltipDelayTimeout);
+                        me._tooltipDelayTimeout = null;
+                    }
+                    let tooltipDIV = me.template.querySelector('div.tooltip-panel');
+                    tooltipDIV.setAttribute('style', 'visibility: hidden');
+                    me.isMouseOver = false;
+                    me.isTooltipLoading = true;
+                })
                     .text(function (d) {
                         return d.label;
                     });
