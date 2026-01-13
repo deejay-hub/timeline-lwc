@@ -1,4 +1,4 @@
-import { createElement } from 'lwc';
+import { createElement } from '@lwc/engine-dom';
 import Illustration from 'c/illustration';
 
 jest.mock('@salesforce/resourceUrl/images', () => ({ default: 'https://static.example.com' }), { virtual: true });
