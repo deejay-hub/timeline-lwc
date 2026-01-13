@@ -485,53 +485,59 @@ public with sharing class TimelineService {
             return fieldDetails;
         }
 
-        switch on path.parts.size() {
-            when 1 {
-                fieldValue = String.valueOf(records.get(path.fieldName));
-                recordId = String.valueOf(records.get('Id'));
+        try {
+            switch on path.parts.size() {
+                when 1 {
+                    fieldValue = String.valueOf(records.get(path.fieldName));
+                    recordId = String.valueOf(records.get('Id'));
+                }
+                when 2 {
+                    fieldValue = String.valueOf(records.getSobject(path.parts[0]).get(path.parts[1]));
+                    recordId = String.valueOf(records.getSobject(path.parts[0]).get('Id'));
+                }
+                when 3 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(path.parts[0]).getSobject(path.parts[1]).get(path.parts[2])
+                    );
+                    recordId = String.valueOf(
+                        records.getSobject(path.parts[0]).getSobject(path.parts[1]).get('Id')
+                    );
+                }
+                when 4 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(path.parts[0])
+                            .getSobject(path.parts[1])
+                            .getSobject(path.parts[2])
+                            .get(path.parts[3])
+                    );
+                    recordId = String.valueOf(
+                        records.getSobject(path.parts[0])
+                            .getSobject(path.parts[1])
+                            .getSobject(path.parts[2])
+                            .get('Id')
+                    );
+                }
+                when 5 {
+                    fieldValue = String.valueOf(
+                        records.getSobject(path.parts[0])
+                            .getSobject(path.parts[1])
+                            .getSobject(path.parts[2])
+                            .getSobject(path.parts[3])
+                            .get(path.parts[4])
+                    );
+                    recordId = String.valueOf(
+                        records.getSobject(path.parts[0])
+                            .getSobject(path.parts[1])
+                            .getSobject(path.parts[2])
+                            .getSobject(path.parts[3])
+                            .get('Id')
+                    );
+                }
             }
-            when 2 {
-                fieldValue = String.valueOf(records.getSobject(path.parts[0]).get(path.parts[1]));
-                recordId = String.valueOf(records.getSobject(path.parts[0]).get('Id'));
-            }
-            when 3 {
-                fieldValue = String.valueOf(
-                    records.getSobject(path.parts[0]).getSobject(path.parts[1]).get(path.parts[2])
-                );
-                recordId = String.valueOf(
-                    records.getSobject(path.parts[0]).getSobject(path.parts[1]).get('Id')
-                );
-            }
-            when 4 {
-                fieldValue = String.valueOf(
-                    records.getSobject(path.parts[0])
-                        .getSobject(path.parts[1])
-                        .getSobject(path.parts[2])
-                        .get(path.parts[3])
-                );
-                recordId = String.valueOf(
-                    records.getSobject(path.parts[0])
-                        .getSobject(path.parts[1])
-                        .getSobject(path.parts[2])
-                        .get('Id')
-                );
-            }
-            when 5 {
-                fieldValue = String.valueOf(
-                    records.getSobject(path.parts[0])
-                        .getSobject(path.parts[1])
-                        .getSobject(path.parts[2])
-                        .getSobject(path.parts[3])
-                        .get(path.parts[4])
-                );
-                recordId = String.valueOf(
-                    records.getSobject(path.parts[0])
-                        .getSobject(path.parts[1])
-                        .getSobject(path.parts[2])
-                        .getSobject(path.parts[3])
-                        .get('Id')
-                );
-            }
+        } catch (SObjectException e) {
+            // Field was not queried due to FLS - mark as inaccessible
+            fieldCanAccess = false;
+            recordId = String.valueOf(records.get('Id'));
         }
 
         //Case comments cannot be translated to an sobjectype from the ID
@@ -554,7 +560,12 @@ public with sharing class TimelineService {
         Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, path.fieldStripped);
 
         fieldLabel = fieldMetadata.getLabel();
-        fieldCanAccess = fieldMetadata.isAccessible();
+        
+        // Update fieldCanAccess if not already false from the catch block
+        if (fieldCanAccess) {
+            fieldCanAccess = fieldMetadata.isAccessible();
+        }
+        
         fieldType = String.valueOf(fieldMetadata.getType());
 
         if (fieldCanAccess == false) {
