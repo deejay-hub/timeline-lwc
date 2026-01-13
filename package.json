@@ -3,19 +3,18 @@
   "author": "Dave Norris",
   "description": "An interactive timeline for the Salesforce platform",
   "private": true,
-  "version": "1.15.0",
+  "version": "1.16.0",
   "scripts": {
-    "lint": "eslint **/{aura,lwc}/**",
+    "lint": "eslint **/lwc/**/*.js",
     "test": "npm run test:unit",
     "test:unit": "sfdx-lwc-jest",
     "test:unit:watch": "sfdx-lwc-jest --watch",
     "test:unit:debug": "sfdx-lwc-jest --debug",
     "test:unit:coverage": "sfdx-lwc-jest --coverage",
     "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-    "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-    "postinstall": "husky init",
-    "precommit": "lint-staged",
-    "prepare": "husky"
+    "prettier:verify": "prettier --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+    "prepare": "husky || true",
+    "precommit": "lint-staged"  
   },
   "devDependencies": {
     "@lwc/eslint-plugin-lwc": "^3.1.0",
@@ -40,8 +39,11 @@
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
       "prettier --write"
     ],
-    "**/{aura,lwc}/**": [
-      "eslint"
+    "force-app/main/default/lwc/**/*.js": [
+      "eslint --max-warnings=0"
+    ],
+    "force-app/main/default/aura/**/*.js": [
+      "eslint --max-warnings=0"
     ]
   }
 }
