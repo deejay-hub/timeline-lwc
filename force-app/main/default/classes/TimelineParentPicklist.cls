@@ -17,7 +17,8 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
         try {
             if (this.context.entityName != null) {
                 List<Schema.DescribeSObjectResult> describes = Schema.describeSObjects(
-                    new List<String>{ this.context.entityName }
+                    new List<String>{ this.context.entityName },
+                    SObjectDescribeOptions.DEFERRED
                 );
                 String objectLabel = describes[0].getLabel();
                 return new VisualEditor.DataRow('Use This ' + objectLabel, 'Default_Picklist_Value');
@@ -38,7 +39,8 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
 
             if (this.context.entityName != null && this.context.pageType != 'CommRecordPage') {
                 List<Schema.DescribeSObjectResult> describes = Schema.describeSObjects(
-                    new List<String>{ this.context.entityName }
+                    new List<String>{ this.context.entityName },
+                    SObjectDescribeOptions.DEFERRED
                 );
                 Schema.DescribeSObjectResult describeSobjects = describes[0];
 
