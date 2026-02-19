@@ -663,6 +663,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
             timelineCanvas.attr('height', svgHeight - 1);
             timelineCanvas.SVGHeight = svgHeight;
 
+            if (me.showToday !== 'No') {
+                timelineCanvas.currentDate
+                    .select('line')
+                    .attr('y2', svgHeight);
+                timelineCanvas.currentDate
+                    .select('rect')
+                    .style('y', svgHeight - 8);
+            }
+
             timelineCanvas.data = timelineCanvas
                 .selectAll('[class~=timeline-canvas-record]')
                 .data(data, function (d) {
