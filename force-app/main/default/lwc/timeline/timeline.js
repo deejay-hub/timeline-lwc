@@ -1,6 +1,7 @@
 import { LightningElement, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { NavigationMixin } from 'lightning/navigation';
+import { IsConsoleNavigation, openTab } from 'lightning/platformWorkspaceApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import LOCALE from '@salesforce/i18n/locale';
 import LANGUAGE from '@salesforce/i18n/lang';
@@ -181,6 +182,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _tooltipDelayTimeout = null;
     tooltipHoverDelayMs = 150;
 
+    @wire(IsConsoleNavigation)
+    isConsoleNavigation;
+
     calculatedLOCALE() {
         let tempLocale;
 
@@ -195,6 +199,61 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         return tempLocale;
+    }
+
+    async navigateToRecord(record) {
+        let drilldownId = record.recordId;
+        if (record.drilldownId !== '') {
+            drilldownId = record.drilldownId;
+        }
+
+        if (record.alternateDetailId !== '') {
+            drilldownId = record.alternateDetailId;
+        }
+
+        switch (record.objectName) {
+            case 'ContentDocumentLink': {
+                const pageRef = {
+                    type: 'standard__namedPage',
+                    attributes: {
+                        pageName: 'filePreview'
+                    },
+                    state: {
+                        selectedRecordId: record.recordId
+                    }
+                };
+                if (this.isConsoleNavigation) {
+                    await openTab({ pageReference: pageRef, focus: true });
+                } else {
+                    this[NavigationMixin.Navigate](pageRef);
+                }
+                break;
+            }
+            case 'CaseComment': {
+                const toastEvent = new ShowToastEvent({
+                    title: this.toast.NAVIGATION_HEADER,
+                    message: this.toast.NAVIGATION_BODY,
+                    messageData: [record.objectName]
+                });
+                this.dispatchEvent(toastEvent);
+                break;
+            }
+            default: {
+                const pageRef = {
+                    type: 'standard__recordPage',
+                    attributes: {
+                        recordId: drilldownId,
+                        actionName: 'view'
+                    }
+                };
+                if (this.isConsoleNavigation) {
+                    await openTab({ pageReference: pageRef, focus: true });
+                } else {
+                    this[NavigationMixin.Navigate](pageRef);
+                }
+                break;
+            }
+        }
     }
 
     @wire(getTimelineTypes, { parentObjectId: '$recordId', parentFieldName: '$timelineParent' })
@@ -686,48 +745,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .append('g')
                 .on('keydown', function (event, d) {
                     if (event.keyCode === 13) {
-                        let drilldownId = d.recordId;
-                        if (d.drilldownId !== '') {
-                            drilldownId = d.drilldownId;
-                        }
-
-                        if (d.alternateDetailId !== '') {
-                            drilldownId = d.alternateDetailId;
-                        }
-
-                        switch (d.objectName) {
-                            case 'ContentDocumentLink': {
-                                me[NavigationMixin.Navigate]({
-                                    type: 'standard__namedPage',
-                                    attributes: {
-                                        pageName: 'filePreview'
-                                    },
-                                    state: {
-                                        selectedRecordId: d.recordId
-                                    }
-                                });
-                                break;
-                            }
-                            case 'CaseComment': {
-                                const toastEvent = new ShowToastEvent({
-                                    title: me.toast.NAVIGATION_HEADER,
-                                    message: me.toast.NAVIGATION_BODY,
-                                    messageData: [d.objectName]
-                                });
-                                this.dispatchEvent(toastEvent);
-                                break;
-                            }
-                            default: {
-                                me[NavigationMixin.Navigate]({
-                                    type: 'standard__recordPage',
-                                    attributes: {
-                                        recordId: drilldownId,
-                                        actionName: 'view'
-                                    }
-                                });
-                                break;
-                            }
-                        }
+                        me.navigateToRecord(d);
                     }
                 })
                 .attr('class', 'timeline-canvas-record')
@@ -817,48 +835,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .attr('y', 16)
                     .attr('font-size', 12)
                     .on('click', function (event, d) {
-                        let drilldownId = d.recordId;
-                        if (d.drilldownId !== '') {
-                            drilldownId = d.drilldownId;
-                        }
-
-                        if (d.alternateDetailId !== '') {
-                            drilldownId = d.alternateDetailId;
-                        }
-
-                        switch (d.objectName) {
-                            case 'ContentDocumentLink': {
-                                me[NavigationMixin.Navigate]({
-                                    type: 'standard__namedPage',
-                                    attributes: {
-                                        pageName: 'filePreview'
-                                    },
-                                    state: {
-                                        selectedRecordId: d.recordId
-                                    }
-                                });
-                                break;
-                            }
-                            case 'CaseComment': {
-                                const toastEvent = new ShowToastEvent({
-                                    title: me.toast.NAVIGATION_HEADER,
-                                    message: me.toast.NAVIGATION_BODY,
-                                    messageData: [d.objectName]
-                                });
-                                this.dispatchEvent(toastEvent);
-                                break;
-                            }
-                            default: {
-                                me[NavigationMixin.Navigate]({
-                                    type: 'standard__recordPage',
-                                    attributes: {
-                                        recordId: drilldownId,
-                                        actionName: 'view'
-                                    }
-                                });
-                                break;
-                            }
-                        }
+                        me.navigateToRecord(d);
                     })
                 .on('pointerenter', function (event, d) {
                     let tooltipId = d.recordId;

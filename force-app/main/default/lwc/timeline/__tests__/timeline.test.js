@@ -24,6 +24,20 @@ jest.mock(
     { virtual: true }
 );
 
+jest.mock(
+    'lightning/platformWorkspaceApi',
+    () => {
+        const IsConsoleNavigation = {
+            emit: jest.fn()
+        };
+        return {
+            IsConsoleNavigation,
+            openTab: jest.fn()
+        };
+    },
+    { virtual: true }
+);
+
 // Mock static resources
 jest.mock('@salesforce/resourceUrl/d3minified', () => {
     return '/mock/d3minified.js';
