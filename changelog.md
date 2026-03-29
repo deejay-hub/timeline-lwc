@@ -3,9 +3,9 @@
 ## XX Xxx 2026 v1.16.0
 
 **WHAT'S NEW**
--   Changed Salesforce API to v65.0 from v63.0
+-   Changed Salesforce API to v66.0 from v63.0
 -   Enforced FLS with stripInaccesible aligning to best practice
--   Security improvements
+-   Console apps now open records in new tab
 -   Improved CPU time for Parent Object Picklist resolution
 -   Performance improvements handling String.split operations 
 
