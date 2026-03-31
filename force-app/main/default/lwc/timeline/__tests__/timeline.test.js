@@ -39,13 +39,19 @@ jest.mock(
 );
 
 // Mock static resources
-jest.mock('@salesforce/resourceUrl/d3minified', () => {
-    return '/mock/d3minified.js';
-}, { virtual: true });
+jest.mock(
+    '@salesforce/resourceUrl/d3minified',
+    () => {
+        return '/mock/d3minified.js';
+    },
+    { virtual: true }
+);
 
 // Mock custom labels
 jest.mock('@salesforce/label/c.Timeline_Label_Filters', () => ({ default: 'Filters' }), { virtual: true });
-jest.mock('@salesforce/label/c.Timeline_Label_Filter_Type_Legend', () => ({ default: 'Type Legend' }), { virtual: true });
+jest.mock('@salesforce/label/c.Timeline_Label_Filter_Type_Legend', () => ({ default: 'Type Legend' }), {
+    virtual: true
+});
 jest.mock('@salesforce/label/c.Timeline_Label_Date_Range_Legend', () => ({ default: 'Date Range' }), { virtual: true });
 jest.mock('@salesforce/label/c.Timeline_Label_Filter_All_Types', () => ({ default: 'All Types' }), { virtual: true });
 jest.mock('@salesforce/label/c.Timeline_Label_Days', () => ({ default: 'days' }), { virtual: true });
@@ -59,15 +65,23 @@ jest.mock('@salesforce/label/c.Timeline_Label_Cancel', () => ({ default: 'Cancel
 jest.mock('@salesforce/label/c.Timeline_Error_Apex', () => ({ default: 'Apex Error' }), { virtual: true });
 jest.mock('@salesforce/label/c.Timeline_Error_Setup', () => ({ default: 'Setup Error' }), { virtual: true });
 jest.mock('@salesforce/label/c.Timeline_Error_NoDataHeader', () => ({ default: 'No Data' }), { virtual: true });
-jest.mock('@salesforce/label/c.Timeline_Error_NoDataSubHeader', () => ({ default: 'No Data Found' }), { virtual: true });
+jest.mock('@salesforce/label/c.Timeline_Error_NoDataSubHeader', () => ({ default: 'No Data Found' }), {
+    virtual: true
+});
 jest.mock('@salesforce/label/c.Timeline_Error_ConsoleTab', () => ({ default: 'Console Tab Error' }), { virtual: true });
-jest.mock('@salesforce/label/c.Timeline_Error_ConsoleTabSubHeader', () => ({ default: 'Console Tab Error Details' }), { virtual: true });
-jest.mock('@salesforce/label/c.Timeline_Error_JavaScriptResources', () => ({ default: 'JavaScript Load Error' }), { virtual: true });
+jest.mock('@salesforce/label/c.Timeline_Error_ConsoleTabSubHeader', () => ({ default: 'Console Tab Error Details' }), {
+    virtual: true
+});
+jest.mock('@salesforce/label/c.Timeline_Error_JavaScriptResources', () => ({ default: 'JavaScript Load Error' }), {
+    virtual: true
+});
 jest.mock('@salesforce/label/c.Timeline_Error_Unhandled', () => ({ default: 'Unhandled Error' }), { virtual: true });
 
 // Mock navigation labels
 jest.mock('@salesforce/label/c.Timeline_Navigation_Toast_Header', () => ({ default: 'Navigation' }), { virtual: true });
-jest.mock('@salesforce/label/c.Timeline_Navigation_Toast_Body', () => ({ default: 'Navigation not available' }), { virtual: true });
+jest.mock('@salesforce/label/c.Timeline_Navigation_Toast_Body', () => ({ default: 'Navigation not available' }), {
+    virtual: true
+});
 
 // Mock i18n
 jest.mock('@salesforce/i18n/locale', () => ({ default: 'en-US' }), { virtual: true });
@@ -79,7 +93,7 @@ const buildTimeline = async (props = {}) => {
     const element = createElement('c-timeline', {
         is: Timeline
     });
-    
+
     // Set default properties
     element.recordId = '001XXXXXXXXXXXXXXX';
     element.timelineParent = 'AccountId';
@@ -91,21 +105,21 @@ const buildTimeline = async (props = {}) => {
     element.zoomTo = 'Current Date';
     element.daysToShow = 90;
     element.showToday = 'Blue';
-    
+
     // Override with any provided props
     Object.assign(element, props);
-    
+
     document.body.appendChild(element);
-    
+
     // Wait for any pending promises to resolve
     await flushPromises();
-    
+
     return element;
 };
 
 // Helper to flush promises
 const flushPromises = () => {
-    return new Promise(resolve => setTimeout(resolve, 0));
+    return new Promise((resolve) => setTimeout(resolve, 0));
 };
 
 describe('c-timeline', () => {
