@@ -36,6 +36,13 @@ import BUTTON_CANCEL from '@salesforce/label/c.Timeline_Label_Cancel';
 import NAVIGATION_HEADER from '@salesforce/label/c.Timeline_Navigation_Toast_Header';
 import NAVIGATION_BODY from '@salesforce/label/c.Timeline_Navigation_Toast_Body';
 
+const ALLOWED_ICON_PATTERNS = [
+    /^\/img\/icon\/[A-Za-z0-9/_-]+\.svg$/i,
+    /^\/resource\/[A-Za-z0-9/_-]+$/i,
+    /^\/sfsites\/c\/resource\/[A-Za-z0-9/_-]+$/i
+];
+const SAFE_COLOR_RE = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+
 export default class timeline extends NavigationMixin(LightningElement) {
     //Adminstrator accessible attributes in app builder
     @api timelineParent; //parent field for the lwc set as design attribute
@@ -180,6 +187,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3Rendered = false;
     _debouncedResizeHandler = null;
     _tooltipDelayTimeout = null;
+    _brushRafId = null;
+    _appliedSummaryWidth = null;
+    _allTypesChecked = true;
+    _allTypesIndeterminate = false;
     tooltipHoverDelayMs = 150;
 
     @wire(IsConsoleNavigation)
@@ -285,6 +296,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this.startingFilterValues = [...newFilterValues];
             this.allFilterValues = [...newAllFilterValues];
             this.isFilterLoaded = true;
+            this.handleAllTypes();
         } else if (result.error) {
             let errorType = 'Error';
             let errorHeading,
@@ -306,9 +318,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     disconnectedCallback() {
+        if (this._brushRafId) {
+            cancelAnimationFrame(this._brushRafId);
+            this._brushRafId = null;
+        }
+
+        if (this._tooltipDelayTimeout) {
+            clearTimeout(this._tooltipDelayTimeout);
+            this._tooltipDelayTimeout = null;
+        }
+
         if (this._debouncedResizeHandler) {
             window.removeEventListener('resize', this._debouncedResizeHandler);
-            this._debouncedResizeHandler = null; // Good practice to clear it
+            this._debouncedResizeHandler = null;
         }
     }
 
@@ -358,11 +380,20 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this._d3Rendered = true;
         }
 
-        let timelineSummary = this.template.querySelectorAll('span.timeline-summary-verbose');
+        if (this._appliedSummaryWidth !== this.timelineWidth) {
+            let timelineSummary = this.template.querySelectorAll('span.timeline-summary-verbose');
+            if (timelineSummary && timelineSummary.length > 0) {
+                for (let i = 0; i < timelineSummary.length; i++) {
+                    timelineSummary[i].classList.add('timeline-summary-verbose-' + this.timelineWidth);
+                }
+                this._appliedSummaryWidth = this.timelineWidth;
+            }
+        }
 
-        if (timelineSummary !== undefined && timelineSummary !== null) {
-            for (let i = 0; i < timelineSummary.length; i++) {
-                timelineSummary[i].classList.add('timeline-summary-verbose-' + this.timelineWidth);
+        if (this.isFilter) {
+            const allTypesCb = this.template.querySelector('input.all-types-checkbox');
+            if (allTypesCb) {
+                allTypesCb.indeterminate = this._allTypesIndeterminate;
             }
         }
 
@@ -394,8 +425,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         this._d3brush.redraw();
                     }
                 } catch (error) {
-                    // Log errors during resize handling for better diagnostics
-                    console.error('Error during timeline resize:', error);
+                    // Intentionally swallowed — resize failures are non-critical
                 }
             }, 200);
             window.addEventListener('resize', this._debouncedResizeHandler);
@@ -533,9 +563,23 @@ export default class timeline extends NavigationMixin(LightningElement) {
         let timelineResult = [];
         let timelineTimes = [];
 
+        const locale = me.calculatedLOCALE();
+        const dateOnlyFormatter = new Intl.DateTimeFormat(locale, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric'
+        });
+        const dateTimeFormatterForRecords = new Intl.DateTimeFormat(locale, {
+            hour: 'numeric',
+            minute: 'numeric',
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            timeZone: TIMEZONE
+        });
+
         result.forEach(function (record, index) {
             let recordCopy = {};
-            let options;
 
             recordCopy.recordId = record.objectId;
             recordCopy.id = index;
@@ -545,24 +589,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             recordCopy.objectLabel = record.objectLabel;
             recordCopy.positionDateField = record.positionDateField;
 
-            if (record.positionDateType === 'DATE') {
-                options = {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric'
-                };
-            } else {
-                options = {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    timeZone: TIMEZONE
-                };
-            }
-
-            let dateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), options);
+            let dateFormatter = record.positionDateType === 'DATE' ? dateOnlyFormatter : dateTimeFormatterForRecords;
 
             let convertDate = record.positionDateValue;
 
@@ -723,12 +750,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
             timelineCanvas.SVGHeight = svgHeight;
 
             if (me.showToday !== 'No') {
-                timelineCanvas.currentDate
-                    .select('line')
-                    .attr('y2', svgHeight);
-                timelineCanvas.currentDate
-                    .select('rect')
-                    .style('y', svgHeight - 8);
+                timelineCanvas.currentDate.select('line').attr('y2', svgHeight);
+                timelineCanvas.currentDate.select('rect').style('y', svgHeight - 8);
             }
 
             timelineCanvas.data = timelineCanvas
@@ -760,7 +783,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 timelineCanvas.records
                     .append('rect')
                     .attr('class', 'timeline-canvas-icon-wrap')
-                    .attr('style', function (d) {
+                    .attr('fill', function (d) {
                         let iconColour = '';
                         switch (d.type) {
                             case 'Call':
@@ -779,7 +802,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 iconColour = d.iconBackground;
                                 break;
                         }
-                        return 'fill: ' + iconColour;
+                        return me.sanitizeFillColor(iconColour, '#107cad');
                     })
                     .attr('x', 0)
                     .attr('y', 0)
@@ -814,7 +837,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                                 iconImage = d.icon;
                                 break;
                         }
-                        return iconImage;
+                        return me.sanitizeIconHref(iconImage, '/img/icon/t4v35/standard/note.svg');
                     });
 
                 timelineCanvas.records
@@ -837,134 +860,134 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     .on('click', function (event, d) {
                         me.navigateToRecord(d);
                     })
-                .on('pointerenter', function (event, d) {
-                    let tooltipId = d.recordId;
-                    let tooltipObject = d.objectName;
+                    .on('pointerenter', function (event, d) {
+                        let tooltipId = d.recordId;
+                        let tooltipObject = d.objectName;
 
-                    if (d.tooltipId !== '') {
-                        tooltipId = d.tooltipId;
-                        tooltipObject = d.tooltipObject;
-                    }
+                        if (d.tooltipId !== '') {
+                            tooltipId = d.tooltipId;
+                            tooltipObject = d.tooltipObject;
+                        }
 
-                    // Skip if hovering the same record/object to avoid redundant work
-                    if (
-                        me.isMouseOver &&
-                        me.mouseOverRecordId === tooltipId &&
-                        me.mouseOverObjectAPIName === tooltipObject
-                    ) {
-                        return;
-                    }
+                        // Skip if hovering the same record/object to avoid redundant work
+                        if (
+                            me.isMouseOver &&
+                            me.mouseOverRecordId === tooltipId &&
+                            me.mouseOverObjectAPIName === tooltipObject
+                        ) {
+                            return;
+                        }
 
-                    // Clear any pending show from a previous hover
-                    if (me._tooltipDelayTimeout) {
-                        clearTimeout(me._tooltipDelayTimeout);
-                        me._tooltipDelayTimeout = null;
-                    }
+                        // Clear any pending show from a previous hover
+                        if (me._tooltipDelayTimeout) {
+                            clearTimeout(me._tooltipDelayTimeout);
+                            me._tooltipDelayTimeout = null;
+                        }
 
-                    const targetElement = this;
+                        const targetElement = this;
 
-                    const showTooltip = () => {
-                        me.isTooltipLoading = true;
-                        me.mouseOverObjectAPIName = tooltipObject;
-                        me.mouseOverRecordId = tooltipId;
+                        const showTooltip = () => {
+                            me.isTooltipLoading = true;
+                            me.mouseOverObjectAPIName = tooltipObject;
+                            me.mouseOverRecordId = tooltipId;
 
-                        me.mouseOverFallbackField = d.fallbackTooltipField;
-                        me.mouseOverFallbackValue = d.fallbackTooltipValue;
+                            me.mouseOverFallbackField = d.fallbackTooltipField;
+                            me.mouseOverFallbackValue = d.fallbackTooltipValue;
 
-                        me.mouseOverDetailLabel = d.detailFieldLabel;
-                        me.mouseOverDetailValue = d.detailField;
+                            me.mouseOverDetailLabel = d.detailFieldLabel;
+                            me.mouseOverDetailValue = d.detailField;
 
-                        me.mouseOverPositionLabel = d.positionDateField;
-                        me.mouseOverPositionValue = d.positionDateValue;
+                            me.mouseOverPositionLabel = d.positionDateField;
+                            me.mouseOverPositionValue = d.positionDateValue;
 
-                        me.isMouseOver = true;
+                            me.isMouseOver = true;
+                            let tooltipDIV = me.template.querySelector('div.tooltip-panel');
+                            let tipPosition;
+
+                            // Get viewport dimensions
+                            const viewportWidth = window.innerWidth;
+                            const viewportHeight = window.innerHeight;
+
+                            // Get element position and dimensions
+                            const elementRect = targetElement.getBoundingClientRect();
+                            const tooltipWidth = tooltipDIV.offsetWidth;
+                            const tooltipHeight = tooltipDIV.offsetHeight;
+
+                            // Calculate available space on each side
+                            const spaceRight = viewportWidth - elementRect.right;
+                            const spaceLeft = elementRect.left;
+
+                            // Default vertical position (centered with element)
+                            let top = elementRect.top - 30;
+
+                            // Adjust vertical position if tooltip would be cut off
+                            if (top < 0) {
+                                top = 10; // Add some padding from top
+                            } else if (top + tooltipHeight > viewportHeight) {
+                                top = viewportHeight - tooltipHeight - 10; // Add some padding from bottom
+                            }
+
+                            // Determine horizontal position based on available space and language direction
+                            let left;
+                            let showOnRight = true;
+                            let hasEnoughSpace = false;
+
+                            if (me.isLanguageRightToLeft) {
+                                // For RTL, prefer left side if there's enough space
+                                if (spaceLeft >= tooltipWidth + 15) {
+                                    left = elementRect.left - tooltipWidth - 15;
+                                    showOnRight = false;
+                                    hasEnoughSpace = true;
+                                } else {
+                                    // If not enough space on left, try right side
+                                    left = elementRect.right + 15;
+                                    showOnRight = true;
+                                }
+                            } else {
+                                // For LTR, try right side first
+                                if (spaceRight >= tooltipWidth + 15) {
+                                    // Enough space on right
+                                    left = elementRect.right + 15;
+                                    showOnRight = true;
+                                    hasEnoughSpace = true;
+                                } else if (spaceLeft >= tooltipWidth + 15) {
+                                    // Not enough space on right, but enough on left
+                                    left = elementRect.left - tooltipWidth - 15;
+                                    showOnRight = false;
+                                    hasEnoughSpace = true;
+                                } else {
+                                    // Not enough space on either side, force right
+                                    left = elementRect.right + 15;
+                                    showOnRight = true;
+                                }
+                            }
+
+                            // Only ensure tooltip stays within viewport if we had enough space on preferred side
+                            if (hasEnoughSpace) {
+                                left = Math.max(10, Math.min(left, viewportWidth - tooltipWidth - 10));
+                            }
+
+                            // Update nubbin class based on position
+                            me.nubbinClass = showOnRight ? 'slds-nubbin_left-top' : 'slds-nubbin_right-top';
+
+                            tipPosition = `top: ${top}px; left: ${left}px; visibility: visible`;
+                            tooltipDIV.setAttribute('style', tipPosition);
+                            me._tooltipDelayTimeout = null;
+                        };
+
+                        // Delay showing the tooltip to avoid rapid reflows on quick passes
+                        me._tooltipDelayTimeout = setTimeout(showTooltip, me.tooltipHoverDelayMs);
+                    })
+                    .on('pointerleave', function () {
+                        if (me._tooltipDelayTimeout) {
+                            clearTimeout(me._tooltipDelayTimeout);
+                            me._tooltipDelayTimeout = null;
+                        }
                         let tooltipDIV = me.template.querySelector('div.tooltip-panel');
-                        let tipPosition;
-
-                        // Get viewport dimensions
-                        const viewportWidth = window.innerWidth;
-                        const viewportHeight = window.innerHeight;
-
-                        // Get element position and dimensions
-                        const elementRect = targetElement.getBoundingClientRect();
-                        const tooltipWidth = tooltipDIV.offsetWidth;
-                        const tooltipHeight = tooltipDIV.offsetHeight;
-
-                        // Calculate available space on each side
-                        const spaceRight = viewportWidth - elementRect.right;
-                        const spaceLeft = elementRect.left;
-
-                        // Default vertical position (centered with element)
-                        let top = elementRect.top - 30;
-
-                        // Adjust vertical position if tooltip would be cut off
-                        if (top < 0) {
-                            top = 10; // Add some padding from top
-                        } else if (top + tooltipHeight > viewportHeight) {
-                            top = viewportHeight - tooltipHeight - 10; // Add some padding from bottom
-                        }
-
-                        // Determine horizontal position based on available space and language direction
-                        let left;
-                        let showOnRight = true;
-                        let hasEnoughSpace = false;
-
-                        if (me.isLanguageRightToLeft) {
-                            // For RTL, prefer left side if there's enough space
-                            if (spaceLeft >= tooltipWidth + 15) {
-                                left = elementRect.left - tooltipWidth - 15;
-                                showOnRight = false;
-                                hasEnoughSpace = true;
-                            } else {
-                                // If not enough space on left, try right side
-                                left = elementRect.right + 15;
-                                showOnRight = true;
-                            }
-                        } else {
-                            // For LTR, try right side first
-                            if (spaceRight >= tooltipWidth + 15) {
-                                // Enough space on right
-                                left = elementRect.right + 15;
-                                showOnRight = true;
-                                hasEnoughSpace = true;
-                            } else if (spaceLeft >= tooltipWidth + 15) {
-                                // Not enough space on right, but enough on left
-                                left = elementRect.left - tooltipWidth - 15;
-                                showOnRight = false;
-                                hasEnoughSpace = true;
-                            } else {
-                                // Not enough space on either side, force right
-                                left = elementRect.right + 15;
-                                showOnRight = true;
-                            }
-                        }
-
-                        // Only ensure tooltip stays within viewport if we had enough space on preferred side
-                        if (hasEnoughSpace) {
-                            left = Math.max(10, Math.min(left, viewportWidth - tooltipWidth - 10));
-                        }
-
-                        // Update nubbin class based on position
-                        me.nubbinClass = showOnRight ? 'slds-nubbin_left-top' : 'slds-nubbin_right-top';
-
-                        tipPosition = `top: ${top}px; left: ${left}px; visibility: visible`;
-                        tooltipDIV.setAttribute('style', tipPosition);
-                        me._tooltipDelayTimeout = null;
-                    };
-
-                    // Delay showing the tooltip to avoid rapid reflows on quick passes
-                    me._tooltipDelayTimeout = setTimeout(showTooltip, me.tooltipHoverDelayMs);
-                })
-                .on('pointerleave', function () {
-                    if (me._tooltipDelayTimeout) {
-                        clearTimeout(me._tooltipDelayTimeout);
-                        me._tooltipDelayTimeout = null;
-                    }
-                    let tooltipDIV = me.template.querySelector('div.tooltip-panel');
-                    tooltipDIV.setAttribute('style', 'visibility: hidden');
-                    me.isMouseOver = false;
-                    me.isTooltipLoading = true;
-                })
+                        tooltipDIV.setAttribute('style', 'visibility: hidden');
+                        me.isMouseOver = false;
+                        me.isTooltipLoading = true;
+                    })
                     .text(function (d) {
                         return d.label;
                     });
@@ -981,17 +1004,18 @@ export default class timeline extends NavigationMixin(LightningElement) {
         targetSVG.attr('width', target.width);
         targetSVG.attr('height', '105px');
 
+        const axisDateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
         let x_axis = d3
             .axisBottom(target.x)
             .tickSizeInner(axisConfig.innerTickSize)
             .ticks(axisConfig.ticks)
             .tickFormat(function (d) {
-                let formattedDate = new Intl.DateTimeFormat(me.calculatedLOCALE(), {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                }).format(d);
-                return formattedDate;
+                return axisDateFormatter.format(d);
             })
             .tickPadding(axisConfig.tickPadding);
 
@@ -1285,51 +1309,53 @@ export default class timeline extends NavigationMixin(LightningElement) {
             xBrush.call(brush).call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x));
         };
 
+        const brushDateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
         function brushed(event) {
             const selection = event.selection;
-            const dommy = [];
+            if (!selection) return;
 
-            if (selection) {
-                dommy.push(timelineMap.x.invert(selection[0]));
-                dommy.push(timelineMap.x.invert(selection[1]));
+            const sel0 = selection[0];
+            const sel1 = selection[1];
+
+            if (me._brushRafId) {
+                cancelAnimationFrame(me._brushRafId);
+            }
+
+            me._brushRafId = requestAnimationFrame(() => {
+                me._brushRafId = null;
+
+                const dommy = [timelineMap.x.invert(sel0), timelineMap.x.invert(sel1)];
 
                 d3timeline.redraw(dommy);
                 timelineAxis.redraw();
                 timelineAxisLabel.redraw();
 
                 handle.attr('transform', function (d, i) {
-                    return 'translate(' + (selection[i] - 2) + ', ' + 0 + ') scale(0.05)';
+                    return 'translate(' + ((i === 0 ? sel0 : sel1) - 2) + ', ' + 0 + ') scale(0.05)';
                 });
 
-                let a = d3timeline.x.domain()[1];
-                let b = d3timeline.x.domain()[0];
+                let a = new Date(d3timeline.x.domain()[1]);
+                let b = new Date(d3timeline.x.domain()[0]);
 
-                a = new Date(a);
-                b = new Date(b);
-
-                // To calculate the time difference of two dates
                 let Difference_In_Time = a.getTime() - b.getTime();
-
-                // To calculate the no. of days between two dates
                 let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
                 me.daysToShow = Difference_In_Days;
 
-                const dateTimeFormat = new Intl.DateTimeFormat(me.calculatedLOCALE(), {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-
                 me.zoomStartDate = timelineMap.x
-                    .invert(selection[0])
+                    .invert(sel0)
                     .toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
                 me.zoomEndDate = timelineMap.x
-                    .invert(selection[1])
+                    .invert(sel1)
                     .toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-                me.localisedZoomStartDate = dateTimeFormat.format(new Date(timelineMap.x.invert(selection[0])));
-                me.localisedZoomEndDate = dateTimeFormat.format(new Date(timelineMap.x.invert(selection[1])));
-            }
+                me.localisedZoomStartDate = brushDateFormatter.format(new Date(timelineMap.x.invert(sel0)));
+                me.localisedZoomEndDate = brushDateFormatter.format(new Date(timelineMap.x.invert(sel1)));
+            });
         }
 
         function brushStart(event) {
@@ -1362,6 +1388,34 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         return brush;
+    }
+
+    sanitizeIconHref(value, fallback) {
+        if (typeof value !== 'string' || value.trim() === '') {
+            return fallback;
+        }
+
+        const safeValue = value.trim();
+        if (
+            /^(https?:|javascript:|data:|\/\/)/i.test(safeValue) ||
+            safeValue.includes('..') ||
+            safeValue.includes('?') ||
+            safeValue.includes('#')
+        ) {
+            return fallback;
+        }
+
+        const isAllowed = ALLOWED_ICON_PATTERNS.some((pattern) => pattern.test(safeValue));
+        return isAllowed ? safeValue : fallback;
+    }
+
+    sanitizeFillColor(value, fallback) {
+        if (typeof value !== 'string' || value.trim() === '') {
+            return fallback;
+        }
+
+        const safeValue = value.trim();
+        return SAFE_COLOR_RE.test(safeValue) ? safeValue : fallback;
     }
 
     debounce = (fn, time) => {
@@ -1444,7 +1498,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     get filterOptions() {
-        this.handleAllTypes();
         return this.objectFilter;
     }
 
@@ -1468,6 +1521,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this.filterValues = [];
         }
 
+        this.handleAllTypes();
         this.isFilterUpdated = false;
         if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
             this.isFilterUpdated = true;
@@ -1475,23 +1529,18 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     handleAllTypes() {
-        const allTypesCheckbox = this.template.querySelector('input.all-types-checkbox');
         const countAllValues = this.allFilterValues.length;
         const countSelectedValues = this.filterValues.length;
 
-        if (countSelectedValues !== countAllValues && countSelectedValues > 0) {
-            allTypesCheckbox.checked = false;
-            allTypesCheckbox.indeterminate = true;
-        }
-
-        if (countSelectedValues === countAllValues) {
-            allTypesCheckbox.indeterminate = false;
-            allTypesCheckbox.checked = true;
-        }
-
-        if (countSelectedValues < 1) {
-            allTypesCheckbox.indeterminate = false;
-            allTypesCheckbox.checked = false;
+        if (countSelectedValues > 0 && countSelectedValues < countAllValues) {
+            this._allTypesChecked = false;
+            this._allTypesIndeterminate = true;
+        } else if (countSelectedValues === countAllValues) {
+            this._allTypesChecked = true;
+            this._allTypesIndeterminate = false;
+        } else {
+            this._allTypesChecked = false;
+            this._allTypesIndeterminate = false;
         }
     }
 
