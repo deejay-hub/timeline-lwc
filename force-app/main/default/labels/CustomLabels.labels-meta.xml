@@ -169,4 +169,115 @@
         <value
         >Time Warp cannot load on a parent and child sub tab at the same time. Refresh Time Warp to view this timeline.</value>
     </labels>
+    <labels>
+        <fullName>Timeline_Error_InvalidConfig</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_InvalidConfig</shortDescription>
+        <value>Timeline configuration is invalid. Contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_SetupIncomplete</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_SetupIncomplete</shortDescription>
+        <value>Timeline setup could not be completed.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_UnexpectedTypes</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_UnexpectedTypes</shortDescription>
+        <value>Unexpected error while loading timeline types.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_NoConfigRecords</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_NoConfigRecords</shortDescription>
+        <value
+        >No active records for parent entity ''{0}'' have been found in ''Timeline_Configuration__mdt''. Ask an administrator for help.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_QueryFailed</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_QueryFailed</shortDescription>
+        <value>Timeline query could not be completed with current configuration.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_UnexpectedRecords</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_UnexpectedRecords</shortDescription>
+        <value>Unexpected error while loading timeline records.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_InvalidParentField</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_InvalidParentField</shortDescription>
+        <value>Timeline parent field configuration is invalid. Contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_NoFieldAccess</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_NoFieldAccess</shortDescription>
+        <value
+        >We can''t display the timeline. You do not have access to the related field. Ask your Administrator for help. ({0})</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_NoFieldValue</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_NoFieldValue</shortDescription>
+        <value
+        >We can''t display the timeline. The field requested has no value. Populate a value and try again. ({0})</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_InvalidObjectName</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_InvalidObjectName</shortDescription>
+        <value
+        >The object ''{0}'' does not exist. Check the Object Name field on the ''{1}'' Timeline Configuration record.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_InvalidTooltipObject</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_InvalidTooltipObject</shortDescription>
+        <value
+        >The tooltip object ''{0}'' does not exist. Check the Tooltip Object Name field on the ''{1}'' Timeline Configuration record.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_InvalidRelationship</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_InvalidRelationship</shortDescription>
+        <value
+        >The relationship ''{0}'' does not exist on ''{1}''. Check the Relationship Name field on the ''{2}'' Timeline Configuration record.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Error_InvalidField</fullName>
+        <categories>Timeline</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeline_Error_InvalidField</shortDescription>
+        <value
+        >The field ''{0}'' does not exist on ''{1}''. Check the field configuration on the ''{2}'' Timeline Configuration record.</value>
+    </labels>
 </CustomLabels>
