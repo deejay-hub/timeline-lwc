@@ -19,13 +19,15 @@ public with sharing class TimelineService {
             String parentConfigType = parentDetails.get('ConfigObjectType'); //NOPMD
             parentObjectId = parentDetails.get('Id');
 
-            Map<String, String> childObjects = getChildObjects(parentObjectType);
+            Set<String> allRelationshipKeys = new Set<String>();
+            Map<String, String> childObjects = getChildObjects(parentObjectType, allRelationshipKeys);
 
             String queryTimelineConfiguration =
                 'SELECT Active__c, ' +
                 'Relationship_Name__c, ' +
                 'Object_Name__c, ' +
                 'Tooltip_Object_Name__c, ' +
+                'DeveloperName, ' +
                 'Sequence__c ' +
                 'FROM Timeline_Configuration__mdt ' +
                 'WHERE Active__c = true AND ' +
@@ -40,42 +42,79 @@ public with sharing class TimelineService {
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
 
             for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
-                if (childObjects.containsKey(timelineType.Object_Name__c + timelineType.Relationship_Name__c)) {
-                    String objectLabel = ((SObject) (Type.forName(
-                                'Schema.' + String.valueOf(timelineType.Object_Name__c)
+                String configKey = timelineType.Object_Name__c + timelineType.Relationship_Name__c;
+                if (!childObjects.containsKey(configKey)) {
+                    if (!allRelationshipKeys.contains(configKey)) {
+                        throw new TimelineSetupException(
+                            JSON.serialize(
+                                new Map<String, String>{
+                                    'type' => 'Setup-Error',
+                                    'code' => 'TLN-403',
+                                    'message' => String.format(
+                                        System.Label.Timeline_Error_InvalidRelationship,
+                                        new List<String>{
+                                            timelineType.Relationship_Name__c,
+                                            parentObjectType,
+                                            timelineType.DeveloperName
+                                        }
+                                    )
+                                }
                             )
-                            .newInstance()))
+                        );
+                    }
+                    continue;
+                }
+
+                String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(timelineType.Object_Name__c))
+                        .newInstance()))
+                    .getSObjectType()
+                    .getDescribe(SObjectDescribeOptions.DEFERRED)
+                    .getLabelPlural();
+
+                if (timelineType.Object_Name__c == 'ContentDocumentLink') {
+                    objectLabel = System.Label.Timeline_Label_Files;
+                }
+
+                if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
+                    Type tooltipType = Type.forName('Schema.' + String.valueOf(timelineType.Tooltip_Object_Name__c));
+                    if (tooltipType == null) {
+                        throw new TimelineSetupException(
+                            JSON.serialize(
+                                new Map<String, String>{
+                                    'type' => 'Setup-Error',
+                                    'code' => 'TLN-402',
+                                    'message' => String.format(
+                                        System.Label.Timeline_Error_InvalidTooltipObject,
+                                        new List<String>{
+                                            timelineType.Tooltip_Object_Name__c,
+                                            timelineType.DeveloperName
+                                        }
+                                    )
+                                }
+                            )
+                        );
+                    }
+                    objectLabel = ((SObject) tooltipType.newInstance())
                         .getSObjectType()
                         .getDescribe(SObjectDescribeOptions.DEFERRED)
                         .getLabelPlural();
-
-                    if (timelineType.Object_Name__c == 'ContentDocumentLink') {
-                        objectLabel = System.Label.Timeline_Label_Files;
-                    }
-
-                    if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
-                        objectLabel = ((SObject) (Type.forName(
-                                    'Schema.' + String.valueOf(timelineType.Tooltip_Object_Name__c)
-                                )
-                                .newInstance()))
-                            .getSObjectType()
-                            .getDescribe(SObjectDescribeOptions.DEFERRED)
-                            .getLabelPlural();
-                    }
-
-                    mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
                 }
+
+                mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
             }
 
             return mapOfTimelineTypes;
         } catch (System.QueryException e) {
-            throw new AuraHandledException(
-                '{"type": "Setup-Error", "message": "' + e.getMessage() + ' : ' + e.getStackTraceString() + '"}'
-            );
+            throw clientError('Setup-Error', 'TLN-101', System.Label.Timeline_Error_InvalidConfig);
         } catch (TimelineSetupException e) {
-            throw new AuraHandledException(e.getMessage());
+            throw timelineSetupErrorOrFallback(
+                e,
+                'Setup-Error',
+                'TLN-102',
+                System.Label.Timeline_Error_SetupIncomplete
+            );
         } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
+            throw clientError('Error', 'TLN-199', System.Label.Timeline_Error_UnexpectedTypes);
         }
     }
 
@@ -119,7 +158,8 @@ public with sharing class TimelineService {
                 'Tooltip_Id_Field__c, ' +
                 'Tooltip_Object_Name__c, ' +
                 'Fallback_Tooltip_Field__c, ' +
-                'Inclusion_Field__c ' +
+                'Inclusion_Field__c, ' +
+                'DeveloperName ' +
                 'FROM Timeline_Configuration__mdt ' +
                 'WHERE Active__c = true AND ' +
                 'Test__c = ' +
@@ -130,23 +170,50 @@ public with sharing class TimelineService {
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query(queryTimelineConfiguration); //NOPMD
 
             if (listOfTimelineConfigurations.size() < 1) {
-                String errorMsg =
-                    'No active records for parent entity  \'' +
-                    parentObjectType +
-                    '\' have been found in \'Timeline_Configuration__mdt\'. Ask an administrator for help.';
-                throw new TimelineSetupException('{"type": "Setup-Error", "message": "' + errorMsg + '"}');
+                throw new TimelineSetupException(
+                    JSON.serialize(
+                        new Map<String, String>{
+                            'type' => 'Setup-Error',
+                            'code' => 'TLN-203',
+                            'message' => String.format(
+                                System.Label.Timeline_Error_NoConfigRecords,
+                                new List<String>{ parentObjectType }
+                            )
+                        }
+                    )
+                );
             }
 
             Map<String, TimelineRecord> mapOfTimelineConfigurationRecords = new Map<String, TimelineRecord>();
-            
+
             // Optimization: Cache field paths to avoid repeated string splitting
             Map<String, Map<String, FieldPath>> configFieldPaths = new Map<String, Map<String, FieldPath>>();
 
+            Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+
             for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
                 TimelineRecord timelineRecord = new timelineRecord();
-                Schema.SObjectType timelineRecordObjectType = Schema.getGlobalDescribe()
+                Schema.SObjectType timelineRecordObjectType = globalDescribe
                     .get(timelineConfigurationRecord.Object_Name__c);
+                if (timelineRecordObjectType == null) {
+                    throw new TimelineSetupException(
+                        JSON.serialize(
+                            new Map<String, String>{
+                                'type' => 'Setup-Error',
+                                'code' => 'TLN-401',
+                                'message' => String.format(
+                                    System.Label.Timeline_Error_InvalidObjectName,
+                                    new List<String>{
+                                        timelineConfigurationRecord.Object_Name__c,
+                                        timelineConfigurationRecord.DeveloperName
+                                    }
+                                )
+                            }
+                        )
+                    );
+                }
                 Schema.DescribeSObjectResult timelineDescribeResult = timelineRecordObjectType.getDescribe();
+                Map<String, Schema.SObjectField> childFieldsMap = timelineDescribeResult.fields.getMap();
                 timelineRecord.objectLabel = timelineDescribeResult.getLabel();
                 timelineRecord.relationshipName = timelineConfigurationRecord.Relationship_Name__c;
                 timelineRecord.icon = timelineConfigurationRecord.Icon__c;
@@ -162,13 +229,89 @@ public with sharing class TimelineService {
                 timelineRecord.tooltipObject = timelineConfigurationRecord.Tooltip_Object_Name__c;
                 timelineRecord.drilldownIdField = timelineConfigurationRecord.Drilldown_Id_Field__c;
                 timelineRecord.inclusionField = timelineConfigurationRecord.Inclusion_Field__c;
+                timelineRecord.developerName = timelineConfigurationRecord.DeveloperName;
+
+                if (!isValidFieldForSoql(timelineRecord.detailField, childFieldsMap)) {
+                    throw new TimelineSetupException(
+                        JSON.serialize(
+                            new Map<String, String>{
+                                'type' => 'Setup-Error',
+                                'code' => 'TLN-404',
+                                'message' => String.format(
+                                    System.Label.Timeline_Error_InvalidField,
+                                    new List<String>{
+                                        timelineRecord.detailField,
+                                        timelineConfigurationRecord.Object_Name__c,
+                                        timelineConfigurationRecord.DeveloperName
+                                    }
+                                )
+                            }
+                        )
+                    );
+                }
+                if (!isValidFieldForSoql(timelineRecord.positionDateField, childFieldsMap)) {
+                    throw new TimelineSetupException(
+                        JSON.serialize(
+                            new Map<String, String>{
+                                'type' => 'Setup-Error',
+                                'code' => 'TLN-404',
+                                'message' => String.format(
+                                    System.Label.Timeline_Error_InvalidField,
+                                    new List<String>{
+                                        timelineRecord.positionDateField,
+                                        timelineConfigurationRecord.Object_Name__c,
+                                        timelineConfigurationRecord.DeveloperName
+                                    }
+                                )
+                            }
+                        )
+                    );
+                }
+                if (
+                    String.isNotBlank(timelineRecord.type) && !isValidFieldForSoql(timelineRecord.type, childFieldsMap)
+                ) {
+                    timelineRecord.type = null;
+                }
+                if (
+                    String.isNotBlank(timelineRecord.fallbackTooltipField) &&
+                    !isValidFieldForSoql(timelineRecord.fallbackTooltipField, childFieldsMap)
+                ) {
+                    timelineRecord.fallbackTooltipField = null;
+                }
+                if (
+                    String.isNotBlank(timelineRecord.tooltipIdField) &&
+                    !isValidFieldForSoql(timelineRecord.tooltipIdField, childFieldsMap)
+                ) {
+                    timelineRecord.tooltipIdField = null;
+                }
+                if (
+                    String.isNotBlank(timelineRecord.drilldownIdField) &&
+                    !isValidFieldForSoql(timelineRecord.drilldownIdField, childFieldsMap)
+                ) {
+                    timelineRecord.drilldownIdField = null;
+                }
+                if (
+                    String.isNotBlank(timelineRecord.iconField) &&
+                    !isValidFieldForSoql(timelineRecord.iconField, childFieldsMap)
+                ) {
+                    timelineRecord.iconField = null;
+                }
+                if (
+                    String.isNotBlank(timelineRecord.iconBackgroundField) &&
+                    !isValidFieldForSoql(timelineRecord.iconBackgroundField, childFieldsMap)
+                ) {
+                    timelineRecord.iconBackgroundField = null;
+                }
+                if (
+                    String.isNotBlank(timelineRecord.inclusionField) &&
+                    !isValidFieldForSoql(timelineRecord.inclusionField, childFieldsMap)
+                ) {
+                    timelineRecord.inclusionField = null;
+                }
 
                 String configKey = timelineRecord.objectName + timelineRecord.relationshipName;
 
-                mapOfTimelineConfigurationRecords.put(
-                    configKey,
-                    timelineRecord
-                );
+                mapOfTimelineConfigurationRecords.put(configKey, timelineRecord);
 
                 // Pre-calculate field paths for this configuration
                 Map<String, FieldPath> paths = new Map<String, FieldPath>();
@@ -180,16 +323,35 @@ public with sharing class TimelineService {
                 paths.put('iconField', new FieldPath(timelineRecord.iconField));
                 paths.put('iconBackgroundField', new FieldPath(timelineRecord.iconBackgroundField));
                 paths.put('type', new FieldPath(timelineRecord.type));
-                
+
                 configFieldPaths.put(configKey, paths);
             }
 
-            Map<String, String> childObjects = getChildObjects(parentObjectType);
+            Set<String> allRelationshipKeys = new Set<String>();
+            Map<String, String> childObjects = getChildObjects(parentObjectType, allRelationshipKeys);
 
             String innerQuery = '';
 
             for (String eachObject : mapOfTimelineConfigurationRecords.keyset()) {
                 TimelineRecord tcr = mapOfTimelineConfigurationRecords.get(eachObject);
+
+                if (!childObjects.containsKey(eachObject)) {
+                    if (!allRelationshipKeys.contains(eachObject)) {
+                        throw new TimelineSetupException(
+                            JSON.serialize(
+                                new Map<String, String>{
+                                    'type' => 'Setup-Error',
+                                    'code' => 'TLN-403',
+                                    'message' => String.format(
+                                        System.Label.Timeline_Error_InvalidRelationship,
+                                        new List<String>{ tcr.relationshipName, parentObjectType, tcr.developerName }
+                                    )
+                                }
+                            )
+                        );
+                    }
+                    continue;
+                }
 
                 if (childObjects.containsKey(eachObject)) {
                     String objName = String.valueOf(tcr.objectName);
@@ -360,14 +522,22 @@ public with sharing class TimelineService {
                                     eachCh,
                                     tr.objectName
                                 );
-                                Map<String, String> iconValues = getFieldValues(paths.get('iconField'), eachCh, tr.objectName);
+                                Map<String, String> iconValues = getFieldValues(
+                                    paths.get('iconField'),
+                                    eachCh,
+                                    tr.objectName
+                                );
                                 Map<String, String> iconColourValues = getFieldValues(
                                     paths.get('iconBackgroundField'),
                                     eachCh,
                                     tr.objectName
                                 );
 
-                                Map<String, String> typeValues = getFieldValues(paths.get('type'), eachCh, tr.objectName);
+                                Map<String, String> typeValues = getFieldValues(
+                                    paths.get('type'),
+                                    eachCh,
+                                    tr.objectName
+                                );
 
                                 String alternateDetailId = '';
 
@@ -432,17 +602,60 @@ public with sharing class TimelineService {
             }
             return listOfTimelineData;
         } catch (TimelineSetupException e) {
-            throw new AuraHandledException(e.getMessage());
-        } catch (System.QueryException e) {
-            throw new AuraHandledException(
-                '{"type": "Setup-Error", "message": "' + e.getMessage() + ' : ' + e.getStackTraceString() + '"}'
+            throw timelineSetupErrorOrFallback(
+                e,
+                'Setup-Error',
+                'TLN-201',
+                System.Label.Timeline_Error_SetupIncomplete
             );
+        } catch (System.QueryException e) {
+            throw clientError('Setup-Error', 'TLN-202', System.Label.Timeline_Error_QueryFailed);
         } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage() + ' : ' + e.getStackTraceString());
+            throw clientError('Error', 'TLN-299', System.Label.Timeline_Error_UnexpectedRecords);
         }
     }
 
-    private static Map<String, String> getChildObjects(String parentObject) {
+    private static AuraHandledException clientError(String type, String code, String message) {
+        Map<String, String> payload = new Map<String, String>{ 'type' => type, 'code' => code, 'message' => message };
+        return new AuraHandledException(JSON.serialize(payload));
+    }
+
+    private static AuraHandledException timelineSetupErrorOrFallback(
+        TimelineSetupException e,
+        String fallbackType,
+        String fallbackCode,
+        String fallbackMessage
+    ) {
+        String rawMessage = e.getMessage();
+        if (String.isBlank(rawMessage)) {
+            return clientError(fallbackType, fallbackCode, fallbackMessage);
+        }
+
+        try {
+            Object parsed = JSON.deserializeUntyped(rawMessage);
+            if (parsed instanceof Map<String, Object>) {
+                Map<String, Object> existingPayload = (Map<String, Object>) parsed;
+                String existingType = String.valueOf(existingPayload.get('type'));
+                String existingMessage = String.valueOf(existingPayload.get('message'));
+                String existingCode = String.valueOf(existingPayload.get('code'));
+
+                if (!String.isBlank(existingType) && !String.isBlank(existingMessage)) {
+                    Map<String, String> normalizedPayload = new Map<String, String>{
+                        'type' => existingType,
+                        'code' => String.isBlank(existingCode) ? fallbackCode : existingCode,
+                        'message' => existingMessage
+                    };
+                    return new AuraHandledException(JSON.serialize(normalizedPayload));
+                }
+            }
+        } catch (Exception ignoreError) {
+            // Fall back to a generic client-safe payload when parsing fails.
+        }
+
+        return clientError(fallbackType, fallbackCode, fallbackMessage);
+    }
+
+    private static Map<String, String> getChildObjects(String parentObject, Set<String> allRelationshipKeys) {
         Map<String, String> childRelatedObjects = new Map<String, String>();
 
         List<Schema.ChildRelationship> objectRelationships = ((SObject) (Type.forName('Schema.' + parentObject)
@@ -451,17 +664,17 @@ public with sharing class TimelineService {
             .getDescribe()
             .getChildRelationships();
         for (Schema.Childrelationship eachRelationship : objectRelationships) {
-            if (
-                eachRelationship.getChildSObject().getDescribe().isAccessible() &&
-                !eachRelationship.getChildSObject().getDescribe().getLabel().contains('Histories') &&
-                eachRelationship.getRelationshipName() != null
-            ) {
-                childRelatedObjects.put(
-                    String.valueOf(
-                        eachRelationship.getChildSObject() + String.valueOf(eachRelationship.getRelationshipName())
-                    ),
-                    String.valueOf(eachRelationship.getRelationshipName())
-                );
+            if (eachRelationship.getRelationshipName() == null) {
+                continue;
+            }
+            String key = String.valueOf(
+                eachRelationship.getChildSObject() + String.valueOf(eachRelationship.getRelationshipName())
+            );
+            allRelationshipKeys.add(key);
+
+            Schema.DescribeSObjectResult childDescribe = eachRelationship.getChildSObject().getDescribe();
+            if (childDescribe.isAccessible() && !childDescribe.getLabel().contains('Histories')) {
+                childRelatedObjects.put(key, String.valueOf(eachRelationship.getRelationshipName()));
             }
         }
         return childRelatedObjects;
@@ -499,9 +712,7 @@ public with sharing class TimelineService {
                     fieldValue = String.valueOf(
                         records.getSobject(path.parts[0]).getSobject(path.parts[1]).get(path.parts[2])
                     );
-                    recordId = String.valueOf(
-                        records.getSobject(path.parts[0]).getSobject(path.parts[1]).get('Id')
-                    );
+                    recordId = String.valueOf(records.getSobject(path.parts[0]).getSobject(path.parts[1]).get('Id'));
                 }
                 when 4 {
                     fieldValue = String.valueOf(
@@ -511,10 +722,7 @@ public with sharing class TimelineService {
                             .get(path.parts[3])
                     );
                     recordId = String.valueOf(
-                        records.getSobject(path.parts[0])
-                            .getSobject(path.parts[1])
-                            .getSobject(path.parts[2])
-                            .get('Id')
+                        records.getSobject(path.parts[0]).getSobject(path.parts[1]).getSobject(path.parts[2]).get('Id')
                     );
                 }
                 when 5 {
@@ -559,14 +767,21 @@ public with sharing class TimelineService {
 
         Schema.DescribeFieldResult fieldMetadata = getDescribeInfo(objectCheck, path.fieldStripped);
 
-        fieldLabel = fieldMetadata.getLabel();
-        
-        // Update fieldCanAccess if not already false from the catch block
-        if (fieldCanAccess) {
-            fieldCanAccess = fieldMetadata.isAccessible();
+        if (fieldMetadata != null) {
+            fieldLabel = fieldMetadata.getLabel();
+
+            // Update fieldCanAccess if not already false from the catch block
+            if (fieldCanAccess) {
+                fieldCanAccess = fieldMetadata.isAccessible();
+            }
+
+            fieldType = String.valueOf(fieldMetadata.getType());
+        } else {
+            // Fallback when metadata cannot be resolved for the target field/object.
+            fieldLabel = path.fieldStripped;
+            fieldCanAccess = false;
+            fieldType = '';
         }
-        
-        fieldType = String.valueOf(fieldMetadata.getType());
 
         if (fieldCanAccess == false) {
             fieldValue = '![' + fieldLabel + ']!';
@@ -593,8 +808,13 @@ public with sharing class TimelineService {
                     .newInstance()))
                 .getSObjectType()
                 .getDescribe(SObjectDescribeOptions.DEFERRED);
+            Map<String, Schema.SObjectField> fieldsMap = describeSobjects.fields.getMap();
 
-            fieldDescribeCache.put(key, describeSobjects.fields.getMap().get(fieldName).getDescribe());
+            if (fieldsMap != null && fieldsMap.containsKey(fieldName)) {
+                fieldDescribeCache.put(key, fieldsMap.get(fieldName).getDescribe());
+            } else {
+                return null;
+            }
         }
 
         return fieldDescribeCache.get(key);
@@ -602,7 +822,7 @@ public with sharing class TimelineService {
 
     private static Boolean isPersonAccount(String recordId) {
         if (Schema.sObjectType.Account.fields.getMap().containsKey('isPersonAccount')) {
-            String queryPersonAccount = 'SELECT Id, IsPersonAccount FROM Account Where Id =:recordId';
+            String queryPersonAccount = 'SELECT Id, IsPersonAccount FROM Account Where Id =:recordId WITH USER_MODE LIMIT 1';
             SObject acc = Database.query(queryPersonAccount);
 
             if (acc.get('IsPersonAccount') == true) {
@@ -627,9 +847,7 @@ public with sharing class TimelineService {
 
             // Database.query is blocked unless field exists in the schema map remediating SOQL injection risks.
             if (!parentType.getDescribe().fields.getMap().containsKey(field)) {
-                throw new AuraHandledException(
-                    'Invalid field name provided for Parent Object: ' + parentObjectType + ' - ' + field
-                );
+                throw clientError('Setup-Error', 'TLN-301', System.Label.Timeline_Error_InvalidParentField);
             }
 
             String queryParentId = 'SELECT Id, ' + field + ' FROM ' + parentObjectType + ' Where Id =:recordId';
@@ -648,14 +866,17 @@ public with sharing class TimelineService {
             Set<String> strippedFields = securityDecision.getRemovedFields().get(parentObjectType);
 
             if (strippedFields != null && strippedFields.contains(field)) {
-                String errorMsg =
-                    'We can\'t display the timeline. You do not have access to the related field. ' +
-                    'Ask your Administrator for help. ' +
-                    '(' +
-                    fieldLabel +
-                    ')';
-
-                throw new TimelineSetupException('{"type": "No-Access", "message": "' + errorMsg + '"}');
+                throw new TimelineSetupException(
+                    JSON.serialize(
+                        new Map<String, String>{
+                            'type' => 'No-Access',
+                            'message' => String.format(
+                                System.Label.Timeline_Error_NoFieldAccess,
+                                new List<String>{ fieldLabel }
+                            )
+                        }
+                    )
+                );
             }
 
             SObject secureObject = securityDecision.getRecords()[0];
@@ -663,14 +884,17 @@ public with sharing class TimelineService {
             fieldValue = String.valueOf(secureObject.get(field));
 
             if (fieldValue == null || fieldValue == '') {
-                String errorMsg =
-                    'We can\'t display the timeline. The field requested has no value. ' +
-                    'Populate a value and try again. ' +
-                    '(' +
-                    fieldLabel +
-                    ')';
-
-                throw new TimelineSetupException('{"type": "No-Data", "message": "' + errorMsg + '"}');
+                throw new TimelineSetupException(
+                    JSON.serialize(
+                        new Map<String, String>{
+                            'type' => 'No-Data',
+                            'message' => String.format(
+                                System.Label.Timeline_Error_NoFieldValue,
+                                new List<String>{ fieldLabel }
+                            )
+                        }
+                    )
+                );
             }
 
             parentObjectType = String.valueOf(Id.valueOf(fieldValue).getSobjectType());
@@ -687,6 +911,34 @@ public with sharing class TimelineService {
         parentDetails.put('ConfigObjectType', parentConfigType);
 
         return parentDetails;
+    }
+
+    /**
+     * @description Validates that a CMDT-sourced field API name is safe for use in dynamic SOQL.
+     * Simple fields are verified against the object's schema field map.
+     * Dot-notation paths are pattern-checked and the root relationship is verified.
+     * @param fieldApiName The field API name from Timeline_Configuration__mdt
+     * @param fieldsMap The fields map from the target SObject describe
+     * @return True if the field name is valid and safe for SOQL use
+     */
+    private static Boolean isValidFieldForSoql(String fieldApiName, Map<String, Schema.SObjectField> fieldsMap) {
+        if (String.isBlank(fieldApiName)) {
+            return false;
+        }
+        if (!Pattern.matches('[a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*', fieldApiName)) {
+            return false;
+        }
+        if (!fieldApiName.contains('.')) {
+            return fieldsMap.containsKey(fieldApiName);
+        }
+        String rootSegment = fieldApiName.substringBefore('.');
+        for (Schema.SObjectField fieldRef : fieldsMap.values()) {
+            Schema.DescribeFieldResult fd = fieldRef.getDescribe();
+            if (fd.getRelationshipName() != null && fd.getRelationshipName().equalsIgnoreCase(rootSegment)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private class TimelineRecord { //NOPMD
@@ -713,6 +965,7 @@ public with sharing class TimelineService {
         private String fallbackNameValue;
         private String inclusionField;
         private String alternateDetailId;
+        private String developerName;
         private Id recordId;
     }
 
