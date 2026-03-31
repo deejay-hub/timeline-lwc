@@ -164,7 +164,7 @@ private with sharing class TimelineService_Test {
             hasFailed = true;
         } finally {
             System.assert(
-                hasFailed = true,
+                hasFailed,
                 'Expected an exception to occur when using entity Case and no Timeline_Configuration__mdt records. Actually got no exception.'
             );
             Test.stopTest();
@@ -230,7 +230,7 @@ private with sharing class TimelineService_Test {
             hasFailed = true;
         } finally {
             System.assert(
-                hasFailed = true,
+                hasFailed,
                 'Expected an exception to occur when using entity Case and asking to use the Parent Contact Id field with no value in it.'
             );
             Test.stopTest();
