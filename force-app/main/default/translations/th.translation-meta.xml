@@ -80,4 +80,60 @@
         <label>นำร่องไม่อนุญาต</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>การกำหนดค่าไทม์ไลน์ไม่ถูกต้อง โปรดติดต่อผู้ดูแลระบบของคุณ</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>ไม่สามารถดำเนินการตั้งค่าไทม์ไลน์ให้เสร็จสมบูรณ์ได้</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>เกิดข้อผิดพลาดที่ไม่คาดคิดขณะโหลดประเภทไทม์ไลน์</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >ไม่พบระเบียนที่ใช้งานอยู่สำหรับเอนทิตีหลัก ''{0}'' ใน ''Timeline_Configuration__mdt'' โปรดขอความช่วยเหลือจากผู้ดูแลระบบ</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>ไม่สามารถดำเนินการสืบค้นไทม์ไลน์ด้วยการกำหนดค่าปัจจุบันได้</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>เกิดข้อผิดพลาดที่ไม่คาดคิดขณะโหลดระเบียนไทม์ไลน์</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>การกำหนดค่าฟิลด์หลักของไทม์ไลน์ไม่ถูกต้อง โปรดติดต่อผู้ดูแลระบบของคุณ</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >ไม่สามารถแสดงไทม์ไลน์ได้ คุณไม่มีสิทธิ์เข้าถึงฟิลด์ที่เกี่ยวข้อง โปรดขอความช่วยเหลือจากผู้ดูแลระบบ ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label>ไม่สามารถแสดงไทม์ไลน์ได้ ฟิลด์ที่ร้องขอไม่มีค่า กรุณากรอกค่าแล้วลองอีกครั้ง ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label>ออบเจกต์ ''{0}'' ไม่มีอยู่ ตรวจสอบฟิลด์ Object Name ในระเบียน Timeline Configuration ''{1}''</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >ออบเจกต์ทูลทิป ''{0}'' ไม่มีอยู่ ตรวจสอบฟิลด์ Tooltip Object Name ในระเบียน Timeline Configuration ''{1}''</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >ความสัมพันธ์ ''{0}'' ไม่มีอยู่บน ''{1}'' ตรวจสอบฟิลด์ Relationship Name ในระเบียน Timeline Configuration ''{2}''</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label>ฟิลด์ ''{0}'' ไม่มีอยู่บน ''{1}'' ตรวจสอบการกำหนดค่าฟิลด์ในระเบียน Timeline Configuration ''{2}''</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

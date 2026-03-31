@@ -80,4 +80,58 @@
         <label>导览不允许</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>时间线配置无效。请联系您的管理员。</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>时间线设置无法完成。</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>加载时间线类型时发生意外错误。</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label>在"Timeline_Configuration__mdt"中未找到父实体 ''{0}'' 的活动记录。请联系管理员获取帮助。</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>无法使用当前配置完成时间线查询。</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>加载时间线记录时发生意外错误。</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>时间线父字段配置无效。请联系您的管理员。</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label>无法显示时间线。您没有访问相关字段的权限。请联系管理员获取帮助。({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label>无法显示时间线。请求的字段没有值。请填写值后重试。({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label>对象 ''{0}'' 不存在。请检查 ''{1}'' Timeline Configuration 记录上的 Object Name 字段。</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >工具提示对象 ''{0}'' 不存在。请检查 ''{1}'' Timeline Configuration 记录上的 Tooltip Object Name 字段。</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >关系 ''{0}'' 在 ''{1}'' 上不存在。请检查 ''{2}'' Timeline Configuration 记录上的 Relationship Name 字段。</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label>字段 ''{0}'' 在 ''{1}'' 上不存在。请检查 ''{2}'' Timeline Configuration 记录上的字段配置。</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

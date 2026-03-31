@@ -80,4 +80,58 @@
         <label>導覽不允許</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>時間軸配置無效。請聯繫您的管理員。</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>時間軸設定無法完成。</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>載入時間軸類型時發生意外錯誤。</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label>在「Timeline_Configuration__mdt」中未找到父實體 ''{0}'' 的活動記錄。請聯繫管理員取得協助。</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>無法使用目前配置完成時間軸查詢。</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>載入時間軸記錄時發生意外錯誤。</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>時間軸父欄位配置無效。請聯繫您的管理員。</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label>無法顯示時間軸。您沒有存取相關欄位的權限。請聯繫管理員取得協助。({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label>無法顯示時間軸。請求的欄位沒有值。請填入值後重試。({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label>物件 ''{0}'' 不存在。請檢查 ''{1}'' Timeline Configuration 記錄上的 Object Name 欄位。</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >工具提示物件 ''{0}'' 不存在。請檢查 ''{1}'' Timeline Configuration 記錄上的 Tooltip Object Name 欄位。</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >關係 ''{0}'' 在 ''{1}'' 上不存在。請檢查 ''{2}'' Timeline Configuration 記錄上的 Relationship Name 欄位。</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label>欄位 ''{0}'' 在 ''{1}'' 上不存在。請檢查 ''{2}'' Timeline Configuration 記錄上的欄位配置。</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

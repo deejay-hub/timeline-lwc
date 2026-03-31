@@ -81,4 +81,62 @@
         <label>탐색이 허용되지 않음</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>타임라인 구성이 유효하지 않습니다. 관리자에게 문의하세요.</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>타임라인 설정을 완료할 수 없습니다.</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>타임라인 유형을 로드하는 중 예기치 않은 오류가 발생했습니다.</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >상위 엔티티 ''{0}''에 대한 활성 레코드가 ''Timeline_Configuration__mdt''에서 발견되지 않았습니다. 관리자에게 도움을 요청하세요.</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>현재 구성으로 타임라인 쿼리를 완료할 수 없습니다.</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>타임라인 레코드를 로드하는 중 예기치 않은 오류가 발생했습니다.</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>타임라인 상위 필드 구성이 유효하지 않습니다. 관리자에게 문의하세요.</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >타임라인을 표시할 수 없습니다. 관련 필드에 대한 접근 권한이 없습니다. 관리자에게 도움을 요청하세요. ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label>타임라인을 표시할 수 없습니다. 요청된 필드에 값이 없습니다. 값을 입력하고 다시 시도하세요. ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >오브젝트 ''{0}''이(가) 존재하지 않습니다. ''{1}'' Timeline Configuration 레코드의 Object Name 필드를 확인하세요.</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >툴팁 오브젝트 ''{0}''이(가) 존재하지 않습니다. ''{1}'' Timeline Configuration 레코드의 Tooltip Object Name 필드를 확인하세요.</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >관계 ''{0}''이(가) ''{1}''에 존재하지 않습니다. ''{2}'' Timeline Configuration 레코드의 Relationship Name 필드를 확인하세요.</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >필드 ''{0}''이(가) ''{1}''에 존재하지 않습니다. ''{2}'' Timeline Configuration 레코드의 필드 구성을 확인하세요.</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

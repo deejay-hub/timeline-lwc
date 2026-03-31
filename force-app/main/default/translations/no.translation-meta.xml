@@ -82,4 +82,62 @@
         <label>Navigasjon Forbudt</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>Tidslinjekonfigurasjonen er ugyldig. Kontakt administratoren din.</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>Tidslinjeoppsettet kunne ikke fullføres.</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>Uventet feil ved lasting av tidslinjetyper.</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Ingen aktive poster for overordnet entitet ''{0}'' ble funnet i ''Timeline_Configuration__mdt''. Be en administrator om hjelp.</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>Tidslinjespørringen kunne ikke fullføres med gjeldende konfigurasjon.</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>Uventet feil ved lasting av tidslinjeposter.</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>Tidslinjens overordnede feltkonfigurasjon er ugyldig. Kontakt administratoren din.</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Kan ikke vise tidslinjen. Du har ikke tilgang til det relaterte feltet. Be administratoren din om hjelp. ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Kan ikke vise tidslinjen. Det forespurte feltet har ingen verdi. Fyll inn en verdi og prøv igjen. ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label>Objektet ''{0}'' finnes ikke. Sjekk feltet Object Name på ''{1}'' Timeline Configuration-posten.</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Tooltip-objektet ''{0}'' finnes ikke. Sjekk feltet Tooltip Object Name på ''{1}'' Timeline Configuration-posten.</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Relasjonen ''{0}'' finnes ikke på ''{1}''. Sjekk feltet Relationship Name på ''{2}'' Timeline Configuration-posten.</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Feltet ''{0}'' finnes ikke på ''{1}''. Sjekk feltkonfigurasjonen på ''{2}'' Timeline Configuration-posten.</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

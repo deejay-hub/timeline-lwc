@@ -82,4 +82,63 @@
         <label>Navigation non permise</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>La configuration de la chronologie est invalide. Contactez votre administrateur.</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>La configuration de la chronologie n''a pas pu être complétée.</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>Erreur inattendue lors du chargement des types de chronologie.</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Aucun enregistrement actif pour l''entité parente ''{0}'' n''a été trouvé dans ''Timeline_Configuration__mdt''. Demandez de l''aide à un administrateur.</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>La requête de la chronologie n''a pas pu être complétée avec la configuration actuelle.</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>Erreur inattendue lors du chargement des enregistrements de la chronologie.</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>La configuration du champ parent de la chronologie est invalide. Contactez votre administrateur.</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Impossible d''afficher la chronologie. Vous n''avez pas accès au champ associé. Demandez de l''aide à votre administrateur. ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Impossible d''afficher la chronologie. Le champ demandé n''a pas de valeur. Renseignez une valeur et réessayez. ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >L''objet ''{0}'' n''existe pas. Vérifiez le champ Object Name sur l''enregistrement Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >L''objet tooltip ''{0}'' n''existe pas. Vérifiez le champ Tooltip Object Name sur l''enregistrement Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >La relation ''{0}'' n''existe pas sur ''{1}''. Vérifiez le champ Relationship Name sur l''enregistrement Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Le champ ''{0}'' n''existe pas sur ''{1}''. Vérifiez la configuration des champs sur l''enregistrement Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

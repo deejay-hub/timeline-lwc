@@ -81,4 +81,59 @@
         <label>ניווט לא מותר</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>תצורת ציר הזמן אינה תקינה. פנה למנהל המערכת שלך.</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>לא ניתן להשלים את הגדרת ציר הזמן.</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>שגיאה בלתי צפויה בעת טעינת סוגי ציר הזמן.</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >לא נמצאו רשומות פעילות עבור ישות האב ''{0}'' ב-''Timeline_Configuration__mdt''. בקש עזרה ממנהל המערכת.</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>לא ניתן להשלים את שאילתת ציר הזמן עם התצורה הנוכחית.</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>שגיאה בלתי צפויה בעת טעינת רשומות ציר הזמן.</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>תצורת שדה האב של ציר הזמן אינה תקינה. פנה למנהל המערכת שלך.</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label>לא ניתן להציג את ציר הזמן. אין לך גישה לשדה המשויך. בקש עזרה ממנהל המערכת שלך. ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label>לא ניתן להציג את ציר הזמן. לשדה המבוקש אין ערך. מלא ערך ונסה שוב. ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label>האובייקט ''{0}'' אינו קיים. בדוק את השדה Object Name ברשומת Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >אובייקט ה-tooltip ''{0}'' אינו קיים. בדוק את השדה Tooltip Object Name ברשומת Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >הקשר ''{0}'' אינו קיים על ''{1}''. בדוק את השדה Relationship Name ברשומת Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label>השדה ''{0}'' אינו קיים על ''{1}''. בדוק את תצורת השדות ברשומת Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

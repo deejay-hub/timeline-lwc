@@ -81,4 +81,59 @@
         <label>التنقل غير مسموح به</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>تكوين المخطط الزمني غير صالح. اتصل بالمسؤول.</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>تعذر إكمال إعداد المخطط الزمني.</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>خطأ غير متوقع أثناء تحميل أنواع المخطط الزمني.</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >لم يتم العثور على سجلات نشطة للكيان الأصل ''{0}'' في ''Timeline_Configuration__mdt''. اطلب المساعدة من المسؤول.</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>تعذر إكمال استعلام المخطط الزمني بالتكوين الحالي.</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>خطأ غير متوقع أثناء تحميل سجلات المخطط الزمني.</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>تكوين الحقل الأصل للمخطط الزمني غير صالح. اتصل بالمسؤول.</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label>لا يمكن عرض المخطط الزمني. ليس لديك حق الوصول إلى الحقل المرتبط. اطلب المساعدة من المسؤول. ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label>لا يمكن عرض المخطط الزمني. الحقل المطلوب ليس له قيمة. أدخل قيمة وحاول مرة أخرى. ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label>الكائن ''{0}'' غير موجود. تحقق من حقل Object Name في سجل Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >كائن التلميح ''{0}'' غير موجود. تحقق من حقل Tooltip Object Name في سجل Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >العلاقة ''{0}'' غير موجودة على ''{1}''. تحقق من حقل Relationship Name في سجل Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label>الحقل ''{0}'' غير موجود على ''{1}''. تحقق من تكوين الحقول في سجل Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

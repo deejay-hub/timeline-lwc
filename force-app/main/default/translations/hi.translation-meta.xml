@@ -82,4 +82,63 @@
         <label>नेविगेशन नहीं की अनुमति</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>टाइमलाइन कॉन्फ़िगरेशन अमान्य है। अपने व्यवस्थापक से संपर्क करें।</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>टाइमलाइन सेटअप पूरा नहीं हो सका।</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>टाइमलाइन प्रकार लोड करते समय अप्रत्याशित त्रुटि।</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >मूल इकाई ''{0}'' के लिए ''Timeline_Configuration__mdt'' में कोई सक्रिय रिकॉर्ड नहीं मिला। व्यवस्थापक से सहायता मांगें।</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>वर्तमान कॉन्फ़िगरेशन के साथ टाइमलाइन क्वेरी पूरी नहीं हो सकी।</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>टाइमलाइन रिकॉर्ड लोड करते समय अप्रत्याशित त्रुटि।</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>टाइमलाइन मूल फ़ील्ड कॉन्फ़िगरेशन अमान्य है। अपने व्यवस्थापक से संपर्क करें।</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >टाइमलाइन प्रदर्शित नहीं की जा सकती। आपके पास संबंधित फ़ील्ड तक पहुँच नहीं है। अपने व्यवस्थापक से सहायता मांगें। ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >टाइमलाइन प्रदर्शित नहीं की जा सकती। अनुरोधित फ़ील्ड में कोई मान नहीं है। एक मान भरें और पुनः प्रयास करें। ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >ऑब्जेक्ट ''{0}'' मौजूद नहीं है। ''{1}'' Timeline Configuration रिकॉर्ड पर Object Name फ़ील्ड की जाँच करें।</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >टूलटिप ऑब्जेक्ट ''{0}'' मौजूद नहीं है। ''{1}'' Timeline Configuration रिकॉर्ड पर Tooltip Object Name फ़ील्ड की जाँच करें।</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >संबंध ''{0}'' ''{1}'' पर मौजूद नहीं है। ''{2}'' Timeline Configuration रिकॉर्ड पर Relationship Name फ़ील्ड की जाँच करें।</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >फ़ील्ड ''{0}'' ''{1}'' पर मौजूद नहीं है। ''{2}'' Timeline Configuration रिकॉर्ड पर फ़ील्ड कॉन्फ़िगरेशन की जाँच करें।</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>

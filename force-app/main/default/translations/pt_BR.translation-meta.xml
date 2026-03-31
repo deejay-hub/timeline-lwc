@@ -82,4 +82,64 @@
         <label>Navegação Não Permitido</label>
         <name>Timeline_Navigation_Toast_Header</name>
     </customLabels>
+    <customLabels>
+        <label>A configuração da linha do tempo é inválida. Entre em contato com seu administrador.</label>
+        <name>Timeline_Error_InvalidConfig</name>
+    </customLabels>
+    <customLabels>
+        <label>A configuração da linha do tempo não pôde ser concluída.</label>
+        <name>Timeline_Error_SetupIncomplete</name>
+    </customLabels>
+    <customLabels>
+        <label>Erro inesperado ao carregar os tipos de linha do tempo.</label>
+        <name>Timeline_Error_UnexpectedTypes</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Nenhum registro ativo para a entidade principal ''{0}'' foi encontrado em ''Timeline_Configuration__mdt''. Peça ajuda a um administrador.</label>
+        <name>Timeline_Error_NoConfigRecords</name>
+    </customLabels>
+    <customLabels>
+        <label>A consulta da linha do tempo não pôde ser concluída com a configuração atual.</label>
+        <name>Timeline_Error_QueryFailed</name>
+    </customLabels>
+    <customLabels>
+        <label>Erro inesperado ao carregar os registros da linha do tempo.</label>
+        <name>Timeline_Error_UnexpectedRecords</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >A configuração do campo principal da linha do tempo é inválida. Entre em contato com seu administrador.</label>
+        <name>Timeline_Error_InvalidParentField</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Não é possível exibir a linha do tempo. Você não tem acesso ao campo relacionado. Peça ajuda ao seu administrador. ({0})</label>
+        <name>Timeline_Error_NoFieldAccess</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >Não é possível exibir a linha do tempo. O campo solicitado não tem valor. Preencha um valor e tente novamente. ({0})</label>
+        <name>Timeline_Error_NoFieldValue</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >O objeto ''{0}'' não existe. Verifique o campo Object Name no registro de Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidObjectName</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >O objeto tooltip ''{0}'' não existe. Verifique o campo Tooltip Object Name no registro de Timeline Configuration ''{1}''.</label>
+        <name>Timeline_Error_InvalidTooltipObject</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >O relacionamento ''{0}'' não existe em ''{1}''. Verifique o campo Relationship Name no registro de Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidRelationship</name>
+    </customLabels>
+    <customLabels>
+        <label
+        >O campo ''{0}'' não existe em ''{1}''. Verifique a configuração de campos no registro de Timeline Configuration ''{2}''.</label>
+        <name>Timeline_Error_InvalidField</name>
+    </customLabels>
 </Translations>
