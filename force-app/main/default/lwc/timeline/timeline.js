@@ -192,6 +192,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _allTypesChecked = true;
     _allTypesIndeterminate = false;
     tooltipHoverDelayMs = 150;
+    _intersectionObserver = null;
+    _pendingApexResult = null;
 
     @wire(IsConsoleNavigation)
     isConsoleNavigation;
@@ -332,6 +334,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
             window.removeEventListener('resize', this._debouncedResizeHandler);
             this._debouncedResizeHandler = null;
         }
+
+        if (this._intersectionObserver) {
+            this._intersectionObserver.disconnect();
+            this._intersectionObserver = null;
+        }
     }
 
     connectedCallback() {
@@ -370,6 +377,19 @@ export default class timeline extends NavigationMixin(LightningElement) {
                     this._d3timelineMapAxisSVG = d3
                         .select(this.template.querySelector('div.timeline-map-axis'))
                         .append('svg');
+
+                    this._intersectionObserver = new IntersectionObserver(
+                        (entries) => {
+                            if (entries[0].isIntersecting && this._pendingApexResult) {
+                                this.renderTimelineData(this._pendingApexResult);
+                                this._pendingApexResult = null;
+                            }
+                        },
+                        { threshold: 0.1 }
+                    );
+                    this._intersectionObserver.observe(
+                        this.template.querySelector('div.timeline-canvas')
+                    );
 
                     this.processTimeline();
                 })
@@ -436,6 +456,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const me = this;
         me.isError = false;
         me.isLoaded = false;
+        me._pendingApexResult = null;
 
         me.illustrationVisibility = 'illustration-hidden';
         me.noData = false;
@@ -472,69 +493,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
             parentFieldName: me.timelineParent
         })
             .then((result) => {
-                try {
-                    if (this.template.querySelector('div.timeline-canvas').offsetWidth !== 0) {
-                        if (result.length > 0) {
-                            me.totalTimelineRecords = result.length;
-
-                            //Process timeline records
-                            me._timelineData = me.getTimelineRecords(result);
-
-                            //Process timeline canvas
-                            me._d3timelineCanvas = me.timelineCanvas();
-
-                            const axisDividerConfig = {
-                                innerTickSize: -me._d3timelineCanvas.SVGHeight,
-                                translate: [0, me._d3timelineCanvas.SVGHeight],
-                                tickPadding: 0,
-                                ticks: 6,
-                                class: 'axis-ticks'
-                            };
-
-                            me._d3timelineCanvasAxis = me.axis(
-                                axisDividerConfig,
-                                me._d3timelineCanvasSVG,
-                                me._d3timelineCanvas
-                            );
-
-                            const axisLabelConfig = {
-                                innerTickSize: 0,
-                                tickPadding: 2,
-                                translate: [0, 5],
-                                ticks: 6,
-                                class: 'axis-label'
-                            };
-
-                            me._d3timelineCanvasAxisLabel = me.axis(
-                                axisLabelConfig,
-                                me._d3timelineCanvasAxisSVG,
-                                me._d3timelineCanvas
-                            );
-
-                            //Process timeline map
-                            me._d3timelineMap = me.timelineMap();
-                            me._d3timelineMap.redraw();
-
-                            const mapAxisConfig = {
-                                innerTickSize: 4,
-                                tickPadding: 4,
-                                ticks: 6,
-                                class: 'axis-label'
-                            };
-
-                            me._d3timelineMapAxis = me.axis(mapAxisConfig, me._d3timelineMapAxisSVG, me._d3timelineMap);
-
-                            me._d3brush = me.brush();
-
-                            me.isLoaded = true;
-                        } else {
-                            me.processError('No-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
-                        }
-                    } else {
-                        me.processError('Setup-Error', me.error.CONSOLE_HEADER, me.error.CONSOLE_SUBHEADER);
-                    }
-                } catch (error) {
-                    me.processError('Error', me.error.UNHANDLED, error.message);
+                if (this.template.querySelector('div.timeline-canvas').offsetWidth !== 0) {
+                    me.renderTimelineData(result);
+                } else {
+                    me._pendingApexResult = result;
                 }
             })
             .catch((error) => {
@@ -555,6 +517,68 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                 me.processError(errorType, errorHeading, errorMessage);
             });
+    }
+
+    renderTimelineData(result) {
+        const me = this;
+
+        try {
+            if (result.length > 0) {
+                me.totalTimelineRecords = result.length;
+
+                me._timelineData = me.getTimelineRecords(result);
+
+                me._d3timelineCanvas = me.timelineCanvas();
+
+                const axisDividerConfig = {
+                    innerTickSize: -me._d3timelineCanvas.SVGHeight,
+                    translate: [0, me._d3timelineCanvas.SVGHeight],
+                    tickPadding: 0,
+                    ticks: 6,
+                    class: 'axis-ticks'
+                };
+
+                me._d3timelineCanvasAxis = me.axis(
+                    axisDividerConfig,
+                    me._d3timelineCanvasSVG,
+                    me._d3timelineCanvas
+                );
+
+                const axisLabelConfig = {
+                    innerTickSize: 0,
+                    tickPadding: 2,
+                    translate: [0, 5],
+                    ticks: 6,
+                    class: 'axis-label'
+                };
+
+                me._d3timelineCanvasAxisLabel = me.axis(
+                    axisLabelConfig,
+                    me._d3timelineCanvasAxisSVG,
+                    me._d3timelineCanvas
+                );
+
+                me._d3timelineMap = me.timelineMap();
+                me._d3timelineMap.redraw();
+
+                const mapAxisConfig = {
+                    innerTickSize: 4,
+                    tickPadding: 4,
+                    ticks: 6,
+                    class: 'axis-label'
+                };
+
+                me._d3timelineMapAxis = me.axis(mapAxisConfig, me._d3timelineMapAxisSVG, me._d3timelineMap);
+
+                me._d3brush = me.brush();
+
+                me.isLoaded = true;
+            } else {
+                me.processError('No-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
+            }
+        } catch (error) {
+            me.processError('Error', me.error.UNHANDLED, error.message);
+        }
     }
 
     getTimelineRecords(result) {

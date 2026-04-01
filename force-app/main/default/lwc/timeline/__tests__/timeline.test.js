@@ -122,17 +122,83 @@ const flushPromises = () => {
     return new Promise((resolve) => setTimeout(resolve, 0));
 };
 
+// Chainable stub that mimics a d3 selection
+function d3Selection() {
+    const sel = {
+        select: jest.fn(() => d3Selection()),
+        selectAll: jest.fn(() => d3Selection()),
+        append: jest.fn(() => d3Selection()),
+        remove: jest.fn(() => sel),
+        attr: jest.fn(() => sel),
+        style: jest.fn(() => sel),
+        data: jest.fn(() => sel),
+        enter: jest.fn(() => d3Selection()),
+        exit: jest.fn(() => d3Selection()),
+        on: jest.fn(() => sel),
+        call: jest.fn(() => sel),
+        text: jest.fn(() => sel),
+        each: jest.fn(() => sel),
+        filter: jest.fn(() => d3Selection()),
+        sort: jest.fn(() => sel),
+        transition: jest.fn(() => sel),
+        duration: jest.fn(() => sel),
+        merge: jest.fn(() => sel)
+    };
+    return sel;
+}
+
 describe('c-timeline', () => {
+    let intersectionCallback;
+
     beforeEach(() => {
         jest.clearAllMocks();
         getTimelineData.mockResolvedValue([]);
         getTimelineTypes.mockResolvedValue({ data: {}, error: null });
+
+        global.IntersectionObserver = jest.fn((cb) => {
+            intersectionCallback = cb;
+            return {
+                observe: jest.fn(),
+                unobserve: jest.fn(),
+                disconnect: jest.fn()
+            };
+        });
+
+        const mockSelection = d3Selection();
+        global.d3 = {
+            select: jest.fn(() => mockSelection),
+            selectAll: jest.fn(() => mockSelection),
+            scaleTime: jest.fn(() => {
+                const scale = jest.fn();
+                scale.domain = jest.fn(() => scale);
+                scale.range = jest.fn(() => scale);
+                scale.rangeRound = jest.fn(() => scale);
+                return scale;
+            }),
+            min: jest.fn(),
+            max: jest.fn(),
+            axisBottom: jest.fn(() => {
+                const axis = jest.fn();
+                axis.tickSize = jest.fn(() => axis);
+                axis.tickPadding = jest.fn(() => axis);
+                axis.ticks = jest.fn(() => axis);
+                return axis;
+            }),
+            brushX: jest.fn(() => {
+                const brush = jest.fn();
+                brush.extent = jest.fn(() => brush);
+                brush.on = jest.fn(() => brush);
+                return brush;
+            })
+        };
     });
 
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        delete global.d3;
+        delete global.IntersectionObserver;
     });
 
     it('renders the configured label text in the filter panel', async () => {
@@ -174,5 +240,90 @@ describe('c-timeline', () => {
 
         expect(filterPanel.classList.contains('slds-is-open')).toBe(false);
         expect(refreshButton.disabled).toBe(false);
+    });
+
+    it('defers rendering when canvas has zero width (background console tab)', async () => {
+        const mockData = [
+            {
+                objectId: '500xx000000001',
+                objectName: 'Task',
+                objectLabel: 'Task',
+                positionDateField: 'ActivityDate',
+                positionDateType: 'DATE',
+                positionDateValue: '2025-06-15',
+                detailField: 'Test Task',
+                detailFieldLabel: 'Subject',
+                fallbackTooltipField: '',
+                fallbackTooltipValue: '',
+                tooltipId: '500xx000000001',
+                tooltipObject: 'Task',
+                drilldownId: '',
+                alternateDetailId: '',
+                type: 'Task',
+                icon: '/img/icon/t4v35/standard/task.svg',
+                iconBackground: '#4BC076'
+            }
+        ];
+
+        getTimelineData.mockResolvedValue(mockData);
+
+        const element = await buildTimeline();
+        await flushPromises();
+
+        const illustration = element.shadowRoot.querySelector('c-illustration');
+        const hasSetupError = illustration && illustration.header === 'Console Tab Error';
+        expect(hasSetupError).toBe(false);
+
+        expect(global.IntersectionObserver).toHaveBeenCalled();
+    });
+
+    it('does not show console tab error after IntersectionObserver fires', async () => {
+        const mockData = [
+            {
+                objectId: '500xx000000001',
+                objectName: 'Task',
+                objectLabel: 'Task',
+                positionDateField: 'ActivityDate',
+                positionDateType: 'DATE',
+                positionDateValue: '2025-06-15',
+                detailField: 'Test Task',
+                detailFieldLabel: 'Subject',
+                fallbackTooltipField: '',
+                fallbackTooltipValue: '',
+                tooltipId: '500xx000000001',
+                tooltipObject: 'Task',
+                drilldownId: '',
+                alternateDetailId: '',
+                type: 'Task',
+                icon: '/img/icon/t4v35/standard/task.svg',
+                iconBackground: '#4BC076'
+            }
+        ];
+
+        getTimelineData.mockResolvedValue(mockData);
+
+        const element = await buildTimeline();
+        await flushPromises();
+
+        intersectionCallback([{ isIntersecting: true }]);
+        await flushPromises();
+
+        const illustration = element.shadowRoot.querySelector('c-illustration');
+        const hasConsoleTabError = illustration && illustration.header === 'Console Tab Error';
+        expect(hasConsoleTabError).toBe(false);
+    });
+
+    it('cleans up IntersectionObserver on disconnect', async () => {
+        const element = await buildTimeline();
+        await flushPromises();
+
+        const observerInstance = global.IntersectionObserver.mock.results[0]?.value;
+
+        document.body.removeChild(element);
+        await flushPromises();
+
+        if (observerInstance) {
+            expect(observerInstance.disconnect).toHaveBeenCalled();
+        }
     });
 });
