@@ -180,6 +180,19 @@ Labels can be translated where appropriate. Navigate to Setup -> Custom Labels a
 | `Timeline_Error_ConsoleTab`          | Console tab conflict                                                                           |
 | `Timeline_Error_ConsoleTabSubHeader` | Time Warp cannot load on a parent and child sub tab at the same time. Refresh Time Warp to view this timeline.  |
 | `Timeline_Error_Unhandled`           | Houston...we've had a problem                                                                  |
+| `Timeline_Error_InvalidConfig`       | Timeline configuration is invalid. Contact your administrator.                                 |
+| `Timeline_Error_SetupIncomplete`     | Timeline setup could not be completed.                                                         |
+| `Timeline_Error_UnexpectedTypes`     | Unexpected error while loading timeline types.                                                 |
+| `Timeline_Error_NoConfigRecords`     | No active records for parent entity '{0}' have been found in 'Timeline_Configuration__mdt'. Ask an administrator for help. |
+| `Timeline_Error_QueryFailed`         | Timeline query could not be completed with current configuration.                              |
+| `Timeline_Error_UnexpectedRecords`   | Unexpected error while loading timeline records.                                               |
+| `Timeline_Error_InvalidParentField`  | Timeline parent field configuration is invalid. Contact your administrator.                    |
+| `Timeline_Error_NoFieldAccess`       | We can't display the timeline. You do not have access to the related field. Ask your Administrator for help. ({0}) |
+| `Timeline_Error_NoFieldValue`        | We can't display the timeline. The field requested has no value. Populate a value and try again. ({0}) |
+| `Timeline_Error_InvalidObjectName`   | The object '{0}' does not exist. Check the Object Name field on the '{1}' Timeline Configuration record. |
+| `Timeline_Error_InvalidTooltipObject`| The tooltip object '{0}' does not exist. Check the Tooltip Object Name field on the '{1}' Timeline Configuration record. |
+| `Timeline_Error_InvalidRelationship` | The relationship '{0}' does not exist on '{1}'. Check the Relationship Name field on the '{2}' Timeline Configuration record. |
+| `Timeline_Error_InvalidField`        | The field '{0}' does not exist on '{1}'. Check the field configuration on the '{2}' Timeline Configuration record. |
 | `Timeline_Label_Days`                | day(s)                                                                                         |
 | `Timeline_Label_Items`               | item(s)                                                                                        |
 | `Timeline_Label_Showing`             | Showing:                                                                                       |
