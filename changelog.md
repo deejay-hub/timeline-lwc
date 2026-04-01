@@ -5,12 +5,14 @@
 **WHAT'S NEW**
 -   Changed Salesforce API to v66.0 from v63.0
 -   Enforced FLS with stripInaccesible aligning to best practice
+-   Improved error handling for setup tasks
 -   Console apps now open records in new tab
 -   Improved CPU time for Parent Object Picklist resolution
 -   Performance improvements handling String.split operations 
 
 **BUG FIXES**
 -   Fixed issue with unused SOQL impacting performance
+-   Fixed error messages not being translated correctly
 -   Fixed casing issue when comparing values
 -   Fixed SOQL limits issues for LookedUpFromActivity Object
 -   Fixed duplicate resize handlers
