@@ -187,11 +187,13 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3Rendered = false;
     _debouncedResizeHandler = null;
     _tooltipDelayTimeout = null;
+    _tooltipHideTimeout = null;
     _brushRafId = null;
     _appliedSummaryWidth = null;
     _allTypesChecked = true;
     _allTypesIndeterminate = false;
     tooltipHoverDelayMs = 150;
+    tooltipHideDelayMs = 300;
 
     @wire(IsConsoleNavigation)
     isConsoleNavigation;
@@ -326,6 +328,11 @@ export default class timeline extends NavigationMixin(LightningElement) {
         if (this._tooltipDelayTimeout) {
             clearTimeout(this._tooltipDelayTimeout);
             this._tooltipDelayTimeout = null;
+        }
+
+        if (this._tooltipHideTimeout) {
+            clearTimeout(this._tooltipHideTimeout);
+            this._tooltipHideTimeout = null;
         }
 
         if (this._debouncedResizeHandler) {
@@ -771,8 +778,15 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me.navigateToRecord(d);
                     }
                 })
+                .on('focusin', function (event, d) {
+                    me.showTooltipForRecord(d, this);
+                })
+                .on('focusout', function () {
+                    me.hideTooltip();
+                })
                 .attr('class', 'timeline-canvas-record')
                 .attr('tabindex', '0')
+                .attr('role', 'button')
                 .attr('aria-label', function (d) {
                     return d.objectLabel + ' with label ' + d.label + ' plotted on ' + d.positionDateValue;
                 })
@@ -861,132 +875,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         me.navigateToRecord(d);
                     })
                     .on('pointerenter', function (event, d) {
-                        let tooltipId = d.recordId;
-                        let tooltipObject = d.objectName;
-
-                        if (d.tooltipId !== '') {
-                            tooltipId = d.tooltipId;
-                            tooltipObject = d.tooltipObject;
-                        }
-
-                        // Skip if hovering the same record/object to avoid redundant work
-                        if (
-                            me.isMouseOver &&
-                            me.mouseOverRecordId === tooltipId &&
-                            me.mouseOverObjectAPIName === tooltipObject
-                        ) {
-                            return;
-                        }
-
-                        // Clear any pending show from a previous hover
-                        if (me._tooltipDelayTimeout) {
-                            clearTimeout(me._tooltipDelayTimeout);
-                            me._tooltipDelayTimeout = null;
-                        }
-
-                        const targetElement = this;
-
-                        const showTooltip = () => {
-                            me.isTooltipLoading = true;
-                            me.mouseOverObjectAPIName = tooltipObject;
-                            me.mouseOverRecordId = tooltipId;
-
-                            me.mouseOverFallbackField = d.fallbackTooltipField;
-                            me.mouseOverFallbackValue = d.fallbackTooltipValue;
-
-                            me.mouseOverDetailLabel = d.detailFieldLabel;
-                            me.mouseOverDetailValue = d.detailField;
-
-                            me.mouseOverPositionLabel = d.positionDateField;
-                            me.mouseOverPositionValue = d.positionDateValue;
-
-                            me.isMouseOver = true;
-                            let tooltipDIV = me.template.querySelector('div.tooltip-panel');
-                            let tipPosition;
-
-                            // Get viewport dimensions
-                            const viewportWidth = window.innerWidth;
-                            const viewportHeight = window.innerHeight;
-
-                            // Get element position and dimensions
-                            const elementRect = targetElement.getBoundingClientRect();
-                            const tooltipWidth = tooltipDIV.offsetWidth;
-                            const tooltipHeight = tooltipDIV.offsetHeight;
-
-                            // Calculate available space on each side
-                            const spaceRight = viewportWidth - elementRect.right;
-                            const spaceLeft = elementRect.left;
-
-                            // Default vertical position (centered with element)
-                            let top = elementRect.top - 30;
-
-                            // Adjust vertical position if tooltip would be cut off
-                            if (top < 0) {
-                                top = 10; // Add some padding from top
-                            } else if (top + tooltipHeight > viewportHeight) {
-                                top = viewportHeight - tooltipHeight - 10; // Add some padding from bottom
-                            }
-
-                            // Determine horizontal position based on available space and language direction
-                            let left;
-                            let showOnRight = true;
-                            let hasEnoughSpace = false;
-
-                            if (me.isLanguageRightToLeft) {
-                                // For RTL, prefer left side if there's enough space
-                                if (spaceLeft >= tooltipWidth + 15) {
-                                    left = elementRect.left - tooltipWidth - 15;
-                                    showOnRight = false;
-                                    hasEnoughSpace = true;
-                                } else {
-                                    // If not enough space on left, try right side
-                                    left = elementRect.right + 15;
-                                    showOnRight = true;
-                                }
-                            } else {
-                                // For LTR, try right side first
-                                if (spaceRight >= tooltipWidth + 15) {
-                                    // Enough space on right
-                                    left = elementRect.right + 15;
-                                    showOnRight = true;
-                                    hasEnoughSpace = true;
-                                } else if (spaceLeft >= tooltipWidth + 15) {
-                                    // Not enough space on right, but enough on left
-                                    left = elementRect.left - tooltipWidth - 15;
-                                    showOnRight = false;
-                                    hasEnoughSpace = true;
-                                } else {
-                                    // Not enough space on either side, force right
-                                    left = elementRect.right + 15;
-                                    showOnRight = true;
-                                }
-                            }
-
-                            // Only ensure tooltip stays within viewport if we had enough space on preferred side
-                            if (hasEnoughSpace) {
-                                left = Math.max(10, Math.min(left, viewportWidth - tooltipWidth - 10));
-                            }
-
-                            // Update nubbin class based on position
-                            me.nubbinClass = showOnRight ? 'slds-nubbin_left-top' : 'slds-nubbin_right-top';
-
-                            tipPosition = `top: ${top}px; left: ${left}px; visibility: visible`;
-                            tooltipDIV.setAttribute('style', tipPosition);
-                            me._tooltipDelayTimeout = null;
-                        };
-
-                        // Delay showing the tooltip to avoid rapid reflows on quick passes
-                        me._tooltipDelayTimeout = setTimeout(showTooltip, me.tooltipHoverDelayMs);
+                        me.showTooltipForRecord(d, this);
                     })
                     .on('pointerleave', function () {
-                        if (me._tooltipDelayTimeout) {
-                            clearTimeout(me._tooltipDelayTimeout);
-                            me._tooltipDelayTimeout = null;
-                        }
-                        let tooltipDIV = me.template.querySelector('div.tooltip-panel');
-                        tooltipDIV.setAttribute('style', 'visibility: hidden');
-                        me.isMouseOver = false;
-                        me.isTooltipLoading = true;
+                        me.hideTooltip();
                     })
                     .text(function (d) {
                         return d.label;
@@ -1571,6 +1463,137 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     tooltipLoaded() {
         this.isTooltipLoading = false;
+    }
+
+    showTooltipForRecord(d, targetElement) {
+        let tooltipId = d.recordId;
+        let tooltipObject = d.objectName;
+
+        if (d.tooltipId !== '') {
+            tooltipId = d.tooltipId;
+            tooltipObject = d.tooltipObject;
+        }
+
+        if (this._tooltipHideTimeout) {
+            clearTimeout(this._tooltipHideTimeout);
+            this._tooltipHideTimeout = null;
+        }
+
+        if (
+            this.isMouseOver &&
+            this.mouseOverRecordId === tooltipId &&
+            this.mouseOverObjectAPIName === tooltipObject
+        ) {
+            return;
+        }
+
+        if (this._tooltipDelayTimeout) {
+            clearTimeout(this._tooltipDelayTimeout);
+            this._tooltipDelayTimeout = null;
+        }
+
+        const me = this;
+
+        const showTooltip = () => {
+            me.isTooltipLoading = true;
+            me.mouseOverObjectAPIName = tooltipObject;
+            me.mouseOverRecordId = tooltipId;
+
+            me.mouseOverFallbackField = d.fallbackTooltipField;
+            me.mouseOverFallbackValue = d.fallbackTooltipValue;
+
+            me.mouseOverDetailLabel = d.detailFieldLabel;
+            me.mouseOverDetailValue = d.detailField;
+
+            me.mouseOverPositionLabel = d.positionDateField;
+            me.mouseOverPositionValue = d.positionDateValue;
+
+            me.isMouseOver = true;
+            let tooltipDIV = me.template.querySelector('div.tooltip-panel');
+
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            const elementRect = targetElement.getBoundingClientRect();
+            const tooltipWidth = tooltipDIV.offsetWidth;
+            const tooltipHeight = tooltipDIV.offsetHeight;
+
+            const spaceRight = viewportWidth - elementRect.right;
+            const spaceLeft = elementRect.left;
+
+            let top = elementRect.top - 30;
+
+            if (top < 0) {
+                top = 10;
+            } else if (top + tooltipHeight > viewportHeight) {
+                top = viewportHeight - tooltipHeight - 10;
+            }
+
+            let left;
+            let showOnRight = true;
+            let hasEnoughSpace = false;
+
+            if (me.isLanguageRightToLeft) {
+                if (spaceLeft >= tooltipWidth + 15) {
+                    left = elementRect.left - tooltipWidth - 15;
+                    showOnRight = false;
+                    hasEnoughSpace = true;
+                } else {
+                    left = elementRect.right + 15;
+                    showOnRight = true;
+                }
+            } else {
+                if (spaceRight >= tooltipWidth + 15) {
+                    left = elementRect.right + 15;
+                    showOnRight = true;
+                    hasEnoughSpace = true;
+                } else if (spaceLeft >= tooltipWidth + 15) {
+                    left = elementRect.left - tooltipWidth - 15;
+                    showOnRight = false;
+                    hasEnoughSpace = true;
+                } else {
+                    left = elementRect.right + 15;
+                    showOnRight = true;
+                }
+            }
+
+            if (hasEnoughSpace) {
+                left = Math.max(10, Math.min(left, viewportWidth - tooltipWidth - 10));
+            }
+
+            me.nubbinClass = showOnRight ? 'slds-nubbin_left-top' : 'slds-nubbin_right-top';
+
+            tooltipDIV.setAttribute('style', `top: ${top}px; left: ${left}px; visibility: visible`);
+            me._tooltipDelayTimeout = null;
+        };
+
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this._tooltipDelayTimeout = setTimeout(showTooltip, this.tooltipHoverDelayMs);
+    }
+
+    hideTooltip() {
+        if (this._tooltipDelayTimeout) {
+            clearTimeout(this._tooltipDelayTimeout);
+            this._tooltipDelayTimeout = null;
+        }
+        if (this._tooltipHideTimeout) {
+            clearTimeout(this._tooltipHideTimeout);
+        }
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this._tooltipHideTimeout = setTimeout(() => {
+            let tooltipDIV = this.template.querySelector('div.tooltip-panel');
+            tooltipDIV.setAttribute('style', 'visibility: hidden');
+            this.isMouseOver = false;
+            this.isTooltipLoading = true;
+            this._tooltipHideTimeout = null;
+        }, this.tooltipHideDelayMs);
+    }
+
+    cancelTooltipHide() {
+        if (this._tooltipHideTimeout) {
+            clearTimeout(this._tooltipHideTimeout);
+            this._tooltipHideTimeout = null;
+        }
     }
 
     @api

@@ -173,7 +173,12 @@
     </article>
 
     <!--tooltips FALLBACK WHEN AN OBJECT IS NOT SUPPORTED-->
-    <div aria-label="Tooltip popover" class={tooltipClass}>
+    <div
+        aria-label="Tooltip popover"
+        class={tooltipClass}
+        onpointerenter={cancelTooltipHide}
+        onpointerleave={hideTooltip}
+    >
         <div class="tooltip-content">
             <template lwc:if={showFallbackTooltip}>
                 <div class="slds-form" role="list">
