@@ -7,11 +7,11 @@
 -   Enforced FLS with stripInaccesible aligning to best practice
 -   Improved error handling for setup tasks
 -   Console apps now open records in new tab
--   Improved CPU time for Parent Object Picklist resolution
--   Performance improvements handling String.split operations 
+-   Performance and security improvements
+-   Tooltip now stays open to interact with hyperlinks 
 
 **BUG FIXES**
--   Fixed issue with unused SOQL impacting performance
+-   Fixed cosmetic mouse interaction when dragging zoom
 -   Fixed error messages not being translated correctly
 -   Fixed casing issue when comparing values
 -   Fixed SOQL limits issues for LookedUpFromActivity Object
