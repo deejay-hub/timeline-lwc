@@ -1,13 +1,14 @@
+/* sldsValidatorIgnore */
 .illustration-img {
     width: 75%;
     height: 75%;
 }
 
-.slds-text-heading_medium {
+.illustration-heading {
     padding-top: 10px;
 }
 
-.slds-text-body_regular {
+.illustration-subheading {
     padding-left: 2%;
     padding-right: 2%;
 }

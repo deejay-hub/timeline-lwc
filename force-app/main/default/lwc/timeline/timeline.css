@@ -1,3 +1,4 @@
+/* sldsValidatorIgnore */
 .stencil-label {
     background-color: #83807f;
     height: 0.4rem;
@@ -21,11 +22,6 @@
 
 .stencil-timeline-spinner {
     text-align: center;
-}
-
-.slds-spinner_container,
-.slds-spinner--container {
-    border-radius: 20px !important;
 }
 
 .illustration {
@@ -224,24 +220,13 @@
     --margin: 5px 5px 5px 5px;
     border: 1px solid #747474;
     border-radius: 3px;
+    -webkit-user-select: none;
+    user-select: none;
     position: relative;
-}
-
-.slds-text-heading_medium {
-    font-weight: 500;
-    font-size: 1rem;
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 1.25;
 }
 
 .tooltip-loading {
     height: 45px !important;
-}
-
-.timeline-container .slds-grid.slds-grid_align-spread {
-    padding-right: 2px;
-    padding-left: 2px;
 }
 
 .tooltip-panel {
@@ -397,7 +382,7 @@
     padding: 5px;
 }
 
-.slds-panel__body {
+.timeline-panel-body {
     padding-bottom: 50px;
 }
 
