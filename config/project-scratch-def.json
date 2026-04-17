@@ -1,6 +1,7 @@
 {
     "orgName": "Time Warp",
     "edition": "Developer",
+    "description": "Time Warp Scratch Org",
     "features": ["ServiceCloud", "ServiceUser"],
     "settings": {
         "languageSettings": {
