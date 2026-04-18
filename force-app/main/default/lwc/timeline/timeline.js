@@ -431,6 +431,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                         this._d3timelineMapAxis.redraw();
                         this._d3brush.redraw();
                     }
+                    // eslint-disable-next-line
                 } catch (error) {
                     // Intentionally swallowed — resize failures are non-critical
                 }
@@ -1218,6 +1219,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 cancelAnimationFrame(me._brushRafId);
             }
 
+            // eslint-disable-next-line
             me._brushRafId = requestAnimationFrame(() => {
                 me._brushRafId = null;
 
@@ -1479,11 +1481,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this._tooltipHideTimeout = null;
         }
 
-        if (
-            this.isMouseOver &&
-            this.mouseOverRecordId === tooltipId &&
-            this.mouseOverObjectAPIName === tooltipObject
-        ) {
+        if (this.isMouseOver && this.mouseOverRecordId === tooltipId && this.mouseOverObjectAPIName === tooltipObject) {
             return;
         }
 

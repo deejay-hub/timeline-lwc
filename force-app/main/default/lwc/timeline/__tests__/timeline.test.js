@@ -88,6 +88,12 @@ jest.mock('@salesforce/i18n/locale', () => ({ default: 'en-US' }), { virtual: tr
 jest.mock('@salesforce/i18n/lang', () => ({ default: 'en' }), { virtual: true });
 jest.mock('@salesforce/i18n/timeZone', () => ({ default: 'America/Los_Angeles' }), { virtual: true });
 
+// Helper to flush promises
+const flushPromises = () => {
+    // eslint-disable-next-line
+    return new Promise((resolve) => setTimeout(resolve, 0));
+};
+
 // Helper function to create timeline component
 const buildTimeline = async (props = {}) => {
     const element = createElement('c-timeline', {
@@ -115,11 +121,6 @@ const buildTimeline = async (props = {}) => {
     await flushPromises();
 
     return element;
-};
-
-// Helper to flush promises
-const flushPromises = () => {
-    return new Promise((resolve) => setTimeout(resolve, 0));
 };
 
 describe('c-timeline', () => {
