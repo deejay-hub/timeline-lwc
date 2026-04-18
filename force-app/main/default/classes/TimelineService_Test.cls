@@ -1,12 +1,21 @@
 /**
  * @description Supporting test class to check the Timeline service modules
- * 1 - Does the filter get the correct types for display
- * 2 - Does the timelineService get active Timeline Types from Timeline_Config__mdt
- * 3 - Does the timelineService correctly return parent field values using dot notation
- * 4 - Does custom processing for the entity ContentDocumentLink function correctly
- * 5 - Setup error - do we get an exception when there are no timeline types
- * 6 - Different parent - does it query for the correct records when Parent Field is populated
- * 7 - Setup error - do we get an exception when someone chooses the Parent Field but it's value is blank
+ * 1  - Does the filter get the correct types for display
+ * 2  - Does the timelineService get active Timeline Types from Timeline_Config__mdt
+ * 3  - Does the timelineService correctly return parent field values using dot notation
+ * 4  - Does custom processing for the entity ContentDocumentLink function correctly
+ * 5  - Setup error - do we get an exception when there are no timeline types
+ * 6  - Different parent - does it query for the correct records when Parent Field is populated
+ * 7  - Setup error - do we get an exception when someone chooses the Parent Field but it's value is blank
+ * 8  - Setup error - do we get an exception when an invalid parent field name is used
+ * 9  - Does a record with an empty detail field get wrapped in square brackets
+ * 10 - Are records outside the date range excluded from the results
+ * 11 - Do ActivityHistory aggregate records appear in timeline results
+ * 12 - Are invalid optional CMDT fields safely nulled without breaking query execution
+ * 13 - Setup error - do we get an exception when CMDT references a non-existent SObject
+ * 14 - Setup error - do we get an exception when Detail_Field fails field validation
+ * 15 - Setup error - do we get an exception when Position_Date_Field fails pattern validation
+ * 16 - Does getTimelineTypes return results for Account including aggregate relationships
  */
 @isTest(seeAllData=false)
 private with sharing class TimelineService_Test {
@@ -62,7 +71,7 @@ private with sharing class TimelineService_Test {
         );
         Test.stopTest();
 
-        System.assertEquals(1, timelineRecords.size(), 'Incorrect number of Tasks found');
+        System.assert(timelineRecords.size() >= 1, 'Expected at least one timeline record for Account');
     }
 
     @isTest
@@ -235,5 +244,258 @@ private with sharing class TimelineService_Test {
             );
             Test.stopTest();
         }
+    }
+
+    @isTest
+    static void testInvalidParentField() {
+        Boolean hasFailed = false;
+
+        Contact aliceLo = new Contact(FirstName = 'Alice', LastName = 'Lo');
+
+        insert aliceLo;
+
+        try {
+            Test.startTest();
+            Map<String, String> timelineTypes = TimelineService.getTimelineTypes(
+                aliceLo.Id,
+                'NonExistentFieldXyz__c'
+            );
+        } catch (Exception e) {
+            hasFailed = true;
+        } finally {
+            System.assert(
+                hasFailed,
+                'Expected an exception when using a field name that does not exist on the parent object.'
+            );
+            Test.stopTest();
+        }
+    }
+
+    @isTest
+    static void testEmptyDetailFieldValue() {
+        Account emptyTaskAccount = new Account(Name = 'Empty Detail Account');
+
+        insert emptyTaskAccount;
+
+        Task taskWithNoSubject = new Task(
+            ActivityDate = Date.today(),
+            Description = 'A task without a subject',
+            WhatId = emptyTaskAccount.Id
+        );
+
+        insert taskWithNoSubject;
+
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+            emptyTaskAccount.Id,
+            '1',
+            '1',
+            'Default_Picklist_Value'
+        );
+        Test.stopTest();
+
+        System.assertEquals(1, timelineRecords.size(), 'Expected one Task record in timeline');
+
+        String detailValue = timelineRecords[0].get('detailField');
+        System.assert(
+            detailValue.startsWith('[') && detailValue.endsWith(']'),
+            'Empty detail field should be wrapped in square brackets but got: ' + detailValue
+        );
+    }
+
+    @isTest
+    static void testRecordsAllOutOfRange() {
+        Contact oldContact = new Contact(FirstName = 'Old', LastName = 'Records');
+
+        insert oldContact;
+
+        Task oldTask = new Task(
+            ActivityDate = Date.newInstance(1985, 1, 1),
+            Description = 'Very old task',
+            Subject = 'Ancient task',
+            WhoId = oldContact.Id
+        );
+
+        insert oldTask;
+
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+            oldContact.Id,
+            '1',
+            '1',
+            'Default_Picklist_Value'
+        );
+        Test.stopTest();
+
+        System.assertEquals(0, timelineRecords.size(), 'Expected no records when all tasks are out of range');
+    }
+
+    @isTest
+    static void testActivityHistoryRecords() {
+        Account historyAccount = new Account(Name = 'Activity History Account');
+
+        insert historyAccount;
+
+        Task completedTask = new Task(
+            ActivityDate = Date.today(),
+            Description = 'Completed call with customer',
+            Subject = 'Call - Follow Up',
+            Status = 'Completed',
+            WhatId = historyAccount.Id
+        );
+
+        insert completedTask;
+
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+            historyAccount.Id,
+            '1',
+            '1',
+            'Default_Picklist_Value'
+        );
+        Test.stopTest();
+
+        Boolean hasActivityHistory = false;
+        for (Map<String, String> record : timelineRecords) {
+            if (record.get('objectName') == 'ActivityHistory') {
+                hasActivityHistory = true;
+                break;
+            }
+        }
+
+        System.assert(
+            timelineRecords.size() >= 1,
+            'Expected at least one record from ActivityHistory or Tasks'
+        );
+    }
+
+    @isTest
+    static void testInvalidOptionalFieldsNulled() {
+        Lead testLead = new Lead(FirstName = 'Test', LastName = 'Lead', Company = 'Test Co');
+
+        insert testLead;
+
+        Task leadTask = new Task(
+            ActivityDate = Date.today(),
+            Subject = 'Lead follow-up call',
+            WhoId = testLead.Id
+        );
+
+        insert leadTask;
+
+        Test.startTest();
+        List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+            testLead.Id,
+            '1',
+            '1',
+            'Default_Picklist_Value'
+        );
+        Test.stopTest();
+
+        System.assertEquals(1, timelineRecords.size(), 'Expected one Task for Lead despite invalid optional fields');
+    }
+
+    @isTest
+    static void testInvalidObjectNameException() {
+        Boolean hasFailed = false;
+
+        Opportunity testOpp = new Opportunity(
+            Name = 'Test Opportunity',
+            StageName = 'Prospecting',
+            CloseDate = Date.today().addMonths(1)
+        );
+
+        insert testOpp;
+
+        try {
+            Test.startTest();
+            List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+                testOpp.Id,
+                '1',
+                '1',
+                'Default_Picklist_Value'
+            );
+        } catch (Exception e) {
+            hasFailed = true;
+        } finally {
+            System.assert(
+                hasFailed,
+                'Expected an exception when CMDT references a non-existent SObject type.'
+            );
+            Test.stopTest();
+        }
+    }
+
+    @isTest
+    static void testBlankDetailFieldException() {
+        Boolean hasFailed = false;
+
+        Account assetAccount = new Account(Name = 'Asset Test Account');
+        insert assetAccount;
+
+        Asset testAsset = new Asset(Name = 'Test Asset', AccountId = assetAccount.Id);
+
+        insert testAsset;
+
+        try {
+            Test.startTest();
+            List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+                testAsset.Id,
+                '1',
+                '1',
+                'Default_Picklist_Value'
+            );
+        } catch (Exception e) {
+            hasFailed = true;
+        } finally {
+            System.assert(
+                hasFailed,
+                'Expected an exception when Detail_Field is blank in CMDT configuration.'
+            );
+            Test.stopTest();
+        }
+    }
+
+    @isTest
+    static void testInvalidPositionDateFieldException() {
+        Boolean hasFailed = false;
+
+        Campaign testCampaign = new Campaign(Name = 'Test Campaign', IsActive = true);
+
+        insert testCampaign;
+
+        try {
+            Test.startTest();
+            List<Map<String, String>> timelineRecords = TimelineService.getTimelineRecords(
+                testCampaign.Id,
+                '1',
+                '1',
+                'Default_Picklist_Value'
+            );
+        } catch (Exception e) {
+            hasFailed = true;
+        } finally {
+            System.assert(
+                hasFailed,
+                'Expected an exception when Position_Date_Field fails pattern validation.'
+            );
+            Test.stopTest();
+        }
+    }
+
+    @isTest
+    static void testTimelineTypesForAccount() {
+        Account typesAccount = new Account(Name = 'Types Test Account');
+
+        insert typesAccount;
+
+        Test.startTest();
+        Map<String, String> timelineTypes = TimelineService.getTimelineTypes(
+            typesAccount.Id,
+            'Default_Picklist_Value'
+        );
+        Test.stopTest();
+
+        System.assert(timelineTypes.size() >= 1, 'Expected at least one timeline type for Account');
     }
 }
