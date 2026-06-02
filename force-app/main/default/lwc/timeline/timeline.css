@@ -195,6 +195,32 @@
     stroke: none;
 }
 
+/* heatmap cells — warm palette complementary to the cool-blue slider, GitHub-style empty cell */
+.timeline-map-heatmap-cell {
+    stroke: #ffffff;
+    stroke-width: 0.75;
+}
+
+.timeline-map-heatmap-cell-l0 {
+    fill: #f3f4f6;
+}
+
+.timeline-map-heatmap-cell-l1 {
+    fill: #cfe6f6;
+}
+
+.timeline-map-heatmap-cell-l2 {
+    fill: #7ec1e8;
+}
+
+.timeline-map-heatmap-cell-l3 {
+    fill: #2a8fd1;
+}
+
+.timeline-map-heatmap-cell-l4 {
+    fill: #0d4f86;
+}
+
 /* brush */
 .brush .selection {
     stroke: #107cad;
