@@ -54,6 +54,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     @api zoomTo; //Zoom to current dat or latest activity
     @api daysToShow; //number of days to plot for the default zoom
     @api showToday; //should today's date be plotted and in what colour
+    @api minimapFormat; //Dotmap (default) or Heatmap rendering for the bottom minimap
 
     //Component calculated attributes
     @api recordId; //current record id of lead, case, opportunity, contact or account
@@ -1007,6 +1008,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         timelineMap.width = timelineMapDIV.offsetWidth;
         timelineMap.height = timelineMapDIV.offsetHeight;
+        // SVG fills the content box (clientHeight) — heatmap layout uses this so cells don't overflow the borders.
+        timelineMap.innerHeight = timelineMapDIV.clientHeight || timelineMapDIV.offsetHeight;
 
         let currentDate = new Date();
 
@@ -1042,6 +1045,22 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 })
                 .filter(timelineMap.filter);
 
+            timelineMap.width = timelineMap.x.range()[1];
+            timelineMapSVG.attr('width', timelineMap.width);
+
+            if (me.minimapFormat === 'Heatmap') {
+                // Remove dotmap groups left over from prior renders
+                timelineMap.selectAll('[class~=timeline-map-record]').remove();
+                me.renderHeatmap(timelineMap, data);
+                if (data.length <= 0) {
+                    me.processError('No-Filter-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
+                }
+                return;
+            }
+
+            // Switching back to Dotmap — clear any heatmap layer.
+            timelineMap.selectAll('g.timeline-map-heatmap-layer').remove();
+
             data.sort(me.sortByValue('time'));
 
             // calculating vertical layout for displaying data
@@ -1059,9 +1078,6 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 }
                 return false;
             });
-
-            timelineMap.width = timelineMap.x.range()[1];
-            timelineMapSVG.attr('width', timelineMap.width);
 
             timelineMap.data = timelineMap
                 .selectAll('[class~=timeline-map-record]')
@@ -1095,6 +1111,94 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
         };
         return timelineMap;
+    }
+
+    renderHeatmap(timelineMap, data) {
+        const domain = timelineMap.x.domain();
+        const totalMs = domain[1] - domain[0];
+
+        // Cell width is fixed regardless of date range. We pick the largest column count
+        // that fits at this target, then size every cell identically.
+        const TARGET_CELL_PX = 12;
+        const numColumns = Math.max(1, Math.floor(timelineMap.width / TARGET_CELL_PX));
+        const bucketMs = totalMs / numColumns;
+        const cellWidth = timelineMap.width / numColumns;
+        const bucketDays = bucketMs / (1000 * 60 * 60 * 24);
+
+        const cells = [];
+        for (let i = 0; i < numColumns; i++) {
+            cells.push({ index: i, am: 0, pm: 0 });
+        }
+
+        data.forEach(function (record) {
+            const offset = record.time.getTime() - domain[0].getTime();
+            if (offset < 0 || offset >= totalMs) return;
+            const idx = Math.min(numColumns - 1, Math.floor(offset / bucketMs));
+            if (record.time.getHours() < 12) {
+                cells[idx].am += 1;
+            } else {
+                cells[idx].pm += 1;
+            }
+        });
+
+        const flat = [];
+        cells.forEach(function (c) {
+            flat.push({ index: c.index, period: 'AM', count: c.am });
+            flat.push({ index: c.index, period: 'PM', count: c.pm });
+        });
+
+        // Each AM/PM cell covers half a bucket's worth of time, so scale thresholds accordingly.
+        const halfBucketDays = Math.max(0.5, bucketDays / 2);
+        const t2 = Math.max(2, Math.round(2 * halfBucketDays));
+        const t3 = Math.max(3, Math.round(5 * halfBucketDays));
+        const intensity = function (count) {
+            if (count <= 0) return 0;
+            if (count <= 1) return 1;
+            if (count <= t2) return 2;
+            if (count <= t3) return 3;
+            return 4;
+        };
+
+        const gap = 1;
+        const heatmapHeight = timelineMap.innerHeight || timelineMap.height;
+        const rowHeight = Math.max(Math.floor((heatmapHeight - gap * 3) / 2), 4);
+        const yTop = gap;
+        const yBottom = heatmapHeight - gap - rowHeight;
+        const visualWidth = Math.max(cellWidth - 1, 1);
+
+        // Render into a dedicated layer that sits BEHIND the brush group so the slider is never covered.
+        let heatmapLayer = timelineMap.select('g.timeline-map-heatmap-layer');
+        if (heatmapLayer.empty()) {
+            heatmapLayer = timelineMap.insert('g', ':first-child').attr('class', 'timeline-map-heatmap-layer');
+        }
+
+        const join = heatmapLayer.selectAll('[class~=timeline-map-heatmap-cell]').data(flat, function (c) {
+            return c.index + '|' + c.period;
+        });
+
+        join.exit().remove();
+
+        const enter = join
+            .enter()
+            .append('rect')
+            .attr('class', function (c) {
+                return 'timeline-map-heatmap-cell timeline-map-heatmap-cell-l' + intensity(c.count);
+            })
+            .attr('rx', 3)
+            .attr('ry', 3);
+
+        enter.merge(join)
+            .attr('x', function (c) {
+                return c.index * cellWidth + 0.5;
+            })
+            .attr('y', function (c) {
+                return c.period === 'AM' ? yTop : yBottom;
+            })
+            .attr('width', visualWidth)
+            .attr('height', rowHeight)
+            .attr('class', function (c) {
+                return 'timeline-map-heatmap-cell timeline-map-heatmap-cell-l' + intensity(c.count);
+            });
     }
 
     brush() {
@@ -1178,11 +1282,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
         xBrush.call(brush).call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x));
 
         brush.redraw = function () {
+            const liveWidth = me.template.querySelector('div.timeline-map').offsetWidth;
             brush = d3
                 .brushX()
                 .extent([
                     [0, 0],
-                    [timelineMap.width, timelineMap.height]
+                    [Math.max(liveWidth, 0), timelineMap.height]
                 ])
                 .on('brush', brushed)
                 .on('start', brushStart)
