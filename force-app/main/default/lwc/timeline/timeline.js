@@ -189,6 +189,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _tooltipDelayTimeout = null;
     _tooltipHideTimeout = null;
     _brushRafId = null;
+    _zoomDays = null; //Zoom width driven by the brush, kept separate from the design attribute
     _appliedSummaryWidth = null;
     _allTypesChecked = true;
     _allTypesIndeterminate = false;
@@ -215,13 +216,18 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     async navigateToRecord(record) {
+        //Apex returns null for these ids when the configured lookup is blank on the record
         let drilldownId = record.recordId;
-        if (record.drilldownId !== '') {
+        if (record.drilldownId) {
             drilldownId = record.drilldownId;
         }
 
-        if (record.alternateDetailId !== '') {
+        if (record.alternateDetailId) {
             drilldownId = record.alternateDetailId;
+        }
+
+        if (!drilldownId) {
+            return;
         }
 
         switch (record.objectName) {
@@ -320,6 +326,21 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     disconnectedCallback() {
+        //Every d3 selection points at DOM that is going away, so the timeline has to be
+        //rebuilt from scratch if this component is later reconnected.
+        this._d3Rendered = false;
+        this._d3timelineCanvasSVG = null;
+        this._d3timelineCanvasAxisSVG = null;
+        this._d3timelineMapSVG = null;
+        this._d3timelineMapAxisSVG = null;
+        this._d3timelineCanvas = null;
+        this._d3timelineCanvasAxis = null;
+        this._d3timelineCanvasAxisLabel = null;
+        this._d3timelineMap = null;
+        this._d3timelineMapAxis = null;
+        this._d3brush = null;
+        this._appliedSummaryWidth = null;
+
         if (this._brushRafId) {
             cancelAnimationFrame(this._brushRafId);
             this._brushRafId = null;
@@ -342,7 +363,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     connectedCallback() {
-        this._timelineHeight = this.heightMap[this.preferredHeight];
+        this._timelineHeight = this.heightMap[this.preferredHeight] || this.heightMap['3 - Default'];
     }
 
     renderedCallback() {
@@ -355,28 +376,42 @@ export default class timeline extends NavigationMixin(LightningElement) {
         }
 
         if (!this._d3Rendered) {
-            this.todaysColour = this.todayColourMap[this.showToday];
-            this.iconRoundedValue = this.iconStyleMap[this.iconStyle];
+            this.todaysColour = this.todayColourMap[this.showToday] || this.todayColourMap.No;
+            this.iconRoundedValue = this.iconStyleMap[this.iconStyle] || this.iconStyleMap.Square;
             //set the height of the component as the height is dynamic based on the attributes
             let timelineDIV = this.template.querySelector('div.timeline-canvas');
             this.currentParentField = this.timelineParent;
+
+            if (!timelineDIV) {
+                return;
+            }
+
             timelineDIV.setAttribute('style', 'height:' + this._timelineHeight + 'px');
 
             Promise.all([loadScript(this, d3JS)])
                 .then(() => {
+                    const canvasDIV = this.template.querySelector('div.timeline-canvas');
+                    const canvasAxisDIV = this.template.querySelector('div.timeline-canvas-axis');
+                    const mapDIV = this.template.querySelector('div.timeline-map');
+                    const mapAxisDIV = this.template.querySelector('div.timeline-map-axis');
+
+                    if (!canvasDIV || !canvasAxisDIV || !mapDIV || !mapAxisDIV) {
+                        return;
+                    }
+
+                    //These containers are manually managed, so anything left behind by a previous
+                    //render has to be cleared before appending or the canvas would be duplicated
+                    [canvasDIV, canvasAxisDIV, mapDIV, mapAxisDIV].forEach((container) => {
+                        d3.select(container).selectAll('*').remove();
+                    });
+
                     //Setup d3 timeline by manipulating the DOM and do it once only as render gets called many times
-                    this._d3timelineCanvasDIV = d3.select(this.template.querySelector('div.timeline-canvas'));
+                    this._d3timelineCanvasDIV = d3.select(canvasDIV);
                     this._d3timelineCanvasMapDIV = d3.select(this.template.querySelector('div.timeline-canvas-map'));
-                    this._d3timelineCanvasSVG = d3
-                        .select(this.template.querySelector('div.timeline-canvas'))
-                        .append('svg');
-                    this._d3timelineCanvasAxisSVG = d3
-                        .select(this.template.querySelector('div.timeline-canvas-axis'))
-                        .append('svg');
-                    this._d3timelineMapSVG = d3.select(this.template.querySelector('div.timeline-map')).append('svg');
-                    this._d3timelineMapAxisSVG = d3
-                        .select(this.template.querySelector('div.timeline-map-axis'))
-                        .append('svg');
+                    this._d3timelineCanvasSVG = d3.select(canvasDIV).append('svg');
+                    this._d3timelineCanvasAxisSVG = d3.select(canvasAxisDIV).append('svg');
+                    this._d3timelineMapSVG = d3.select(mapDIV).append('svg');
+                    this._d3timelineMapAxisSVG = d3.select(mapAxisDIV).append('svg');
 
                     this.processTimeline();
                 })
@@ -391,6 +426,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
             let timelineSummary = this.template.querySelectorAll('span.timeline-summary-verbose');
             if (timelineSummary && timelineSummary.length > 0) {
                 for (let i = 0; i < timelineSummary.length; i++) {
+                    //Swap rather than accumulate, otherwise resizing leaves conflicting widths applied
+                    timelineSummary[i].classList.remove(
+                        'timeline-summary-verbose-SMALL',
+                        'timeline-summary-verbose-MEDIUM',
+                        'timeline-summary-verbose-LARGE'
+                    );
                     timelineSummary[i].classList.add('timeline-summary-verbose-' + this.timelineWidth);
                 }
                 this._appliedSummaryWidth = this.timelineWidth;
@@ -442,11 +483,23 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
     processTimeline() {
         const me = this;
+
+        //Reachable from the refresh button before d3 has loaded, or after it failed to load
+        if (
+            !me._d3timelineCanvasSVG ||
+            !me._d3timelineCanvasAxisSVG ||
+            !me._d3timelineMapSVG ||
+            !me._d3timelineMapAxisSVG
+        ) {
+            return;
+        }
+
         me.isError = false;
         me.isLoaded = false;
 
         me.illustrationVisibility = 'illustration-hidden';
         me.noData = false;
+        me.noFilterData = false;
 
         //Work out if the language is right to left
         if (
@@ -460,8 +513,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
         const dateTimeFormat = new Intl.DateTimeFormat(me.calculatedLOCALE());
         //Convert earliestRange to months
-        me.timelineStart = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() - 12 * me.earliestRange));
-        me.timelineEnd = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() + 12 * me.latestRange));
+        me.timelineStart = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() - me.earliestRangeMonths));
+        me.timelineEnd = dateTimeFormat.format(new Date().setMonth(new Date().getMonth() + me.latestRangeMonths));
 
         me._d3timelineCanvasSVG.selectAll('*').remove();
         me._d3timelineCanvasAxisSVG.selectAll('*').remove();
@@ -481,12 +534,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
         })
             .then((result) => {
                 try {
-                    if (this.template.querySelector('div.timeline-canvas').offsetWidth !== 0) {
-                        if (result.length > 0) {
-                            me.totalTimelineRecords = result.length;
+                    const canvasDIV = this.template.querySelector('div.timeline-canvas');
 
-                            //Process timeline records
-                            me._timelineData = me.getTimelineRecords(result);
+                    if (canvasDIV && canvasDIV.offsetWidth !== 0) {
+                        //Process timeline records
+                        me._timelineData = result.length > 0 ? me.getTimelineRecords(result) : null;
+
+                        if (me._timelineData && me._timelineData.data.length > 0) {
+                            me.totalTimelineRecords = me._timelineData.data.length;
 
                             //Process timeline canvas
                             me._d3timelineCanvas = me.timelineCanvas();
@@ -536,6 +591,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                             me.isLoaded = true;
                         } else {
+                            me.totalTimelineRecords = 0;
                             me.processError('No-Data', me.error.NO_DATA_HEADER, me.error.NO_DATA_SUBHEADER);
                         }
                     } else {
@@ -589,27 +645,33 @@ export default class timeline extends NavigationMixin(LightningElement) {
         result.forEach(function (record, index) {
             let recordCopy = {};
 
-            recordCopy.recordId = record.objectId;
-            recordCopy.id = index;
-            recordCopy.label =
-                record.detailField.length <= 30 ? record.detailField : record.detailField.slice(0, 30) + '...';
-            recordCopy.objectName = record.objectName;
-            recordCopy.objectLabel = record.objectLabel;
-            recordCopy.positionDateField = record.positionDateField;
-
             let dateFormatter = record.positionDateType === 'DATE' ? dateOnlyFormatter : dateTimeFormatterForRecords;
 
             let convertDate = record.positionDateValue;
 
-            if (record.positionDateType === 'DATETIME') {
-                convertDate = record.positionDateValue.replace(' ', 'T');
+            if (record.positionDateType === 'DATETIME' && typeof convertDate === 'string') {
+                convertDate = convertDate.replace(' ', 'T');
                 convertDate = convertDate + '.000Z';
             }
 
             let localDate = new Date(convertDate);
-            let localPositionDate = dateFormatter.format(localDate);
 
-            recordCopy.positionDateValue = localPositionDate;
+            //A record with no usable date cannot be positioned, and formatting an invalid
+            //date throws, which would take the whole timeline down with it
+            if (isNaN(localDate.getTime())) {
+                return;
+            }
+
+            const detailValue = record.detailField || '';
+
+            recordCopy.recordId = record.objectId;
+            recordCopy.id = index;
+            recordCopy.label = detailValue.length <= 30 ? detailValue : detailValue.slice(0, 30) + '...';
+            recordCopy.objectName = record.objectName;
+            recordCopy.objectLabel = record.objectLabel;
+            recordCopy.positionDateField = record.positionDateField;
+
+            recordCopy.positionDateValue = dateFormatter.format(localDate);
             recordCopy.time = localDate;
 
             recordCopy.detailField = record.detailField;
@@ -634,8 +696,8 @@ export default class timeline extends NavigationMixin(LightningElement) {
         timelineRecords.maxTime = d3.max(timelineTimes);
 
         timelineRecords.requestRange = [
-            new Date(new Date().setMonth(new Date().getMonth() - 12 * this.earliestRange)),
-            new Date(new Date().setMonth(new Date().getMonth() + 12 * this.latestRange))
+            new Date(new Date().setMonth(new Date().getMonth() - this.earliestRangeMonths)),
+            new Date(new Date().setMonth(new Date().getMonth() + this.latestRangeMonths))
         ];
 
         return timelineRecords;
@@ -1126,23 +1188,31 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 break;
         }
 
-        if (me.zoomStartDate !== undefined) {
-            startBrush = new Date(me.zoomStartDate).toLocaleDateString('en-GB', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
-            endBrush = new Date(me.zoomEndDate).toLocaleDateString('en-GB', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
-        } else {
-            startBrush = new Date(defaultZoomDate);
-            startBrush.setDate(startBrush.getDate() - me.daysToShow / 2);
-            endBrush = new Date(defaultZoomDate);
-            endBrush.setDate(endBrush.getDate() + me.daysToShow / 2);
+        if (!Number.isFinite(defaultZoomDate)) {
+            defaultZoomDate = new Date().getTime();
         }
+
+        //Falls back to the configured zoom whenever the stored zoom is missing or unparseable,
+        //which keeps the brush from being moved to NaN pixel positions
+        const brushExtentDates = () => {
+            if (me.zoomStartDate !== undefined && me.zoomEndDate !== undefined) {
+                const storedStart = new Date(me.zoomStartDate);
+                const storedEnd = new Date(me.zoomEndDate);
+
+                if (!isNaN(storedStart.getTime()) && !isNaN(storedEnd.getTime())) {
+                    return [storedStart, storedEnd];
+                }
+            }
+
+            const defaultStart = new Date(defaultZoomDate);
+            defaultStart.setDate(defaultStart.getDate() - me.zoomDays / 2);
+            const defaultEnd = new Date(defaultZoomDate);
+            defaultEnd.setDate(defaultEnd.getDate() + me.zoomDays / 2);
+
+            return [defaultStart, defaultEnd];
+        };
+
+        [startBrush, endBrush] = brushExtentDates();
 
         timelineMapLayoutB.append('g').attr('class', 'brush').attr('transform', 'translate(0, -1)');
 
@@ -1175,7 +1245,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 'M0,0 L75,0 L75,176 C75,184.284271 68.2842712,191 60,191 L15,191 C6.71572875,191 1.01453063e-15,184.284271 0,176 L0,0 L0,0 Z'
             );
 
-        xBrush.call(brush).call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x));
+        xBrush.call(brush).call(brush.move, [startBrush, endBrush].map(timelineMap.x));
 
         brush.redraw = function () {
             brush = d3
@@ -1188,18 +1258,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 .on('start', brushStart)
                 .on('end', brushEnd);
 
-            startBrush = new Date(me.zoomStartDate).toLocaleDateString('en-GB', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
-            endBrush = new Date(me.zoomEndDate).toLocaleDateString('en-GB', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
+            [startBrush, endBrush] = brushExtentDates();
 
-            xBrush.call(brush).call(brush.move, [new Date(startBrush), new Date(endBrush)].map(timelineMap.x));
+            xBrush.call(brush).call(brush.move, [startBrush, endBrush].map(timelineMap.x));
         };
 
         const brushDateFormatter = new Intl.DateTimeFormat(me.calculatedLOCALE(), {
@@ -1238,7 +1299,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
 
                 let Difference_In_Time = a.getTime() - b.getTime();
                 let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
-                me.daysToShow = Difference_In_Days;
+                me._zoomDays = Difference_In_Days;
 
                 me.zoomStartDate = timelineMap.x
                     .invert(sel0)
@@ -1266,17 +1327,29 @@ export default class timeline extends NavigationMixin(LightningElement) {
         function brushEnd(event) {
             const selection = event.selection;
 
-            if (selection === null) {
-                me.zoomStartDate = emptySelectionStart.toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                });
+            if (selection !== null) {
+                return;
+            }
 
-                let eDate = new Date(me.zoomStartDate);
-                eDate.setDate(eDate.getDate() + 14);
+            //Clearing the brush without ever having selected one leaves no anchor to zoom from
+            const anchorDate =
+                emptySelectionStart instanceof Date && !isNaN(emptySelectionStart.getTime())
+                    ? emptySelectionStart
+                    : new Date(defaultZoomDate);
 
-                me.zoomEndDate = eDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            me.zoomStartDate = anchorDate.toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            let eDate = new Date(me.zoomStartDate);
+            eDate.setDate(eDate.getDate() + 14);
+
+            me.zoomEndDate = eDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            //Not yet assigned when the initial brush.move triggers an empty selection
+            if (me._d3brush) {
                 me._d3brush.redraw();
             }
         }
@@ -1328,6 +1401,30 @@ export default class timeline extends NavigationMixin(LightningElement) {
         return function (a, b) {
             return a[param] < b[param] ? -1 : a[param] > b[param] ? 1 : 0;
         };
+    }
+
+    //The year ranges are design attributes, so an unset or non-numeric value would otherwise
+    //propagate NaN into every date calculation the timeline performs
+    get earliestRangeMonths() {
+        const configuredYears = parseFloat(this.earliestRange);
+
+        return Number.isFinite(configuredYears) ? Math.round(configuredYears * 12) : 36;
+    }
+
+    get latestRangeMonths() {
+        const configuredYears = parseFloat(this.latestRange);
+
+        return Number.isFinite(configuredYears) ? Math.round(configuredYears * 12) : 6;
+    }
+
+    get zoomDays() {
+        if (this._zoomDays !== null) {
+            return this._zoomDays;
+        }
+
+        const configuredDays = parseInt(this.daysToShow, 10);
+
+        return Number.isFinite(configuredDays) && configuredDays > 0 ? configuredDays : 60;
     }
 
     get isLoading() {
@@ -1400,26 +1497,28 @@ export default class timeline extends NavigationMixin(LightningElement) {
     }
 
     handleFilterChange(e) {
-        this.filterValues = e.detail.value;
+        this.filterValues = [...e.detail.value];
         this.handleAllTypes();
-        this.isFilterUpdated = false;
-        if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
-            this.isFilterUpdated = true;
-        }
+        this.isFilterUpdated = this.hasFilterChanged();
     }
 
     handleAllTypesChange(e) {
         if (e.target.checked === true) {
-            this.filterValues = this.allFilterValues;
+            this.filterValues = [...this.allFilterValues];
         } else if (e.target.checked === false) {
             this.filterValues = [];
         }
 
         this.handleAllTypes();
-        this.isFilterUpdated = false;
-        if (JSON.stringify(this.filterValues) !== JSON.stringify(this.startingFilterValues)) {
-            this.isFilterUpdated = true;
-        }
+        this.isFilterUpdated = this.hasFilterChanged();
+    }
+
+    hasFilterChanged() {
+        //Selection order is not meaningful, so compare the two sets rather than the arrays
+        const selected = [...this.filterValues].sort();
+        const applied = [...this.startingFilterValues].sort();
+
+        return JSON.stringify(selected) !== JSON.stringify(applied);
     }
 
     handleAllTypes() {
@@ -1441,12 +1540,12 @@ export default class timeline extends NavigationMixin(LightningElement) {
     applyFilter() {
         this.refreshTimeline();
         this.isFilterUpdated = false;
-        this.startingFilterValues = this.filterValues;
+        this.startingFilterValues = [...this.filterValues];
         this.toggleFilter();
     }
 
     cancelFilter() {
-        this.filterValues = this.startingFilterValues;
+        this.filterValues = [...this.startingFilterValues];
         this.isFilterUpdated = false;
         this.toggleFilter();
     }
@@ -1455,7 +1554,9 @@ export default class timeline extends NavigationMixin(LightningElement) {
         this.isError = false;
         this.noFilterData = false;
 
-        if (this.totalTimelineRecords > 0) {
+        //The canvas may have failed to build even though records were returned, so the d3
+        //objects have to be checked rather than inferred from the record count alone
+        if (this.totalTimelineRecords > 0 && this._d3timelineMapSVG && this._d3timelineMap && this._d3brush) {
             this.illustrationVisibility = 'illustration-hidden';
             this._d3timelineMapSVG.selectAll('[class~=timeline-map-record]').remove();
             this._d3timelineMap.redraw();
@@ -1471,9 +1572,14 @@ export default class timeline extends NavigationMixin(LightningElement) {
         let tooltipId = d.recordId;
         let tooltipObject = d.objectName;
 
-        if (d.tooltipId !== '') {
+        //Apex returns null rather than '' when the configured tooltip lookup is blank
+        if (d.tooltipId && d.tooltipObject) {
             tooltipId = d.tooltipId;
             tooltipObject = d.tooltipObject;
+        }
+
+        if (!tooltipId || !tooltipObject) {
+            return;
         }
 
         if (this._tooltipHideTimeout) {
@@ -1608,7 +1714,7 @@ export default class timeline extends NavigationMixin(LightningElement) {
                 ' - ' +
                 this.localisedZoomEndDate +
                 ' • ' +
-                this.daysToShow +
+                this.zoomDays +
                 ' ' +
                 this.label.DAYS +
                 ' • ' +

@@ -40,6 +40,7 @@ public with sharing class TimelineService {
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query(queryTimelineConfiguration); //NOPMD
 
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
+            Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
             for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
                 String configKey = timelineType.Object_Name__c + timelineType.Relationship_Name__c;
@@ -65,18 +66,31 @@ public with sharing class TimelineService {
                     continue;
                 }
 
-                String objectLabel = ((SObject) (Type.forName('Schema.' + String.valueOf(timelineType.Object_Name__c))
-                        .newInstance()))
-                    .getSObjectType()
-                    .getDescribe(SObjectDescribeOptions.DEFERRED)
-                    .getLabelPlural();
+                Schema.SObjectType timelineObjectType = globalDescribe.get(timelineType.Object_Name__c);
+
+                if (timelineObjectType == null) {
+                    throw new TimelineSetupException(
+                        JSON.serialize(
+                            new Map<String, String>{
+                                'type' => 'Setup-Error',
+                                'code' => 'TLN-401',
+                                'message' => String.format(
+                                    System.Label.Timeline_Error_InvalidObjectName,
+                                    new List<String>{ timelineType.Object_Name__c, timelineType.DeveloperName }
+                                )
+                            }
+                        )
+                    );
+                }
+
+                String objectLabel = timelineObjectType.getDescribe(SObjectDescribeOptions.DEFERRED).getLabelPlural();
 
                 if (timelineType.Object_Name__c == 'ContentDocumentLink') {
                     objectLabel = System.Label.Timeline_Label_Files;
                 }
 
                 if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
-                    Type tooltipType = Type.forName('Schema.' + String.valueOf(timelineType.Tooltip_Object_Name__c));
+                    Schema.SObjectType tooltipType = globalDescribe.get(timelineType.Tooltip_Object_Name__c);
                     if (tooltipType == null) {
                         throw new TimelineSetupException(
                             JSON.serialize(
@@ -94,10 +108,7 @@ public with sharing class TimelineService {
                             )
                         );
                     }
-                    objectLabel = ((SObject) tooltipType.newInstance())
-                        .getSObjectType()
-                        .getDescribe(SObjectDescribeOptions.DEFERRED)
-                        .getLabelPlural();
+                    objectLabel = tooltipType.getDescribe(SObjectDescribeOptions.DEFERRED).getLabelPlural();
                 }
 
                 mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
@@ -453,6 +464,12 @@ public with sharing class TimelineService {
 
             innerQuery = innerQuery.removeEnd(',');
 
+            if (String.isBlank(innerQuery)) {
+                //Every configured child object is inaccessible to this user, so there is
+                //nothing to query. Returning no data is preferable to a malformed query.
+                return new List<Map<String, String>>();
+            }
+
             String queryRecords =
                 'SELECT Id, ' +
                 innerQuery +
@@ -491,6 +508,10 @@ public with sharing class TimelineService {
                             String configKey = eachCh.getSObjectType() + fieldName;
                             TimelineRecord tr = mapOfTimelineConfigurationRecords.get(configKey);
                             Map<String, FieldPath> paths = configFieldPaths.get(configKey);
+
+                            if (tr == null || paths == null) {
+                                continue;
+                            }
 
                             String myId = eachCh.Id;
 
@@ -541,19 +562,23 @@ public with sharing class TimelineService {
 
                                 String alternateDetailId = '';
 
-                                if (
-                                    (tr.objectName == 'OpenActivity' || tr.objectName == 'ActivityHistory') &&
-                                    (String.valueOf(eachCh.get('AlternateDetailId')) != '' &&
-                                    String.valueOf(eachCh.get('AlternateDetailId')) != null)
-                                ) {
-                                    alternateDetailId = String.valueOf(eachCh.get('AlternateDetailId'));
+                                if (tr.objectName == 'OpenActivity' || tr.objectName == 'ActivityHistory') {
+                                    Object alternateDetailValue = getFieldSafely(eachCh, 'AlternateDetailId');
+
+                                    if (alternateDetailValue != null) {
+                                        alternateDetailId = String.valueOf(alternateDetailValue);
+                                    }
                                 }
 
                                 mapData.put('alternateDetailId', alternateDetailId);
 
                                 if (tr.objectName == 'ContentDocumentLink') {
                                     //NOPMD
-                                    myId = String.valueOf(eachCh.get('ContentDocumentId'));
+                                    Object contentDocumentId = getFieldSafely(eachCh, 'ContentDocumentId');
+
+                                    if (contentDocumentId != null) {
+                                        myId = String.valueOf(contentDocumentId);
+                                    }
                                 }
 
                                 mapData.put('objectId', myId);
@@ -577,7 +602,6 @@ public with sharing class TimelineService {
                                 mapData.put('drilldownId', drilldownIdValues.get('value'));
                                 mapData.put('tooltipId', tooltipIdValues.get('value'));
                                 mapData.put('tooltipObject', tr.tooltipObject);
-                                mapData.put('fallbackTooltipValue', fallbackValues.get('value'));
                                 mapData.put('type', typeValues.get('value'));
 
                                 if (iconValues.get('value') != null && iconValues.get('value') != '') {
@@ -592,7 +616,14 @@ public with sharing class TimelineService {
                                     mapData.put('iconBackground', tr.iconBackground);
                                 }
 
-                                if (positionValues.get('value') != null && positionValues.get('value') != '') {
+                                //A record can only be plotted when its position date was actually
+                                //readable. An unreadable date yields a placeholder, not a date.
+                                Boolean hasPlottableDate =
+                                    positionValues.get('value') != null &&
+                                    positionValues.get('value') != '' &&
+                                    positionValues.get('accessible') != 'false';
+
+                                if (hasPlottableDate) {
                                     listOfTimelineData.add(mapData);
                                 }
                             }
@@ -672,8 +703,12 @@ public with sharing class TimelineService {
             );
             allRelationshipKeys.add(key);
 
+            //Field history tracking objects are always exposed through a relationship named
+            //'Histories'. Matching on the API name keeps this check working in translated orgs.
+            Boolean isFieldHistory = 'Histories'.equalsIgnoreCase(eachRelationship.getRelationshipName());
+
             Schema.DescribeSObjectResult childDescribe = eachRelationship.getChildSObject().getDescribe();
-            if (childDescribe.isAccessible() && !childDescribe.getLabel().contains('Histories')) {
+            if (childDescribe.isAccessible() && !isFieldHistory) {
                 childRelatedObjects.put(key, String.valueOf(eachRelationship.getRelationshipName()));
             }
         }
@@ -693,59 +728,37 @@ public with sharing class TimelineService {
         Id recordId;
 
         if (path == null || !path.isValid) {
-            fieldDetails.put('value', '');
-            fieldDetails.put('label', '');
-            return fieldDetails;
+            return emptyFieldDetails('');
         }
 
+        SObject targetRecord = records;
+
         try {
-            switch on path.parts.size() {
-                when 1 {
-                    fieldValue = String.valueOf(records.get(path.fieldName));
-                    recordId = String.valueOf(records.get('Id'));
-                }
-                when 2 {
-                    fieldValue = String.valueOf(records.getSobject(path.parts[0]).get(path.parts[1]));
-                    recordId = String.valueOf(records.getSobject(path.parts[0]).get('Id'));
-                }
-                when 3 {
-                    fieldValue = String.valueOf(
-                        records.getSobject(path.parts[0]).getSobject(path.parts[1]).get(path.parts[2])
-                    );
-                    recordId = String.valueOf(records.getSobject(path.parts[0]).getSobject(path.parts[1]).get('Id'));
-                }
-                when 4 {
-                    fieldValue = String.valueOf(
-                        records.getSobject(path.parts[0])
-                            .getSobject(path.parts[1])
-                            .getSobject(path.parts[2])
-                            .get(path.parts[3])
-                    );
-                    recordId = String.valueOf(
-                        records.getSobject(path.parts[0]).getSobject(path.parts[1]).getSobject(path.parts[2]).get('Id')
-                    );
-                }
-                when 5 {
-                    fieldValue = String.valueOf(
-                        records.getSobject(path.parts[0])
-                            .getSobject(path.parts[1])
-                            .getSobject(path.parts[2])
-                            .getSobject(path.parts[3])
-                            .get(path.parts[4])
-                    );
-                    recordId = String.valueOf(
-                        records.getSobject(path.parts[0])
-                            .getSobject(path.parts[1])
-                            .getSobject(path.parts[2])
-                            .getSobject(path.parts[3])
-                            .get('Id')
-                    );
+            //Walk the relationship path one hop at a time. Any depth is supported and a blank
+            //lookup along the way simply means there is no value to read for this record.
+            for (Integer i = 0; i < path.parts.size() - 1; i++) {
+                targetRecord = targetRecord.getSobject(path.parts[i]);
+
+                if (targetRecord == null) {
+                    return emptyFieldDetails(path.fieldStripped);
                 }
             }
+
+            fieldValue = String.valueOf(targetRecord.get(path.fieldStripped));
+            recordId = readId(targetRecord);
         } catch (SObjectException e) {
             // Field was not queried due to FLS - mark as inaccessible
             fieldCanAccess = false;
-            recordId = String.valueOf(records.get('Id'));
+            recordId = readId(targetRecord);
+        }
+
+        if (recordId == null) {
+            recordId = readId(records);
+        }
+
+        if (recordId == null) {
+            //Without a record id the describe below cannot be resolved for this field
+            return emptyFieldDetails(path.fieldStripped);
         }
 
         //Case comments cannot be translated to an sobjectype from the ID
@@ -794,18 +807,57 @@ public with sharing class TimelineService {
         fieldDetails.put('value', fieldValue);
         fieldDetails.put('label', fieldLabel);
         fieldDetails.put('type', fieldType);
+        fieldDetails.put('accessible', String.valueOf(fieldCanAccess));
 
         return fieldDetails;
+    }
+
+    private static Map<String, String> emptyFieldDetails(String label) {
+        return new Map<String, String>{ 'value' => '', 'label' => label, 'type' => '', 'accessible' => 'true' };
+    }
+
+    /**
+     * @description Reads the Id of a record without throwing when it was never queried
+     * @param record The record to read the Id from
+     * @return The record Id or null when it cannot be resolved
+     */
+    private static Id readId(SObject record) {
+        if (record == null) {
+            return null;
+        }
+
+        try {
+            return (Id) record.get('Id');
+        } catch (SObjectException e) {
+            return null;
+        }
+    }
+
+    /**
+     * @description Reads a field without throwing when it was not queried or was stripped by FLS
+     * @param record The record to read from
+     * @param fieldName The API name of the field to read
+     * @return The field value or null when the field is unavailable
+     */
+    private static Object getFieldSafely(SObject record, String fieldName) {
+        try {
+            return record.get(fieldName);
+        } catch (SObjectException e) {
+            return null;
+        }
     }
 
     private static Schema.DescribeFieldResult getDescribeInfo(String objectName, String fieldName) {
         String key = objectName + fieldName;
 
         if (!fieldDescribeCache.containsKey(key)) {
-            Schema.DescribeSObjectResult describeSobjects = ((SObject) (Type.forName(
-                        'Schema.' + String.valueOf(objectName)
-                    )
-                    .newInstance()))
+            Type objectType = Type.forName('Schema.' + String.valueOf(objectName));
+
+            if (objectType == null) {
+                return null;
+            }
+
+            Schema.DescribeSObjectResult describeSobjects = ((SObject) objectType.newInstance())
                 .getSObjectType()
                 .getDescribe(SObjectDescribeOptions.DEFERRED);
             Map<String, Schema.SObjectField> fieldsMap = describeSobjects.fields.getMap();
@@ -861,6 +913,20 @@ public with sharing class TimelineService {
 
             String fieldLabel = String.valueOf(describeSobjects.fields.getMap().get(field).getDescribe().getLabel());
 
+            if (newDefaultRecord.isEmpty()) {
+                throw new TimelineSetupException(
+                    JSON.serialize(
+                        new Map<String, String>{
+                            'type' => 'No-Data',
+                            'message' => String.format(
+                                System.Label.Timeline_Error_NoFieldValue,
+                                new List<String>{ fieldLabel }
+                            )
+                        }
+                    )
+                );
+            }
+
             SObjectAccessDecision securityDecision = Security.stripInaccessible(AccessType.READABLE, newDefaultRecord);
 
             Set<String> strippedFields = securityDecision.getRemovedFields().get(parentObjectType);
@@ -879,9 +945,23 @@ public with sharing class TimelineService {
                 );
             }
 
-            SObject secureObject = securityDecision.getRecords()[0];
+            List<SObject> secureRecords = securityDecision.getRecords();
 
-            fieldValue = String.valueOf(secureObject.get(field));
+            if (secureRecords.isEmpty()) {
+                throw new TimelineSetupException(
+                    JSON.serialize(
+                        new Map<String, String>{
+                            'type' => 'No-Access',
+                            'message' => String.format(
+                                System.Label.Timeline_Error_NoFieldAccess,
+                                new List<String>{ fieldLabel }
+                            )
+                        }
+                    )
+                );
+            }
+
+            fieldValue = String.valueOf(secureRecords[0].get(field));
 
             if (fieldValue == null || fieldValue == '') {
                 throw new TimelineSetupException(

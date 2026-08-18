@@ -156,6 +156,18 @@ describe('c-timeline', () => {
         expect(allTypesLabel.textContent).toBe('All Types');
     });
 
+    it('summarises the configured zoom range', async () => {
+        const element = await buildTimeline();
+
+        expect(element.timelineSummaryText).toContain('90 days');
+    });
+
+    it('falls back to a default zoom range when none is configured', async () => {
+        const element = await buildTimeline({ daysToShow: undefined });
+
+        expect(element.timelineSummaryText).toContain('60 days');
+    });
+
     it('toggles the filter panel and refresh button state', async () => {
         const element = await buildTimeline({ isLoaded: true });
         await flushPromises();

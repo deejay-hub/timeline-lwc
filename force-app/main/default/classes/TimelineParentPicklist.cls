@@ -56,10 +56,11 @@ global with sharing class TimelineParentPicklist extends VisualEditor.DynamicPic
                         continue;
                     }
 
+                    //Compared on API name rather than label so the exclusion also holds in translated orgs
                     if (
                         currentField.isAccessible() &&
                         currentField.isNamePointing() == false &&
-                        currentField.getLabel() != 'Master Record ID'
+                        !'MasterRecordId'.equalsIgnoreCase(currentField.getName())
                     ) {
                         myValues.addRow(new VisualEditor.DataRow(currentField.getName(), currentField.getName()));
                     }
