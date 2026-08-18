@@ -40,7 +40,15 @@ public with sharing class TimelineService {
             List<Timeline_Configuration__mdt> listOfTimelineConfigurations = Database.query(queryTimelineConfiguration); //NOPMD
 
             Map<String, String> mapOfTimelineTypes = new Map<String, String>();
-            Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+
+            Set<String> configuredObjectNames = new Set<String>();
+            for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
+                configuredObjectNames.add(timelineType.Object_Name__c);
+                configuredObjectNames.add(timelineType.Tooltip_Object_Name__c);
+            }
+            Map<String, Schema.DescribeSObjectResult> configuredDescribes = describeConfiguredObjects(
+                configuredObjectNames
+            );
 
             for (Timeline_Configuration__mdt timelineType : listOfTimelineConfigurations) {
                 String configKey = timelineType.Object_Name__c + timelineType.Relationship_Name__c;
@@ -66,9 +74,12 @@ public with sharing class TimelineService {
                     continue;
                 }
 
-                Schema.SObjectType timelineObjectType = globalDescribe.get(timelineType.Object_Name__c);
+                Schema.DescribeSObjectResult timelineObjectDescribe = resolveConfiguredDescribe(
+                    configuredDescribes,
+                    timelineType.Object_Name__c
+                );
 
-                if (timelineObjectType == null) {
+                if (timelineObjectDescribe == null) {
                     throw new TimelineSetupException(
                         JSON.serialize(
                             new Map<String, String>{
@@ -83,15 +94,18 @@ public with sharing class TimelineService {
                     );
                 }
 
-                String objectLabel = timelineObjectType.getDescribe(SObjectDescribeOptions.DEFERRED).getLabelPlural();
+                String objectLabel = timelineObjectDescribe.getLabelPlural();
 
                 if (timelineType.Object_Name__c == 'ContentDocumentLink') {
                     objectLabel = System.Label.Timeline_Label_Files;
                 }
 
                 if (timelineType.Tooltip_Object_Name__c != null && timelineType.Tooltip_Object_Name__c != '') {
-                    Schema.SObjectType tooltipType = globalDescribe.get(timelineType.Tooltip_Object_Name__c);
-                    if (tooltipType == null) {
+                    Schema.DescribeSObjectResult tooltipDescribe = resolveConfiguredDescribe(
+                        configuredDescribes,
+                        timelineType.Tooltip_Object_Name__c
+                    );
+                    if (tooltipDescribe == null) {
                         throw new TimelineSetupException(
                             JSON.serialize(
                                 new Map<String, String>{
@@ -108,7 +122,7 @@ public with sharing class TimelineService {
                             )
                         );
                     }
-                    objectLabel = tooltipType.getDescribe(SObjectDescribeOptions.DEFERRED).getLabelPlural();
+                    objectLabel = tooltipDescribe.getLabelPlural();
                 }
 
                 mapOfTimelineTypes.put(timelineType.Object_Name__c, objectLabel);
@@ -200,13 +214,21 @@ public with sharing class TimelineService {
             // Optimization: Cache field paths to avoid repeated string splitting
             Map<String, Map<String, FieldPath>> configFieldPaths = new Map<String, Map<String, FieldPath>>();
 
-            Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
+            Set<String> configuredObjectNames = new Set<String>();
+            for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
+                configuredObjectNames.add(timelineConfigurationRecord.Object_Name__c);
+            }
+            Map<String, Schema.DescribeSObjectResult> configuredDescribes = describeConfiguredObjects(
+                configuredObjectNames
+            );
 
             for (Timeline_Configuration__mdt timelineConfigurationRecord : listOfTimelineConfigurations) {
                 TimelineRecord timelineRecord = new timelineRecord();
-                Schema.SObjectType timelineRecordObjectType = globalDescribe
-                    .get(timelineConfigurationRecord.Object_Name__c);
-                if (timelineRecordObjectType == null) {
+                Schema.DescribeSObjectResult timelineDescribeResult = resolveConfiguredDescribe(
+                    configuredDescribes,
+                    timelineConfigurationRecord.Object_Name__c
+                );
+                if (timelineDescribeResult == null) {
                     throw new TimelineSetupException(
                         JSON.serialize(
                             new Map<String, String>{
@@ -223,7 +245,6 @@ public with sharing class TimelineService {
                         )
                     );
                 }
-                Schema.DescribeSObjectResult timelineDescribeResult = timelineRecordObjectType.getDescribe();
                 Map<String, Schema.SObjectField> childFieldsMap = timelineDescribeResult.fields.getMap();
                 timelineRecord.objectLabel = timelineDescribeResult.getLabel();
                 timelineRecord.relationshipName = timelineConfigurationRecord.Relationship_Name__c;
@@ -713,6 +734,80 @@ public with sharing class TimelineService {
             }
         }
         return childRelatedObjects;
+    }
+
+    /**
+     * @description Describes only the objects named by Timeline_Configuration__mdt. A full
+     * Schema.getGlobalDescribe() costs tens of milliseconds of CPU and tens of kilobytes of heap
+     * to describe every object in the org when only a handful of names need resolving.
+     * @param objectNames Object API names taken from the timeline configuration records
+     * @return Describe results keyed on the lower cased object API name
+     */
+    private static Map<String, Schema.DescribeSObjectResult> describeConfiguredObjects(Set<String> objectNames) {
+        Map<String, Schema.DescribeSObjectResult> describesByName = new Map<String, Schema.DescribeSObjectResult>();
+
+        List<String> namesToDescribe = new List<String>();
+        for (String objectName : objectNames) {
+            if (String.isNotBlank(objectName)) {
+                namesToDescribe.add(objectName);
+            }
+        }
+
+        if (namesToDescribe.isEmpty()) {
+            return describesByName;
+        }
+
+        try {
+            addDescribes(Schema.describeSObjects(namesToDescribe, SObjectDescribeOptions.DEFERRED), describesByName);
+        } catch (Exception batchDescribeError) {
+            //A single unknown or inaccessible name makes the whole batch throw, so describe one at
+            //a time to salvage the rest. Names that stay absent from the map are reported by the
+            //caller as an invalid object configuration rather than a generic failure.
+            for (String objectName : namesToDescribe) {
+                try {
+                    addDescribes(
+                        Schema.describeSObjects(new List<String>{ objectName }, SObjectDescribeOptions.DEFERRED),
+                        describesByName
+                    );
+                } catch (Exception unresolvedNameError) {
+                    continue;
+                }
+            }
+        }
+
+        return describesByName;
+    }
+
+    /**
+     * @description Adds describe results to a map keyed on the canonical API name, lower cased
+     * @param describeResults The results of a Schema.describeSObjects call
+     * @param describesByName The map to populate
+     */
+    private static void addDescribes(
+        List<Schema.DescribeSObjectResult> describeResults,
+        Map<String, Schema.DescribeSObjectResult> describesByName
+    ) {
+        for (Schema.DescribeSObjectResult describeResult : describeResults) {
+            describesByName.put(describeResult.getName().toLowerCase(), describeResult);
+        }
+    }
+
+    /**
+     * @description Resolves a configured object name against a describe map. Configuration values
+     * are hand entered so their casing can differ from the canonical API name.
+     * @param describesByName Describe results keyed on the lower cased object API name
+     * @param objectName The object API name from the timeline configuration record
+     * @return The matching describe result, or null when the name could not be described
+     */
+    private static Schema.DescribeSObjectResult resolveConfiguredDescribe(
+        Map<String, Schema.DescribeSObjectResult> describesByName,
+        String objectName
+    ) {
+        if (String.isBlank(objectName)) {
+            return null;
+        }
+
+        return describesByName.get(objectName.toLowerCase());
     }
 
     private static Map<String, String> getFieldValues(FieldPath path, Sobject records, String objectName) {
