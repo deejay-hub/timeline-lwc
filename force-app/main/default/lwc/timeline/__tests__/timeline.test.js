@@ -156,6 +156,52 @@ describe('c-timeline', () => {
         expect(allTypesLabel.textContent).toBe('All Types');
     });
 
+    it('watches the canvas for size changes that never reach the window', async () => {
+        const observe = jest.fn();
+        const disconnect = jest.fn();
+        global.ResizeObserver = jest.fn(function () {
+            this.observe = observe;
+            this.disconnect = disconnect;
+        });
+
+        try {
+            const element = await buildTimeline();
+
+            expect(observe).toHaveBeenCalledWith(element.shadowRoot.querySelector('div.timeline-canvas'));
+
+            document.body.removeChild(element);
+            expect(disconnect).toHaveBeenCalled();
+        } finally {
+            delete global.ResizeObserver;
+        }
+    });
+
+    it('falls back to the window resize event when ResizeObserver is unavailable', async () => {
+        //jsdom has no ResizeObserver, which is also how Lightning Locker behaves
+        expect(typeof ResizeObserver).toBe('undefined');
+
+        const addEventListener = jest.spyOn(window, 'addEventListener');
+        const removeEventListener = jest.spyOn(window, 'removeEventListener');
+
+        const element = await buildTimeline();
+        expect(addEventListener).toHaveBeenCalledWith('resize', expect.any(Function));
+
+        document.body.removeChild(element);
+        expect(removeEventListener).toHaveBeenCalledWith('resize', expect.any(Function));
+    });
+
+    it('falls back to the window resize event when ResizeObserver cannot be constructed', async () => {
+        global.ResizeObserver = {};
+        const addEventListener = jest.spyOn(window, 'addEventListener');
+
+        try {
+            await buildTimeline();
+            expect(addEventListener).toHaveBeenCalledWith('resize', expect.any(Function));
+        } finally {
+            delete global.ResizeObserver;
+        }
+    });
+
     it('toggles the filter panel and refresh button state', async () => {
         const element = await buildTimeline({ isLoaded: true });
         await flushPromises();

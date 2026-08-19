@@ -186,7 +186,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
     _d3timelineCanvasMapDIV = null;
 
     _d3Rendered = false;
+    _resizeObserver = null;
     _debouncedResizeHandler = null;
+    _resizeRafId = null;
+    _lastCanvasWidth = null;
     _tooltipDelayTimeout = null;
     _tooltipHideTimeout = null;
     _brushRafId = null;
@@ -336,10 +339,22 @@ export default class timeline extends NavigationMixin(LightningElement) {
             this._tooltipHideTimeout = null;
         }
 
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = null;
+        }
+
         if (this._debouncedResizeHandler) {
             window.removeEventListener('resize', this._debouncedResizeHandler);
             this._debouncedResizeHandler = null;
         }
+
+        if (this._resizeRafId) {
+            cancelAnimationFrame(this._resizeRafId);
+            this._resizeRafId = null;
+        }
+
+        this._lastCanvasWidth = null;
     }
 
     connectedCallback() {
@@ -405,39 +420,82 @@ export default class timeline extends NavigationMixin(LightningElement) {
             }
         }
 
-        // In renderedCallback, after D3 setup
-        if (!this._debouncedResizeHandler) {
-            this._debouncedResizeHandler = this.debounce(() => {
-                try {
-                    const canvas = this.template.querySelector('div.timeline-canvas');
-                    // Ensure main D3 objects used in resize are initialized and canvas is valid
-                    if (
-                        canvas &&
-                        canvas.offsetWidth !== 0 &&
-                        this._d3timelineCanvas &&
-                        this._d3timelineMap &&
-                        this._d3timelineCanvasAxis &&
-                        this._d3timelineCanvasAxisLabel &&
-                        this._d3timelineMapAxis &&
-                        this._d3brush
-                    ) {
-                        this._d3timelineCanvas.x.range([0, canvas.offsetWidth]);
-                        this._d3timelineMap.x.range([
-                            0,
-                            Math.max(this.template.querySelector('div.timeline-map').offsetWidth, 0)
-                        ]);
-                        this._d3timelineCanvasAxis.redraw();
-                        this._d3timelineCanvasAxisLabel.redraw();
-                        this._d3timelineMap.redraw();
-                        this._d3timelineMapAxis.redraw();
-                        this._d3brush.redraw();
-                    }
-                    // eslint-disable-next-line
-                } catch (error) {
-                    // Intentionally swallowed — resize failures are non-critical
-                }
-            }, 200);
-            window.addEventListener('resize', this._debouncedResizeHandler);
+        this.observeCanvasWidth();
+    }
+
+    //Console apps slide docked panels and utility bars in and out without ever firing a window
+    //resize, so the canvas has to be watched directly rather than through a window listener.
+    observeCanvasWidth() {
+        if (this._resizeObserver || this._debouncedResizeHandler) {
+            return;
+        }
+
+        const canvas = this.template.querySelector('div.timeline-canvas');
+        if (!canvas) {
+            return;
+        }
+
+        //Measuring inside a ResizeObserver callback can trigger another notification, so the redraw
+        //is debounced and deferred to the next frame
+        const scheduleResize = this.debounce(() => {
+            // eslint-disable-next-line
+            this._resizeRafId = requestAnimationFrame(() => {
+                this._resizeRafId = null;
+                this.resizeTimeline();
+            });
+        }, 200);
+
+        //ResizeObserver is unavailable under Lightning Locker, where it is either missing outright
+        //or present but not constructible, so both are treated as a failure to attach
+        if (typeof ResizeObserver !== 'undefined') {
+            try {
+                this._resizeObserver = new ResizeObserver(scheduleResize);
+                this._resizeObserver.observe(canvas);
+                return;
+                // eslint-disable-next-line
+            } catch (error) {
+                this._resizeObserver = null;
+            }
+        }
+
+        //Locker fallback. This only catches window resizes, so panels sliding in and out of a
+        //console app are missed, but that is the pre-existing behaviour rather than a regression.
+        this._debouncedResizeHandler = scheduleResize;
+        window.addEventListener('resize', this._debouncedResizeHandler);
+    }
+
+    resizeTimeline() {
+        try {
+            const canvas = this.template.querySelector('div.timeline-canvas');
+            const canvasWidth = canvas ? canvas.offsetWidth : 0;
+
+            //A width of zero means the component is hidden, typically a background console tab.
+            //The last known width is kept so the timeline is left alone until it is visible again.
+            if (
+                canvasWidth === 0 ||
+                canvasWidth === this._lastCanvasWidth ||
+                !this._d3timelineCanvas ||
+                !this._d3timelineMap ||
+                !this._d3timelineCanvasAxis ||
+                !this._d3timelineCanvasAxisLabel ||
+                !this._d3timelineMapAxis ||
+                !this._d3brush
+            ) {
+                return;
+            }
+
+            this._lastCanvasWidth = canvasWidth;
+
+            this._d3timelineCanvas.x.range([0, canvasWidth]);
+            this._d3timelineMap.x.range([0, Math.max(this.template.querySelector('div.timeline-map').offsetWidth, 0)]);
+            this._d3timelineCanvasAxis.redraw();
+            this._d3timelineCanvasAxisLabel.redraw();
+            this._d3timelineMap.redraw();
+            this._d3timelineMapAxis.redraw();
+            this._d3brush.redraw();
+            // eslint-disable-next-line
+        } catch (error) {
+            // Intentionally swallowed — resize failures are non-critical
         }
     }
 
@@ -650,6 +708,10 @@ export default class timeline extends NavigationMixin(LightningElement) {
         const timelineHeight = me._timelineHeight;
 
         const width = timelineCanvasDIV.offsetWidth;
+
+        //Seeds the baseline the resize observer compares against so the first notification after
+        //the initial draw is not treated as a width change
+        me._lastCanvasWidth = width;
 
         timelineCanvasDIV.setAttribute('style', 'max-height:' + timelineHeight + 'px');
         timelineCanvas.SVGHeight = timelineHeight;
