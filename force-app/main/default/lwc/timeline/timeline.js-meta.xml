@@ -81,6 +81,15 @@
                 description="Show today's date."
                 datasource="No, Blue, Black, Green, Indigo, Pink, Purple, Teal, Red"
             />
+            <property
+                name="minimapFormat"
+                label="Minimap Format"
+                default="Dotmap"
+                required="true"
+                type="String"
+                datasource="Dotmap, Heatmap"
+                description="Choose the minimap rendering style. Dotmap shows individual records as dots (default). Heatmap aggregates records into AM/PM cells per day, week or month, shaded by record volume."
+            />
 
             <supportedFormFactors>
                 <supportedFormFactor type="Large" />
@@ -158,6 +167,15 @@
                 type="String"
                 description="Show today's date."
                 datasource="No, Blue, Black, Green, Indigo, Pink, Purple, Teal, Red"
+            />
+            <property
+                name="minimapFormat"
+                label="Minimap Format"
+                default="Dotmap"
+                required="true"
+                type="String"
+                datasource="Dotmap, Heatmap"
+                description="Choose the minimap rendering style. Dotmap shows individual records as dots (default). Heatmap aggregates records into AM/PM cells per day, week or month, shaded by record volume."
             />
             <property
                 name="recordId"
